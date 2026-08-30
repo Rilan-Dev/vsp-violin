@@ -430,3 +430,71 @@ Task: QA the existing build, fix the dead `#legal` footer anchor, build dynamic 
 5. **Mobile deep-testing** — the VLM confirmed the desktop layout is polished, but a dedicated mobile (375px) and tablet (768px) screenshot pass would catch any responsive edge cases (the handoff's responsive.css notes three CSS traps that Tailwind mostly sidesteps, but `overflow-x: clip` on body is still required to avoid breaking sticky nav — already applied in globals.css).
 6. **Per-lesson OpenGraph images** — the lesson pages have `titleCard` URLs (remote blogger images) that could be used as OG images in `generateMetadata`. Not yet wired up.
 
+
+---
+Task ID: 16
+Agent: cron-review-round-2 (webDevReview)
+Task: QA the build, build Studio admin dashboard, build dedicated Library page, wire up OG images + category deep-links.
+
+## Current project status assessment
+- Dev server healthy (port 3000). All routes 200 (`/`, `/library`, `/lessons/[slug]`, `/studio`, all `/api/*`).
+- `bun run lint` clean.
+- agent-browser QA: homepage 8 sections intact, lesson page interactions verified (notation Tamil toggle works, sruthi dial F-4 selection works, prev/next + sibling rail render), no console errors.
+- Studio `/api/studio/enquiries` correctly returns 401 without auth — security gate working.
+
+## Completed modifications + verification
+
+### 1. Feature: Studio admin dashboard (`/studio`)
+Built the owner-only CMS described in the handoff as "behind a login at a separate address, never linked from the public site."
+
+**Auth layer:**
+- `POST /api/studio/login` — validates a shared-secret token (`STUDIO_TOKEN` env var, defaults to `vsp-studio-dev` in dev), sets an httpOnly + sameSite=strict cookie (7-day expiry).
+- `POST /api/studio/logout` — clears the cookie.
+- `GET /api/studio/enquiries` — bearer-token OR cookie auth; returns all enquiries (newest first, cap 200) + status counts.
+- `PATCH /api/studio/enquiries/[id]` — updates enquiry status (new/replied/archived).
+- `DELETE /api/studio/enquiries/[id]` — permanently deletes an enquiry.
+- Server-side gate in `src/app/studio/page.tsx` reads the cookie via `next/headers` `cookies()` and renders `<StudioLogin>` or `<StudioDashboard>`.
+
+**Components:**
+- `src/components/site/studio-login.tsx` — a gold-card login gate with a password input, "Enter Studio" CTA, and a dev-token hint. On success calls `router.refresh()` so the server component re-renders as the dashboard.
+- `src/components/site/studio-dashboard.tsx` — the full admin UI:
+  - **Studio bar** (sticky, blur backdrop): "SUKA PAVALAN · Studio" wordmark + 3 tabs (Enquiries with new-count badge, Lessons with total count, Exit/logout).
+  - **Enquiries tab:**
+    - 4 stat cards (Total / New / Replied / Archived) with Marcellus gold numbers + icon + Geist Mono labels.
+    - Source breakdown card — counts how many enquiries came through lesson-related intent vs other (the "free library is the funnel" insight).
+    - Filter row (All / New / Replied / Archived chips).
+    - Two-pane layout: enquiry list (left, scrollable, each row shows name + intent tag + message preview + date + status) + enquiry detail (right, sticky): full message, 6-cell metadata grid (email/phone/city/who-for/instrument/level with mailto:/tel: links), "Reply by email" gold CTA (opens mailto with prefilled subject + body), 3 status buttons (New/Replied/Archive with optimistic update), Delete button (warm-orange).
+  - **Lessons tab:** 3 stat cards (Total / Categories / With notation) + a full lessons table (23 rows) with columns: Title (link to /lessons/[slug], opens in new tab), Category, Raga, Thala, Date, Asset badges (EN/TA/▶), View link.
+- **Verified end-to-end:** logged in with dev token → dashboard loaded with 2 enquiries → clicked an enquiry → detail pane rendered → clicked "Replied" → DB updated (verified via Prisma query: status changed to "replied") → New count badge dropped from 2 to 1 → clicked Delete → DB row removed (count dropped). Logout clears cookie and returns to login gate.
+
+### 2. Feature: Dedicated Library page (`/library`)
+Built the retention-driver page described in the handoff — "the library is the funnel."
+
+- `src/app/library/page.tsx` — server component, reads `searchParams` (category, raga) for deep-linking from the nav mega-menu, fetches lessons + categories + stats in parallel.
+- `src/components/site/library-page.tsx` — the full library experience:
+  - **Header:** back-to-homepage link, gold eyebrow "The Library · free forever", h1 "{N} notation lessons. One lineage." (lineage in gold), lead paragraph.
+  - **Stat block:** 4-cell grid (Lessons / Notation sheets / Categories / Ragas) with gold hairline borders.
+  - **Search bar:** full-width input with a gold Search icon, placeholder "Search by title, raga, thala, or composer…", clear button when active.
+  - **Category chips:** "All {N}" + one chip per category with count > 0 (sorted by order). Active = gold border + gold text + faint gold tint.
+  - **Raga chips:** "All ragas" + one chip per unique raga (sorted by lesson count descending). Active = gold.
+  - **Active filter summary:** "Showing X of Y lessons" + "Clear filters" button.
+  - **Grouped lessons:** filtered lessons grouped by category group (Carnatic Basics / Carnatic Advanced / Devotional / Light Music & Media), each group has a section header with count + gold hairline, then a 3-col card grid.
+  - **Library cards:** title card image (16:9, lazy-loaded), level badge (L1-L5), category + raga meta line, Marcellus title, Tamil title, thala, 4 asset badges (EN/TA/♪/▶). First basics card uses the gold variant. `.vsp-lift` hover micro-interaction.
+  - **Empty state:** "No lessons match your filters" with a Clear filters button.
+- **Deep-linking:** the nav mega-menu category links now point to `/library?category={slug}` instead of `#library`. The library page reads the query param and pre-filters. Verified: `/library?category=geetham` loads with 5 Geetham lessons and the Geetham chip active.
+- The homepage "Browse all N lessons →" CTA now links to `/library` (was `#library`).
+- **Verified:** search "mohanam" → 2 results; Geetham filter → 5 results in "Carnatic — Advanced" group; clear filters returns to all 23.
+
+### 3. Styling: Per-lesson OpenGraph images
+- Updated `src/app/lessons/[slug]/page.tsx` `generateMetadata` to include `openGraph.images` (1200×630) and `twitter.images` (summary_large_image card) from the lesson's `titleCard` URL (remote blogger images at s1920/s1280). Lessons without a titleCard skip the image gracefully.
+- This means sharing a lesson link on Twitter/WhatsApp/LinkedIn now shows the lesson's title card image.
+
+## Unresolved issues / risks / next-phase priorities
+
+1. **Live Video seeding (deferred)** — the 7 Live Video posts from the old Blogger site are referenced by count in `blog-sukapavalan.json` but their individual URLs/titles/YouTube IDs aren't in the structured data (only the archive month counts). A future task would need to scrape the old blog or manually enter them. Low priority — the Live Video category shows 0 but the mega-menu still renders it at 0.5 alpha (the "promise that new content lands there" per the handoff).
+2. **Mobile deep-testing** — the desktop layout is verified polished, but a dedicated mobile (375px) and tablet (768px) pass would catch responsive edge cases. The handoff's three CSS traps (overflow-x: clip on body, display:none vs tap-target specificity, never use `order` for nav) are all handled — `overflow-x: clip` is in globals.css, the nav uses DOM order not `order`, and tap targets are ≥44px.
+3. **Studio lesson editing** — the Studio lessons tab is currently read-only (view + open in new tab). A future phase could add inline editing (title, raga, thala, status draft/published) and drag-to-reorder within categories, matching the handoff's "Studio Lessons" screen spec.
+4. **Studio categories editor** — the handoff describes a "Studio Categories" screen where the owner can rename/hide/add categories. Not yet built.
+5. **Redirects** — the handoff specifies 38 old Blogger URLs need 301 redirects to their new homes. `next.config.ts` redirects haven't been wired yet. This is important for SEO (the old URLs are in YouTube descriptions, WhatsApp threads, and Google's index).
+6. **Performance** — the lesson pages embed up to 16 YouTube iframes. Consider lazy-loading with facades (e.g. lite-youtube-embed) to reduce initial load.
+

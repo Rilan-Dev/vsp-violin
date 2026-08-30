@@ -292,7 +292,7 @@ export function LibraryPreview({
       {/* ---- Bottom CTA -------------------------------------------- */}
       <div style={{ marginTop: 40, textAlign: "center" }}>
         <a
-          href="#library"
+          href="/library"
           className="font-display"
           style={{
             display: "inline-flex",

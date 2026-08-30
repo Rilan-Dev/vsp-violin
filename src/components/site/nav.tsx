@@ -228,7 +228,7 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
               return (
                 <a
                   key={c.slug}
-                  href={`#library`}
+                  href={`/library?category=${c.slug}`}
                   data-category={c.slug}
                   className="transition-colors hover:text-gold-hover"
                   style={{
