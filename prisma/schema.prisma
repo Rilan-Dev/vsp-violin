@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Lesson {
+  id               String   @id
+  title            String
+  titleTamil       String?
+  category         String
+  level            Int?
+  raga             String?
+  thala            String?
+  composer         String?
+  date             String
+  notationTamil    String?
+  notationEnglish  String?
+  violinVideo      String?
+  vocalVideo       String?
+  titleCard        String?
+  sourceUrl        String?
+  status           String   @default("published")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([category])
+  @@index([status])
+}
+
+model Category {
+  slug   String @id
+  name   String
+  group  String // basics | advanced | devotional | light | media
+  order  Int
+}
+
+model Enquiry {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  city      String?
+  intent    String   // lesson | booking | collaboration
+  instrument String?
+  level     String?
+  whoFor    String?
+  message   String
+  status    String   @default("new") // new | replied | archived
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([intent])
+}

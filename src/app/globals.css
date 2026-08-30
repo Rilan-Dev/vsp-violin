@@ -1,0 +1,341 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-instrument-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-marcellus);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* VSP brand tokens */
+  --color-ink: #16102A;
+  --color-ink-raised: #1A1234;
+  --color-violet-800: #241A44;
+  --color-violet-700: #251A42;
+  --color-violet-600: #2A1D4E;
+  --color-violet-accent: #6B4BA8;
+  --color-violet-light: #C9AEF5;
+  --color-gold: #E0BC6A;
+  --color-gold-hover: #F2D89A;
+  --color-cream: #F3EDDF;
+  --color-success: #78DCAA;
+  --color-warn: #E08C50;
+}
+
+:root {
+  --radius: 0.625rem;
+  /* VSP violet/gold ground system — page is always dark ink, never white */
+  --background: #16102A;
+  --foreground: #F3EDDF;
+  --card: #1A1234;
+  --card-foreground: #F3EDDF;
+  --popover: #1A1234;
+  --popover-foreground: #F3EDDF;
+  --primary: #E0BC6A;
+  --primary-foreground: #1B1233;
+  --secondary: #241A44;
+  --secondary-foreground: #F3EDDF;
+  --muted: #241A44;
+  --muted-foreground: rgba(243, 237, 223, 0.62);
+  --accent: #2A1D4E;
+  --accent-foreground: #F3EDDF;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: rgba(224, 188, 106, 0.26);
+  --input: rgba(243, 237, 223, 0.2);
+  --ring: #E0BC6A;
+  --chart-1: #E0BC6A;
+  --chart-2: #6B4BA8;
+  --chart-3: #C9AEF5;
+  --chart-4: #78DCAA;
+  --chart-5: #F2D89A;
+  --sidebar: #16102A;
+  --sidebar-foreground: #F3EDDF;
+  --sidebar-primary: #E0BC6A;
+  --sidebar-primary-foreground: #1B1233;
+  --sidebar-accent: #241A44;
+  --sidebar-accent-foreground: #F3EDDF;
+  --sidebar-border: rgba(224, 188, 106, 0.24);
+  --sidebar-ring: #E0BC6A;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    background: #16102A;
+    scroll-behavior: smooth;
+    overflow-x: clip;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background: #16102A;
+    color: #F3EDDF;
+    font-family: var(--font-instrument-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  a {
+    color: #E0BC6A;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #F2D89A;
+  }
+  ::selection {
+    background: #E0BC6A;
+    color: #1B1233;
+  }
+  /* Gold focus-visible ring — accessibility addition called out in handoff */
+  :focus-visible {
+    outline: 2px solid #E0BC6A;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  /* Pretty text wrapping for prose */
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* ===== VSP Animation primitives ===== */
+
+@keyframes vsp-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes vsp-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes vsp-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes vsp-dial-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes vsp-pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(224, 188, 106, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(224, 188, 106, 0); }
+}
+
+@keyframes vsp-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.vsp-marquee-track {
+  animation: vsp-marquee 36s linear infinite;
+  will-change: transform;
+}
+
+.vsp-rise {
+  animation: vsp-rise 950ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.vsp-fade-in {
+  animation: vsp-fade-in 600ms ease both;
+}
+
+/* Scroll reveal helper — toggled by IntersectionObserver */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Gold text gradient for earned emphasis */
+.vsp-gold-text {
+  color: #E0BC6A;
+}
+
+/* Hairline gold divider */
+.vsp-hairline-gold {
+  border-color: rgba(224, 188, 106, 0.26);
+}
+
+/* Card fills */
+.vsp-card-neutral {
+  background: rgba(243, 237, 223, 0.035);
+  border: 1px solid rgba(243, 237, 223, 0.16);
+}
+.vsp-card-gold {
+  background: linear-gradient(155deg, rgba(224, 188, 106, 0.13), rgba(107, 75, 168, 0.16));
+  border: 1px solid rgba(224, 188, 106, 0.34);
+}
+
+/* Arch mask for hero portrait */
+.vsp-arch {
+  border-radius: 226px 226px 0 0;
+}
+
+/* Mono eyebrow label */
+.vsp-eyebrow {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #E0BC6A;
+}
+
+/* Custom scrollbar for long lists */
+.vsp-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.vsp-scroll::-webkit-scrollbar-track {
+  background: rgba(243, 237, 223, 0.04);
+}
+.vsp-scroll::-webkit-scrollbar-thumb {
+  background: rgba(224, 188, 106, 0.4);
+  border-radius: 3px;
+}
+.vsp-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(224, 188, 106, 0.6);
+}
+
+/* Sruthi dial active button */
+.vsp-sruthi-active {
+  background: #E0BC6A;
+  color: #1B1233;
+  border-color: #E0BC6A;
+}
+
+/* Reduced motion — kill animations, make marquee static + wrapping */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .vsp-marquee-track {
+    animation: none !important;
+    width: auto !important;
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+  .vsp-marquee-track > div {
+    flex-wrap: wrap;
+    white-space: normal;
+  }
+  .vsp-marquee-dup {
+    display: none !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Skip-to-content link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 12px;
+  z-index: 100;
+  padding: 10px 18px;
+  background: #E0BC6A;
+  color: #1B1233;
+  font-family: var(--font-marcellus), serif;
+  font-size: 14px;
+}
+.skip-link:focus {
+  left: 12px;
+}
+
+/* Notation swara line styling */
+.swara-line {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 17px;
+  letter-spacing: 0.14em;
+  line-height: 2;
+  color: rgba(243, 237, 223, 0.9);
+}
+
+/* ===== Library preview =====
+   Hover behaviours for lesson cards + category chips.
+   Defined outside Tailwind layers so they win over `.vsp-card-neutral`
+   without needing `!important` on every utility. */
+.lib-card {
+  transition:
+    transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 280ms ease,
+    background 280ms ease;
+}
+.lib-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(224, 188, 106, 0.46);
+}
+.lib-card.lib-card-gold:hover {
+  border-color: rgba(224, 188, 106, 0.62);
+}
+
+.lib-chip {
+  transition:
+    border-color 200ms ease,
+    color 200ms ease,
+    background 200ms ease;
+}
+.lib-chip:hover {
+  border-color: rgba(224, 188, 106, 0.55);
+  color: #F2D89A;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lib-card,
+  .lib-chip {
+    transition: none !important;
+  }
+  .lib-card:hover {
+    transform: none !important;
+  }
+}

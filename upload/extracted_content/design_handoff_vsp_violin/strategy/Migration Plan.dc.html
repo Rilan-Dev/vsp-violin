@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Migration Plan — Violin Suka Pavalan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html { background: #16102A; }
+  body { margin: 0; background: #16102A; color: #F3EDDF; font-family: 'Instrument Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #E0BC6A; text-decoration: none; border-bottom: 1px solid rgba(224,188,106,0.4); }
+  a:hover { color: #F2D89A; border-bottom-color: #F2D89A; }
+  ::selection { background: #E0BC6A; color: #1B1233; }
+</style>
+</helmet>
+
+<div style="max-width: 1280px; margin: 0 auto; padding: 0 40px 130px;">
+
+  <section data-screen-label="Cover" style="padding: 88px 0 66px; border-bottom: 1px solid rgba(224,188,106,0.26);">
+    <div style="display: flex; align-items: center; gap: 16px; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(243,237,223,0.6); margin-bottom: 30px;">
+      <span>Migration plan</span><span style="flex: 1; height: 1px; background: rgba(224,188,106,0.5);"></span><span style="color: #E0BC6A;">29 Aug 2026</span>
+    </div>
+    <h1 style="margin: 0 0 26px; font-family: Marcellus, serif; font-size: 62px; line-height: 1.06;">Two sites into one, <span style="color: #E0BC6A;">and who can touch what.</span></h1>
+    <p style="margin: 0; font-size: 18px; line-height: 1.65; color: rgba(243,237,223,0.76); max-width: 72ch;">
+      Where the build stands, what is left, and how the roles actually work on your two existing
+      sites — including one correction to the assumption in your message.
+    </p>
+  </section>
+
+  <section data-screen-label="01 Roles correction" style="padding: 74px 0; border-bottom: 1px solid rgba(224,188,106,0.26);">
+    <div style="display: flex; align-items: baseline; gap: 18px; margin-bottom: 30px;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #E0BC6A;">01</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 44px; line-height: 1.1;">Your understanding of the roles — mostly right</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 16px; margin-bottom: 34px;">
+      <div style="border: 1px solid rgba(120,220,170,0.4); background: rgba(120,220,170,0.07); padding: 28px 30px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #78DCAA;">Correct</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 23px; line-height: 1.2;">One owner, no other logins</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.78);">
+          Neither site has student accounts, registration, or a members area. Visitors read and
+          download; only you publish. That is exactly the model to carry forward.
+        </p>
+      </div>
+      <div style="border: 1px solid rgba(120,220,170,0.4); background: rgba(120,220,170,0.07); padding: 28px 30px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #78DCAA;">Correct</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 23px; line-height: 1.2;">Visitor and owner journeys are separate</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.78);">
+          Two different workflows, no overlap. Nothing a visitor does can change the site, and
+          publishing never happens on a public page.
+        </p>
+      </div>
+      <div style="border: 1px solid rgba(224,140,80,0.45); background: rgba(224,140,80,0.08); padding: 28px 30px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E08C50;">Needs correcting</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 23px; line-height: 1.2;">There is no admin panel today</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.78);">
+          sukapavalan.com is a Blogger site — your "admin" is Google's Blogger dashboard, not something
+          built for you. vspviolinrainbow.com has no admin at all; it is fixed pages, which is why its
+          lesson lists sit on "Loading…" forever. So the studio panel is new work, not a migration.
+        </p>
+      </div>
+    </div>
+
+    <div style="border: 1px solid rgba(224,188,106,0.3); background: linear-gradient(140deg, rgba(224,188,106,0.09), rgba(107,75,168,0.14)); padding: 30px 34px; display: flex; flex-direction: column; gap: 14px;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Three more things worth knowing before we lock the model</span>
+      <div style="display: flex; flex-direction: column; gap: 13px;">
+        <div style="display: flex; gap: 14px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A; flex: none;">01</span><p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(243,237,223,0.8);"><strong>Visitors can already post publicly.</strong> Blogger comments are open — there are live comments on your profile and lesson pages, including one from July asking whether you take classes. In the new site I would keep comments off and route that person to the enquiry form instead, so no reply is ever missed.</p></div>
+        <div style="display: flex; gap: 14px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A; flex: none;">02</span><p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(243,237,223,0.8);"><strong>Your notation is not really protected.</strong> Every PDF is a public Google Drive or Dropbox share link — anyone can forward it. That is fine if free is the strategy, and it is your best marketing. But it means "free library" is a decision, not an accident, and if you ever want a paid tier the files must move to storage the site controls.</p></div>
+        <div style="display: flex; gap: 14px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A; flex: none;">03</span><p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(243,237,223,0.8);"><strong>One login is a single point of failure.</strong> If you lose that account, the site cannot be updated. I would set up a second owner login for a family member from day one — not a public role, just a spare key.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="02 Two workflows" style="padding: 74px 0; border-bottom: 1px solid rgba(224,188,106,0.26);">
+    <div style="display: flex; align-items: baseline; gap: 18px; margin-bottom: 14px;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #E0BC6A;">02</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 44px; line-height: 1.1;">The two workflows, side by side</h2>
+    </div>
+    <p style="margin: 0 0 32px; font-size: 17px; line-height: 1.62; color: rgba(243,237,223,0.72); max-width: 74ch;">
+      Same content, two doors. The visitor door is public and needs no account. The owner door sits
+      behind a login on a separate address and is never linked from the public site.
+    </p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start;">
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 32px 34px; display: flex; flex-direction: column; gap: 20px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 26px;">Visitor</h3>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.6);">Public · no login</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0;">
+          <div style="padding: 13px 0; border-bottom: 1px solid rgba(243,237,223,0.1); display: flex; gap: 14px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A; flex: none;">01</span><span style="font-size: 15px; line-height: 1.5;">Arrives from YouTube, Google or word of mouth</span></div>
+          <div style="padding: 13px 0; border-bottom: 1px solid rgba(243,237,223,0.1); display: flex; gap: 14px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A; flex: none;">02</span><span style="font-size: 15px; line-height: 1.5;">Opens Lessons → picks a category → opens a lesson</span></div>
+          <div style="padding: 13px 0; border-bottom: 1px solid rgba(243,237,223,0.1); display: flex; gap: 14px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A; flex: none;">03</span><span style="font-size: 15px; line-height: 1.5;">Reads notation in English or Tamil, plays practice audio at their sruthi</span></div>
+          <div style="padding: 13px 0; border-bottom: 1px solid rgba(243,237,223,0.1); display: flex; gap: 14px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A; flex: none;">04</span><span style="font-size: 15px; line-height: 1.5;">Practises for weeks. Returns. Downloads more.</span></div>
+          <div style="padding: 13px 0; display: flex; gap: 14px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A; flex: none;">05</span><span style="font-size: 15px; line-height: 1.5;"><strong>Hits a limit alone → asks for a trial lesson.</strong> The only thing they can submit.</span></div>
+        </div>
+        <p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(243,237,223,0.62); padding-top: 6px; border-top: 1px solid rgba(243,237,223,0.12);">
+          Cannot: log in, comment, upload, edit, or see anything unpublished.
+        </p>
+      </div>
+
+      <div style="border: 1px solid rgba(224,188,106,0.4); background: linear-gradient(150deg, rgba(224,188,106,0.11), rgba(107,75,168,0.15)); padding: 32px 34px; display: flex; flex-direction: column; gap: 20px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 26px;">You, the owner</h3>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #E0BC6A;">Private · login required</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0;">
+          <div style="padding: 13px 0; border-bottom: 1px solid rgba(224,188,106,0.2); display: flex; gap: 14px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A; flex: none;">01</span><span style="font-size: 15px; line-height: 1.5;">Signs in at a separate address, not linked publicly</span></div>
+          <div style="padding: 13px 0; border-bottom: 1px solid rgba(224,188,106,0.2); display: flex; gap: 14px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A; flex: none;">02</span><span style="font-size: 15px; line-height: 1.5;">Reads new enquiries — trials, bookings, collaborations</span></div>
+          <div style="padding: 13px 0; border-bottom: 1px solid rgba(224,188,106,0.2); display: flex; gap: 14px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A; flex: none;">03</span><span style="font-size: 15px; line-height: 1.5;"><strong>New notation:</strong> title, category, raga, thala, PDFs, video links</span></div>
+          <div style="padding: 13px 0; border-bottom: 1px solid rgba(224,188,106,0.2); display: flex; gap: 14px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A; flex: none;">04</span><span style="font-size: 15px; line-height: 1.5;">Saves a draft, previews it, then publishes when ready</span></div>
+          <div style="padding: 13px 0; display: flex; gap: 14px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A; flex: none;">05</span><span style="font-size: 15px; line-height: 1.5;">Menu, library grid, raga index and sitemap update themselves</span></div>
+        </div>
+        <p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(243,237,223,0.72); padding-top: 6px; border-top: 1px solid rgba(224,188,106,0.24);">
+          Also: add or rename a category, reorder lessons, replace photos, edit any page text.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="03 Status" style="padding: 74px 0; border-bottom: 1px solid rgba(224,188,106,0.26);">
+    <div style="display: flex; align-items: baseline; gap: 18px; margin-bottom: 30px;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #E0BC6A;">03</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 44px; line-height: 1.1;">Where the design stands</h2>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 0; border-top: 1px solid rgba(243,237,223,0.14);">
+      <div style="padding: 20px 0; border-bottom: 1px solid rgba(243,237,223,0.14); display: grid; grid-template-columns: 150px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #78DCAA;">Done</span>
+        <span style="font-size: 16px; line-height: 1.5;">Content extraction — both sites, all pages, 22 lessons with real asset links, 38-post index</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11.5px; color: rgba(243,237,223,0.6);">data/ · 4 files</span>
+      </div>
+      <div style="padding: 20px 0; border-bottom: 1px solid rgba(243,237,223,0.14); display: grid; grid-template-columns: 150px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #78DCAA;">Done</span>
+        <span style="font-size: 16px; line-height: 1.5;">Business case, audience ranking, art direction</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11.5px; color: rgba(243,237,223,0.6);">Design Ideology</span>
+      </div>
+      <div style="padding: 20px 0; border-bottom: 1px solid rgba(243,237,223,0.14); display: grid; grid-template-columns: 150px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #78DCAA;">Done</span>
+        <span style="font-size: 16px; line-height: 1.5;">Eight direction options, one chosen and rebuilt in violet and gold</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11.5px; color: rgba(243,237,223,0.6);">Frontend Directions</span>
+      </div>
+      <div style="padding: 20px 0; border-bottom: 1px solid rgba(243,237,223,0.14); display: grid; grid-template-columns: 150px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #78DCAA;">Done</span>
+        <span style="font-size: 16px; line-height: 1.5;">Homepage, desktop — nine sections, category menu, publish flow, new portraits placed</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11.5px; color: rgba(243,237,223,0.6);">Homepage Violet Gold</span>
+      </div>
+      <div style="padding: 20px 0; border-bottom: 1px solid rgba(243,237,223,0.14); display: grid; grid-template-columns: 150px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #E0BC6A;">Next</span>
+        <span style="font-size: 16px; line-height: 1.5;"><strong>Lesson page</strong> — the product itself. Notation switch, sruthi dial, violin/vocal tabs, the three-stage progression</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11.5px; color: rgba(243,237,223,0.6);">Highest value</span>
+      </div>
+      <div style="padding: 20px 0; border-bottom: 1px solid rgba(243,237,223,0.14); display: grid; grid-template-columns: 150px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #E0BC6A;">Next</span>
+        <span style="font-size: 16px; line-height: 1.5;"><strong>Library index</strong> — all 22, filterable by category, raga and level</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11.5px; color: rgba(243,237,223,0.6);">Retention driver</span>
+      </div>
+      <div style="padding: 20px 0; border-bottom: 1px solid rgba(243,237,223,0.14); display: grid; grid-template-columns: 150px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #E0BC6A;">Next</span>
+        <span style="font-size: 16px; line-height: 1.5;"><strong>Mobile and tablet</strong> — composed, not squeezed. Most of your diaspora traffic is phone traffic</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11.5px; color: rgba(243,237,223,0.6);">Blocks launch</span>
+      </div>
+      <div style="padding: 20px 0; border-bottom: 1px solid rgba(243,237,223,0.14); display: grid; grid-template-columns: 150px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.6);">Then</span>
+        <span style="font-size: 16px; line-height: 1.5;">Studio screens in full — enquiries inbox, lesson list, category manager</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11.5px; color: rgba(243,237,223,0.6);">Needs your decision</span>
+      </div>
+      <div style="padding: 20px 0; border-bottom: 1px solid rgba(243,237,223,0.14); display: grid; grid-template-columns: 150px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.6);">Then</span>
+        <span style="font-size: 16px; line-height: 1.5;">Guru, Honours, Stage gallery, Learn the Violin, Enquiry pages</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11.5px; color: rgba(243,237,223,0.6);">5 pages</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="04 Content migration" style="padding: 74px 0; border-bottom: 1px solid rgba(224,188,106,0.26);">
+    <div style="display: flex; align-items: baseline; gap: 18px; margin-bottom: 14px;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #E0BC6A;">04</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 44px; line-height: 1.1;">What moves across, and what gets fixed on the way</h2>
+    </div>
+    <p style="margin: 0 0 32px; font-size: 17px; line-height: 1.62; color: rgba(243,237,223,0.72); max-width: 74ch;">
+      Everything from both sites is already captured. Migration is not a data problem now — it is a
+      cleanup problem, and these are the decisions only you can make.
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 28px 30px; display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">Moves as-is</span>
+        <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 9px; font-size: 15px; line-height: 1.55; color: rgba(243,237,223,0.78);">
+          <li>22 lessons — notation PDFs, videos, audio, raga and thala</li>
+          <li>12 honorific titles with awarding bodies and years</li>
+          <li>Testimonials, education, radio and television record</li>
+          <li>Guru lineage, mission and vision, tours</li>
+          <li>Learn the Violin — strings, materials, finger placement</li>
+        </ul>
+      </div>
+      <div style="border: 1px solid rgba(224,140,80,0.42); background: rgba(224,140,80,0.07); padding: 28px 30px; display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E08C50;">Fixed in transit</span>
+        <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 9px; font-size: 15px; line-height: 1.55; color: rgba(243,237,223,0.78);">
+          <li>Six 2023 lessons have no title at all — needs six titles from you</li>
+          <li><code style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #E08C50;">Loreip</code> placeholder text in two live headlines</li>
+          <li>Kereya Neeranu shows the wrong lesson name in its body</li>
+          <li>Muththai Tharu shows Lesson 1's Tamil subheading</li>
+          <li>Notation split across Google Drive and Dropbox — consolidate</li>
+          <li>37 vs 30 vs 25 years — using 37 as you confirmed</li>
+        </ul>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 28px 30px; display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">Left behind</span>
+        <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 9px; font-size: 15px; line-height: 1.55; color: rgba(243,237,223,0.78);">
+          <li>Blogger theme, widgets and comment threads</li>
+          <li>Six broken <code style="font-family: 'Geist Mono', monospace; font-size: 13px;">htttps://</code> nav links</li>
+          <li>Duplicated mission and vision markup</li>
+          <li>Lesson lists stuck on "Loading…"</li>
+          <li>The embedded Google Form — replaced by a real enquiry form</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px; border: 1px solid rgba(224,188,106,0.3); background: linear-gradient(140deg, rgba(224,188,106,0.09), rgba(107,75,168,0.13)); padding: 28px 32px;">
+      <p style="margin: 0; font-size: 16px; line-height: 1.65; color: rgba(243,237,223,0.84);">
+        <strong>One thing to protect:</strong> your old lesson links are on YouTube, in WhatsApp
+        threads and in Google's index. Every one of the 38 old addresses needs to forward to its new
+        home, or you lose the audience that already found you. It is an hour of work and it is not
+        optional.
+      </p>
+    </div>
+  </section>
+
+  <section data-screen-label="05 Decisions" style="padding: 74px 0 0;">
+    <div style="display: flex; align-items: baseline; gap: 18px; margin-bottom: 14px;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #E0BC6A;">05</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 44px; line-height: 1.1;">Four decisions I need from you</h2>
+    </div>
+    <p style="margin: 0 0 32px; font-size: 17px; line-height: 1.62; color: rgba(243,237,223,0.72); max-width: 74ch;">
+      I can keep designing pages without these. I cannot finish without them.
+    </p>
+
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="border: 1px solid rgba(224,188,106,0.34); padding: 28px 32px; display: grid; grid-template-columns: 54px 1fr; gap: 22px; align-items: start;">
+        <span style="font-family: Marcellus, serif; font-size: 32px; color: #E0BC6A;">1</span>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 24px;">Self-publishing, or send them to me?</h3>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.62; color: rgba(243,237,223,0.76);">
+            The studio panel means a login, a database and file storage — a real second phase with a
+            small monthly cost, and full independence for you. The alternative is that categories live
+            in one file and you send me each new lesson. Slower for you, nothing to run.
+          </p>
+        </div>
+      </div>
+      <div style="border: 1px solid rgba(224,188,106,0.34); padding: 28px 32px; display: grid; grid-template-columns: 54px 1fr; gap: 22px; align-items: start;">
+        <span style="font-family: Marcellus, serif; font-size: 32px; color: #E0BC6A;">2</span>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 24px;">Do we publish fees?</h3>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.62; color: rgba(243,237,223,0.76);">
+            Right now the site says "free trial" and nothing else. A published fee filters out the
+            people who were never going to pay and makes the serious ones enquire with intent. Your
+            call — per class, per month, or per term.
+          </p>
+        </div>
+      </div>
+      <div style="border: 1px solid rgba(224,188,106,0.34); padding: 28px 32px; display: grid; grid-template-columns: 54px 1fr; gap: 22px; align-items: start;">
+        <span style="font-family: Marcellus, serif; font-size: 32px; color: #E0BC6A;">3</span>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 24px;">Which domain wins?</h3>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.62; color: rgba(243,237,223,0.76);">
+            My recommendation is sukapavalan.com — it is your name, it carries the search history, and
+            it is easier to say aloud. vspviolinrainbow.com then forwards to it. If the client prefers
+            otherwise, the redirects simply run the other way.
+          </p>
+        </div>
+      </div>
+      <div style="border: 1px solid rgba(224,188,106,0.34); padding: 28px 32px; display: grid; grid-template-columns: 54px 1fr; gap: 22px; align-items: start;">
+        <span style="font-family: Marcellus, serif; font-size: 32px; color: #E0BC6A;">4</span>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 24px;">Six missing lesson titles</h3>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.62; color: rgba(243,237,223,0.76);">
+            The 2023 batch — Mohanam Varnam, Enna Thavam, Maha Ganapathim, Lingashtagam, Poongathave,
+            Ilayaraja Hits — have no titles on the live pages. I have inferred them from the notation
+            filenames. Confirm or correct, and they go in verbatim.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}"></script>
+</body>
+</html>

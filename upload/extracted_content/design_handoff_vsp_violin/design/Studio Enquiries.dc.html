@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Studio — Enquiries · Violin Suka Pavalan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="responsive.css" />
+<style>
+  html { background: #16102A; scroll-behavior: smooth; }
+  body { margin: 0; background: #16102A; color: #F3EDDF; font-family: 'Instrument Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #E0BC6A; text-decoration: none; }
+  a:hover { color: #F2D89A; }
+  ::selection { background: #E0BC6A; color: #1B1233; }
+</style>
+</helmet>
+
+<div style="max-width: 1440px; margin: 0 auto;">
+
+  <div data-screen-label="Studio bar" style="position: sticky; top: 0; z-index: 50; background: rgba(37,26,66,0.95); backdrop-filter: blur(22px); border-bottom: 1px solid rgba(224,188,106,0.3);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 14px 32px;">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <span style="font-family: Marcellus, serif; font-size: 19px; letter-spacing: 0.07em; color: #E0BC6A;">STUDIO</span>
+        <span style="padding: 5px 11px; border: 1px solid rgba(224,188,106,0.45); font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #E0BC6A;">Private · signed in</span>
+      </div>
+      <div data-nav="links" style="display: flex; align-items: center; gap: 26px; font-size: 14px; font-weight: 500;">
+        <a href="Studio.dc.html" style="color: rgba(243,237,223,0.6);">New notation</a>
+        <a href="Studio Enquiries.dc.html" style="color: #F3EDDF;">Enquiries <span style="padding: 2px 7px; background: #C6402F; color: #FFF6EE; font-family: 'Geist Mono', monospace; font-size: 10px;">3</span></a>
+        <a href="Studio Lessons.dc.html" style="color: rgba(243,237,223,0.6);">All lessons</a>
+        <a href="Studio Categories.dc.html" style="color: rgba(243,237,223,0.6);">Categories</a>
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <a href="Homepage Violet Gold.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.72);">View site ↗</a>
+        <span style="padding: 9px 18px; border: 1px solid rgba(243,237,223,0.26); font-size: 13.5px; color: rgba(243,237,223,0.8);">Sign out</span>
+      </div>
+    </div>
+  </div>
+
+  <section data-screen-label="01 Header" style="padding: 40px 32px 0;">
+    <div style="display: grid; grid-template-columns: 1fr 420px; gap: 44px; align-items: end; padding-bottom: 28px; border-bottom: 1px solid rgba(224,188,106,0.26);">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">Enquiries</span>
+        <h1 style="margin: 0; font-family: Marcellus, serif; font-size: 44px; line-height: 1.08;">Three people are waiting on you.</h1>
+        <p style="margin: 0; font-size: 16px; line-height: 1.62; color: rgba(243,237,223,0.74); max-width: 60ch;">
+          Every message from the site lands here. Oldest unanswered first, because on the old site an
+          enquiry sat unread in a comment thread for over a year.
+        </p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(224,188,106,0.26); border: 1px solid rgba(224,188,106,0.26);">
+        <div style="background: #16102A; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px;"><span style="font-family: Marcellus, serif; font-size: 28px; color: #E5705C;">3</span><span style="font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.62);">Unanswered</span></div>
+        <div style="background: #16102A; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px;"><span style="font-family: Marcellus, serif; font-size: 28px; color: #E0BC6A;">11</span><span style="font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.62);">This month</span></div>
+        <div style="background: #16102A; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px;"><span style="font-family: Marcellus, serif; font-size: 28px; color: #78DCAA;">1.4d</span><span style="font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.62);">Avg reply</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="02 Filters" style="padding: 22px 32px 0;">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(243,237,223,0.62); padding-right: 4px;">Show</span>
+      <span style="padding: 9px 16px; background: #E0BC6A; color: #1B1233; font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;">Unanswered 3</span>
+      <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">All 47</span>
+      <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Lessons 34</span>
+      <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Bookings 9</span>
+      <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Collaborations 4</span>
+      <span style="flex: 1;"></span>
+      <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-size: 13px; color: rgba(243,237,223,0.72);">Export as CSV</span>
+    </div>
+  </section>
+
+  <section data-screen-label="03 Inbox" style="padding: 24px 32px 0;">
+    <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 20px; align-items: start;">
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="border: 1px solid rgba(224,188,106,0.46); background: linear-gradient(155deg, rgba(224,188,106,0.13), rgba(107,75,168,0.16)); padding: 26px 28px; display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px;">
+            <div style="display: flex; align-items: baseline; gap: 12px;">
+              <span style="font-family: Marcellus, serif; font-size: 22px;">Anitha R.</span>
+              <span style="padding: 4px 10px; background: rgba(198,64,47,0.24); border: 1px solid rgba(198,64,47,0.5); font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #E5705C;">4 days</span>
+            </div>
+            <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #E0BC6A;">Lesson enquiry</span>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 7px;">
+            <span style="padding: 5px 11px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 10.5px; color: rgba(243,237,223,0.76);">Violin</span>
+            <span style="padding: 5px 11px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 10.5px; color: rgba(243,237,223,0.76);">Beginner</span>
+            <span style="padding: 5px 11px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 10.5px; color: rgba(243,237,223,0.76);">For herself</span>
+            <span style="padding: 5px 11px; border: 1px solid rgba(224,188,106,0.45); font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A;">Chennai · IST</span>
+          </div>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.65; color: rgba(243,237,223,0.86);">
+            “I watched your videos on Instagram and YouTube. Trying to reach you. I am a beginner in
+            violin. Astonished watching your videos. Have never seen anyone releasing website with notes
+            to play. Thank you so much.”
+          </p>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-top: 14px; border-top: 1px solid rgba(224,188,106,0.28);">
+            <span style="padding: 12px 22px; background: #E0BC6A; color: #1B1233; font-family: Marcellus, serif; font-size: 14.5px; letter-spacing: 0.04em;">Reply</span>
+            <span style="padding: 12px 18px; border: 1px solid rgba(243,237,223,0.26); font-size: 13.5px; color: rgba(243,237,223,0.82);">Offer a trial slot</span>
+            <span style="padding: 12px 18px; border: 1px solid rgba(243,237,223,0.18); font-size: 13.5px; color: rgba(243,237,223,0.66);">Mark answered</span>
+            <span style="flex: 1;"></span>
+            <a href="Studio Enquiries.dc.html" style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase;">Open ↗</a>
+          </div>
+        </div>
+
+        <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 26px 28px; display: flex; flex-direction: column; gap: 13px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px;">
+            <div style="display: flex; align-items: baseline; gap: 12px;">
+              <span style="font-family: Marcellus, serif; font-size: 22px;">Keerthana School of Indian Music</span>
+              <span style="padding: 4px 10px; border: 1px solid rgba(224,188,106,0.4); font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #E0BC6A;">2 days</span>
+            </div>
+            <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #C9AEF5;">Booking</span>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 7px;">
+            <span style="padding: 5px 11px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 10.5px; color: rgba(243,237,223,0.76);">California, USA</span>
+            <span style="padding: 5px 11px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 10.5px; color: rgba(243,237,223,0.76);">Concert</span>
+            <span style="padding: 5px 11px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 10.5px; color: rgba(243,237,223,0.76);">March 2027</span>
+          </div>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.65; color: rgba(243,237,223,0.8);">
+            Asking about availability for a spring programme, and whether a two-week teaching residency
+            could run alongside the concert. Requests the press kit and stage plot.
+          </p>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-top: 12px; border-top: 1px solid rgba(243,237,223,0.14);">
+            <span style="padding: 11px 20px; border: 1px solid #E0BC6A; color: #E0BC6A; font-family: Marcellus, serif; font-size: 14px; letter-spacing: 0.04em;">Reply</span>
+            <span style="padding: 11px 18px; border: 1px solid rgba(243,237,223,0.2); font-size: 13.5px; color: rgba(243,237,223,0.76);">Send press kit</span>
+          </div>
+        </div>
+
+        <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 26px 28px; display: flex; flex-direction: column; gap: 13px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px;">
+            <div style="display: flex; align-items: baseline; gap: 12px;">
+              <span style="font-family: Marcellus, serif; font-size: 22px;">Dr. Suresh &amp; family</span>
+              <span style="padding: 4px 10px; border: 1px solid rgba(224,188,106,0.4); font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #E0BC6A;">Today</span>
+            </div>
+            <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #E0BC6A;">Lesson enquiry</span>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 7px;">
+            <span style="padding: 5px 11px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 10.5px; color: rgba(243,237,223,0.76);">Violin</span>
+            <span style="padding: 5px 11px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 10.5px; color: rgba(243,237,223,0.76);">Two children, 8 and 11</span>
+            <span style="padding: 5px 11px; border: 1px solid rgba(224,188,106,0.45); font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A;">New Jersey · EST</span>
+          </div>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.65; color: rgba(243,237,223,0.8);">
+            Both children have finished Sarali and Janta Varisai with a local teacher. Asking whether
+            weekend mornings IST work, and how Arangetram preparation is usually paced.
+          </p>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-top: 12px; border-top: 1px solid rgba(243,237,223,0.14);">
+            <span style="padding: 11px 20px; border: 1px solid #E0BC6A; color: #E0BC6A; font-family: Marcellus, serif; font-size: 14px; letter-spacing: 0.04em;">Reply</span>
+            <span style="padding: 11px 18px; border: 1px solid rgba(243,237,223,0.2); font-size: 13.5px; color: rgba(243,237,223,0.76);">Offer a trial slot</span>
+          </div>
+        </div>
+
+        <div style="border: 1px solid rgba(243,237,223,0.14); background: rgba(243,237,223,0.02); padding: 22px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px;">
+          <span style="font-size: 15px; color: rgba(243,237,223,0.7);">44 answered enquiries before these</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #E0BC6A;">Show all →</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="border: 1px solid rgba(224,188,106,0.34); background: linear-gradient(150deg, rgba(224,188,106,0.1), rgba(107,75,168,0.14)); padding: 28px 30px; display: flex; flex-direction: column; gap: 18px;">
+          <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">Reply with a saved answer</span>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="padding: 15px 16px; border: 1px solid rgba(243,237,223,0.2); background: rgba(22,16,42,0.5); display: flex; flex-direction: column; gap: 5px;">
+              <span style="font-size: 14.5px; font-weight: 600;">Trial lesson offer</span>
+              <span style="font-size: 13px; line-height: 1.5; color: rgba(243,237,223,0.66);">Three slots in the student's timezone, plus what to bring.</span>
+            </div>
+            <div style="padding: 15px 16px; border: 1px solid rgba(243,237,223,0.2); background: rgba(22,16,42,0.5); display: flex; flex-direction: column; gap: 5px;">
+              <span style="font-size: 14.5px; font-weight: 600;">Where to start (beginner)</span>
+              <span style="font-size: 13px; line-height: 1.5; color: rgba(243,237,223,0.66);">Links Sruthi Swara Varisai and explains the three-stage method.</span>
+            </div>
+            <div style="padding: 15px 16px; border: 1px solid rgba(243,237,223,0.2); background: rgba(22,16,42,0.5); display: flex; flex-direction: column; gap: 5px;">
+              <span style="font-size: 14.5px; font-weight: 600;">Performance availability</span>
+              <span style="font-size: 13px; line-height: 1.5; color: rgba(243,237,223,0.66);">Attaches press kit, stage plot and rider.</span>
+            </div>
+            <div style="padding: 15px 16px; border: 1px dashed rgba(224,188,106,0.45); display: flex; align-items: center; justify-content: center;">
+              <span style="font-size: 14px; color: #E0BC6A;">+ New saved answer</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 28px 30px; display: flex; flex-direction: column; gap: 14px;">
+          <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">Where they came from</span>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <div style="display: flex; justify-content: space-between; gap: 12px;"><span style="font-size: 14.5px;">A lesson page</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #E0BC6A;">21</span></div>
+              <span style="height: 4px; background: linear-gradient(90deg, #E0BC6A 0 62%, rgba(243,237,223,0.14) 62%);"></span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <div style="display: flex; justify-content: space-between; gap: 12px;"><span style="font-size: 14.5px;">Homepage</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(243,237,223,0.7);">9</span></div>
+              <span style="height: 4px; background: linear-gradient(90deg, rgba(224,188,106,0.6) 0 26%, rgba(243,237,223,0.14) 26%);"></span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <div style="display: flex; justify-content: space-between; gap: 12px;"><span style="font-size: 14.5px;">Stage page</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(243,237,223,0.7);">4</span></div>
+              <span style="height: 4px; background: linear-gradient(90deg, rgba(224,188,106,0.6) 0 12%, rgba(243,237,223,0.14) 12%);"></span>
+            </div>
+          </div>
+          <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: rgba(243,237,223,0.66); padding-top: 10px; border-top: 1px solid rgba(243,237,223,0.14);">
+            Two in three enquiries start on a free lesson page. The library is the funnel — worth knowing
+            when you decide what to publish next.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div data-screen-label="Footer" style="margin-top: 56px; padding: 40px 32px; border-top: 1px solid rgba(224,188,106,0.2); display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(243,237,223,0.55);">
+    <span>Studio · private area · not indexed</span>
+    <a href="Homepage Violet Gold.dc.html" style="color: rgba(243,237,223,0.7);">View public site ↗</a>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}"></script>
+</body>
+</html>

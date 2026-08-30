@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Violin Suka Pavalan — Design Ideology &amp; Business Case</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600&family=Noto+Serif+Tamil:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html { background: #0A0A0B; }
+  body { margin: 0; background: #0A0A0B; color: #EDE6D8; -webkit-font-smoothing: antialiased; }
+  a { color: #C4933E; text-decoration: none; border-bottom: 1px solid rgba(196,147,62,0.35); }
+  a:hover { color: #E4BE6B; border-bottom-color: #E4BE6B; }
+  ::selection { background: #C4933E; color: #0A0A0B; }
+  @keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+  @keyframes bow { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: none; } }
+  @keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes glow { 0%,100% { opacity: .35; } 50% { opacity: .75; } }
+</style>
+</helmet>
+
+<div style="max-width: 1440px; margin: 0 auto; padding: 0 0 160px; font-family: Archivo, system-ui, sans-serif;">
+
+  <section data-screen-label="00 Cover" style="min-height: 100vh; position: relative; display: grid; grid-template-columns: 1.05fr 0.95fr; align-items: end; overflow: hidden; border-bottom: 1px solid rgba(237,230,216,0.14);">
+    <div style="position: absolute; inset: 0; background: radial-gradient(120% 90% at 12% 12%, rgba(196,147,62,0.16), transparent 55%), radial-gradient(90% 70% at 88% 96%, rgba(27,33,64,0.85), transparent 60%); pointer-events: none;"></div>
+    <div style="position: absolute; inset: 0; background-image: repeating-linear-gradient(to bottom, rgba(237,230,216,0.05) 0 1px, transparent 1px 96px); pointer-events: none;"></div>
+
+    <div style="position: relative; padding: 96px 56px 88px; display: flex; flex-direction: column; gap: 40px;">
+      <div style="display: flex; align-items: center; gap: 18px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(237,230,216,0.5); animation: bow 900ms cubic-bezier(.16,1,.3,1) both;">
+        <span>Violin Suka Pavalan</span>
+        <span style="flex: 1; height: 1px; background: rgba(196,147,62,0.5); transform-origin: left; animation: draw 1400ms 200ms cubic-bezier(.16,1,.3,1) both;"></span>
+        <span style="color: #C4933E;">Aug 2026</span>
+      </div>
+
+      <h1 style="margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(52px, 6.6vw, 108px); line-height: 0.94; letter-spacing: -0.02em; animation: rise 1100ms 120ms cubic-bezier(.16,1,.3,1) both;">
+        A darkened hall,<br />
+        <em style="color: #C4933E;">and the notation<br />is the light.</em>
+      </h1>
+
+      <p style="margin: 0; max-width: 46ch; font-size: 19px; line-height: 1.62; color: rgba(237,230,216,0.74); text-wrap: pretty; animation: rise 1100ms 260ms cubic-bezier(.16,1,.3,1) both;">
+        The design ideology for the rebuild — who it is for, why that audience is worth the
+        investment, and the exact art direction, motion system and production pipeline we will
+        build to.
+      </p>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 40px; padding-top: 8px; animation: rise 1100ms 400ms cubic-bezier(.16,1,.3,1) both;">
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <span style="font-family: 'Instrument Serif', serif; font-size: 40px; color: #C4933E; line-height: 1;">37</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(237,230,216,0.5);">Years playing</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <span style="font-family: 'Instrument Serif', serif; font-size: 40px; color: #C4933E; line-height: 1;">5,000+</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(237,230,216,0.5);">Stage performances</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <span style="font-family: 'Instrument Serif', serif; font-size: 40px; color: #C4933E; line-height: 1;">12</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(237,230,216,0.5);">Honorific titles</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <span style="font-family: 'Instrument Serif', serif; font-size: 40px; color: #C4933E; line-height: 1;">22</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(237,230,216,0.5);">Lessons already written</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="position: relative; align-self: stretch; min-height: 60vh; background: linear-gradient(180deg, rgba(10,10,11,0) 0%, rgba(10,10,11,0.35) 68%, #0A0A0B 100%), repeating-linear-gradient(135deg, rgba(237,230,216,0.06) 0 2px, transparent 2px 9px), #121214; overflow: hidden;">
+      <img src="https://vspviolinrainbow.com/images/suka.png" alt="Suka Pavalan with violin" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 20%; mix-blend-mode: luminosity; opacity: 0.92;" />
+      <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,11,0.15), rgba(10,10,11,0.9)); pointer-events: none;"></div>
+      <div style="position: absolute; left: 28px; bottom: 28px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Existing asset · suka.png · replace with a directed portrait</div>
+    </div>
+  </section>
+
+  <section data-screen-label="01 Audit" style="padding: 130px 56px; border-bottom: 1px solid rgba(237,230,216,0.14);">
+    <div style="display: flex; align-items: baseline; gap: 20px; margin-bottom: 56px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #C4933E;">01</span>
+      <h2 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(34px, 4vw, 60px); line-height: 1.02; letter-spacing: -0.015em;">Where the business actually stands</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1px; background: rgba(237,230,216,0.14);">
+      <div style="background: #0A0A0B; padding: 34px 30px; display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C6402F;">Problem 01</span>
+        <h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 26px; line-height: 1.15;">Two businesses, two websites, neither complete</h3>
+        <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(237,230,216,0.7);">
+          vspviolinrainbow.com is the brochure — beautiful claims, zero product. sukapavalan.com holds
+          the actual product: 22 notation lessons, Tamil and English PDFs, audio in five sruthis, video
+          progressions. A visitor who lands on the brochure never finds the thing worth paying for.
+        </p>
+      </div>
+      <div style="background: #0A0A0B; padding: 34px 30px; display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C6402F;">Problem 02</span>
+        <h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 26px; line-height: 1.15;">The credibility is buried</h3>
+        <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(237,230,216,0.7);">
+          Twelve honorific titles, All India Radio since 1992, Thyagaraja Aradhana every year since 1992,
+          six television channels, US tours across six years, gurus of real standing. Today this reads as
+          a list. It should be the first thing a parent in New Jersey feels.
+        </p>
+      </div>
+      <div style="background: #0A0A0B; padding: 34px 30px; display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C6402F;">Problem 03</span>
+        <h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 26px; line-height: 1.15;">Nothing asks for the sale</h3>
+        <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(237,230,216,0.7);">
+          There is no fee, no schedule, no trial, no enrolment. A visitor who wants to learn has one
+          option: a contact form. Meanwhile visitors are literally commenting "Are you taking violin
+          classes??? Kindly let me have the information."
+        </p>
+      </div>
+      <div style="background: #0A0A0B; padding: 34px 30px; display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C6402F;">Problem 04</span>
+        <h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 26px; line-height: 1.15;">Visible signs of neglect</h3>
+        <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(237,230,216,0.7);">
+          <code style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #C6402F;">Loreip</code>
+          placeholder text sits inside two live page headlines. Lesson lists never load. Six posts ship
+          with no title. Six nav links point at <code style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #C6402F;">htttps://</code>.
+          Notation is split across Google Drive and Dropbox.
+        </p>
+      </div>
+    </div>
+
+    <div style="margin-top: 56px; padding: 34px 36px; border-left: 2px solid #C4933E; background: linear-gradient(90deg, rgba(196,147,62,0.09), transparent 70%);">
+      <p style="margin: 0; font-family: 'Instrument Serif', serif; font-size: clamp(22px, 2.4vw, 32px); line-height: 1.35; color: #EDE6D8; max-width: 60ch;">
+        The asset is not the website. The asset is a 37-year teaching practice with a bilingual
+        notation system nobody else has. The rebuild's only job is to make that legible, then
+        make it purchasable.
+      </p>
+    </div>
+  </section>
+
+  <section data-screen-label="02 Audience" style="padding: 130px 56px; border-bottom: 1px solid rgba(237,230,216,0.14);">
+    <div style="display: flex; align-items: baseline; gap: 20px; margin-bottom: 24px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #C4933E;">02</span>
+      <h2 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(34px, 4vw, 60px); line-height: 1.02; letter-spacing: -0.015em;">Who this is for, ranked by attractiveness</h2>
+    </div>
+    <p style="margin: 0 0 64px; max-width: 70ch; font-size: 18px; line-height: 1.62; color: rgba(237,230,216,0.7); text-wrap: pretty;">
+      Four real audiences exist in the evidence — his own testimonials, his comment threads, his
+      performance record. They are not equally worth designing for. Ratings below are mine; the
+      figures behind them are sourced at the end.
+    </p>
+
+    <div style="display: flex; flex-direction: column; gap: 1px; background: rgba(237,230,216,0.14);">
+
+      <div style="background: #0A0A0B; padding: 44px 38px; display: grid; grid-template-columns: 84px 1fr 300px; gap: 34px; align-items: start;">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-family: 'Instrument Serif', serif; font-size: 56px; line-height: 1; color: #C4933E;">A</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #C4933E;">Primary</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(26px, 2.8vw, 38px); line-height: 1.1;">Diaspora parents buying their child a root system</h3>
+          <p style="margin: 0; font-size: 16.5px; line-height: 1.65; color: rgba(237,230,216,0.74); max-width: 62ch;">
+            Tamil and wider South Indian families in the US, Canada, UK, Australia, Singapore and the
+            Gulf, with children aged 6 to 16. They are not shopping for a hobby class. They are trying to
+            hand down something they are afraid of losing, and they will pay for a guru with a lineage
+            rather than a platform with a catalogue. Two of his four testimonials are exactly this
+            family, writing from Los Angeles and St. Augustine.
+          </p>
+          <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.7; color: rgba(237,230,216,0.55);">
+            DECIDES ON → lineage, proof of Arangetrams, whether the child will actually practise<br />
+            FEARS → a screen-based teacher who cannot correct posture; wasted years
+          </p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px; padding: 22px; border: 1px solid rgba(196,147,62,0.35); background: rgba(196,147,62,0.05);">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Market size</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #C4933E;">High</span></div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Willingness to pay</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #C4933E;">Very high</span></div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Reachable today</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #C4933E;">Yes — YouTube + word of mouth</span></div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Fit with his assets</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #C4933E;">Exact</span></div>
+          <div style="height: 1px; background: rgba(196,147,62,0.3);"></div>
+          <p style="margin: 0; font-size: 13.5px; line-height: 1.55; color: rgba(237,230,216,0.7);">
+            Asian-American households ran a median income of <strong style="color:#EDE6D8;">$121,700</strong> in 2024
+            — the highest of any group the Census tracks. Tamil Americans alone number about
+            <strong style="color:#EDE6D8;">357,000</strong>. Online violin instruction sits at
+            <strong style="color:#EDE6D8;">$40–70/hr</strong>, and $80–120/hr for experienced teachers.
+          </p>
+        </div>
+      </div>
+
+      <div style="background: #0A0A0B; padding: 44px 38px; display: grid; grid-template-columns: 84px 1fr 300px; gap: 34px; align-items: start;">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-family: 'Instrument Serif', serif; font-size: 56px; line-height: 1; color: rgba(237,230,216,0.85);">B</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(237,230,216,0.5);">Growth</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(26px, 2.8vw, 38px); line-height: 1.1;">Adult learners who found him on YouTube</h3>
+          <p style="margin: 0; font-size: 16.5px; line-height: 1.65; color: rgba(237,230,216,0.74); max-width: 62ch;">
+            Two groups, one behaviour. Adults returning to an instrument they left at fourteen, and
+            Western-trained violinists curious about Carnatic technique. Both arrive already warm — his
+            free notation library and video lessons are the funnel, and the funnel already works: "Have
+            never seen anyone releasing website with notes to play." Low acquisition cost, self-serve
+            product, no timezone problem.
+          </p>
+          <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.7; color: rgba(237,230,216,0.55);">
+            DECIDES ON → whether they can make progress alone before committing to a teacher<br />
+            NEEDS → structured order, downloadable notation, practice tracks at their own sruthi
+          </p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px; padding: 22px; border: 1px solid rgba(237,230,216,0.2);">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Market size</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px;">Very high</span></div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Willingness to pay</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px;">Low per head</span></div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Reachable today</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px;">Already arriving</span></div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Fit with his assets</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px;">Strong</span></div>
+          <div style="height: 1px; background: rgba(237,230,216,0.18);"></div>
+          <p style="margin: 0; font-size: 13.5px; line-height: 1.55; color: rgba(237,230,216,0.7);">
+            Self-paced courses took <strong style="color:#EDE6D8;">49%</strong> of 2025 online
+            music-education spend; <strong style="color:#EDE6D8;">58%</strong> of learners on these
+            platforms are 15–35.
+          </p>
+        </div>
+      </div>
+
+      <div style="background: #0A0A0B; padding: 44px 38px; display: grid; grid-template-columns: 84px 1fr 300px; gap: 34px; align-items: start;">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-family: 'Instrument Serif', serif; font-size: 56px; line-height: 1; color: rgba(237,230,216,0.85);">C</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(237,230,216,0.5);">High ticket</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(26px, 2.8vw, 38px); line-height: 1.1;">Organisers, sabhas and festivals booking a name</h3>
+          <p style="margin: 0; font-size: 16.5px; line-height: 1.65; color: rgba(237,230,216,0.74); max-width: 62ch;">
+            Temple committees, Tamil sangams, university programmes, cultural festivals, wedding and
+            corporate producers, and short-film directors needing a score. Few in number, large per
+            booking, and decisive for everything else: a visible concert calendar is what makes the
+            teaching credible in the first place.
+          </p>
+          <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.7; color: rgba(237,230,216,0.55);">
+            DECIDES ON → stature, press, footage they can put in front of a committee<br />
+            NEEDS → a rider, a stage plot, high-resolution photography, a one-page press kit
+          </p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px; padding: 22px; border: 1px solid rgba(237,230,216,0.2);">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Market size</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px;">Small</span></div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Willingness to pay</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px;">Highest</span></div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Reachable today</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px;">Network-led</span></div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Fit with his assets</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px;">Exact</span></div>
+          <div style="height: 1px; background: rgba(237,230,216,0.18);"></div>
+          <p style="margin: 0; font-size: 13.5px; line-height: 1.55; color: rgba(237,230,216,0.7);">
+            The Cleveland Thyagaraja Festival — the largest Indian classical music event outside India —
+            draws <strong style="color:#EDE6D8;">10,000+</strong> attendees over twelve days, and turns 50
+            in 2027. That is the room this audience lives in.
+          </p>
+        </div>
+      </div>
+
+      <div style="background: #0A0A0B; padding: 44px 38px; display: grid; grid-template-columns: 84px 1fr 300px; gap: 34px; align-items: start;">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-family: 'Instrument Serif', serif; font-size: 56px; line-height: 1; color: rgba(237,230,216,0.6);">D</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(237,230,216,0.4);">Optional</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(26px, 2.8vw, 38px); line-height: 1.1;">Institutions licensing the notation system</h3>
+          <p style="margin: 0; font-size: 16.5px; line-height: 1.65; color: rgba(237,230,216,0.74); max-width: 62ch;">
+            He claims his method for converting Carnatic notation into multiple languages is already used
+            across universities and colleges. If that is verifiable, it is a second business — a book, a
+            font, a syllabus licence — and the highest-margin thing he owns. The site should plant a flag
+            here even before the product exists.
+          </p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px; padding: 22px; border: 1px solid rgba(237,230,216,0.14);">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Verdict</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: rgba(237,230,216,0.7);">Later phase</span></div>
+          <p style="margin: 0; font-size: 13.5px; line-height: 1.55; color: rgba(237,230,216,0.6);">
+            Needs evidence before it earns page space. One section on the site, no more, until we can name
+            the institutions.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="03 Market" style="padding: 130px 56px; border-bottom: 1px solid rgba(237,230,216,0.14); background: linear-gradient(180deg, #0A0A0B, #101019 60%, #0A0A0B);">
+    <div style="display: flex; align-items: baseline; gap: 20px; margin-bottom: 24px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #C4933E;">03</span>
+      <h2 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(34px, 4vw, 60px); line-height: 1.02; letter-spacing: -0.015em;">Why that audience is worth the money</h2>
+    </div>
+    <p style="margin: 0 0 60px; max-width: 72ch; font-size: 18px; line-height: 1.62; color: rgba(237,230,216,0.7); text-wrap: pretty;">
+      Market sizing for online music education is genuinely contested — the estimates below differ
+      by an order of magnitude depending on how the analyst draws the boundary. I am reporting the
+      disagreement rather than averaging it. The direction of travel is what matters and it is
+      consistent: double-digit growth, North America dominant, live one-to-one growing fastest.
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: rgba(237,230,216,0.14); margin-bottom: 48px;">
+      <div style="background: #0A0A0B; padding: 32px 28px; display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Instrument Serif', serif; font-size: clamp(38px, 4vw, 54px); line-height: 1; color: #C4933E;">$4.61B</span>
+        <span style="font-size: 15px; line-height: 1.5; color: rgba(237,230,216,0.78);">Online music education, 2026 — reaching $9.36B by 2031 at 15.2% CAGR</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; color: rgba(237,230,216,0.45);">Mordor Intelligence, Feb 2026</span>
+      </div>
+      <div style="background: #0A0A0B; padding: 32px 28px; display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Instrument Serif', serif; font-size: clamp(38px, 4vw, 54px); line-height: 1; color: #C4933E;">35%</span>
+        <span style="font-size: 15px; line-height: 1.5; color: rgba(237,230,216,0.78);">North America's share of 2025 revenue — the same place his students already are</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; color: rgba(237,230,216,0.45);">Mordor Intelligence, Feb 2026</span>
+      </div>
+      <div style="background: #0A0A0B; padding: 32px 28px; display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Instrument Serif', serif; font-size: clamp(38px, 4vw, 54px); line-height: 1; color: #C4933E;">16.1%</span>
+        <span style="font-size: 15px; line-height: 1.5; color: rgba(237,230,216,0.78);">CAGR for live one-to-one instruction, 2026–31 — the format he actually sells</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; color: rgba(237,230,216,0.45);">Mordor Intelligence, Feb 2026</span>
+      </div>
+      <div style="background: #0A0A0B; padding: 32px 28px; display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Instrument Serif', serif; font-size: clamp(38px, 4vw, 54px); line-height: 1; color: #C4933E;">$121,700</span>
+        <span style="font-size: 15px; line-height: 1.5; color: rgba(237,230,216,0.78);">Median Asian-American household income, 2024 — highest of any group the Census tracks</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; color: rgba(237,230,216,0.45);">US Census Bureau, Sep 2025</span>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 34px;">
+      <div style="padding: 26px 28px; border: 1px solid rgba(198,64,47,0.4); background: rgba(198,64,47,0.06); display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C6402F;">Where sources disagree</span>
+        <p style="margin: 0; font-size: 15px; line-height: 1.62; color: rgba(237,230,216,0.78);">
+          Mordor puts the 2026 market at <strong style="color:#EDE6D8;">$4.61B</strong>. Research and
+          Markets says $2.18B in 2025 rising to $4.9B by 2030. Global Growth Insights and Business
+          Research Insights both claim <strong style="color:#EDE6D8;">$23.5B</strong> in 2026 — five times
+          higher. Treat the low-single-digit-billions figures as the defensible ones and the $20B+ figures
+          as including adjacent categories. None of this should drive a pricing decision on its own.
+        </p>
+      </div>
+      <div style="padding: 26px 28px; border: 1px solid rgba(237,230,216,0.2); display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(237,230,216,0.5);">What competitors charge</span>
+        <p style="margin: 0; font-size: 15px; line-height: 1.62; color: rgba(237,230,216,0.78);">
+          Shankar Mahadevan Academy lists <strong style="color:#EDE6D8;">USD 329</strong> for a Carnatic
+          vocal course and reports 11,000+ students in 47 countries. Swaralaya starts at
+          <strong style="color:#EDE6D8;">AUD 60/month</strong> for four one-to-one classes with 60+
+          teachers. BMusician undercuts private tuition by 40–50% with shared slots. Independent online
+          violin instruction runs <strong style="color:#EDE6D8;">$40–70/hr</strong>, and $80–120/hr for
+          experienced teachers.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="04 Positioning" style="padding: 130px 56px; border-bottom: 1px solid rgba(237,230,216,0.14);">
+    <div style="display: flex; align-items: baseline; gap: 20px; margin-bottom: 24px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #C4933E;">04</span>
+      <h2 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(34px, 4vw, 60px); line-height: 1.02; letter-spacing: -0.015em;">The gap we are designing into</h2>
+    </div>
+    <p style="margin: 0 0 56px; max-width: 72ch; font-size: 18px; line-height: 1.62; color: rgba(237,230,216,0.7); text-wrap: pretty;">
+      He cannot win on catalogue — the academies have hundreds of courses and dozens of teachers.
+      He cannot win on price — shared-slot platforms are half the cost. He wins on the three
+      things a platform structurally cannot offer.
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: rgba(237,230,216,0.14);">
+      <div style="background: #0A0A0B; padding: 36px 30px; display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C4933E;">Advantage 01</span>
+        <h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 27px; line-height: 1.15;">One named guru, not an allocated teacher</h3>
+        <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(237,230,216,0.7);">
+          A platform assigns you someone. Here you learn from the man whose gurus were Thiruvarur
+          Santhanam, Nellai Shanmuganathan, Mayavaram Sivaswamy Iyer, V. L. Sudharsan and Kumaresh.
+          Lineage is the product. The site must name it on the first screen.
+        </p>
+      </div>
+      <div style="background: #0A0A0B; padding: 36px 30px; display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C4933E;">Advantage 02</span>
+        <h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 27px; line-height: 1.15;">Notation in the language the family speaks</h3>
+        <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(237,230,216,0.7);">
+          Every one of the 22 lessons already exists as a Tamil PDF and an English PDF. No competitor
+          leads with this. For a child who reads English and a grandparent who reads Tamil, it is the
+          whole decision.
+        </p>
+      </div>
+      <div style="background: #0A0A0B; padding: 36px 30px; display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C4933E;">Advantage 03</span>
+        <h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 27px; line-height: 1.15;">A free library that already converts</h3>
+        <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(237,230,216,0.7);">
+          Practice tracks in five sruthis across three speeds. Violin and vocal recorded separately.
+          Step-by-step, then practise-together, then karaoke. Given away. That generosity is the
+          marketing, and it is currently hidden on a Blogger template.
+        </p>
+      </div>
+    </div>
+
+    <div style="margin-top: 60px; padding: 44px 46px; border: 1px solid rgba(196,147,62,0.4); background: linear-gradient(135deg, rgba(196,147,62,0.1), rgba(27,33,64,0.35));">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #C4933E;">The visual thesis · one sentence</span>
+      <p style="margin: 20px 0 0; font-family: 'Instrument Serif', serif; font-size: clamp(28px, 3.4vw, 46px); line-height: 1.22; letter-spacing: -0.01em; max-width: 30ch;">
+        A darkened concert hall where the <em style="color:#C4933E;">notation is the only light</em> — brass for what he has earned, ivory for what he teaches, and nothing on the screen that a musician would not recognise.
+      </p>
+    </div>
+  </section>
+
+  <section data-screen-label="05 Art direction" style="padding: 130px 56px; border-bottom: 1px solid rgba(237,230,216,0.14);">
+    <div style="display: flex; align-items: baseline; gap: 20px; margin-bottom: 56px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #C4933E;">05</span>
+      <h2 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(34px, 4vw, 60px); line-height: 1.02; letter-spacing: -0.015em;">Art direction, locked</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 56px;">
+      <div style="display: flex; flex-direction: column; gap: 26px;">
+        <h3 style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Palette — five colours, defined roles</h3>
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; align-items: center; gap: 18px;">
+            <span style="width: 68px; height: 68px; background: #0A0A0B; border: 1px solid rgba(237,230,216,0.28); flex: none;"></span>
+            <div style="display: flex; flex-direction: column; gap: 3px;"><strong style="font-size: 16px;">Stage Ink · #0A0A0B</strong><span style="font-size: 14px; color: rgba(237,230,216,0.6);">Ground. Every page starts here. Warm, never blue-black.</span></div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 18px;">
+            <span style="width: 68px; height: 68px; background: #EDE6D8; flex: none;"></span>
+            <div style="display: flex; flex-direction: column; gap: 3px;"><strong style="font-size: 16px;">Notation Ivory · #EDE6D8</strong><span style="font-size: 14px; color: rgba(237,230,216,0.6);">All type. The colour of the paper his notes are printed on.</span></div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 18px;">
+            <span style="width: 68px; height: 68px; background: #C4933E; flex: none;"></span>
+            <div style="display: flex; flex-direction: column; gap: 3px;"><strong style="font-size: 16px;">Honorific Brass · #C4933E</strong><span style="font-size: 14px; color: rgba(237,230,216,0.6);">Earned things only — titles, awards, years, section marks.</span></div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 18px;">
+            <span style="width: 68px; height: 68px; background: #1B2140; flex: none;"></span>
+            <div style="display: flex; flex-direction: column; gap: 3px;"><strong style="font-size: 16px;">Temple Indigo · #1B2140</strong><span style="font-size: 14px; color: rgba(237,230,216,0.6);">Lesson interface surfaces. Separates study from story.</span></div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 18px;">
+            <span style="width: 68px; height: 68px; background: #C6402F; flex: none;"></span>
+            <div style="display: flex; flex-direction: column; gap: 3px;"><strong style="font-size: 16px;">Kumkum · #C6402F</strong><span style="font-size: 14px; color: rgba(237,230,216,0.6);">One use per page, maximum. The enrol action. Nothing else.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 26px;">
+        <h3 style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Type — four voices</h3>
+        <div style="display: flex; flex-direction: column; gap: 22px;">
+          <div style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 20px; border-bottom: 1px solid rgba(237,230,216,0.14);">
+            <span style="font-family: 'Instrument Serif', serif; font-size: 46px; line-height: 1;">Instrument Serif</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: rgba(237,230,216,0.5);">DISPLAY · headlines, pull quotes, numbers. High contrast, cinematic, not a wedding font.</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 20px; border-bottom: 1px solid rgba(237,230,216,0.14);">
+            <span style="font-size: 26px; font-weight: 500;">Archivo — interface and body</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: rgba(237,230,216,0.5);">UI · paragraphs, labels, forms. Neutral, wide, legible at 15px.</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 20px; border-bottom: 1px solid rgba(237,230,216,0.14);">
+            <span style="font-family: 'Noto Serif Tamil', serif; font-size: 30px; line-height: 1.5;">கைத்தல நிறைகனி — திருப்புகழ்</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: rgba(237,230,216,0.5);">TAMIL · a first-class typeface, set at its own optical size. Never a fallback.</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 22px;">RAGA MOHANAM · THALA AADHI · D#-2.5</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: rgba(237,230,216,0.5);">TECHNICAL · raga, thala, sruthi, speed, swara. Data, treated as data.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: rgba(237,230,216,0.14); margin-top: 64px;">
+      <div style="background: #0A0A0B; padding: 32px 28px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C4933E;">Geometry</span>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(237,230,216,0.72);">
+          Hairline rules at 1px, spaced like staff lines. Square corners everywhere — no rounded cards,
+          no pills. A wide left margin on every page that echoes the margin of a notation sheet.
+          Full-bleed photography, never inset in a frame.
+        </p>
+      </div>
+      <div style="background: #0A0A0B; padding: 32px 28px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C4933E;">Material</span>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(237,230,216,0.72);">
+          Fine paper grain over ink. Brass with a real specular edge for awards. Deep vignettes so the
+          subject emerges from darkness rather than sitting on a colour. No glass, no frosted panels,
+          no decorative gradients.
+        </p>
+      </div>
+      <div style="background: #0A0A0B; padding: 32px 28px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C4933E;">Photography</span>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(237,230,216,0.72);">
+          Single key light from stage left, hard falloff, warm. Subject held to one third of the frame so
+          copy owns the other two. Hands and bow shown as often as face — this is a craft, and the craft
+          is in the hands.
+        </p>
+      </div>
+      <div style="background: #0A0A0B; padding: 32px 28px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C6402F;">Explicit exclusions</span>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(237,230,216,0.72);">
+          No stock imagery of unrelated violinists. No temple clip-art. No Om symbols as decoration. No
+          rainbow gradients despite the domain name. No emoji — the current site uses 👉 as a download
+          affordance; it goes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="06 Motion" style="padding: 130px 56px; border-bottom: 1px solid rgba(237,230,216,0.14); background: linear-gradient(180deg, #0A0A0B, #0D0D14 50%, #0A0A0B);">
+    <div style="display: flex; align-items: baseline; gap: 20px; margin-bottom: 24px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #C4933E;">06</span>
+      <h2 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(34px, 4vw, 60px); line-height: 1.02; letter-spacing: -0.015em;">The motion system — one held note</h2>
+    </div>
+    <p style="margin: 0 0 56px; max-width: 74ch; font-size: 18px; line-height: 1.62; color: rgba(237,230,216,0.7); text-wrap: pretty;">
+      Motion personality: <strong style="color:#EDE6D8;">slow bow</strong>. Long eases of 700–1200ms,
+      entering along the direction of a bow stroke. Nothing bounces. The only fast element in the
+      whole site is the swara ticker. The hero is a single pinned sequence with scroll mapped to
+      normalised progress from 0 to 1, and every layer answers to that one clock.
+    </p>
+
+    <div style="display: flex; flex-direction: column; gap: 1px; background: rgba(237,230,216,0.14); margin-bottom: 20px;">
+      <div style="background: #0A0A0B; padding: 18px 26px; display: grid; grid-template-columns: 90px 150px 1fr 1fr; gap: 24px; align-items: center; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(237,230,216,0.5);">
+        <span>Progress</span><span>Beat</span><span>What the visitor sees</span><span>What the interface does</span>
+      </div>
+      <div style="background: #0A0A0B; padding: 26px; display: grid; grid-template-columns: 90px 150px 1fr 1fr; gap: 24px; align-items: baseline;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #C4933E;">0.00</span>
+        <span style="font-family: 'Instrument Serif', serif; font-size: 22px;">Arrival</span>
+        <span style="font-size: 15px; line-height: 1.55; color: rgba(237,230,216,0.75);">Black. A single sustained note. The portrait resolves out of darkness, lit from stage left.</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.6; color: rgba(237,230,216,0.55);">Video frame 0 = poster. Name and lineage set in ivory, left third.</span>
+      </div>
+      <div style="background: #0A0A0B; padding: 26px; display: grid; grid-template-columns: 90px 150px 1fr 1fr; gap: 24px; align-items: baseline;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #C4933E;">0.20</span>
+        <span style="font-family: 'Instrument Serif', serif; font-size: 22px;">Reveal</span>
+        <span style="font-size: 15px; line-height: 1.55; color: rgba(237,230,216,0.75);">A line of Tamil swara notation writes itself across the frame, in his own notation, at bow speed.</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.6; color: rgba(237,230,216,0.55);">SVG stroke-dashoffset drawn on scrub. Copy 1 out, copy 2 in.</span>
+      </div>
+      <div style="background: #0A0A0B; padding: 26px; display: grid; grid-template-columns: 90px 150px 1fr 1fr; gap: 24px; align-items: baseline;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #C4933E;">0.50</span>
+        <span style="font-family: 'Instrument Serif', serif; font-size: 22px;">Transform</span>
+        <span style="font-size: 15px; line-height: 1.55; color: rgba(237,230,216,0.75);">The Tamil line transposes into English, glyph by glyph. This is the invention, shown rather than claimed.</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.6; color: rgba(237,230,216,0.55);">Theme shifts ink → indigo. The single most important 200ms on the site.</span>
+      </div>
+      <div style="background: #0A0A0B; padding: 26px; display: grid; grid-template-columns: 90px 150px 1fr 1fr; gap: 24px; align-items: baseline;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #C4933E;">0.78</span>
+        <span style="font-family: 'Instrument Serif', serif; font-size: 22px;">Proof</span>
+        <span style="font-size: 15px; line-height: 1.55; color: rgba(237,230,216,0.75);">Twelve honorific titles stack in brass, each with its awarding body and year. Then the record: 5,000 stages, AIR since 1992.</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.6; color: rgba(237,230,216,0.55);">Cards in on stagger. Nav switches to its condensed state.</span>
+      </div>
+      <div style="background: #0A0A0B; padding: 26px; display: grid; grid-template-columns: 90px 150px 1fr 1fr; gap: 24px; align-items: baseline;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #C4933E;">1.00</span>
+        <span style="font-family: 'Instrument Serif', serif; font-size: 22px;">Resolution</span>
+        <span style="font-size: 15px; line-height: 1.55; color: rgba(237,230,216,0.75);">The note releases and hands you the library — 22 lessons, free, in two languages.</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.6; color: rgba(237,230,216,0.55);">Unpin resolves directly into the lesson grid. Enrol CTA arrives last.</span>
+      </div>
+    </div>
+
+    <p style="margin: 0; max-width: 74ch; font-size: 15.5px; line-height: 1.62; color: rgba(237,230,216,0.6);">
+      Mobile takes a different branch, not a squeeze: no pin, no scrubbed video. A poster frame, the
+      notation-to-English transposition as a tap-triggered two-state animation, and the honorifics as
+      a horizontal scroller. Reduced-motion serves the poster and the final state with no scrub at all.
+    </p>
+  </section>
+
+  <section data-screen-label="07 Signature" style="padding: 130px 56px; border-bottom: 1px solid rgba(237,230,216,0.14);">
+    <div style="display: flex; align-items: baseline; gap: 20px; margin-bottom: 24px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #C4933E;">07</span>
+      <h2 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(34px, 4vw, 60px); line-height: 1.02; letter-spacing: -0.015em;">The one thing people will remember</h2>
+    </div>
+    <p style="margin: 0 0 56px; max-width: 74ch; font-size: 18px; line-height: 1.62; color: rgba(237,230,216,0.7); text-wrap: pretty;">
+      Every lesson in his archive already ships practice audio in five sruthis across three speeds,
+      with violin and vocal recorded separately. On the current site that is a list of thirty
+      identical Google Drive links. It is the most valuable thing he has made and the worst-presented.
+      It becomes an instrument.
+    </p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(237,230,216,0.14); border: 1px solid rgba(237,230,216,0.14);">
+      <div style="background: #1B2140; padding: 44px 40px; display: flex; flex-direction: column; gap: 28px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #C4933E;">The Sruthi Dial</span>
+        <div style="display: flex; flex-direction: column; gap: 18px;">
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <span style="padding: 10px 16px; border: 1px solid #C4933E; color: #C4933E; font-family: 'IBM Plex Mono', monospace; font-size: 13px;">C&nbsp;·&nbsp;1</span>
+            <span style="padding: 10px 16px; border: 1px solid rgba(237,230,216,0.28); color: rgba(237,230,216,0.75); font-family: 'IBM Plex Mono', monospace; font-size: 13px;">D#&nbsp;·&nbsp;2.5</span>
+            <span style="padding: 10px 16px; border: 1px solid rgba(237,230,216,0.28); color: rgba(237,230,216,0.75); font-family: 'IBM Plex Mono', monospace; font-size: 13px;">F&nbsp;·&nbsp;4</span>
+            <span style="padding: 10px 16px; border: 1px solid rgba(237,230,216,0.28); color: rgba(237,230,216,0.75); font-family: 'IBM Plex Mono', monospace; font-size: 13px;">G#&nbsp;·&nbsp;5.5</span>
+            <span style="padding: 10px 16px; border: 1px solid rgba(237,230,216,0.28); color: rgba(237,230,216,0.75); font-family: 'IBM Plex Mono', monospace; font-size: 13px;">A#&nbsp;·&nbsp;6.5</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 20px;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(237,230,216,0.5);">Speed</span>
+            <div style="display: flex; gap: 8px;">
+              <span style="width: 40px; height: 3px; background: #C4933E;"></span>
+              <span style="width: 40px; height: 3px; background: rgba(237,230,216,0.25);"></span>
+              <span style="width: 40px; height: 3px; background: rgba(237,230,216,0.25);"></span>
+            </div>
+          </div>
+          <div style="display: flex; gap: 26px; padding-top: 6px; border-top: 1px solid rgba(237,230,216,0.16);">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #EDE6D8; border-bottom: 2px solid #C4933E; padding-bottom: 6px;">Violin</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: rgba(237,230,216,0.5); padding-bottom: 6px;">Vocal</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 14px; height: 46px;">
+            <span style="width: 46px; height: 46px; border: 1px solid #C4933E; display: grid; place-items: center; color: #C4933E; font-size: 15px; flex: none;">▶</span>
+            <span style="flex: 1; height: 2px; background: linear-gradient(90deg, #C4933E 0 34%, rgba(237,230,216,0.2) 34%);"></span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: rgba(237,230,216,0.6);">01:12</span>
+          </div>
+        </div>
+        <p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(237,230,216,0.62);">
+          Sketch, not final. The point is that a student picks the pitch their voice or instrument is
+          tuned to and the speed they can manage, and the track follows. Fifteen files become one control.
+        </p>
+      </div>
+
+      <div style="background: #0A0A0B; padding: 44px 40px; display: flex; flex-direction: column; gap: 26px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #C4933E;">The lesson page, as a product</span>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <div style="display: flex; gap: 16px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C4933E; flex: none; padding-top: 3px;">01</span><p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(237,230,216,0.75);"><strong style="color:#EDE6D8;">Notation, in either language, on the page.</strong> Not a Drive link that opens a new tab. Rendered, zoomable, printable, with a Tamil/English switch that keeps your scroll position.</p></div>
+          <div style="display: flex; gap: 16px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C4933E; flex: none; padding-top: 3px;">02</span><p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(237,230,216,0.75);"><strong style="color:#EDE6D8;">The three-stage progression, named.</strong> Step by step → practise together → karaoke. Amma Aanandadayni already has all five parts. Make that the template for every lesson.</p></div>
+          <div style="display: flex; gap: 16px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C4933E; flex: none; padding-top: 3px;">03</span><p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(237,230,216,0.75);"><strong style="color:#EDE6D8;">Metadata as navigation.</strong> Raga, thala, composer, level. Twenty-two lessons become browsable by raga — Mohanam, Nattai, Malahari, Mayamalavagowlai — which is how musicians actually think.</p></div>
+          <div style="display: flex; gap: 16px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C4933E; flex: none; padding-top: 3px;">04</span><p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(237,230,216,0.75);"><strong style="color:#EDE6D8;">One honest ask at the bottom.</strong> "You have the notes. Now get the correction." A trial lesson, priced, bookable, in the student's timezone.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="08 Architecture" style="padding: 130px 56px; border-bottom: 1px solid rgba(237,230,216,0.14);">
+    <div style="display: flex; align-items: baseline; gap: 20px; margin-bottom: 56px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #C4933E;">08</span>
+      <h2 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(34px, 4vw, 60px); line-height: 1.02; letter-spacing: -0.015em;">Eight pages, one job each</h2>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 1px; background: rgba(237,230,216,0.14);">
+      <div style="background: #0A0A0B; padding: 24px 28px; display: grid; grid-template-columns: 40px 1.1fr 1.5fr 0.9fr; gap: 26px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C4933E;">01</span><strong style="font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 24px;">Home</strong><span style="font-size: 15px; line-height: 1.55; color: rgba(237,230,216,0.72);">The pinned hero sequence, then proof, then the library, then one ask.</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: rgba(237,230,216,0.5);">Convert A · impress C</span></div>
+      <div style="background: #0A0A0B; padding: 24px 28px; display: grid; grid-template-columns: 40px 1.1fr 1.5fr 0.9fr; gap: 26px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C4933E;">02</span><strong style="font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 24px;">The Library</strong><span style="font-size: 15px; line-height: 1.55; color: rgba(237,230,216,0.72);">All 22 lessons. Filter by category, raga, level, language, media type. This is the reason to return.</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: rgba(237,230,216,0.5);">Convert B · retain A</span></div>
+      <div style="background: #0A0A0B; padding: 24px 28px; display: grid; grid-template-columns: 40px 1.1fr 1.5fr 0.9fr; gap: 26px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C4933E;">03</span><strong style="font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 24px;">Lesson</strong><span style="font-size: 15px; line-height: 1.55; color: rgba(237,230,216,0.72);">Notation, sruthi dial, violin/vocal tabs, the three-stage progression. The product.</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: rgba(237,230,216,0.5);">Convert B → A</span></div>
+      <div style="background: #0A0A0B; padding: 24px 28px; display: grid; grid-template-columns: 40px 1.1fr 1.5fr 0.9fr; gap: 26px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C4933E;">04</span><strong style="font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 24px;">Learn the Violin</strong><span style="font-size: 15px; line-height: 1.55; color: rgba(237,230,216,0.72);">Strings, materials, finger placement — already written, currently undesigned. Pure search traffic.</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: rgba(237,230,216,0.5);">Acquire B</span></div>
+      <div style="background: #0A0A0B; padding: 24px 28px; display: grid; grid-template-columns: 40px 1.1fr 1.5fr 0.9fr; gap: 26px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C4933E;">05</span><strong style="font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 24px;">The Guru</strong><span style="font-size: 15px; line-height: 1.55; color: rgba(237,230,216,0.72);">Lineage first: five gurus, learning from age six, stage from age eight. Then mission and vision.</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: rgba(237,230,216,0.5);">Convince A</span></div>
+      <div style="background: #0A0A0B; padding: 24px 28px; display: grid; grid-template-columns: 40px 1.1fr 1.5fr 0.9fr; gap: 26px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C4933E;">06</span><strong style="font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 24px;">Honours</strong><span style="font-size: 15px; line-height: 1.55; color: rgba(237,230,216,0.72);">Twelve titles in brass with awarding body and year, the CCRT scholarship, radio and television.</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: rgba(237,230,216,0.5);">Convince A + C</span></div>
+      <div style="background: #0A0A0B; padding: 24px 28px; display: grid; grid-template-columns: 40px 1.1fr 1.5fr 0.9fr; gap: 26px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C4933E;">07</span><strong style="font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 24px;">Stage</strong><span style="font-size: 15px; line-height: 1.55; color: rgba(237,230,216,0.72);">Gallery and live recordings as one cinematic reel. Plus a bookable calendar and a downloadable press kit.</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: rgba(237,230,216,0.5);">Convert C</span></div>
+      <div style="background: #0A0A0B; padding: 24px 28px; display: grid; grid-template-columns: 40px 1.1fr 1.5fr 0.9fr; gap: 26px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C4933E;">08</span><strong style="font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 24px;">Enrol</strong><span style="font-size: 15px; line-height: 1.55; color: rgba(237,230,216,0.72);">Three intents, three paths: learn, book, collaborate. Real fees, real slots, real timezones.</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: rgba(237,230,216,0.5);">Close</span></div>
+    </div>
+  </section>
+
+  <section data-screen-label="09 Pipeline" style="padding: 130px 56px; border-bottom: 1px solid rgba(237,230,216,0.14); background: linear-gradient(180deg, #0A0A0B, #101019 55%, #0A0A0B);">
+    <div style="display: flex; align-items: baseline; gap: 20px; margin-bottom: 24px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #C4933E;">09</span>
+      <h2 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(34px, 4vw, 60px); line-height: 1.02; letter-spacing: -0.015em;">How we build it</h2>
+    </div>
+    <p style="margin: 0 0 56px; max-width: 74ch; font-size: 18px; line-height: 1.62; color: rgba(237,230,216,0.7); text-wrap: pretty;">
+      Front of the pipeline to the back, following the playbook you sent. Reference intelligence and
+      art direction before a single asset. Assets approved before code. Motion mapped before it is
+      animated. Nothing invented at implementation time that was already decided.
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1px; background: rgba(237,230,216,0.14);">
+      <div style="background: #0A0A0B; padding: 30px 26px; display: flex; flex-direction: column; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #C4933E;">STAGE 1 · done</span><h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 23px;">Content extraction</h3><p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(237,230,216,0.68);">Both sites, all pages, 22 lessons, 68 media assets, every defect logged. Sitting in <code style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:#C4933E;">data/</code>.</p></div>
+      <div style="background: #0A0A0B; padding: 30px 26px; display: flex; flex-direction: column; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #C4933E;">STAGE 2 · this document</span><h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 23px;">Art direction locked</h3><p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(237,230,216,0.68);">Thesis, palette with roles, four type voices, geometry, material, motion personality, exclusions.</p></div>
+      <div style="background: #0A0A0B; padding: 30px 26px; display: flex; flex-direction: column; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: rgba(237,230,216,0.5);">STAGE 3 · next</span><h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 23px;">Hero concept</h3><p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(237,230,216,0.68);">Build the first view before anything else — it sets the standard the rest of the site is measured against.</p></div>
+      <div style="background: #0A0A0B; padding: 30px 26px; display: flex; flex-direction: column; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: rgba(237,230,216,0.5);">STAGE 4</span><h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 23px;">Asset production</h3><p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(237,230,216,0.68);">Portrait and hands at directed crops, desktop and mobile. Brass award plates. Poster frame matched to video frame 0.</p></div>
+      <div style="background: #0A0A0B; padding: 30px 26px; display: flex; flex-direction: column; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: rgba(237,230,216,0.5);">STAGE 5</span><h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 23px;">Motion asset</h3><p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(237,230,216,0.68);">Six seconds, camera locked, subject held to the right third for the whole clip so left-aligned copy stays clear. No cuts.</p></div>
+      <div style="background: #0A0A0B; padding: 30px 26px; display: flex; flex-direction: column; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: rgba(237,230,216,0.5);">STAGE 6</span><h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 23px;">Implementation</h3><p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(237,230,216,0.68);">Smallest stack that reproduces the choreography exactly. Scroll-linked timeline for the hero, CSS for everything else.</p></div>
+      <div style="background: #0A0A0B; padding: 30px 26px; display: flex; flex-direction: column; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: rgba(237,230,216,0.5);">STAGE 7</span><h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 23px;">Responsive as art direction</h3><p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(237,230,216,0.68);">Desktop, tablet, mobile composed independently. Both sides of every breakpoint tested. Focal exclusion zone respected at each.</p></div>
+      <div style="background: #0A0A0B; padding: 30px 26px; display: flex; flex-direction: column; gap: 12px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: rgba(237,230,216,0.5);">STAGE 8</span><h3 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 23px;">Browser QA</h3><p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(237,230,216,0.68);">Load and poster state, hero motion to final handoff, breakpoint edges, keyboard and focus, video seeking, clean console.</p></div>
+    </div>
+  </section>
+
+  <section data-screen-label="10 Asks" style="padding: 130px 56px; border-bottom: 1px solid rgba(237,230,216,0.14);">
+    <div style="display: flex; align-items: baseline; gap: 20px; margin-bottom: 24px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #C4933E;">10</span>
+      <h2 style="margin: 0; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(34px, 4vw, 60px); line-height: 1.02; letter-spacing: -0.015em;">What blocks the build</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 34px; margin-top: 40px;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C6402F;">Blocking</span>
+        <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 12px; font-size: 15.5px; line-height: 1.6; color: rgba(237,230,216,0.75);">
+          <li><strong style="color:#EDE6D8;">A pricing decision.</strong> Per lesson, per month, or per term — and the number. Nothing on the enrol page can be designed without it.</li>
+          <li><strong style="color:#EDE6D8;">Photography.</strong> One directed session: portrait at stage-left key light, hands and bow, and a six-second locked-camera clip. Everything currently on the site is web-sized and cannot carry a full-bleed hero.</li>
+          <li><strong style="color:#EDE6D8;">The logo as vector.</strong> Two versions exist as raster PNG. A hero at this scale needs the original.</li>
+        </ul>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C4933E;">Needed before launch</span>
+        <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 12px; font-size: 15.5px; line-height: 1.6; color: rgba(237,230,216,0.75);">
+          <li>Titles for the six untitled 2023 posts, and real copy for the two headlines still reading <code style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:#C6402F;">Loreip</code>.</li>
+          <li>One home for the notation PDFs — currently split between Google Drive and Dropbox, which will break the in-page reader.</li>
+          <li>Which claim is true: 37 years, 30+ years, or 25. The three appear on the same two sites today. I will use 37 unless told otherwise.</li>
+          <li>Names of the universities using his notation system, or we drop that claim rather than assert it unsourced.</li>
+        </ul>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(237,230,216,0.5);">Already handled</span>
+        <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 12px; font-size: 15.5px; line-height: 1.6; color: rgba(237,230,216,0.65);">
+          <li>All copy from both sites, verbatim.</li>
+          <li>All 22 lessons with notation, audio, video and metadata.</li>
+          <li>68 media assets inventoried and hotlinkable.</li>
+          <li>Testimonials, comments, honours, education, radio and television record.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Sources" style="padding: 110px 56px 0;">
+    <h2 style="margin: 0 0 34px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(237,230,216,0.55);">Sources</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px 44px; font-size: 14.5px; line-height: 1.65; color: rgba(237,230,216,0.62);">
+      <p style="margin: 0;">Mordor Intelligence, <a href="https://www.mordorintelligence.com/industry-reports/online-music-education-market">Online Music Education Market 2026–2031</a> — market size, regional share, format CAGRs (Feb 2026).</p>
+      <p style="margin: 0;">Research and Markets, <a href="https://www.researchandmarkets.com/report/global-online-music-education-market">Online Music Education Market to 2030</a> — the lower $2.18B/2025 estimate.</p>
+      <p style="margin: 0;">Global Growth Insights, <a href="https://www.globalgrowthinsights.com/market-reports/online-music-education-market-102191">Online Music Education Market</a> — the outlying $23.5B/2026 estimate.</p>
+      <p style="margin: 0;">US Census Bureau, <a href="https://www.census.gov/library/stories/2025/09/median-household-income.html">Median Income of Asian and Hispanic Households Rose From 2023 to 2024</a> (Sep 2025).</p>
+      <p style="margin: 0;">Wikipedia, <a href="https://en.wikipedia.org/wiki/Tamil_Americans">Tamil Americans</a> — population 356,924, metro distribution.</p>
+      <p style="margin: 0;">Cleveland Aradhana Committee, <a href="https://www.aradhana.org/">Cleveland Thyagaraja Festival</a> — 10,000+ attendees, 50th year in 2027.</p>
+      <p style="margin: 0;">Signal Cleveland, <a href="https://signalcleveland.org/the-music-of-southern-india-in-cleveland-thyagaraja-festival-2025/">Thyagaraja Festival brings classical Indian music to Cleveland</a> (Apr 2025).</p>
+      <p style="margin: 0;">CourseSuggest, <a href="https://www.coursesuggest.com/music/shankar-mahadevan-academy/">Shankar Mahadevan Academy fees</a> — USD 329 per course; 11,000+ students, 47 countries.</p>
+      <p style="margin: 0;">Swaralaya School of Music, <a href="https://www.swaralayaonline.com/">swaralayaonline.com</a> — AUD 60/month entry pricing, 60+ teachers, 20+ countries.</p>
+      <p style="margin: 0;">24-7 Press Release, <a href="https://www.24-7pressrelease.com/press-release/533654/bmusician-reaches-200000-live-lesson-milestone-connecting-global-students-to-indias-carnatic-music-legacy">BMusician 200,000 live lesson milestone</a> — shared-slot pricing 40–50% below private (Apr 2026).</p>
+      <p style="margin: 0;">Lessons.com, <a href="https://lessons.com/costs/violin-lessons-cost">How Much Do Violin Lessons Cost (2026)</a> — online $40–70/hr.</p>
+      <p style="margin: 0;">CSMA Arts4All, <a href="https://arts4all.org/about/news-blog/violin-lessons-cost-mountain-view/">Violin Lessons: What They Cost in 2026</a> — experienced teachers $80–120/hr.</p>
+      <p style="margin: 0;">Business Research Insights, <a href="https://www.businessresearchinsights.com/blog/top-online-music-education-companies-10369">Online Music Education Market</a> — 58% of learners aged 15–35.</p>
+      <p style="margin: 0;">Primary sources: <a href="https://vspviolinrainbow.com/">vspviolinrainbow.com</a> and <a href="https://www.sukapavalan.com/">sukapavalan.com</a>, extracted in full to <code style="font-family:'IBM Plex Mono',monospace; font-size:13px;">data/</code>.</p>
+    </div>
+    <p style="margin: 40px 0 0; max-width: 76ch; font-size: 14px; line-height: 1.65; color: rgba(237,230,216,0.45);">
+      A note on what is evidence and what is judgement. The market figures, incomes, festival
+      attendance and competitor prices above are sourced and dated. The audience ratings, the
+      positioning argument, the visual thesis and the motion beat map are my design judgement built on
+      that evidence — argue with them freely. Any figure not carrying a source here should be treated
+      as unverified.
+    </p>
+  </section>
+
+</div>
+
+</x-dc>
+</body>
+</html>

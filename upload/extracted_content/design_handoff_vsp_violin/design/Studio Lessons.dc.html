@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Studio — All lessons · Violin Suka Pavalan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="responsive.css" />
+<style>
+  html { background: #16102A; scroll-behavior: smooth; }
+  body { margin: 0; background: #16102A; color: #F3EDDF; font-family: 'Instrument Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #E0BC6A; text-decoration: none; }
+  a:hover { color: #F2D89A; }
+  ::selection { background: #E0BC6A; color: #1B1233; }
+</style>
+</helmet>
+
+<div style="max-width: 1440px; margin: 0 auto;">
+
+  <div data-screen-label="Studio bar" style="position: sticky; top: 0; z-index: 50; background: rgba(37,26,66,0.95); backdrop-filter: blur(22px); border-bottom: 1px solid rgba(224,188,106,0.3);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 14px 32px;">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <span style="font-family: Marcellus, serif; font-size: 19px; letter-spacing: 0.07em; color: #E0BC6A;">STUDIO</span>
+        <span style="padding: 5px 11px; border: 1px solid rgba(224,188,106,0.45); font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #E0BC6A;">Private · signed in</span>
+      </div>
+      <div data-nav="links" style="display: flex; align-items: center; gap: 26px; font-size: 14px; font-weight: 500;">
+        <a href="Studio.dc.html" style="color: rgba(243,237,223,0.6);">New notation</a>
+        <a href="Studio Enquiries.dc.html" style="color: rgba(243,237,223,0.6);">Enquiries <span style="padding: 2px 7px; background: #C6402F; color: #FFF6EE; font-family: 'Geist Mono', monospace; font-size: 10px;">3</span></a>
+        <a href="Studio Lessons.dc.html" style="color: #F3EDDF;">All lessons</a>
+        <a href="Studio Categories.dc.html" style="color: rgba(243,237,223,0.6);">Categories</a>
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <a href="Homepage Violet Gold.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.72);">View site ↗</a>
+        <span style="padding: 9px 18px; border: 1px solid rgba(243,237,223,0.26); font-size: 13.5px; color: rgba(243,237,223,0.8);">Sign out</span>
+      </div>
+    </div>
+  </div>
+
+  <section data-screen-label="01 Header" style="padding: 40px 32px 0;">
+    <div style="display: grid; grid-template-columns: 1fr 420px; gap: 44px; align-items: end; padding-bottom: 28px; border-bottom: 1px solid rgba(224,188,106,0.26);">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">All lessons</span>
+        <h1 style="margin: 0; font-family: Marcellus, serif; font-size: 44px; line-height: 1.08;">Twenty-three lessons, one of them a draft.</h1>
+        <p style="margin: 0; font-size: 16px; line-height: 1.62; color: rgba(243,237,223,0.74); max-width: 60ch;">
+          Edit, reorder, unpublish or delete. Reordering here sets the order students see inside a
+          category — drag a lesson up and the library follows.
+        </p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(224,188,106,0.26); border: 1px solid rgba(224,188,106,0.26);">
+        <div style="background: #16102A; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px;"><span style="font-family: Marcellus, serif; font-size: 28px; color: #78DCAA;">22</span><span style="font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.62);">Published</span></div>
+        <div style="background: #16102A; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px;"><span style="font-family: Marcellus, serif; font-size: 28px; color: #E08C50;">1</span><span style="font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.62);">Draft</span></div>
+        <div style="background: #16102A; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px;"><span style="font-family: Marcellus, serif; font-size: 28px; color: #E5705C;">6</span><span style="font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.62);">Need a title</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="02 Needs attention" style="padding: 26px 32px 0;">
+    <div style="border: 1px solid rgba(198,64,47,0.45); background: rgba(198,64,47,0.08); padding: 24px 28px; display: flex; flex-direction: column; gap: 16px;">
+      <div style="display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E5705C;">Needs attention · 6</span>
+        <span style="font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.84);">These six came across from the old site with no title. The names below were read off the notation filenames — confirm or correct each one.</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+        <div style="padding: 14px 16px; border: 1px solid rgba(243,237,223,0.2); background: rgba(22,16,42,0.4); display: flex; align-items: center; justify-content: space-between; gap: 12px;"><span style="font-size: 14.5px;">Mohanam Varnam</span><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A;">Confirm</span></div>
+        <div style="padding: 14px 16px; border: 1px solid rgba(243,237,223,0.2); background: rgba(22,16,42,0.4); display: flex; align-items: center; justify-content: space-between; gap: 12px;"><span style="font-size: 14.5px;">Enna Thavam</span><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A;">Confirm</span></div>
+        <div style="padding: 14px 16px; border: 1px solid rgba(243,237,223,0.2); background: rgba(22,16,42,0.4); display: flex; align-items: center; justify-content: space-between; gap: 12px;"><span style="font-size: 14.5px;">Maha Ganapathim</span><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A;">Confirm</span></div>
+        <div style="padding: 14px 16px; border: 1px solid rgba(243,237,223,0.2); background: rgba(22,16,42,0.4); display: flex; align-items: center; justify-content: space-between; gap: 12px;"><span style="font-size: 14.5px;">Lingashtagam</span><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A;">Confirm</span></div>
+        <div style="padding: 14px 16px; border: 1px solid rgba(243,237,223,0.2); background: rgba(22,16,42,0.4); display: flex; align-items: center; justify-content: space-between; gap: 12px;"><span style="font-size: 14.5px;">Poongathave</span><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A;">Confirm</span></div>
+        <div style="padding: 14px 16px; border: 1px solid rgba(243,237,223,0.2); background: rgba(22,16,42,0.4); display: flex; align-items: center; justify-content: space-between; gap: 12px;"><span style="font-size: 14.5px;">Ilayaraja Hits on Violin</span><span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; color: #E0BC6A;">Confirm</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="03 Filters" style="padding: 26px 32px 0;">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+      <span style="padding: 9px 16px; background: #E0BC6A; color: #1B1233; font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;">All 23</span>
+      <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Basics 5</span>
+      <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Geetham 5</span>
+      <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Varnam 3</span>
+      <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Krithi 3</span>
+      <span style="padding: 9px 16px; border: 1px solid rgba(224,188,106,0.45); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #E0BC6A;">Thillana 1 draft</span>
+      <span style="flex: 1;"></span>
+      <a href="Studio.dc.html" style="padding: 11px 22px; background: #E0BC6A; color: #1B1233; font-family: Marcellus, serif; font-size: 14px; letter-spacing: 0.04em;">+ New notation</a>
+    </div>
+  </section>
+
+  <section data-screen-label="04 Lesson table" style="padding: 22px 32px 0;">
+    <div style="border: 1px solid rgba(243,237,223,0.16);">
+      <div style="display: grid; grid-template-columns: 34px 1.5fr 1fr 0.9fr 0.9fr 150px; gap: 20px; padding: 14px 22px; background: rgba(243,237,223,0.045); border-bottom: 1px solid rgba(243,237,223,0.16); font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.62);">
+        <span></span><span>Lesson</span><span>Category</span><span>Raga · thala</span><span>Assets</span><span>Status</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 34px 1.5fr 1fr 0.9fr 0.9fr 150px; gap: 20px; padding: 16px 22px; border-bottom: 1px solid rgba(243,237,223,0.1); align-items: center; background: rgba(224,188,106,0.06);">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: rgba(243,237,223,0.4); cursor: grab;">⠿</span>
+        <div style="display: flex; flex-direction: column; gap: 3px;"><span style="font-family: Marcellus, serif; font-size: 18px;">Sindhu Bhairavi — Thillana</span><span style="font-family: 'Geist Mono', monospace; font-size: 10px; color: rgba(243,237,223,0.55);">SAVED 20 MIN AGO</span></div>
+        <span style="font-size: 14px; color: rgba(243,237,223,0.8);">Thillana</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">SINDHU BHAIRAVI · AADHI</span>
+        <div style="display: flex; gap: 5px;"><span style="padding: 4px 8px; border: 1px solid rgba(120,220,170,0.4); font-family: 'Geist Mono', monospace; font-size: 9.5px; color: #78DCAA;">2 PDF</span><span style="padding: 4px 8px; border: 1px dashed rgba(243,237,223,0.24); font-family: 'Geist Mono', monospace; font-size: 9.5px; color: rgba(243,237,223,0.55);">NO VIDEO</span></div>
+        <div style="display: flex; align-items: center; gap: 10px;"><span style="padding: 5px 11px; background: rgba(224,140,80,0.2); border: 1px solid rgba(224,140,80,0.5); font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #E08C50;">Draft</span><a href="Studio.dc.html" style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;">Edit</a></div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 34px 1.5fr 1fr 0.9fr 0.9fr 150px; gap: 20px; padding: 16px 22px; border-bottom: 1px solid rgba(243,237,223,0.1); align-items: center;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: rgba(243,237,223,0.4); cursor: grab;">⠿</span>
+        <div style="display: flex; flex-direction: column; gap: 3px;"><span style="font-family: Marcellus, serif; font-size: 18px;">Sruthi Swara Varisai</span><span style="font-family: 'Geist Mono', monospace; font-size: 10px; color: rgba(243,237,223,0.55);">LEVEL 1 · MAR 2021</span></div>
+        <span style="font-size: 14px; color: rgba(243,237,223,0.8);">Carnatic Basics</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: rgba(243,237,223,0.6);">—</span>
+        <div style="display: flex; gap: 5px;"><span style="padding: 4px 8px; border: 1px solid rgba(120,220,170,0.4); font-family: 'Geist Mono', monospace; font-size: 9.5px; color: #78DCAA;">2 PDF</span></div>
+        <div style="display: flex; align-items: center; gap: 10px;"><span style="padding: 5px 11px; border: 1px solid rgba(120,220,170,0.4); font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #78DCAA;">Live</span><a href="Studio.dc.html" style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;">Edit</a></div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 34px 1.5fr 1fr 0.9fr 0.9fr 150px; gap: 20px; padding: 16px 22px; border-bottom: 1px solid rgba(243,237,223,0.1); align-items: center;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: rgba(243,237,223,0.4); cursor: grab;">⠿</span>
+        <div style="display: flex; flex-direction: column; gap: 3px;"><span style="font-family: Marcellus, serif; font-size: 18px;">Sarali Varisai</span><span style="font-family: 'Geist Mono', monospace; font-size: 10px; color: rgba(243,237,223,0.55);">LEVEL 2 · MAR 2021 · MOST VISITED</span></div>
+        <span style="font-size: 14px; color: rgba(243,237,223,0.8);">Carnatic Basics</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: rgba(243,237,223,0.6);">—</span>
+        <div style="display: flex; gap: 5px;"><span style="padding: 4px 8px; border: 1px solid rgba(120,220,170,0.4); font-family: 'Geist Mono', monospace; font-size: 9.5px; color: #78DCAA;">2 PDF</span><span style="padding: 4px 8px; border: 1px solid rgba(224,188,106,0.4); font-family: 'Geist Mono', monospace; font-size: 9.5px; color: #E0BC6A;">16 VID</span></div>
+        <div style="display: flex; align-items: center; gap: 10px;"><span style="padding: 5px 11px; border: 1px solid rgba(120,220,170,0.4); font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #78DCAA;">Live</span><a href="Studio.dc.html" style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;">Edit</a></div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 34px 1.5fr 1fr 0.9fr 0.9fr 150px; gap: 20px; padding: 16px 22px; border-bottom: 1px solid rgba(243,237,223,0.1); align-items: center;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: rgba(243,237,223,0.4); cursor: grab;">⠿</span>
+        <div style="display: flex; flex-direction: column; gap: 3px;"><span style="font-family: Marcellus, serif; font-size: 18px;">Amma Aanandadayni</span><span style="font-family: 'Geist Mono', monospace; font-size: 10px; color: rgba(243,237,223,0.55);">NOV 2021 · FULLEST LESSON</span></div>
+        <span style="font-size: 14px; color: rgba(243,237,223,0.8);">Varnam</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">GAMBHEERA NATTAI · AADHI</span>
+        <div style="display: flex; gap: 5px;"><span style="padding: 4px 8px; border: 1px solid rgba(120,220,170,0.4); font-family: 'Geist Mono', monospace; font-size: 9.5px; color: #78DCAA;">2 PDF</span><span style="padding: 4px 8px; border: 1px solid rgba(224,188,106,0.4); font-family: 'Geist Mono', monospace; font-size: 9.5px; color: #E0BC6A;">5 VID</span></div>
+        <div style="display: flex; align-items: center; gap: 10px;"><span style="padding: 5px 11px; border: 1px solid rgba(120,220,170,0.4); font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #78DCAA;">Live</span><a href="Studio.dc.html" style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;">Edit</a></div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 34px 1.5fr 1fr 0.9fr 0.9fr 150px; gap: 20px; padding: 16px 22px; border-bottom: 1px solid rgba(243,237,223,0.1); align-items: center;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: rgba(243,237,223,0.4); cursor: grab;">⠿</span>
+        <div style="display: flex; flex-direction: column; gap: 3px;"><span style="font-family: Marcellus, serif; font-size: 18px;">Maha Ganapathim</span><span style="font-family: 'Geist Mono', monospace; font-size: 10px; color: #E5705C;">TITLE NEEDS CONFIRMING · AUG 2023</span></div>
+        <span style="font-size: 14px; color: rgba(243,237,223,0.8);">Krithi</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">NATTAI · AADHI</span>
+        <div style="display: flex; gap: 5px;"><span style="padding: 4px 8px; border: 1px solid rgba(224,140,80,0.45); font-family: 'Geist Mono', monospace; font-size: 9.5px; color: #E08C50;">DROPBOX</span><span style="padding: 4px 8px; border: 1px solid rgba(224,188,106,0.4); font-family: 'Geist Mono', monospace; font-size: 9.5px; color: #E0BC6A;">2 VID</span></div>
+        <div style="display: flex; align-items: center; gap: 10px;"><span style="padding: 5px 11px; border: 1px solid rgba(120,220,170,0.4); font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #78DCAA;">Live</span><a href="Studio.dc.html" style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;">Edit</a></div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 34px 1.5fr 1fr 0.9fr 0.9fr 150px; gap: 20px; padding: 16px 22px; align-items: center;">
+        <span></span>
+        <span style="grid-column: span 5; font-size: 14.5px; color: rgba(243,237,223,0.66);">18 more lessons · <a href="Studio Lessons.dc.html" style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;">Show all</a></span>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="05 Hosting note" style="padding: 22px 32px 0;">
+    <div style="border: 1px solid rgba(224,188,106,0.34); background: linear-gradient(140deg, rgba(224,188,106,0.09), rgba(107,75,168,0.13)); padding: 26px 30px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A; flex: none;">Housekeeping</span>
+      <p style="margin: 0; font-size: 15px; line-height: 1.62; color: rgba(243,237,223,0.82); flex: 1; min-width: 420px;">
+        Four lessons still keep their notation on Dropbox and eighteen on Google Drive. Moving all of
+        them into the site's own storage means the notation reader works everywhere and no share link
+        can be broken from outside.
+      </p>
+      <span style="padding: 12px 22px; border: 1px solid #E0BC6A; color: #E0BC6A; font-family: Marcellus, serif; font-size: 14px; letter-spacing: 0.04em; flex: none;">Move all to site storage</span>
+    </div>
+  </section>
+
+  <div data-screen-label="Footer" style="margin-top: 56px; padding: 40px 32px; border-top: 1px solid rgba(224,188,106,0.2); display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(243,237,223,0.55);">
+    <span>Studio · private area · not indexed</span>
+    <a href="Homepage Violet Gold.dc.html" style="color: rgba(243,237,223,0.7);">View public site ↗</a>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}"></script>
+</body>
+</html>

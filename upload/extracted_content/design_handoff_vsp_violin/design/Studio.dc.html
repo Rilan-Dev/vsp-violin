@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Studio — private · Violin Suka Pavalan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="responsive.css" />
+<style>
+  html { background: #16102A; scroll-behavior: smooth; }
+  body { margin: 0; background: #16102A; color: #F3EDDF; font-family: 'Instrument Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #E0BC6A; text-decoration: none; }
+  a:hover { color: #F2D89A; }
+  ::selection { background: #E0BC6A; color: #1B1233; }
+</style>
+</helmet>
+
+<div style="max-width: 1440px; margin: 0 auto;">
+
+  <div data-screen-label="Studio bar" style="position: sticky; top: 0; z-index: 50; background: rgba(37,26,66,0.95); backdrop-filter: blur(22px); border-bottom: 1px solid rgba(224,188,106,0.3);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 14px 32px;">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <span style="font-family: Marcellus, serif; font-size: 19px; letter-spacing: 0.07em; color: #E0BC6A;">STUDIO</span>
+        <span style="padding: 5px 11px; border: 1px solid rgba(224,188,106,0.45); font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #E0BC6A;">Private · signed in</span>
+      </div>
+      <div data-nav="links" style="display: flex; align-items: center; gap: 26px; font-size: 14px; font-weight: 500;">
+        <a href="Studio.dc.html" style="color: #F3EDDF;">New notation</a>
+        <a href="Studio Enquiries.dc.html" style="color: rgba(243,237,223,0.6);">Enquiries <span style="padding: 2px 7px; background: #C6402F; color: #FFF6EE; font-family: 'Geist Mono', monospace; font-size: 10px;">3</span></a>
+        <a href="Studio Lessons.dc.html" style="color: rgba(243,237,223,0.6);">All lessons</a>
+        <a href="Studio Categories.dc.html" style="color: rgba(243,237,223,0.6);">Categories</a>
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <a href="Homepage Violet Gold.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.72);">View site ↗</a>
+        <span style="padding: 9px 18px; border: 1px solid rgba(243,237,223,0.26); font-size: 13.5px; color: rgba(243,237,223,0.8);">Sign out</span>
+      </div>
+    </div>
+  </div>
+
+  <section data-screen-label="01 Access notice" style="padding: 30px 32px 0;">
+    <div style="border: 1px solid rgba(198,64,47,0.45); background: rgba(198,64,47,0.08); padding: 22px 26px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E5705C; flex: none;">Not public</span>
+      <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.82); flex: 1; min-width: 400px;">
+        This page lives behind a login at a separate address and is never linked from the public site.
+        Only Suka Pavalan — and one spare owner account — can reach it. Visitors cannot sign in,
+        comment, upload or see anything unpublished.
+      </p>
+    </div>
+  </section>
+
+  <section data-screen-label="02 New notation" style="padding: 40px 32px 0;">
+    <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; max-width: 66ch;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">Publish</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 50px; line-height: 1.08;">Publish a notation yourself, in four fields.</h2>
+      <p style="margin: 0; font-size: 16.5px; line-height: 1.62; color: rgba(243,237,223,0.72);">
+        Choose the category, upload the PDFs, paste the video links, publish. The lesson appears in
+        that category's menu, in the library grid, and in search — with no developer involved. This
+        is a design of the screen; the working version needs the backend described at the foot of
+        this page.
+      </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; align-items: start;">
+      <div style="border: 1px solid rgba(224,188,106,0.3); background: linear-gradient(160deg, rgba(107,75,168,0.18), rgba(243,237,223,0.025)); padding: 32px 34px; display: flex; flex-direction: column; gap: 24px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid rgba(224,188,106,0.26);">
+          <span style="font-family: Marcellus, serif; font-size: 22px;">New notation</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.5);">Draft · autosaved</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(243,237,223,0.55);">01 · Lesson title</span>
+          <div style="padding: 14px 16px; border: 1px solid rgba(243,237,223,0.2); background: rgba(22,16,42,0.5); font-size: 15.5px;">Sindhu Bhairavi — Thillana</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(243,237,223,0.55);">02 · Category — the menu it joins</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 7px;">
+            <span style="padding: 9px 15px; border: 1px solid rgba(243,237,223,0.2); font-size: 13px; color: rgba(243,237,223,0.66);">Carnatic Basics</span>
+            <span style="padding: 9px 15px; border: 1px solid rgba(243,237,223,0.2); font-size: 13px; color: rgba(243,237,223,0.66);">Geetham</span>
+            <span style="padding: 9px 15px; border: 1px solid rgba(243,237,223,0.2); font-size: 13px; color: rgba(243,237,223,0.66);">Varnam</span>
+            <span style="padding: 9px 15px; border: 1px solid rgba(243,237,223,0.2); font-size: 13px; color: rgba(243,237,223,0.66);">Krithi</span>
+            <span style="padding: 9px 15px; background: #E0BC6A; color: #1B1233; font-size: 13px; font-weight: 600;">Thillana ✓</span>
+            <span style="padding: 9px 15px; border: 1px solid rgba(243,237,223,0.2); font-size: 13px; color: rgba(243,237,223,0.66);">Thiruppugazh</span>
+            <span style="padding: 9px 15px; border: 1px solid rgba(243,237,223,0.2); font-size: 13px; color: rgba(243,237,223,0.66);">Devotional</span>
+            <span style="padding: 9px 15px; border: 1px solid rgba(243,237,223,0.2); font-size: 13px; color: rgba(243,237,223,0.66);">Cinema Songs</span>
+            <span style="padding: 9px 15px; border: 1px dashed rgba(224,188,106,0.5); font-size: 13px; color: #E0BC6A;">+ New category</span>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div style="display: flex; flex-direction: column; gap: 9px;">
+            <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(243,237,223,0.55);">03 · Raga</span>
+            <div style="padding: 13px 15px; border: 1px solid rgba(243,237,223,0.2); background: rgba(22,16,42,0.5); font-size: 14.5px;">Sindhu Bhairavi</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 9px;">
+            <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(243,237,223,0.55);">Thala</span>
+            <div style="padding: 13px 15px; border: 1px solid rgba(243,237,223,0.2); background: rgba(22,16,42,0.5); font-size: 14.5px;">Aadhi</div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(243,237,223,0.55);">04 · Files &amp; links</span>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div style="padding: 15px 16px; border: 1px solid rgba(120,220,170,0.4); background: rgba(120,220,170,0.08); display: flex; align-items: center; justify-content: space-between; gap: 10px;"><span style="font-size: 13.5px;">Notation — English</span><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #78DCAA;">✓ PDF</span></div>
+            <div style="padding: 15px 16px; border: 1px solid rgba(120,220,170,0.4); background: rgba(120,220,170,0.08); display: flex; align-items: center; justify-content: space-between; gap: 10px;"><span style="font-size: 13.5px;">Notation — Tamil</span><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #78DCAA;">✓ PDF</span></div>
+            <div style="padding: 15px 16px; border: 1px dashed rgba(243,237,223,0.26); display: flex; align-items: center; justify-content: space-between; gap: 10px;"><span style="font-size: 13.5px; color: rgba(243,237,223,0.7);">Violin video</span><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: rgba(243,237,223,0.45);">Paste link</span></div>
+            <div style="padding: 15px 16px; border: 1px dashed rgba(243,237,223,0.26); display: flex; align-items: center; justify-content: space-between; gap: 10px;"><span style="font-size: 13.5px; color: rgba(243,237,223,0.7);">Practice audio</span><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: rgba(243,237,223,0.45);">5 sruthis</span></div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 14px; padding-top: 20px; border-top: 1px solid rgba(224,188,106,0.26);">
+          <span style="padding: 15px 30px; background: #E0BC6A; color: #1B1233; font-family: Marcellus, serif; font-size: 15px; letter-spacing: 0.05em;">Publish to Thillana</span>
+          <span style="padding: 15px 26px; border: 1px solid rgba(243,237,223,0.26); font-size: 14px; color: rgba(243,237,223,0.78);">Preview</span>
+          <span style="margin-left: auto; font-family: 'Geist Mono', monospace; font-size: 10.5px; color: rgba(243,237,223,0.45);">Est. 90 seconds</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="border: 1px solid rgba(243,237,223,0.14); background: rgba(243,237,223,0.035); padding: 28px 30px; display: flex; flex-direction: column; gap: 18px;">
+          <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">What happens on publish</span>
+          <div style="display: flex; flex-direction: column; gap: 15px;">
+            <div style="display: flex; gap: 13px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A; flex: none;">01</span><span style="font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.78);">Thillana appears in the Lessons menu, with a live count of 1.</span></div>
+            <div style="display: flex; gap: 13px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A; flex: none;">02</span><span style="font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.78);">A lesson card is added to the library grid and to the raga index.</span></div>
+            <div style="display: flex; gap: 13px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A; flex: none;">03</span><span style="font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.78);">The lesson page is generated — notation switch, sruthi dial, video tabs.</span></div>
+            <div style="display: flex; gap: 13px; align-items: baseline;"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A; flex: none;">04</span><span style="font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.78);">Sitemap and search index update, so Google finds it the same day.</span></div>
+          </div>
+        </div>
+
+        <div style="border: 1px solid rgba(224,188,106,0.3); background: linear-gradient(150deg, rgba(224,188,106,0.1), rgba(243,237,223,0.02)); padding: 28px 30px; display: flex; flex-direction: column; gap: 14px;">
+          <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">What this needs to work for real</span>
+          <p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(243,237,223,0.74);">
+            A login, a database of lessons and categories, and file storage for the PDFs and audio.
+            Menus and pages then build themselves from that data. It is a well-trodden build — but it
+            is a second phase beyond the frontend, and it carries a small monthly hosting cost.
+          </p>
+          <p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(243,237,223,0.74);">
+            Cheaper alternative, if you prefer: the categories stay in one editable file and you send
+            me new lessons to add. Slower for you, no running cost. Tell me which you want and I will
+            plan around it.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section data-screen-label="03 Other screens" style="padding: 62px 32px 0;">
+    <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 26px; max-width: 62ch;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">Still to design</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 40px; line-height: 1.08;">Three more screens complete the studio</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+      <div style="border: 1px dashed rgba(224,188,106,0.4); padding: 28px 30px; display: flex; flex-direction: column; gap: 11px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #E0BC6A;">Screen 2</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 23px; line-height: 1.2;">Enquiries inbox</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.74);">Every trial request, booking and collaboration message in one list, marked read or replied, so nothing is missed the way that July comment was.</p>
+      </div>
+      <div style="border: 1px dashed rgba(224,188,106,0.4); padding: 28px 30px; display: flex; flex-direction: column; gap: 11px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #E0BC6A;">Screen 3</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 23px; line-height: 1.2;">All lessons</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.74);">The 22 published lessons — edit a title, swap a PDF, reorder within a category, or unpublish.</p>
+      </div>
+      <div style="border: 1px dashed rgba(224,188,106,0.4); padding: 28px 30px; display: flex; flex-direction: column; gap: 11px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #E0BC6A;">Screen 4</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 23px; line-height: 1.2;">Categories</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.74);">Add a menu like Thillana, rename one, or change the order they appear in. The public menu follows.</p>
+      </div>
+    </div>
+  </section>
+
+  <div data-screen-label="Footer" style="margin-top: 62px; padding: 40px 32px; border-top: 1px solid rgba(224,188,106,0.2); font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(243,237,223,0.55);">
+    <span>Studio · private area · Violin Suka Pavalan</span>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}"></script>
+</body>
+</html>

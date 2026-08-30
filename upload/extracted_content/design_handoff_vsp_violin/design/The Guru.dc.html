@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Guru — Violin Suka Pavalan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="responsive.css" />
+<style>
+  html { background: #16102A; scroll-behavior: smooth; }
+  body { margin: 0; background: #16102A; color: #F3EDDF; font-family: 'Instrument Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #E0BC6A; text-decoration: none; }
+  a:hover { color: #F2D89A; }
+  ::selection { background: #E0BC6A; color: #1B1233; }
+</style>
+</helmet>
+
+<div style="max-width: 1440px; margin: 0 auto;">
+
+  <div data-screen-label="Nav" onMouseLeave="{{ closeMenu }}" onKeyDown="{{ onNavKey }}" onBlur="{{ onNavBlur }}" style="position: sticky; top: 0; z-index: 50; background: rgba(22,16,42,0.92); backdrop-filter: blur(22px); border-bottom: 1px solid rgba(224,188,106,0.24);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 16px 32px;">
+      <a href="Homepage Violet Gold.dc.html" style="font-family: Marcellus, serif; font-size: 21px; letter-spacing: 0.07em; color: #E0BC6A;">SUKA PAVALAN</a>
+      <div data-nav="links" style="display: flex; align-items: center; gap: 28px; font-size: 14px; font-weight: 500;">
+        <span role="button" tabindex="0" aria-expanded="{{ menuOpenStr }}" aria-controls="lessons-menu" aria-label="Lessons — open category menu" onClick="{{ toggleMenu }}" onMouseEnter="{{ openMenu }}" onFocus="{{ openMenu }}" onKeyDown="{{ onTriggerKey }}" style="position: relative; display: flex; align-items: center; gap: 6px; cursor: pointer; color: rgba(243,237,223,0.72); background: none; border: none; font-size: 14px; font-weight: 500; font-family: inherit;">Lessons <span style="font-size: 9px; color: #E0BC6A;">▼</span></span>
+        <a href="Learn the Violin.dc.html" style="color: rgba(243,237,223,0.72);">Learn the Violin</a>
+        <a href="The Guru.dc.html" style="color: #F3EDDF;">The Guru</a>
+        <a href="Honours.dc.html" style="color: rgba(243,237,223,0.72);">Honours</a>
+        <a href="Stage.dc.html" style="color: rgba(243,237,223,0.72);">Stage</a>
+      </div>
+      <a href="Enquire.dc.html" style="padding: 11px 24px; border: 1px solid #E0BC6A; color: #E0BC6A; font-family: Marcellus, serif; font-size: 14px; letter-spacing: 0.06em;">Enrol</a>
+    </div>
+    <div id="lessons-menu" data-dropdown="lessons" data-open="{{ menuOpenStr }}" aria-hidden="{{ menuHiddenStr }}" style="{{ dropdownStyle }}">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Carnatic — Basics</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Sruthi Swara Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Sarali Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Janta Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Melsthayi Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Thattu Varisai</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Carnatic — Advanced</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Geetham <span style="color: rgba(243,237,223,0.55);">5</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Swarajathi <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Nottuswaram <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Varnam <span style="color: rgba(243,237,223,0.55);">3</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Krithi <span style="color: rgba(243,237,223,0.55);">3</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">Thillana <span style="color: rgba(243,237,223,0.5);">0</span></a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Devotional</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Thiruppugazh <span style="color: rgba(243,237,223,0.55);">2</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Bhakthi <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">Thevaram <span style="color: rgba(243,237,223,0.5);">0</span></a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Light Music &amp; Media</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Cinema Songs <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">English Songs <span style="color: rgba(243,237,223,0.5);">0</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">Other Languages <span style="color: rgba(243,237,223,0.5);">0</span></a>
+        <a href="Stage.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Live Video <span style="color: rgba(243,237,223,0.55);">7</span></a>
+        <a href="Stage.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Live Audio <span style="color: rgba(243,237,223,0.55);">3</span></a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">More</span>
+        <a href="Learn the Violin.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Learn the Violin</a>
+        <a href="The Guru.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">The Guru</a>
+        <a href="Honours.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Honours</a>
+        <a href="Stage.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Stage</a>
+      </div>
+    </div>
+  </div>
+
+  <section data-screen-label="01 Hero" style="position: relative; overflow: hidden;">
+    <div style="position: absolute; inset: 0; background: radial-gradient(65% 60% at 30% -10%, rgba(107,75,168,0.45), transparent 62%), radial-gradient(55% 50% at 92% 80%, rgba(224,188,106,0.13), transparent 62%); pointer-events: none;"></div>
+    <div style="position: relative; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 52px; padding: 68px 32px 72px; align-items: center;">
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.24em; text-transform: uppercase; color: #E0BC6A;">Violin Suka Pavalan · M.A. Thamizhisai, D.C.Tech, D.T.T</span>
+        <h1 style="margin: 0; font-family: Marcellus, serif; font-size: 62px; line-height: 1.06;">Six when he started.<br />Eight when he first<br />played to a room.</h1>
+        <p style="margin: 0; font-size: 17.5px; line-height: 1.68; color: rgba(243,237,223,0.78); max-width: 52ch;">
+          A violinist of thirty-seven years, teaching since 2000, from a house in Karaikal to students
+          across India and America. Classical and light music, Carnatic and Western, performer and
+          composer and guru.
+        </p>
+        <div style="display: flex; gap: 34px; padding-top: 12px; border-top: 1px solid rgba(224,188,106,0.26);">
+          <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-family: Marcellus, serif; font-size: 30px; color: #E0BC6A;">1990</span><span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.6);">First stage</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-family: Marcellus, serif; font-size: 30px; color: #E0BC6A;">1992</span><span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.6);">First broadcast</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-family: Marcellus, serif; font-size: 30px; color: #E0BC6A;">2000</span><span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.6);">First students</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-family: Marcellus, serif; font-size: 30px; color: #E0BC6A;">2015</span><span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.6);">First television</span></div>
+        </div>
+      </div>
+      <div style="position: relative; display: grid; place-items: center;">
+        <div style="position: relative; width: 100%; max-width: 430px; height: 530px; border-radius: 215px 215px 0 0; overflow: hidden; border: 1px solid rgba(224,188,106,0.45); background: #251A42;">
+          <img src="assets/portrait-playing.jpeg" alt="Suka Pavalan playing the violin" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 16%;" />
+          <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(22,16,42,0.05) 0%, rgba(22,16,42,0.15) 55%, rgba(22,16,42,0.85) 100%);"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="02 In his words" style="padding: 0 32px;">
+    <div style="border-top: 1px solid rgba(224,188,106,0.26); padding: 62px 0 0; display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 52px; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 16px; position: sticky; top: 100px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">In his own words</span>
+        <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 40px; line-height: 1.1;">The work, described plainly</h2>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 22px;">
+        <p style="margin: 0; font-size: 17px; line-height: 1.72; color: rgba(243,237,223,0.82);">
+          A highly skilled and passionate violinist with over thirty years of experience, I have had the
+          privilege of performing and teaching across various musical genres, including classical, light
+          music, and both Carnatic and Western styles. As a performer, I have organised, coordinated,
+          and participated in numerous live and televised concerts, both nationally and internationally.
+        </p>
+        <p style="margin: 0; font-size: 17px; line-height: 1.72; color: rgba(243,237,223,0.82);">
+          I am honoured to have received several prestigious awards and titles throughout my career,
+          celebrating my contributions to the world of music. My extensive expertise in composing music
+          spans both Carnatic and Western traditions, and I take pride in collaborating with other
+          artists to create exceptional performances that resonate with diverse audiences.
+        </p>
+        <p style="margin: 0; font-size: 17px; line-height: 1.72; color: rgba(243,237,223,0.82);">
+          One of my proudest achievements is the development of a unique method to convert Carnatic
+          notation into multiple languages. This system is now widely used in universities and colleges,
+          helping students around the world access this invaluable knowledge in a more inclusive and
+          comprehensible way.
+        </p>
+        <p style="margin: 0; font-size: 17px; line-height: 1.72; color: rgba(243,237,223,0.82);">
+          Since 2000, I have been dedicated to teaching violin and vocal classes to students of all ages
+          and backgrounds, both in person and online. My work as a mentor has been especially rewarding,
+          as I have guided many students to successfully complete their Arangetrams — an important
+          milestone in their musical journey. Today, many of my students continue to perform and share
+          their musical talents across India and beyond.
+        </p>
+        <p style="margin: 0; font-size: 17px; line-height: 1.72; color: rgba(243,237,223,0.82);">
+          My mission is to continue passing on this beautiful art form to future generations, fostering
+          a deep appreciation for music and its transformative power.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="03 Lineage" style="margin: 72px 0 0; padding: 66px 32px; background: linear-gradient(180deg, #241A44, #1A1234); border-top: 1px solid rgba(224,188,106,0.22); border-bottom: 1px solid rgba(224,188,106,0.22);">
+    <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 34px; max-width: 62ch;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">Lineage</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 44px; line-height: 1.08;">Who taught the teacher</h2>
+      <p style="margin: 0; font-size: 16.5px; line-height: 1.62; color: rgba(243,237,223,0.74);">
+        In Carnatic music the lineage matters as much as the certificate. He began violin and vocal at
+        six, learned harmonium from his father, and studied Western music alongside the tradition.
+      </p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+      <div style="border: 1px solid rgba(224,188,106,0.34); background: linear-gradient(150deg, rgba(224,188,106,0.1), rgba(243,237,223,0.02)); padding: 28px 30px; display: flex; flex-direction: column; gap: 16px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">From age six · violin &amp; vocal</span>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-family: Marcellus, serif; font-size: 20px; line-height: 1.3;">Thiruvarur Shri S. Santhanam</span>
+          <span style="font-family: Marcellus, serif; font-size: 20px; line-height: 1.3;">Nellai Shri E. Shanmuganathan</span>
+          <span style="font-family: Marcellus, serif; font-size: 20px; line-height: 1.3;">Mayavaram Shri S. Sivaswamy Iyer</span>
+        </div>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 28px 30px; display: flex; flex-direction: column; gap: 16px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(243,237,223,0.62);">Advanced violin</span>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-family: Marcellus, serif; font-size: 20px; line-height: 1.3;">Shri V. L. Sudharsan</span>
+          <div style="display: flex; flex-direction: column; gap: 3px;">
+            <span style="font-family: Marcellus, serif; font-size: 20px; line-height: 1.3;">Shri Kumaresh</span>
+            <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; color: #E0BC6A;">OF GANESH–KUMARESH</span>
+          </div>
+        </div>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 28px 30px; display: flex; flex-direction: column; gap: 16px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(243,237,223,0.62);">Beyond the tradition</span>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; flex-direction: column; gap: 3px;">
+            <span style="font-family: Marcellus, serif; font-size: 20px; line-height: 1.3;">Porayar Shri Adisayam Arumairaj</span>
+            <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; color: #E0BC6A;">WESTERN MUSIC</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 3px;">
+            <span style="font-family: Marcellus, serif; font-size: 20px; line-height: 1.3;">Shri S. Subramaniyan</span>
+            <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; color: #E0BC6A;">HARMONIUM · HIS FATHER</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="04 Education" style="padding: 66px 32px 0;">
+    <div style="display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 52px; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">Education</span>
+        <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 40px; line-height: 1.1;">Trained, and formally qualified</h2>
+        <p style="margin: 0; font-size: 16px; line-height: 1.62; color: rgba(243,237,223,0.72); max-width: 40ch;">
+          Including a computer technology diploma — which is why the recordings, the notation fonts and
+          the home studio all exist.
+        </p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0; border-top: 1px solid rgba(224,188,106,0.3);">
+        <div style="padding: 20px 0; border-bottom: 1px solid rgba(243,237,223,0.12); display: grid; grid-template-columns: 1fr 260px; gap: 26px; align-items: baseline;">
+          <span style="font-family: Marcellus, serif; font-size: 21px;">M.A. Thamizhisai</span>
+          <span style="font-size: 14.5px; color: rgba(243,237,223,0.68);">Tamil University · 2008–2010</span>
+        </div>
+        <div style="padding: 20px 0; border-bottom: 1px solid rgba(243,237,223,0.12); display: grid; grid-template-columns: 1fr 260px; gap: 26px; align-items: baseline;">
+          <span style="font-family: Marcellus, serif; font-size: 21px;">Diploma in Teacher Training (Music)</span>
+          <span style="font-size: 14.5px; color: rgba(243,237,223,0.68);">Tamil University · 2007–2008</span>
+        </div>
+        <div style="padding: 20px 0; border-bottom: 1px solid rgba(243,237,223,0.12); display: grid; grid-template-columns: 1fr 260px; gap: 26px; align-items: baseline;">
+          <span style="font-family: Marcellus, serif; font-size: 21px;">Higher Grade in Indian Music</span>
+          <span style="font-size: 14.5px; color: rgba(243,237,223,0.68);">2007</span>
+        </div>
+        <div style="padding: 20px 0; border-bottom: 1px solid rgba(243,237,223,0.12); display: grid; grid-template-columns: 1fr 260px; gap: 26px; align-items: baseline;">
+          <span style="font-family: Marcellus, serif; font-size: 21px;">Bachelor of Music — Violin</span>
+          <span style="font-size: 14.5px; color: rgba(243,237,223,0.68);">Annamalai University · 2005–2008</span>
+        </div>
+        <div style="padding: 20px 0; border-bottom: 1px solid rgba(243,237,223,0.12); display: grid; grid-template-columns: 1fr 260px; gap: 26px; align-items: baseline;">
+          <span style="font-family: Marcellus, serif; font-size: 21px;">Diploma in Computer Technology</span>
+          <span style="font-size: 14.5px; color: rgba(243,237,223,0.68);">Karaikal Polytechnic · 1997–2000</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="05 Performance record" style="padding: 66px 32px 0;">
+    <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; max-width: 64ch;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">On air and on stage</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 44px; line-height: 1.08;">Thirty-four years of playing in public</h2>
+      <p style="margin: 0; font-size: 16.5px; line-height: 1.62; color: rgba(243,237,223,0.74);">
+        As an artist it always gives pleasure to perform on any platform. Radio, stage and television —
+        each a different room, the same music.
+      </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+      <div style="border: 1px solid rgba(224,188,106,0.34); background: linear-gradient(150deg, rgba(224,188,106,0.11), rgba(107,75,168,0.14)); padding: 28px 28px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: Marcellus, serif; font-size: 38px; color: #E0BC6A;">5,000<span style="font-size: 24px;">+</span></span>
+        <span style="font-family: Marcellus, serif; font-size: 20px;">Live performances</span>
+        <span style="font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.7);">Across prestigious platforms since 1990.</span>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 28px 28px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: Marcellus, serif; font-size: 38px; color: #E0BC6A;">1992</span>
+        <span style="font-family: Marcellus, serif; font-size: 20px;">All India Radio</span>
+        <span style="font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.7);">Regular broadcasts on AIR Trichy, AIR Puducherry and AIR Karaikal.</span>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 28px 28px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: Marcellus, serif; font-size: 38px; color: #E0BC6A;">Every<span style="font-size: 20px;"> year</span></span>
+        <span style="font-family: Marcellus, serif; font-size: 20px;">Thyagaraja Aradhana</span>
+        <span style="font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.7);">At Thiruvaiyaru since 1992, paying homage to the saint-composer.</span>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 28px 28px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: Marcellus, serif; font-size: 38px; color: #E0BC6A;">6</span>
+        <span style="font-family: Marcellus, serif; font-size: 20px;">Television channels</span>
+        <span style="font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.7);">Sun TV, Raj TV, Podhigai, Thamizhan, Puthuyugam and Puthiya Thalaimurai, since 2015.</span>
+      </div>
+    </div>
+
+    <div style="margin-top: 16px; border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 32px 34px; display: grid; grid-template-columns: 260px 1fr; gap: 40px; align-items: center;">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">Abroad tours</span>
+        <span style="font-family: Marcellus, serif; font-size: 28px; line-height: 1.2;">United States of America</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; padding-top: 6px;">
+          <span style="padding: 5px 11px; border: 1px solid rgba(224,188,106,0.45); font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">2013</span>
+          <span style="padding: 5px 11px; border: 1px solid rgba(224,188,106,0.45); font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">2014</span>
+          <span style="padding: 5px 11px; border: 1px solid rgba(224,188,106,0.45); font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">2015</span>
+          <span style="padding: 5px 11px; border: 1px solid rgba(224,188,106,0.45); font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">2017</span>
+          <span style="padding: 5px 11px; border: 1px solid rgba(224,188,106,0.45); font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">2018</span>
+          <span style="padding: 5px 11px; border: 1px solid rgba(224,188,106,0.45); font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">2019</span>
+        </div>
+      </div>
+      <p style="margin: 0; font-size: 16.5px; line-height: 1.68; color: rgba(243,237,223,0.78);">
+        Performed in prestigious venues and events across the USA, captivating audiences with
+        mesmerising musical performances. These international tours highlight a global presence and a
+        dedication to sharing the richness of music across cultures.
+      </p>
+    </div>
+  </section>
+
+  <section data-screen-label="06 Mission and vision" style="margin: 72px 0 0; padding: 66px 32px; background: linear-gradient(180deg, #241A44, #1A1234); border-top: 1px solid rgba(224,188,106,0.22); border-bottom: 1px solid rgba(224,188,106,0.22);">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 52px;">
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">Mission</span>
+          <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 38px; line-height: 1.1;">What he sets out to do</h2>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0;">
+          <div style="padding: 18px 0; border-top: 1px solid rgba(224,188,106,0.26); display: grid; grid-template-columns: 34px 1fr; gap: 18px;"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">01</span><span style="font-size: 16px; line-height: 1.62; color: rgba(243,237,223,0.82);">To share the joy of violin playing with students of all ages, nurturing their skills, creativity, and love for music.</span></div>
+          <div style="padding: 18px 0; border-top: 1px solid rgba(224,188,106,0.26); display: grid; grid-template-columns: 34px 1fr; gap: 18px;"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">02</span><span style="font-size: 16px; line-height: 1.62; color: rgba(243,237,223,0.82);">To continuously grow as a musician, refining my technique and expression while staying true to my passion for music.</span></div>
+          <div style="padding: 18px 0; border-top: 1px solid rgba(224,188,106,0.26); display: grid; grid-template-columns: 34px 1fr; gap: 18px;"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">03</span><span style="font-size: 16px; line-height: 1.62; color: rgba(243,237,223,0.82);">To inspire and move audiences through the beauty of violin music, bringing emotion, storytelling, and artistry to every performance.</span></div>
+          <div style="padding: 18px 0; border-top: 1px solid rgba(224,188,106,0.26); display: grid; grid-template-columns: 34px 1fr; gap: 18px;"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">04</span><span style="font-size: 16px; line-height: 1.62; color: rgba(243,237,223,0.82);">To use the power of music to connect cultures, promote peace, and bring hope to communities through performances and outreach.</span></div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #C9AEF5;">Vision</span>
+          <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 38px; line-height: 1.1;">Where he wants it to go</h2>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0;">
+          <div style="padding: 18px 0; border-top: 1px solid rgba(201,174,245,0.3); display: grid; grid-template-columns: 34px 1fr; gap: 18px;"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #C9AEF5;">01</span><span style="font-size: 16px; line-height: 1.62; color: rgba(243,237,223,0.82);">To redefine the possibilities of violin music, blending tradition with innovation to create transformative musical experiences that touch the soul.</span></div>
+          <div style="padding: 18px 0; border-top: 1px solid rgba(201,174,245,0.3); display: grid; grid-template-columns: 34px 1fr; gap: 18px;"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #C9AEF5;">02</span><span style="font-size: 16px; line-height: 1.62; color: rgba(243,237,223,0.82);">To use the violin as a tool for cultural exchange, healing, and unity, bringing music to communities that need it most.</span></div>
+          <div style="padding: 18px 0; border-top: 1px solid rgba(201,174,245,0.3); display: grid; grid-template-columns: 34px 1fr; gap: 18px;"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #C9AEF5;">03</span><span style="font-size: 16px; line-height: 1.62; color: rgba(243,237,223,0.82);">To build a world where music education is accessible to all, inspiring future generations of violinists to develop their talent and passion for the arts.</span></div>
+          <div style="padding: 18px 0; border-top: 1px solid rgba(201,174,245,0.3); display: grid; grid-template-columns: 34px 1fr; gap: 18px;"><span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #C9AEF5;">04</span><span style="font-size: 16px; line-height: 1.62; color: rgba(243,237,223,0.82);">To continuously evolve as an artist, pushing creative boundaries while honouring the rich heritage of violin music.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="07 Interests" style="padding: 66px 32px 0;">
+    <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; max-width: 62ch;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">Beyond the classroom</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 44px; line-height: 1.08;">Six things occupying him now</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+      <div style="border: 1px solid rgba(224,188,106,0.34); background: linear-gradient(150deg, rgba(224,188,106,0.1), rgba(243,237,223,0.02)); padding: 28px 30px; display: flex; flex-direction: column; gap: 11px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #E0BC6A;">01</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px; line-height: 1.2;">Music education for all</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.74);">Conducting free coaching classes for economically disadvantaged students, nurturing the next generation of musicians.</p>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 28px 30px; display: flex; flex-direction: column; gap: 11px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">02</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px; line-height: 1.2;">Carnatic music made easy</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.74);">Developing a comprehensive book to simplify Carnatic music learning in multiple languages.</p>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 28px 30px; display: flex; flex-direction: column; gap: 11px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">03</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px; line-height: 1.2;">Fusion &amp; creative composition</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.74);">Experimenting with diverse musical styles, including jingles and innovative compositions.</p>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 28px 30px; display: flex; flex-direction: column; gap: 11px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">04</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px; line-height: 1.2;">Background scores for short films</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.74);">Composing expressive and dynamic scores for visual storytelling.</p>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 28px 30px; display: flex; flex-direction: column; gap: 11px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">05</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px; line-height: 1.2;">Home studio recording</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.74);">Exploring sound production and recording music in a professional home studio setup.</p>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 28px 30px; display: flex; flex-direction: column; gap: 11px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">06</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px; line-height: 1.2;">Playback singing</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.74);">Contributing vocals for light music albums, blending classical depth with contemporary styles.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="08 Enrol" style="margin: 72px 0 0; padding: 62px 32px; background: linear-gradient(180deg, #2A1D4E, #16102A); border-top: 1px solid rgba(224,188,106,0.24);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 44px; flex-wrap: wrap;">
+      <div style="display: flex; flex-direction: column; gap: 14px; max-width: 56ch;">
+        <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 42px; line-height: 1.08;">Learn from him directly.</h2>
+        <p style="margin: 0; font-size: 16.5px; line-height: 1.62; color: rgba(243,237,223,0.74);">
+          Weekly one-to-one lessons, online or in person at Karaikal. Violin or vocal, beginner to
+          Arangetram. The first lesson is free.
+        </p>
+      </div>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <a href="Enquire.dc.html" style="padding: 17px 32px; background: #E0BC6A; color: #1B1233; font-family: Marcellus, serif; font-size: 16px; letter-spacing: 0.05em;">Book a free trial</a>
+        <a href="Honours.dc.html" style="padding: 17px 30px; border: 1px solid rgba(243,237,223,0.3); color: #F3EDDF; font-family: Marcellus, serif; font-size: 16px; letter-spacing: 0.05em;">See the honours</a>
+      </div>
+    </div>
+  </section>
+
+  <div data-screen-label="Footer" style="padding: 46px 32px; border-top: 1px solid rgba(224,188,106,0.2); display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(243,237,223,0.55);">
+    <span>© 2026 Violin Suka Pavalan · Karaikal, Puducherry</span>
+    <div style="display: flex; gap: 24px;">
+      <a href="Homepage Violet Gold.dc.html" style="color: rgba(243,237,223,0.7);">Home</a>
+      <a href="Library.dc.html" style="color: rgba(243,237,223,0.7);">All lessons</a>
+      <a href="Enquire.dc.html" style="color: rgba(243,237,223,0.7);">Contact</a>
+          <a href="Legal.dc.html" style="color: rgba(243,237,223,0.7);">Privacy &amp; terms</a>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">class Component extends DCLogic {
+  state = { menuOpen: false };
+  renderVals() {
+    const open = this.state.menuOpen;
+    return {
+      openMenu: () => this.setState({ menuOpen: true }),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      onNavKey: (e) => {
+        if (e.key === 'Escape') this.setState({ menuOpen: false });
+      },
+      onNavBlur: (e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) this.setState({ menuOpen: false });
+      },
+      onTriggerKey: (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.setState(s => ({ menuOpen: !s.menuOpen })); }
+        if (e.key === 'Escape') this.setState({ menuOpen: false });
+      },
+      menuOpenStr: open ? 'true' : 'false',
+      menuHiddenStr: open ? 'false' : 'true',
+      dropdownStyle: {
+        position: 'absolute', left: 0, right: 0, top: '100%',
+        background: 'rgba(37,26,66,0.98)', backdropFilter: 'blur(22px)',
+        borderTop: '1px solid rgba(224,188,106,0.24)',
+        borderBottom: '1px solid rgba(224,188,106,0.24)',
+        padding: open ? '24px 32px' : '0 32px',
+        display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px',
+        maxHeight: open ? '340px' : '0px',
+        opacity: open ? 1 : 0,
+        visibility: open ? 'visible' : 'hidden',
+        overflow: 'hidden',
+        pointerEvents: open ? 'auto' : 'none',
+        transition: 'max-height 340ms cubic-bezier(.16,1,.3,1), opacity 240ms ease, padding 340ms cubic-bezier(.16,1,.3,1), visibility 340ms'
+      }
+    };
+  }
+}</script>
+</body>
+</html>

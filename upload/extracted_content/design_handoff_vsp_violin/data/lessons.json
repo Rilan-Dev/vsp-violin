@@ -1,0 +1,695 @@
+{
+  "note": "Fully-detailed lesson records extracted from individual post pages. 8 of ~25 lesson posts done; the rest follow the same shape.",
+  "schema": [
+    "id",
+    "title",
+    "titleTamil",
+    "category",
+    "raga",
+    "thala",
+    "notationPdfTamil",
+    "notationPdfEnglish",
+    "violinVideo",
+    "vocalVideo",
+    "perVideoEmbeds",
+    "titleCard",
+    "sourceUrl",
+    "date"
+  ],
+  "items": [
+    {
+      "id": "bakthi-lingashtagam",
+      "title": "Lingashtagam (Brahmmamuraari)",
+      "titleTamil": "லிங்காஷ்டகம் (ப்ரம்மமுராரி)",
+      "category": "Bakthi",
+      "date": "2023-02-17",
+      "notationPdfTamil": "https://drive.google.com/file/d/1bgtVSNq5i0p0NSrzhqxS7ge48K-j7-eK/view?usp=share_link",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1Hmn_-YDkYfpYnXs7nSh0gHAICfJ1KpVJ/view?usp=share_link",
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgIMiCHL2PHShNC9p30xQRlawzqIBaRJrUZuwXDWBSthybSzNWiPTXUnxUDdUXo0iNrrkDnFMN4XhLIKimHDRw3EvQg0e8bLUJ2N566m18DyOpJ2VIdkaGetzUGnLS8DL5bWIY7Xb3uJ0cy3BRYnuL95Wp1lM5oQEMCzfFV1JUWJ6JDrSl80OY2tERdlw/s1920/Blog.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2023/02/blog-post.html",
+      "defect": "Post has no title on the live site (H1 empty; share links carry an empty text param)."
+    },
+    {
+      "id": "basic-01-sruthi-swara-varisai",
+      "title": "Carnatic Basic Lesson I — Sruthi Swara Varisai",
+      "titleTamil": "ஸ்ருதி ஸ்வர வரிசை",
+      "category": "Basic Lessons",
+      "level": 1,
+      "date": "2021-03-20",
+      "notationPdfTamil": "https://drive.google.com/file/d/1tIgvDyqEgB5N6thQ61KewyuSHF0p898G/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1OZuy-Ag_0c93VRHU15MdPF3KR3ImlYS4/view?usp=sharing",
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhbioli5J0DV4L1aJ4hKs7K93TOSTjpNnRHrYX5YC-TtjFdEcY_iJYP3tOdF0cG1hqDq9-6oaw3GqUZiZHHWH0CMmmDwU2MUCVLStjyWFEjkq2BvM9isKhiCGCo7dCMn-racBUgYWwNRic/s1920/Sruthi+Swara+Varisai+Varisai+Tittle.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/03/carnatic-basic-lesson-i-sruthi-swara.html"
+    },
+    {
+      "id": "basic-02-sarali-varisai",
+      "title": "Carnatic Basic Lesson II — Sarali Varisai",
+      "titleTamil": "ஸரளி வரிசை",
+      "category": "Basic Lessons",
+      "level": 2,
+      "date": "2021-03-20",
+      "notationPdfTamil": "https://drive.google.com/file/d/1xeTtaIFEueza_1EypfnAQ9Se1VR9EXIs/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1_1cXpqSOS2a_ZEMMvbVvAk5tVRAUNx3n/view?usp=sharing",
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjlLfWMBekg-V2V_7n3HN-vSCiT7l0Ak0LsA-fzpvw7Z0uGzYOLztaWT9Og0ZEMZxxhT0K6nFzLZINeb5jlyDz9g1IEhEn9VydbH_3sMJZ-jZpCHVeTe5bGD_O3MbyriRUayGAKyZLYF28/s1920/II+Sarali+Varisai+Blog.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/03/carnatic-basic-lesson-ii-sarali-varisai.html",
+      "perVideoEmbeds": {
+        "violin": [
+          {
+            "label": "1st Speed — 1 to 7",
+            "youtubeId": "MhnVd3BaJaY"
+          },
+          {
+            "label": "1st Speed — 8 to 14",
+            "youtubeId": "7gEL8ZAt96g"
+          },
+          {
+            "label": "2nd Speed — 1 to 7",
+            "youtubeId": "JL-wyWldLqU"
+          },
+          {
+            "label": "2nd Speed — 8 to 14",
+            "youtubeId": "taQlWh-Y0GI"
+          },
+          {
+            "label": "3rd Speed — 1 to 7",
+            "youtubeId": "Y4ZV1y9mhaw"
+          },
+          {
+            "label": "3rd Speed — 8 to 14",
+            "youtubeId": "Z82jwmOOLOk"
+          },
+          {
+            "label": "Thrikaalam — 1 to 7",
+            "youtubeId": "GjuFepzLmqE"
+          },
+          {
+            "label": "Thrikaalam — 8 to 14",
+            "youtubeId": "LQxgmhx6W24"
+          }
+        ],
+        "vocal": [
+          {
+            "label": "1st Speed — 1 to 7",
+            "youtubeId": "DEo8CkvcnEA"
+          },
+          {
+            "label": "1st Speed — 8 to 14",
+            "youtubeId": "wz6duXP6TjQ"
+          },
+          {
+            "label": "2nd Speed — 1 to 7",
+            "youtubeId": "7677kIH7E1k"
+          },
+          {
+            "label": "2nd Speed — 8 to 14",
+            "youtubeId": "wkuIeivqZRs"
+          },
+          {
+            "label": "3rd Speed — 1 to 7",
+            "youtubeId": "YZQXGHeGhyo"
+          },
+          {
+            "label": "3rd Speed — 8 to 14",
+            "youtubeId": "NJJ_Xwdtfmk"
+          },
+          {
+            "label": "Thrikaalam — 1 to 7",
+            "youtubeId": "2UgxBoZTPZM"
+          },
+          {
+            "label": "Thrikaalam — 8 to 14",
+            "youtubeId": "SqgvhH5OLvQ"
+          }
+        ]
+      }
+    },
+    {
+      "id": "basic-03-janta-varisai",
+      "title": "Carnatic Basic Lesson III — Janta Varisai",
+      "titleTamil": "ஜண்டை வரிசை",
+      "category": "Basic Lessons",
+      "level": 3,
+      "date": "2021-03-20",
+      "notationPdfTamil": "https://drive.google.com/file/d/1GdDI4lYZSU3vZ21lY1vJGCXgEena-yiP/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1K3AuTnfRq4gBTvWBZ6x5aZwAdOx2S8BL/view?usp=sharing",
+      "violinVideo": "https://youtube.com/playlist?list=PLSyLc0ng1ywB1YpB_n73HFRUKAy41XiaP",
+      "vocalVideo": "https://youtube.com/playlist?list=PLSyLc0ng1ywBpCm9mTSvwFsUIWCMgke9W",
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg_W_xSfm8bwwxT4JrZusruG7MbE9r72aCgaVZMyCwH_QG4dQZz-ABqqlYQbNiIuaxJ64FCJ0IyksURZddQ5NvHGnQdKVT-O34vit1YMoy4uwctQpuavD4mYWTeSwFP7Rw-6bFLN36BNhg/s1920/III+Janta+Varisai+Tittle.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/03/carnatic-basic-lesson-iii-janta-varisai.html"
+    },
+    {
+      "id": "basic-04-melsthayi-varisai",
+      "title": "Carnatic Basic Lesson IV — Melsthaye Varisai (Upper Sthayi Varisai)",
+      "titleTamil": "மேல்ஸ்தாயி வரிசை",
+      "category": "Basic Lessons",
+      "level": 4,
+      "date": "2021-03-20",
+      "notationPdfTamil": "https://drive.google.com/file/d/1h2pjd_htUYaffFvLNbtdZ272EcSuuffZ/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1fzC_Z0wuamgSKZYtF1cqIVYgwOAXsdY0/view?usp=sharing",
+      "violinVideo": "https://youtube.com/playlist?list=PLSyLc0ng1ywDclLCsnxzIh1ke3r5uB1Ev",
+      "vocalVideo": "https://youtube.com/playlist?list=PLSyLc0ng1ywBRpmWA0LX8xEMVvE2QuT2t",
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhwaF6ls42G1QUenjtb4SfEjVhm42N26ZrRTd9dz5e2GDTCMUSucgsrd3riQI1O8kwU5UcymKwSvOVzyHoIS3lBxbCZTAXjHMPVZ7GPaGUfYyWQQkQwl3aAJ22A-HcPIcI6rj6AvFfAQuc/s1920/Mealsthayi+Varisai+Tittle.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/03/carnatic-basic-lesson-iv-melsthaye.html"
+    },
+    {
+      "id": "basic-05-thattu-varisai",
+      "title": "Carnatic Basic Lesson V — Thattu Varisai",
+      "titleTamil": "தாட்டு வரிசை",
+      "category": "Basic Lessons",
+      "level": 5,
+      "date": "2021-03-28",
+      "notationPdfTamil": "https://drive.google.com/file/d/1Jtn_YYSh0AWYtXKW-8WSqj4YSLrg4PHW/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1WP3Hsmjy9Ui297FFV3QvGIm3nuhsQr60/view?usp=sharing",
+      "violinVideo": "https://youtube.com/playlist?list=PLSyLc0ng1ywBbf8-kRdd7p8l7TWrjbOPk",
+      "vocalVideo": "https://youtube.com/playlist?list=PLSyLc0ng1ywDLg3yYbrWmUVjLXYJJfEJt",
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh99wSp0sHCHkf0-PouD_D5TaKo5KuvQeu1BnIGKtuRoFvLvrKPICdPvFb9xEXPfO_4g3Un3DGHMYiLNgBVfdnF3xMiY0Pz0s0F_UWPNeXsSRrOzUxo_PXZzY1nwZW8lRbtBLXB_vWclYg/s1920/Thattu+Varisai+Varisai+Tittle.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/03/carnatic-basic-lesson-v-thattu-varisai.html"
+    },
+    {
+      "id": "cine-poongathave",
+      "title": "Poongathave — Cine (Tamil)",
+      "titleTamil": "பூங்கதவே",
+      "category": "Cine Songs",
+      "raga": "Mayamalavagowlai",
+      "date": "2021-07-31",
+      "notationPdfTamil": "https://drive.google.com/file/d/1YeHb046RiBGQFBx_PBvaXcvcqNlXk2Hu/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1vFWhzmGxzS-s6cU42zbsSRG4lzc4wx3s/view?usp=sharing",
+      "violinVideoEmbed": "https://www.youtube.com/embed/tRVw9-ZOZKw",
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjN4dNCdTupTUvI58pTdjskZjmiHZM0RhfPvSsHVgxyZ7bVHUdyfqepA7P1w_DRK2VwWEMtnhGSi2TTLF63dD8FnVbFt-Gw0ejpN5ou141QUp3m_Kdgj0mm4lIXzWmhB2njlmKm1C4EoWND/s1000/Poongathave+IT.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/07/youtube-video-player.html",
+      "defect": "URL slug is 'youtube-video-player'; post has no title on the live site; Tamil title misspelt 'பூகத்தவே'. One spam comment present."
+    },
+    {
+      "id": "geetham-gananaatha",
+      "title": "Gananaatha Kazhal Thozhuthean — Geetham",
+      "titleTamil": "கணநாதா கழல் தொழுதேன்",
+      "category": "Geetham",
+      "raga": "Mayamalavagowlai",
+      "date": "2021-04-07",
+      "notationPdfTamil": "https://drive.google.com/file/d/11NQjNNTADPCt9fQErxkG4TIF3AbgMis5/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1ynZV-2KN6CknGMDuJODsF35LKZFxgo1H/view?usp=sharing",
+      "violinVideoEmbed": "https://www.youtube.com/embed/eUzcXYwJ2yA",
+      "audioLessons": [
+        {
+          "label": "1st Speed (Sruthi D#-2.5)",
+          "audio": "https://drive.google.com/file/d/16euflVznvOH-VC4WKnirKXodbRXQG4Bm/preview"
+        },
+        {
+          "label": "1st Speed (Sruthi G#-5.5)",
+          "audio": "https://drive.google.com/file/d/1pulmfk130mgFqDUHU_f0U0ED7YDKqq5o/preview"
+        },
+        {
+          "label": "1st Speed (Sruthi A#-6.5)",
+          "audio": "https://drive.google.com/file/d/1OhV302VC4LdSUQ9gUjThP-XL1uvI6m8L/preview"
+        },
+        {
+          "label": "1st Speed (Sruthi F-4)",
+          "audio": "https://drive.google.com/file/d/13o44fVpR48JWfMZEbw5JFFMivvJI6Jjp/preview"
+        },
+        {
+          "label": "1st Speed (Sruthi C-1)",
+          "audio": "https://drive.google.com/file/d/1yA8m14VxGkNmU6ToUJHDzO3-0qsg9yus/preview"
+        },
+        {
+          "label": "2nd Speed (Sruthi D#-2.5)",
+          "audio": "https://drive.google.com/file/d/1drvAxXt6GgidocIGHEVAofJu1oF1Pyge/preview"
+        },
+        {
+          "label": "2nd Speed (Sruthi G#-5.5)",
+          "audio": "https://drive.google.com/file/d/1-80w4u0R2oGg56xSSjgVCRAKDGWs25Jr/preview"
+        },
+        {
+          "label": "2nd Speed (Sruthi A#-6.5)",
+          "audio": "https://drive.google.com/file/d/1nipsl6H64goT6Ah7dpHtpV0Cn7EyNFjd/preview"
+        },
+        {
+          "label": "2nd Speed (Sruthi F-4)",
+          "audio": "https://drive.google.com/file/d/1Muliq4FQ3I6XZ8xUPRz__9NuWNNvTzZL/preview"
+        },
+        {
+          "label": "2nd Speed (Sruthi C-1)",
+          "audio": "https://drive.google.com/file/d/1oUTiaLDF0gnSl44g6p558UQxtQl8sKr2/preview"
+        },
+        {
+          "label": "3rd Speed (Sruthi D#-2.5)",
+          "audio": "https://drive.google.com/file/d/1YXJUFXCUZFu2wrQIQ9liNIcb0x7BSGGA/preview"
+        },
+        {
+          "label": "3rd Speed (Sruthi G#-5.5)",
+          "audio": "https://drive.google.com/file/d/1B4Hs6Yv-DeHM_cCqbyGG78yrCLaWPagf/preview"
+        },
+        {
+          "label": "3rd Speed (Sruthi A#-6.5)",
+          "audio": "https://drive.google.com/file/d/1R_phtuS0sjMMaC2JZElXLn-YkPBUqk3R/preview"
+        },
+        {
+          "label": "3rd Speed (Sruthi F-4)",
+          "audio": "https://drive.google.com/file/d/1LaIDsU0IRFUambhgnkpfjJPSltc8aoDW/preview"
+        },
+        {
+          "label": "3rd Speed (Sruthi C-1)",
+          "audio": "https://drive.google.com/file/d/1GsL3bikegDYfk5sxB11CGnQgY_1FM6Md/preview"
+        }
+      ],
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiIqeTO_WUTrIwuLXrrnEGTWqtDjEfXSywJzUiNKqYtDtsuSLhI50On8-8W7RsbkCMvfV5RhzEkBDGYnmYCDrqIe9eQCTmUux5_1V_4zdK3q1YUltypUXJ6slDQ0s9ly4amB75WaPUycYHL/s1920/Gananaatha+-+Mayamalavagowlai+Tittle+Blog.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/04/gananaatha-geetham-mayamalavagowlai.html",
+      "comments": [
+        {
+          "author": "Kirubamurali",
+          "date": "2022-01-25",
+          "text": "Good job sir"
+        }
+      ]
+    },
+    {
+      "id": "geetham-kereya-neeranu",
+      "title": "Kereya Neeranu — Geetham",
+      "titleTamil": "கெரெய நீரனு",
+      "category": "Geetham",
+      "raga": "Malahari",
+      "date": "2021-04-07",
+      "notationPdfTamil": "https://drive.google.com/file/d/1amBLjHgyvuxFxYrX3OaajWZWnI0_oK0p/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1EXSVyujYZN4R_f4n8TCsB1t0xXA-mxFa/view?usp=sharing",
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwWpkHnkjGCJPTvNhO8f7eV12wz34QpYlVGObRyeJLBMGpA-tllwrv0omBKbX78kp5loTm_9C_l0kjKLaJM_PZ6YjxcAr3diIytQ4IMRyC_nlRaJmsdmCtb1Vekx-cHrRGgk1rsiI4-9Cz/s1920/Kereya+Neeranu+-+Malahari+-+Geetham+Blog+Tittle.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/04/kereya-neeranu-malahari-geetham-lesson.html",
+      "defect": "Post body heading reads 'Kumara Muruga - Geetham - Hamsadwani Lesson' — wrong lesson name copied in."
+    },
+    {
+      "id": "geetham-kumara-muruga",
+      "title": "Kumara Muruga — Geetham",
+      "titleTamil": "குமரா முருகா",
+      "category": "Geetham",
+      "raga": "Hamsadwani",
+      "thala": "Aadhi",
+      "date": "2021-04-20",
+      "notationPdfTamil": "https://drive.google.com/file/d/1Ol6TE28ImfsMjmDUWnJFd1YIhDDTAHJV/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1TfOEpCLT_k3VZTy8EGXlwweqNEGMzOtH/view?usp=sharing",
+      "violinVideoEmbed": "https://www.youtube.com/embed/tUtPK_4i6mk",
+      "audioLessons": [
+        {
+          "label": "1st Speed (Sruthi D#-2.5)",
+          "audio": "https://drive.google.com/file/d/1D0WupT-JSegIr8JkCD4tj9OK7UxDIyZ_/preview"
+        },
+        {
+          "label": "1st Speed (Sruthi G#-5.5)",
+          "audio": "https://drive.google.com/file/d/1r2AzGLUnb3zrnia_A3_iPVKWkqfSku6l/preview"
+        },
+        {
+          "label": "1st Speed (Sruthi A#-6.5)",
+          "audio": "https://drive.google.com/file/d/1xBnJmm9jsCHp2yiat736u9rrNw3K6MNL/preview"
+        },
+        {
+          "label": "1st Speed (Sruthi F-4)",
+          "audio": "https://drive.google.com/file/d/1Gi35PHcH0U6w7nr6PwncwWKw2iXT8yO1/preview"
+        },
+        {
+          "label": "1st Speed (Sruthi C-1)",
+          "audio": "https://drive.google.com/file/d/1928Zsfjy4alI5TUpzo3P-uZ4eq3JHrst/preview"
+        },
+        {
+          "label": "2nd Speed (Sruthi D#-2.5)",
+          "audio": "https://drive.google.com/file/d/1HikKyCtoWO4nlhGdvTMGBT1q-pw4fZQ_/preview"
+        },
+        {
+          "label": "2nd Speed (Sruthi G#-5.5)",
+          "audio": "https://drive.google.com/file/d/1zY8PgbYRXTt5nZqb-xKfHvyrjFs7pIAb/preview"
+        },
+        {
+          "label": "2nd Speed (Sruthi A#-6.5)",
+          "audio": "https://drive.google.com/file/d/1808Xw_t5Aaxpj4bbfDpcvqP6EiphIN-a/preview"
+        },
+        {
+          "label": "2nd Speed (Sruthi F-4)",
+          "audio": "https://drive.google.com/file/d/1ydv6au7dbfhCXb9YqLkb3zqP0Qc0fGeF/preview"
+        },
+        {
+          "label": "2nd Speed (Sruthi C-1)",
+          "audio": "https://drive.google.com/file/d/1ln5GX6m9zc7K9b0hVz8hCXkO47waZ1h0/preview"
+        },
+        {
+          "label": "3rd Speed (Sruthi D#-2.5)",
+          "audio": "https://drive.google.com/file/d/162xYPSSBPl_i6TRcHrnTC5eNN_9NOl6Z/preview"
+        },
+        {
+          "label": "3rd Speed (Sruthi G#-5.5)",
+          "audio": "https://drive.google.com/file/d/1Q_h5NQIunSHSeQPOduK7PjCl7w0HwaY6/preview"
+        },
+        {
+          "label": "3rd Speed (Sruthi A#-6.5)",
+          "audio": "https://drive.google.com/file/d/1-Bi8n5wONy_rqlkeFW4hYIjHGS3wLkI4/preview"
+        },
+        {
+          "label": "3rd Speed (Sruthi F-4)",
+          "audio": "https://drive.google.com/file/d/10YidcjYEOo5ZSDmJaWr0-EnAqSPNkaBD/preview"
+        },
+        {
+          "label": "3rd Speed (Sruthi C-1)",
+          "audio": "https://drive.google.com/file/d/1--N-h9IlPX3kM0KAvOwT0Xmpxy1x9oRa/preview"
+        }
+      ],
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiO4Hy6YnjjddIx6v4st6FIjguAgoPAEX-mH-bf4bVX8ulWJmeczOl1bWFJ8rucynA2p3bCIcpWHuYYiCqk78sxmuX14o5nVXrRbZQNqNdUV9AMVjnIhPaevfXCkmU67YOCyg0D_BWT0TFS/s1920/Kumara+Muruga+Blog+Tittle.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/04/kumara-murugaaudio-lesson-geetham.html"
+    },
+    {
+      "id": "geetham-sree-gananatha",
+      "title": "Sree Gananatha (Lambothara) — Geetham",
+      "titleTamil": "ஸ்ரீ கணநாத",
+      "category": "Geetham",
+      "raga": "Malahari",
+      "thala": "Chathusra Jathi Rupakam",
+      "date": "2021-04-04",
+      "notationPdfTamil": "https://drive.google.com/file/d/12FT8IJArhQLsc7QXzmiZxOAgQ4ObeNtW/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1IN01fKz0bfi-pb3fOeMt6BJaNDtSo1W7/view?usp=sharing",
+      "vocalVideo": "https://youtube.com/playlist?list=PLSyLc0ng1ywC6zwDA1nDLNamhgOSJ6k_I",
+      "violinVideo": "https://youtube.com/playlist?list=PLSyLc0ng1ywDqBtbHvmOiMvzUNVkCi8eO",
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEig4-Ajt_aAliwSyQJf1gaIEMmhvMi-IT8nAB7Br8EbougYIcmAQns3PuR-XJbFmXtgu7WuhyphenhyphenEFV0upebsd5yLV3OqtrP2_ELSEHTV-jJkqV8Op8iPo9qDQuVPlg7v_Fv_Y8rTl9chL_wRS/s1920/Sree+Gananatha+Tittle+Blog.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/04/sree-gananatha-lambothara-geetham-ragam.html"
+    },
+    {
+      "id": "geetham-varaveena",
+      "title": "Varaveena — Geetham",
+      "titleTamil": "வரவீணா",
+      "category": "Geetham",
+      "raga": "Mohanam",
+      "date": "2021-04-05",
+      "notationPdfTamil": "https://drive.google.com/file/d/1Y98zqiM6Isv7M1GZ2SCR4yt8I9ZQU8FC/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1wfCymqxsp-Ug7av-hUH8LD1ZsZWtstYH/view?usp=sharing",
+      "vocalVideo": "https://youtube.com/playlist?list=PLSyLc0ng1ywDuicZXoMczjqXZOc5OPfGQ",
+      "violinVideo": "https://youtube.com/playlist?list=PLSyLc0ng1ywBNTYZL1e5c2Nk3liux1pBM",
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgE88eVxd7jTrGLLD9lWGwzmmcGfPuaJ9RLosiN9fKiTgviLsNFh-fbh2rE5GJsywogxByz0kHrmShVKAF1UGvFLtOfB1DSc8EjKipJcinSqpBhDjmDFCXHgduSQVVO76w504pkdSKR6eS5/s1920/Varaveena+Tittle+Blog.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/04/varaveena-geetham-mohanam-lesson.html"
+    },
+    {
+      "id": "krithi-aadikkondar",
+      "title": "Aadikkondar — Krithi",
+      "titleTamil": "ஆடிக்கொண்டார்",
+      "category": "Krithi",
+      "raga": "Mayamalavagowlai",
+      "thala": "Aadhi",
+      "date": "2021-07-17",
+      "notationPdfTamil": "https://drive.google.com/file/d/1dV-eCcifxqmRbQ8KcXy4YuRsjmYl8X4B/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1Y75seaDvb7ezU0yPG784YPx_spRPgMz2/view?usp=sharing",
+      "violinVideoEmbed": "https://www.youtube.com/embed/jdOhRpMsVrI",
+      "audioLessons": [
+        {
+          "label": "Sruthi D#(Eb)-2.5",
+          "audio": "https://drive.google.com/file/d/1q1SFwiNw-K-i6lS307qLIBS4LRA9_-lH/preview"
+        },
+        {
+          "label": "Sruthi G#(Ab)-5.5",
+          "audio": "https://drive.google.com/file/d/1HQXoww4lrlXRBvNp6mo-uAWVp6BPcc0E/preview"
+        },
+        {
+          "label": "Sruthi A#(Bb)-6.5",
+          "audio": "https://drive.google.com/file/d/15CERo_XoJ_Ng1_D4OxqRt6G5rXVgqL6g/preview"
+        },
+        {
+          "label": "Sruthi F-4",
+          "audio": "https://drive.google.com/file/d/1-3vblLM0nhFHiS3pyN_w9kIMnfc4gpKe/preview"
+        },
+        {
+          "label": "Sruthi C-1",
+          "audio": "https://drive.google.com/file/d/1p-9gm29dzhRLSF1Gw083sf8D8WNCgFvQ/preview"
+        }
+      ],
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh91WZFZHfOrH90fRKnrJLbTd-eM0TJppJI2f_vB6qm565VK6F9iMnGKFCjdsNQPtSRKL7z7ylC8Xpg5W0jJpnelA3yX9shRCfQLgBr-K9zLKAbbGlAAtv9eEybgSOXrde4IKp68CrA2FGP/s1920/AadikkondarBlog+T.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/07/aadikkondar-krithi-mayamalavagowlai.html",
+      "comments": [
+        {
+          "author": "Anonymous",
+          "date": "2024-10-11",
+          "text": "Super Sir...Exalent"
+        }
+      ],
+      "defect": "Stray 'Soon' label above a video that does exist."
+    },
+    {
+      "id": "krithi-enna-thavam",
+      "title": "Enna Thavam — Krithi",
+      "titleTamil": "என்ன தவம்",
+      "category": "Krithi",
+      "raga": "Kaapi",
+      "thala": "Aadhi",
+      "composer": "Papanasam Sivan",
+      "date": "2023-08-04",
+      "notationPdfTamil": "https://www.dropbox.com/s/a32fgdsnarsl721/Ennathavam_Kaapi_Papanasam%20sivan_Tamil.pdf?dl=0",
+      "notationPdfEnglish": "https://www.dropbox.com/s/sk3185i9u60uqoo/Ennathavam_Kaapi_Papanasam%20sivan_English.pdf?dl=0",
+      "videoParts": [
+        {
+          "label": "Lesson 1",
+          "embed": "https://www.youtube.com/embed/pZ9miVkyOnc"
+        },
+        {
+          "label": "Lesson 2",
+          "embed": "https://www.youtube.com/embed/nr072kM-aWs"
+        }
+      ],
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjd3DA5ClJiqYsNB9R1zx_qh2GUe82lq-wNSevdpU0ZAmXK8qBNtmuwhjz_3k71UiDmOkEalGhP8hmPlo7tnl_gV_VFHREyVmuSBIcrgXEDFUmvfafygokVA6KUjsmOiB5mPpV0Op-xAFCLfm_9uXCc6oaSHes15osRi3fuENqtFC0atqznCEwic1H8kD9r/s1280/Enna%20thavam%20.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2023/08/blog-post_4.html",
+      "defect": "No post title on the live site."
+    },
+    {
+      "id": "krithi-maha-ganapathim",
+      "title": "Maha Ganapathim — Krithi",
+      "titleTamil": "மஹாகணபதிம்",
+      "category": "Krithi",
+      "raga": "Nattai",
+      "thala": "Aadhi",
+      "composer": "Muthuswami Dikshitar",
+      "date": "2023-08-04",
+      "notationPdfTamil": "https://www.dropbox.com/s/saa2id1ifpjb412/Maha%20ganapathim_Nattai_Aadhi_Muthuswami%20Dikshitar_Tamil.pdf?dl=0",
+      "notationPdfEnglish": "https://www.dropbox.com/s/i7ftpqjfnr5s5m3/Maha%20ganapathim_Nattai_Aadhi_Muthuswami%20Dikshitar_English.pdf?dl=0",
+      "videoParts": [
+        {
+          "label": "Lesson 1",
+          "embed": "https://www.youtube.com/embed/AffP4LpEzIk"
+        },
+        {
+          "label": "Lesson 2",
+          "embed": "https://www.youtube.com/embed/ELyg4UbZX-g"
+        }
+      ],
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiSyUcDbu5_kq3I0h0aARV4pcBnbyUzkEw_jagImemfQOPXQTkgTmCgyr6Rrzh0SKYPjYTu4qB_XQiL0UyGg39g39EDX3JgFIt3ytJtEj5jp1opFljbQPqELiYBoRXXwkt6wyVvbc1-1K6VvYy0aD2gCKu5goUmVUr1um3TdAimizvYQelt8STj0dkOgEKb/s1280/Maha%20Ganapathim%20.webp",
+      "sourceUrl": "https://www.sukapavalan.com/2023/08/blog-post.html",
+      "defect": "No post title on the live site; PDFs moved to Dropbox (older lessons use Google Drive)."
+    },
+    {
+      "id": "nottuswaram-raama-janaardana",
+      "title": "Raama Janaardana — Nottuswaram",
+      "titleTamil": "ராம ஜனார்தன",
+      "category": "NottuSwaram",
+      "raga": "Shankarabharanam",
+      "date": "2021-04-07",
+      "notationPdfTamil": "https://drive.google.com/file/d/1Fg3-WD8nIh3kJvLd0OYRX602VehsUpQ3/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1ARlZUujzzvnBj8mzRT-njSa5y7pMI0Xo/view?usp=sharing",
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzkR6XT0GLACWxAactou2jfEakHpRAAVdPbg7eZvv7QPygafUnOG8TcqSOXsxHuULH73KUSHuj1y1GLq2W413AXzE-0Firlqh4__0Wgk9R3JV0lF8MUJKNvkTuc4bOn6x6iRCe9x6AeTQA/s1920/Raama+Janaardana+-+Nottuswaram+-+Shankarabaranam+-+Blog+Tittle.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/04/raama-janaardana-shankarabharanam.html"
+    },
+    {
+      "id": "swarajathi-raaravenu",
+      "title": "Raaravenu — Swarajathi",
+      "titleTamil": "ராரவேணு",
+      "category": "Swarajathi",
+      "raga": "Bilahari",
+      "date": "2021-04-06",
+      "notationPdfTamil": "https://drive.google.com/file/d/1T63yfQsX5X9SmSSPGy_TcgUvLv36_qxf/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1Y6hCd8utSuuqZUnkXI71tNJn2SOlM9lx/view?usp=sharing",
+      "vocalVideo": "https://youtube.com/playlist?list=PLSyLc0ng1ywB6uv8ilzcCt6ee5f0-UE4U",
+      "violinVideo": "https://youtube.com/playlist?list=PLSyLc0ng1ywBxlYIkh9-NZpQrnEVMfZh3",
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgbYX7kDkxMzBtnNrFySWtcSdW8z1axuYzLuEEDA1BZ-gNunNB2ono2C-6jBLCMjKCokuzMf9qncCRgfk5ASeJnBtecojvNNjRP-HDEibqNn65wS_ho3pXdzQrpLNPL7qixMbON40R-qNwj/s1920/Raaravenu+Tittle+Blog.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/04/raaravenu-swarajathi-bilahari-lesson.html"
+    },
+    {
+      "id": "thiruppugazh-01-kaithala-niraikani",
+      "title": "Kaithala Niraikani — Thiruppugazh Lesson 1",
+      "titleTamil": "கைத்தல நிறைகனி",
+      "category": "Thiruppugazh",
+      "raga": "Nattai",
+      "thala": "Aadhi",
+      "date": "2021-06-03",
+      "notationPdfTamil": "https://drive.google.com/file/d/1Gk7t1MXOWOvhC5UdJx4FWObfz6RZ9Cnl/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1Rw41Ik_iyis-YlzA3ozQP2bO2jxonKTB/view?usp=sharing",
+      "audioLessons": [
+        {
+          "label": "Violin (Sruthi D#-2.5)",
+          "audio": "https://drive.google.com/file/d/1rn5ICG5-na3yid6QxRt7ow67VICkSQjM/preview"
+        },
+        {
+          "label": "Vocal (Sruthi G#-5.5)",
+          "audio": "https://drive.google.com/file/d/1ooO5NO8Yum8_oCVEv5X_E7qvPvX23m0d/preview"
+        },
+        {
+          "label": "Vocal (Sruthi F-4)",
+          "audio": "https://drive.google.com/file/d/1anwS3n-a4Xf5e3B-TJSSWzi_tZx-gVjr/preview"
+        },
+        {
+          "label": "Vocal (Sruthi C-1)",
+          "audio": "https://drive.google.com/file/d/1qiexqwixnX6YZ8GtiyRM-fpalrVwuwBG/preview"
+        }
+      ],
+      "violinVideoEmbed": "https://www.youtube.com/embed/dumtffHCQ2A",
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh6kewHElCdqlSEh6g6m6JkaSwH0gowG-kqgnEf5s4WS40l2ekpSUHpi81JrqloCrvnEXoaGVxJeMIr0H7z3ZRZn9CegymFU-oj8lF4G3Qgb5PEwjfgLKThyphenhyphenCNk2oEBD6kHJgLKh2-F8yzd/s1920/Kaithala+T+P.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/06/kaithala-niraikani-thiruppugazh-lesson-1.html"
+    },
+    {
+      "id": "thiruppugazh-02-muththai-tharu",
+      "title": "Muththai Tharu — Thiruppugazh Lesson 2",
+      "titleTamil": "முத்தைத்தரு",
+      "category": "Thiruppugazh",
+      "raga": "Shanmugapriya",
+      "thala": "Misra Chappu",
+      "date": "2021-06-11",
+      "notationPdfTamil": "https://drive.google.com/file/d/1zQo4sbGY2fOvZW5lljcP-TbVjtbzpCh3/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1fxwCbpkpd5wxWDvI93AeKNpYcZ9wdRIC/view?usp=sharing",
+      "audioLessons": [
+        {
+          "label": "Violin (Sruthi D#-2.5)",
+          "audio": "https://drive.google.com/file/d/1VcydjcIgvugqps5xPAE7iyLz2hMPofcL/preview"
+        },
+        {
+          "label": "Vocal (Sruthi G#-5.5)",
+          "audio": "https://drive.google.com/file/d/1lGbYJyZhGqPMFgnPOZg7rG2uubQJ-GGg/preview"
+        },
+        {
+          "label": "Vocal (Sruthi F-4)",
+          "audio": "https://drive.google.com/file/d/1Kd4rhbG4QmhYYP9mHC8eN19fQN_04QIF/preview"
+        },
+        {
+          "label": "Vocal (Sruthi C-1)",
+          "audio": "https://drive.google.com/file/d/15cwR-m8m0eMfrfeBRbnbiSYaZfI5fiBx/preview"
+        }
+      ],
+      "violinVideoEmbed": "https://www.youtube.com/embed/pMpkILGRznk",
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpdm1Iv7b-NQN8asqL2WjPIVFGgC0wqxGe4kyCTzGx810RS4TANB9ICKZ_cPO8eWCoPDOHx16JRVRqPscPd-GtTxSAHfi9AmSvyBgztmrDikrW5mXUtyzkLk-zwqJpbM1S8IZxJy9SJPI7/s1920/Muththaitharu+T.jpg",
+      "sourceUrl": "https://www.sukapavalan.com/2021/06/muththai-tharu-thiruppugazh-lesson-2.html",
+      "defect": "Tamil subheading on the page reads 'கைத்தல நிறைகனி' — copied from Lesson 1.",
+      "comments": [
+        {
+          "author": "Revathi Sampath",
+          "date": "2021-08-06",
+          "text": "Very beautiful rendering of Muthai Thirupaatthi Thiruppugazh. If you can post Muruganin Maru Peyar Azhagu.. I would love to listen to it. May Murugan's Blessings be showered on you and your family."
+        }
+      ]
+    },
+    {
+      "id": "varnam-amma-aanandadayini",
+      "title": "Amma Aanandadayni — Varnam",
+      "titleTamil": "அம்மா ஆனந்ததாயினி",
+      "category": "Varnam",
+      "raga": "Gambheera Nattai",
+      "thala": "Aadhi",
+      "date": "2021-11-06",
+      "notationPdfTamil": "https://drive.google.com/file/d/1TEVQ2o_J6Q66u5d3SvIK439pS9qlLytw/view?usp=share_link",
+      "notationPdfEnglish": "https://drive.google.com/file/d/1T9RfYtaMkT58_MG-wpoHgVr3czUhgceU/view?usp=share_link",
+      "videoParts": [
+        {
+          "label": "Part I — Violin Step by Step",
+          "embed": "https://www.youtube.com/embed/k27P8GI22xU"
+        },
+        {
+          "label": "Part II — Violin Practice Together",
+          "embed": "https://www.youtube.com/embed/9tqd123Pz0s"
+        },
+        {
+          "label": "Part III — Violin Karaoke",
+          "embed": "https://www.youtube.com/embed/GArHh8NdHfQ"
+        },
+        {
+          "label": "Part IV — Vocal Step by Step",
+          "embed": "https://www.youtube.com/embed/oKBw3hAoktE"
+        },
+        {
+          "label": "Part V — Vocal Practice Together",
+          "embed": "https://www.youtube.com/embed/RMHaM41TnEc"
+        }
+      ],
+      "titleCard": "https://blogger.googleusercontent.com/img/a/AVvXsEj74ttzbojdxB0CnU8N9_fiohZ8tIaK3W_WDpFg3Uk41G2ABeeVVvpMMmOJC0hdtUnCHfKrrM9cNn2ZOWdnILIHi0VoKegDPiPau4tIU0RXO4sxLu1Kz--077y17FZowG8hw5aBMJBlNPPItftSMqPvBPfxgmPkU-G5ngGlUAKjGxgSCEIcwhSWbXISkg=s1920",
+      "sourceUrl": "https://www.sukapavalan.com/2021/11/varnam-amma-aanandadayini-gambheera.html",
+      "note": "Richest pedagogy pattern in the archive: step-by-step → practice-together → karaoke, for violin and vocal. Worth making the template for the new lesson pages."
+    },
+    {
+      "id": "varnam-jalajaaksha",
+      "title": "Jalajaaksha — Varnam",
+      "titleTamil": "ஜலஜாக்ஷா",
+      "category": "Varnam",
+      "raga": "Hamsadwani",
+      "thala": "Aadhi",
+      "date": "2021-11-06",
+      "notationPdfTamil": "https://drive.google.com/file/d/1iYlCrAAhx3yrkNq806Kt7q3SIpWfYp1h/view?usp=sharing",
+      "notationPdfEnglish": "https://drive.google.com/file/d/10uTTD7FutrOeql80vbItT3dBEJtvcMWL/view?usp=sharing",
+      "titleCard": "https://blogger.googleusercontent.com/img/a/AVvXsEjS0PxnIkJ2ZTaUuxHKmBosMjvjjwaF6EHDaeIKmTzNSf_qKkG93dCZXteB8MwHbQYan1EEaZ2eh1xQxOmvPnWP_41aMkZ2mvuj4OGcBIcO8sDy7ONatKLgZUZ0RZshI2yROQr3-X2kOmEEHSZvmk0dMwNeY8c9INiYkB2s-tLAXi69r_Iq47N-T8LYPw=s1920",
+      "sourceUrl": "https://www.sukapavalan.com/2021/11/hamsadhvani-varanam-jalajaaksha.html"
+    },
+    {
+      "id": "varnam-mohanam",
+      "title": "Mohanam Varnam",
+      "titleTamil": "மோஹனம் வர்ணம்",
+      "category": "Varnam",
+      "raga": "Mohanam",
+      "thala": "Aadhi",
+      "date": "2023-08-05",
+      "notationPdfTamil": "https://www.dropbox.com/s/r538j3sah9hzl44/Mohanam%20Varnam%20Tamil.pdf?dl=0",
+      "notationPdfEnglish": "https://www.dropbox.com/s/vt09sc1avw54mw1/Mohanam%20Varnam%20English.pdf?dl=0",
+      "videoParts": [
+        {
+          "label": "Violin — 1st Speed (Part 1)",
+          "embed": "https://www.youtube.com/embed/IoIvbrF4_80"
+        },
+        {
+          "label": "Violin — 1st Speed (Part 2)",
+          "embed": "https://www.youtube.com/embed/EWxwUruVOg0"
+        },
+        {
+          "label": "Violin — 2nd Speed",
+          "embed": "https://www.youtube.com/embed/5pJ2W_wEtlM"
+        },
+        {
+          "label": "Violin — 3rd Speed",
+          "embed": "https://www.youtube.com/embed/brT9aQaOmpk"
+        },
+        {
+          "label": "Vocal — 1st Speed",
+          "embed": "https://www.youtube.com/embed/J65vibNyFB4"
+        },
+        {
+          "label": "Vocal — 2nd Speed",
+          "embed": "https://www.youtube.com/embed/0soO4UGdjW4"
+        },
+        {
+          "label": "Vocal — 3rd Speed",
+          "embed": "https://www.youtube.com/embed/Qizd-Y91ASE"
+        }
+      ],
+      "titleCard": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjmNn4T0KCz7osszaDN0ISwnNANnZNLuxCGZe2yKdNk2tPeDLaBkxBGkJWeEVLbisIw3YIm0T0M_dXLOmxZO2SzAqownh6PaFLYZg_EMaFQTHX6mszeqznDEMjr006BdnmyQ23qcM0R8pVytgnKy5XRcycMFhDDbOar_o8cZp4I6VTfQWXAcoJlJDoVHtw4/s1280/Mohanam%20Varnam.webp",
+      "sourceUrl": "https://www.sukapavalan.com/2023/08/blog-post_61.html",
+      "defect": "No post title on the live site."
+    }
+  ],
+  "remaining": [
+    "Media-only posts still to open individually: Live Video (7), Live Audio (2 of 3), Photo (5) — titles/labels/thumbnails already captured in blog-sukapavalan.json; only their YouTube ids and photo captions are missing."
+  ],
+  "contentModelFindings": [
+    "Notation always ships as two Google Drive PDFs: Tamil and English.",
+    "Audio practice tracks come in 5 sruthis (D#-2.5, G#-5.5, A#-6.5, F-4, C-1) × up to 3 speeds — 15 Drive audio files per lesson on the fuller Geethams, 5 on the Krithi.",
+    "Video is either a YouTube playlist (violin + vocal pairs) or single embeds; Sarali Varisai lists 16 individual videos.",
+    "Every lesson has a 16:9 title card available at s1920.",
+    "A real lesson page therefore needs: notation switcher (Tamil/English), sruthi + speed selector for audio, violin/vocal video tabs, raga/thala metadata."
+  ],
+  "performances": [
+    {
+      "id": "live-audio-ilayaraja",
+      "title": "Ilayaraja Hits On Violin",
+      "category": "Live Audio",
+      "date": "2023-08-05",
+      "embed": "https://www.youtube.com/embed/6BNaGYPUYuU",
+      "playlist": "https://www.youtube.com/watch?v=6BNaGYPUYuU&list=PLSyLc0ng1ywBqV-AReNKT6w8rtPcCYgX1&index=1",
+      "sourceUrl": "https://www.sukapavalan.com/2023/08/blog-post_5.html"
+    }
+  ],
+  "notationHosting": "Lessons up to 2021 host notation PDFs on Google Drive; the 2023 batch moved to Dropbox. Consolidate on one host in the revamp.",
+  "coverage": {
+    "notationLessons": 22,
+    "notationLessonsTotal": 22,
+    "complete": true
+  }
+}

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Learn the Violin — strings, materials and finger placement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="responsive.css" />
+<style>
+  html { background: #16102A; scroll-behavior: smooth; }
+  body { margin: 0; background: #16102A; color: #F3EDDF; font-family: 'Instrument Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #E0BC6A; text-decoration: none; }
+  a:hover { color: #F2D89A; }
+  ::selection { background: #E0BC6A; color: #1B1233; }
+</style>
+</helmet>
+
+<div style="max-width: 1440px; margin: 0 auto;">
+
+  <div data-screen-label="Nav" onMouseLeave="{{ closeMenu }}" onKeyDown="{{ onNavKey }}" onBlur="{{ onNavBlur }}" style="position: sticky; top: 0; z-index: 50; background: rgba(22,16,42,0.92); backdrop-filter: blur(22px); border-bottom: 1px solid rgba(224,188,106,0.24);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 16px 32px;">
+      <a href="Homepage Violet Gold.dc.html" style="font-family: Marcellus, serif; font-size: 21px; letter-spacing: 0.07em; color: #E0BC6A;">SUKA PAVALAN</a>
+      <div data-nav="links" style="display: flex; align-items: center; gap: 28px; font-size: 14px; font-weight: 500;">
+        <span role="button" tabindex="0" aria-expanded="{{ menuOpenStr }}" aria-controls="lessons-menu" aria-label="Lessons — open category menu" onClick="{{ toggleMenu }}" onMouseEnter="{{ openMenu }}" onFocus="{{ openMenu }}" onKeyDown="{{ onTriggerKey }}" style="position: relative; display: flex; align-items: center; gap: 6px; cursor: pointer; color: rgba(243,237,223,0.72); background: none; border: none; font-size: 14px; font-weight: 500; font-family: inherit;">Lessons <span style="font-size: 9px; color: #E0BC6A;">▼</span></span>
+        <a href="Learn the Violin.dc.html" style="color: #F3EDDF;">Learn the Violin</a>
+        <a href="The Guru.dc.html" style="color: rgba(243,237,223,0.72);">The Guru</a>
+        <a href="Honours.dc.html" style="color: rgba(243,237,223,0.72);">Honours</a>
+        <a href="Stage.dc.html" style="color: rgba(243,237,223,0.72);">Stage</a>
+      </div>
+      <a href="Enquire.dc.html" style="padding: 11px 24px; border: 1px solid #E0BC6A; color: #E0BC6A; font-family: Marcellus, serif; font-size: 14px; letter-spacing: 0.06em;">Enrol</a>
+    </div>
+    <div id="lessons-menu" data-dropdown="lessons" data-open="{{ menuOpenStr }}" aria-hidden="{{ menuHiddenStr }}" style="{{ dropdownStyle }}">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Carnatic — Basics</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Sruthi Swara Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Sarali Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Janta Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Melsthayi Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Thattu Varisai</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Carnatic — Advanced</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Geetham <span style="color: rgba(243,237,223,0.55);">5</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Swarajathi <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Nottuswaram <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Varnam <span style="color: rgba(243,237,223,0.55);">3</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Krithi <span style="color: rgba(243,237,223,0.55);">3</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">Thillana <span style="color: rgba(243,237,223,0.5);">0</span></a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Devotional</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Thiruppugazh <span style="color: rgba(243,237,223,0.55);">2</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Bhakthi <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">Thevaram <span style="color: rgba(243,237,223,0.5);">0</span></a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Light Music &amp; Media</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Cinema Songs <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">English Songs <span style="color: rgba(243,237,223,0.5);">0</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">Other Languages <span style="color: rgba(243,237,223,0.5);">0</span></a>
+        <a href="Stage.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Live Video <span style="color: rgba(243,237,223,0.55);">7</span></a>
+        <a href="Stage.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Live Audio <span style="color: rgba(243,237,223,0.55);">3</span></a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">More</span>
+        <a href="Learn the Violin.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Learn the Violin</a>
+        <a href="The Guru.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">The Guru</a>
+        <a href="Honours.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Honours</a>
+        <a href="Stage.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Stage</a>
+      </div>
+    </div>
+  </div>
+
+  <section data-screen-label="01 Header" style="padding: 62px 32px 0;">
+    <div style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 52px; align-items: end; padding-bottom: 36px; border-bottom: 1px solid rgba(224,188,106,0.26);">
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; color: #E0BC6A;">Before your first lesson</span>
+        <h1 style="margin: 0; font-family: Marcellus, serif; font-size: 62px; line-height: 1.06;">Learn the language<br />of the violin.</h1>
+        <p style="margin: 0; font-size: 17.5px; line-height: 1.68; color: rgba(243,237,223,0.78); max-width: 62ch;">
+          Music is a universal language that transcends boundaries, emotions, and cultures. Instrumental
+          music speaks beyond words, telling stories through melody, harmony, and rhythm. From the
+          soaring notes of a violin to the deep resonance of a piano, each instrument brings a unique
+          voice to the symphony of sound.
+        </p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; padding: 28px 30px; border: 1px solid rgba(224,188,106,0.34); background: linear-gradient(150deg, rgba(224,188,106,0.1), rgba(107,75,168,0.14));">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">On this page</span>
+        <a href="#history" style="font-size: 15.5px; color: rgba(243,237,223,0.84);">A short history of the instrument</a>
+        <a href="#strings" style="font-size: 15.5px; color: rgba(243,237,223,0.84);">The four strings</a>
+        <a href="#materials" style="font-size: 15.5px; color: rgba(243,237,223,0.84);">Materials and types</a>
+        <a href="#fingers" style="font-size: 15.5px; color: rgba(243,237,223,0.84);">Finger placement</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="history" data-screen-label="02 History" style="padding: 56px 32px 0;">
+    <div style="display: grid; grid-template-columns: 0.75fr 1.25fr; gap: 52px; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 16px; position: sticky; top: 100px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">Origins</span>
+        <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 40px; line-height: 1.1;">Cremona, early sixteenth century</h2>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 22px;">
+        <p style="margin: 0; font-size: 17px; line-height: 1.72; color: rgba(243,237,223,0.82);">
+          The modern violin was developed in the early 16th century in Italy, with Andrea Amati of
+          Cremona often credited as its inventor. Amati refined the design of earlier stringed
+          instruments like the rebec, lira da braccio, and vihuela, creating the foundation for the
+          violin as we know it today.
+        </p>
+        <p style="margin: 0; font-size: 17px; line-height: 1.72; color: rgba(243,237,223,0.82);">
+          His work influenced later master luthiers such as Antonio Stradivari and Giuseppe Guarneri,
+          whose violins remain some of the most prized instruments in the world. While bowed string
+          instruments existed long before Amati's time, his craftsmanship set the standard for the
+          modern violin's structure, tone, and playability.
+        </p>
+        <p style="margin: 0; font-size: 17px; line-height: 1.72; color: rgba(243,237,223,0.82);">
+          The violin is a timeless instrument known for its rich, expressive sound and versatility
+          across musical genres. Mastering it requires dedication, precision, and passion, making it a
+          rewarding pursuit for musicians of all levels. Whether played solo, in an orchestra, or as
+          part of an ensemble, the violin remains a symbol of elegance and artistic excellence.
+        </p>
+        <div style="margin-top: 12px; padding: 34px 38px; border-left: 2px solid #E0BC6A; background: linear-gradient(90deg, rgba(224,188,106,0.1), transparent 72%);">
+          <p style="margin: 0 0 14px; font-family: Marcellus, serif; font-size: 30px; line-height: 1.32;">
+            “When you play a violin piece, you are a storyteller, and you're telling a story.”
+          </p>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">Joshua Bell</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="strings" data-screen-label="03 Strings" style="margin: 72px 0 0; padding: 66px 32px; background: linear-gradient(180deg, #241A44, #1A1234); border-top: 1px solid rgba(224,188,106,0.22); border-bottom: 1px solid rgba(224,188,106,0.22);">
+    <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; max-width: 62ch;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">Violin strings</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 44px; line-height: 1.08;">Four strings, four voices</h2>
+      <p style="margin: 0; font-size: 16.5px; line-height: 1.62; color: rgba(243,237,223,0.74);">
+        The violin has four strings, each tuned to a specific pitch. Lowest to highest, left to right
+        as you look down at the instrument.
+      </p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 30px 30px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: baseline; gap: 12px;">
+          <span style="font-family: Marcellus, serif; font-size: 46px; color: #E0BC6A; line-height: 1;">G</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.1em; color: rgba(243,237,223,0.62);">G3</span>
+        </div>
+        <span style="height: 6px; background: linear-gradient(90deg, #E0BC6A, rgba(224,188,106,0.2)); border-radius: 3px;"></span>
+        <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(243,237,223,0.78);">The lowest and thickest string, producing a deep, warm, and rich tone.</p>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 30px 30px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: baseline; gap: 12px;">
+          <span style="font-family: Marcellus, serif; font-size: 46px; color: #E0BC6A; line-height: 1;">D</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.1em; color: rgba(243,237,223,0.62);">D4</span>
+        </div>
+        <span style="height: 5px; background: linear-gradient(90deg, #E0BC6A, rgba(224,188,106,0.2)); border-radius: 3px;"></span>
+        <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(243,237,223,0.78);">Slightly higher in pitch, offering a balanced and mellow sound.</p>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 30px 30px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: baseline; gap: 12px;">
+          <span style="font-family: Marcellus, serif; font-size: 46px; color: #E0BC6A; line-height: 1;">A</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.1em; color: rgba(243,237,223,0.62);">A4</span>
+        </div>
+        <span style="height: 4px; background: linear-gradient(90deg, #E0BC6A, rgba(224,188,106,0.2)); border-radius: 2px;"></span>
+        <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(243,237,223,0.78);">A bright and expressive middle string, often used for melodies.</p>
+      </div>
+      <div style="border: 1px solid rgba(224,188,106,0.34); background: linear-gradient(150deg, rgba(224,188,106,0.1), rgba(243,237,223,0.02)); padding: 30px 30px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: baseline; gap: 12px;">
+          <span style="font-family: Marcellus, serif; font-size: 46px; color: #E0BC6A; line-height: 1;">E</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.1em; color: rgba(243,237,223,0.62);">E5</span>
+        </div>
+        <span style="height: 3px; background: linear-gradient(90deg, #E0BC6A, rgba(224,188,106,0.2)); border-radius: 2px;"></span>
+        <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(243,237,223,0.78);">The highest and thinnest string, delivering a sharp, brilliant, and resonant tone.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="materials" data-screen-label="04 Materials" style="padding: 66px 32px 0;">
+    <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; max-width: 66ch;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">Materials &amp; types</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 44px; line-height: 1.08;">What the strings are made of changes everything</h2>
+      <p style="margin: 0; font-size: 16.5px; line-height: 1.62; color: rgba(243,237,223,0.74);">
+        Violin strings are made from different materials, affecting their tone and playability.
+      </p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 32px 34px; display: flex; flex-direction: column; gap: 13px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">Traditional</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 26px; line-height: 1.2;">Gut</h3>
+        <p style="margin: 0; font-size: 15.5px; line-height: 1.62; color: rgba(243,237,223,0.78);">Made from sheep intestines, they offer a warm, complex sound but require frequent tuning.</p>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 32px 34px; display: flex; flex-direction: column; gap: 13px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">Durable</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 26px; line-height: 1.2;">Steel</h3>
+        <p style="margin: 0; font-size: 15.5px; line-height: 1.62; color: rgba(243,237,223,0.78);">Provide a bright, focused tone with excellent durability and stability.</p>
+      </div>
+      <div style="border: 1px solid rgba(224,188,106,0.34); background: linear-gradient(150deg, rgba(224,188,106,0.1), rgba(107,75,168,0.14)); padding: 32px 34px; display: flex; flex-direction: column; gap: 13px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">Most common today</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 26px; line-height: 1.2;">Synthetic</h3>
+        <p style="margin: 0; font-size: 15.5px; line-height: 1.62; color: rgba(243,237,223,0.78);">Made from nylon or composite materials, they balance warmth and stability, offering a sound similar to gut strings.</p>
+      </div>
+    </div>
+    <p style="margin: 20px 0 0; font-size: 16px; line-height: 1.62; color: rgba(243,237,223,0.7); max-width: 70ch;">
+      Violinists choose strings based on their playing style, genre, and personal preference to achieve
+      the perfect tone.
+    </p>
+  </section>
+
+  <section id="fingers" data-screen-label="05 Fingering" style="margin: 72px 0 0; padding: 66px 32px; background: linear-gradient(180deg, #241A44, #1A1234); border-top: 1px solid rgba(224,188,106,0.22); border-bottom: 1px solid rgba(224,188,106,0.22);">
+    <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; max-width: 66ch;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">Finger placement</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 44px; line-height: 1.08;">The notation on every sheet uses these five marks</h2>
+      <p style="margin: 0; font-size: 16.5px; line-height: 1.62; color: rgba(243,237,223,0.74);">
+        Placement of the finger while playing violin is extremely important to produce the right sound,
+        or the intended sound. Learn these before opening your first notation sheet.
+      </p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;">
+      <div style="border: 1px solid rgba(224,188,106,0.34); background: linear-gradient(150deg, rgba(224,188,106,0.11), rgba(243,237,223,0.02)); padding: 30px 26px; display: flex; flex-direction: column; gap: 13px; min-height: 220px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 30px; color: #E0BC6A; line-height: 1;">O</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Open string</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.76);">Play the string without pressing it down with any finger.</p>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 30px 26px; display: flex; flex-direction: column; gap: 13px; min-height: 220px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 30px; color: #E0BC6A; line-height: 1;">1f</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Index finger</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.76);">Press the string down using the index finger.</p>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 30px 26px; display: flex; flex-direction: column; gap: 13px; min-height: 220px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 30px; color: #E0BC6A; line-height: 1;">2f</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Middle finger</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.76);">Press the string down using the middle finger.</p>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 30px 26px; display: flex; flex-direction: column; gap: 13px; min-height: 220px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 30px; color: #E0BC6A; line-height: 1;">3f</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Ring finger</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.76);">Press the string down using the ring finger.</p>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 30px 26px; display: flex; flex-direction: column; gap: 13px; min-height: 220px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 30px; color: #E0BC6A; line-height: 1;">4f</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Little finger</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(243,237,223,0.76);">Press the string down using the pinky finger.</p>
+      </div>
+    </div>
+    <p style="margin: 20px 0 0; font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(243,237,223,0.55);">
+      Hand-position diagrams from the original site will replace these cards once supplied
+    </p>
+  </section>
+
+  <section data-screen-label="06 Start" style="padding: 66px 32px 0;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 44px; flex-wrap: wrap; border: 1px solid rgba(224,188,106,0.34); background: linear-gradient(135deg, rgba(224,188,106,0.1), rgba(107,75,168,0.15)); padding: 44px 46px;">
+      <div style="display: flex; flex-direction: column; gap: 14px; max-width: 58ch;">
+        <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 40px; line-height: 1.08;">Now open the first sheet.</h2>
+        <p style="margin: 0; font-size: 16.5px; line-height: 1.62; color: rgba(243,237,223,0.78);">
+          Sruthi Swara Varisai is where every Carnatic student begins. Free, in English and Tamil, with
+          video for violin and voice.
+        </p>
+      </div>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <a href="Library.dc.html" style="padding: 17px 32px; background: #E0BC6A; color: #1B1233; font-family: Marcellus, serif; font-size: 16px; letter-spacing: 0.05em;">Open the library</a>
+        <a href="Enquire.dc.html" style="padding: 17px 30px; border: 1px solid rgba(243,237,223,0.32); color: #F3EDDF; font-family: Marcellus, serif; font-size: 16px; letter-spacing: 0.05em;">Book a free trial</a>
+      </div>
+    </div>
+  </section>
+
+  <div data-screen-label="Footer" style="margin-top: 66px; padding: 46px 32px; border-top: 1px solid rgba(224,188,106,0.2); display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(243,237,223,0.55);">
+    <span>© 2026 Violin Suka Pavalan · Karaikal, Puducherry</span>
+    <div style="display: flex; gap: 24px;">
+      <a href="Homepage Violet Gold.dc.html" style="color: rgba(243,237,223,0.7);">Home</a>
+      <a href="Library.dc.html" style="color: rgba(243,237,223,0.7);">All lessons</a>
+      <a href="Enquire.dc.html" style="color: rgba(243,237,223,0.7);">Contact</a>
+          <a href="Legal.dc.html" style="color: rgba(243,237,223,0.7);">Privacy &amp; terms</a>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">class Component extends DCLogic {
+  state = { menuOpen: false };
+  renderVals() {
+    const open = this.state.menuOpen;
+    return {
+      openMenu: () => this.setState({ menuOpen: true }),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      onNavKey: (e) => {
+        if (e.key === 'Escape') this.setState({ menuOpen: false });
+      },
+      onNavBlur: (e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) this.setState({ menuOpen: false });
+      },
+      onTriggerKey: (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.setState(s => ({ menuOpen: !s.menuOpen })); }
+        if (e.key === 'Escape') this.setState({ menuOpen: false });
+      },
+      menuOpenStr: open ? 'true' : 'false',
+      menuHiddenStr: open ? 'false' : 'true',
+      dropdownStyle: {
+        position: 'absolute', left: 0, right: 0, top: '100%',
+        background: 'rgba(37,26,66,0.98)', backdropFilter: 'blur(22px)',
+        borderTop: '1px solid rgba(224,188,106,0.24)',
+        borderBottom: '1px solid rgba(224,188,106,0.24)',
+        padding: open ? '24px 32px' : '0 32px',
+        display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px',
+        maxHeight: open ? '340px' : '0px',
+        opacity: open ? 1 : 0,
+        visibility: open ? 'visible' : 'hidden',
+        overflow: 'hidden',
+        pointerEvents: open ? 'auto' : 'none',
+        transition: 'max-height 340ms cubic-bezier(.16,1,.3,1), opacity 240ms ease, padding 340ms cubic-bezier(.16,1,.3,1), visibility 340ms'
+      }
+    };
+  }
+}</script>
+</body>
+</html>

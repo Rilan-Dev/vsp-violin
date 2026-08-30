@@ -1,0 +1,372 @@
+     1→<!DOCTYPE html>
+     2→<html>
+     3→<head>
+     4→<meta charset="utf-8">
+     5→<meta name="viewport" content="width=device-width, initial-scale=1">
+     6→<script src="./support.js"></script>
+     7→</head>
+     8→<body>
+     9→<x-dc>
+    10→<helmet>
+    11→<meta name="viewport" content="width=device-width, initial-scale=1" />
+    12→<title>The Library — 22 free Carnatic violin lessons</title>
+    13→<link rel="preconnect" href="https://fonts.googleapis.com" />
+    14→<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    15→<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    16→<link rel="stylesheet" href="responsive.css" />
+    17→<style>
+    18→  html { background: #16102A; scroll-behavior: smooth; }
+    19→  body { margin: 0; background: #16102A; color: #F3EDDF; font-family: 'Instrument Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    20→  a { color: #E0BC6A; text-decoration: none; }
+    21→  a:hover { color: #F2D89A; }
+    22→  ::selection { background: #E0BC6A; color: #1B1233; }
+    23→</style>
+    24→</helmet>
+    25→
+    26→<div style="max-width: 1440px; margin: 0 auto;">
+    27→
+    28→  <div data-screen-label="Nav" onMouseLeave="{{ closeMenu }}" onKeyDown="{{ onNavKey }}" onBlur="{{ onNavBlur }}" style="position: sticky; top: 0; z-index: 50; background: rgba(22,16,42,0.92); backdrop-filter: blur(22px); border-bottom: 1px solid rgba(224,188,106,0.24);">
+    29→    <div style="display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 16px 32px;">
+    30→      <a href="Homepage Violet Gold.dc.html" style="font-family: Marcellus, serif; font-size: 21px; letter-spacing: 0.07em; color: #E0BC6A;">SUKA PAVALAN</a>
+    31→      <div data-nav="links" style="display: flex; align-items: center; gap: 28px; font-size: 14px; font-weight: 500;">
+    32→        <span role="button" tabindex="0" aria-expanded="{{ menuOpenStr }}" aria-controls="lessons-menu" aria-label="Lessons — open category menu" onClick="{{ toggleMenu }}" onMouseEnter="{{ openMenu }}" onFocus="{{ openMenu }}" onKeyDown="{{ onTriggerKey }}" style="position: relative; display: flex; align-items: center; gap: 6px; cursor: pointer; color: #F3EDDF; background: none; border: none; font-size: 14px; font-weight: 500; font-family: inherit;">Lessons <span style="font-size: 9px; color: #E0BC6A;">▼</span></span>
+    33→        <a href="Learn the Violin.dc.html" style="color: rgba(243,237,223,0.72);">Learn the Violin</a>
+    34→        <a href="The Guru.dc.html" style="color: rgba(243,237,223,0.72);">The Guru</a>
+    35→        <a href="Honours.dc.html" style="color: rgba(243,237,223,0.72);">Honours</a>
+    36→        <a href="Stage.dc.html" style="color: rgba(243,237,223,0.72);">Stage</a>
+    37→      </div>
+    38→      <a href="Enquire.dc.html" style="padding: 11px 24px; border: 1px solid #E0BC6A; color: #E0BC6A; font-family: Marcellus, serif; font-size: 14px; letter-spacing: 0.06em;">Enrol</a>
+    39→    </div>
+    40→    <div id="lessons-menu" data-dropdown="lessons" data-open="{{ menuOpenStr }}" aria-hidden="{{ menuHiddenStr }}" style="{{ dropdownStyle }}">
+    41→      <div style="display: flex; flex-direction: column; gap: 10px;">
+    42→        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Carnatic — Basics</span>
+    43→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Sruthi Swara Varisai</a>
+    44→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Sarali Varisai</a>
+    45→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Janta Varisai</a>
+    46→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Melsthayi Varisai</a>
+    47→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Thattu Varisai</a>
+    48→      </div>
+    49→      <div style="display: flex; flex-direction: column; gap: 10px;">
+    50→        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Carnatic — Advanced</span>
+    51→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Geetham <span style="color: rgba(243,237,223,0.55);">5</span></a>
+    52→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Swarajathi <span style="color: rgba(243,237,223,0.55);">1</span></a>
+    53→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Nottuswaram <span style="color: rgba(243,237,223,0.55);">1</span></a>
+    54→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Varnam <span style="color: rgba(243,237,223,0.55);">3</span></a>
+    55→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Krithi <span style="color: rgba(243,237,223,0.55);">3</span></a>
+    56→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">Thillana <span style="color: rgba(243,237,223,0.5);">0</span></a>
+    57→      </div>
+    58→      <div style="display: flex; flex-direction: column; gap: 10px;">
+    59→        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Devotional</span>
+    60→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Thiruppugazh <span style="color: rgba(243,237,223,0.55);">2</span></a>
+    61→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Bhakthi <span style="color: rgba(243,237,223,0.55);">1</span></a>
+    62→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">Thevaram <span style="color: rgba(243,237,223,0.5);">0</span></a>
+    63→      </div>
+    64→      <div style="display: flex; flex-direction: column; gap: 10px;">
+    65→        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Light Music &amp; Media</span>
+    66→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Cinema Songs <span style="color: rgba(243,237,223,0.55);">1</span></a>
+    67→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">English Songs <span style="color: rgba(243,237,223,0.5);">0</span></a>
+    68→        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">Other Languages <span style="color: rgba(243,237,223,0.5);">0</span></a>
+    69→        <a href="Stage.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Live Video <span style="color: rgba(243,237,223,0.55);">7</span></a>
+    70→        <a href="Stage.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Live Audio <span style="color: rgba(243,237,223,0.55);">3</span></a>
+    71→      </div>
+    72→      <div style="display: flex; flex-direction: column; gap: 10px;">
+    73→        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">More</span>
+    74→        <a href="Learn the Violin.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Learn the Violin</a>
+    75→        <a href="The Guru.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">The Guru</a>
+    76→        <a href="Honours.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Honours</a>
+    77→        <a href="Stage.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Stage</a>
+    78→      </div>
+    79→    </div>
+    80→  </div>
+    81→
+    82→  <section data-screen-label="01 Header" style="padding: 56px 32px 0;">
+    83→    <div style="display: grid; grid-template-columns: 1fr 380px; gap: 48px; align-items: end; padding-bottom: 32px; border-bottom: 1px solid rgba(224,188,106,0.26);">
+    84→      <div style="display: flex; flex-direction: column; gap: 20px;">
+    85→        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; color: #E0BC6A;">The library · free, permanently</span>
+    86→        <h1 style="margin: 0; font-family: Marcellus, serif; font-size: 62px; line-height: 1.06;">Twenty-two lessons,<br />written out twice.</h1>
+    87→        <p style="margin: 0; font-size: 17.5px; line-height: 1.65; color: rgba(243,237,223,0.76); max-width: 60ch;">
+    88→          From the first varisai to varnam and krithi. Every lesson carries notation in English and
+    89→          Tamil, practice audio where it was recorded, and video for violin and voice separately.
+    90→          Nothing here is behind a login.
+    91→        </p>
+    92→      </div>
+    93→      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(224,188,106,0.26); border: 1px solid rgba(224,188,106,0.26);">
+    94→        <div style="background: #16102A; padding: 20px 22px; display: flex; flex-direction: column; gap: 5px;"><span style="font-family: Marcellus, serif; font-size: 30px; color: #E0BC6A;">22</span><span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.62);">Lessons</span></div>
+    95→        <div style="background: #16102A; padding: 20px 22px; display: flex; flex-direction: column; gap: 5px;"><span style="font-family: Marcellus, serif; font-size: 30px; color: #E0BC6A;">44</span><span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.62);">Notation sheets</span></div>
+    96→        <div style="background: #16102A; padding: 20px 22px; display: flex; flex-direction: column; gap: 5px;"><span style="font-family: Marcellus, serif; font-size: 30px; color: #E0BC6A;">9</span><span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.62);">Categories</span></div>
+    97→        <div style="background: #16102A; padding: 20px 22px; display: flex; flex-direction: column; gap: 5px;"><span style="font-family: Marcellus, serif; font-size: 30px; color: #E0BC6A;">10</span><span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.62);">Ragas</span></div>
+    98→      </div>
+    99→    </div>
+   100→  </section>
+   101→
+   102→  <section data-screen-label="02 Filters" style="padding: 26px 32px 0;">
+   103→    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 24px;">
+   104→      <div style="display: flex; flex-wrap: wrap; gap: 7px; align-items: center;">
+   105→        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(243,237,223,0.6); padding-right: 4px;">Category</span>
+   106→        <span style="padding: 9px 16px; background: #E0BC6A; color: #1B1233; font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;">All 22</span>
+   107→        <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Basics 5</span>
+   108→        <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Geetham 5</span>
+   109→        <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Swarajathi 1</span>
+   110→        <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Nottuswaram 1</span>
+   111→        <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Varnam 3</span>
+   112→        <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Krithi 3</span>
+   113→        <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Thiruppugazh 2</span>
+   114→        <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Bhakthi 1</span>
+   115→        <span style="padding: 9px 16px; border: 1px solid rgba(243,237,223,0.2); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Cinema 1</span>
+   116→      </div>
+   117→    </div>
+   118→    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 7px; padding-top: 14px;">
+   119→      <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(243,237,223,0.6); padding-right: 4px;">Raga</span>
+   120→      <span style="padding: 7px 13px; border: 1px solid rgba(243,237,223,0.16); font-size: 12.5px; color: rgba(243,237,223,0.72);">Mayamalavagowlai 3</span>
+   121→      <span style="padding: 7px 13px; border: 1px solid rgba(243,237,223,0.16); font-size: 12.5px; color: rgba(243,237,223,0.72);">Mohanam 2</span>
+   122→      <span style="padding: 7px 13px; border: 1px solid rgba(243,237,223,0.16); font-size: 12.5px; color: rgba(243,237,223,0.72);">Nattai 2</span>
+   123→      <span style="padding: 7px 13px; border: 1px solid rgba(243,237,223,0.16); font-size: 12.5px; color: rgba(243,237,223,0.72);">Malahari 2</span>
+   124→      <span style="padding: 7px 13px; border: 1px solid rgba(243,237,223,0.16); font-size: 12.5px; color: rgba(243,237,223,0.72);">Hamsadwani 2</span>
+   125→      <span style="padding: 7px 13px; border: 1px solid rgba(243,237,223,0.16); font-size: 12.5px; color: rgba(243,237,223,0.72);">Bilahari</span>
+   126→      <span style="padding: 7px 13px; border: 1px solid rgba(243,237,223,0.16); font-size: 12.5px; color: rgba(243,237,223,0.72);">Shankarabharanam</span>
+   127→      <span style="padding: 7px 13px; border: 1px solid rgba(243,237,223,0.16); font-size: 12.5px; color: rgba(243,237,223,0.72);">Gambheera Nattai</span>
+   128→      <span style="padding: 7px 13px; border: 1px solid rgba(243,237,223,0.16); font-size: 12.5px; color: rgba(243,237,223,0.72);">Shanmugapriya</span>
+   129→      <span style="padding: 7px 13px; border: 1px solid rgba(243,237,223,0.16); font-size: 12.5px; color: rgba(243,237,223,0.72);">Kaapi</span>
+   130→    </div>
+   131→  </section>
+   132→
+   133→  <section data-screen-label="03 Carnatic Basics" style="padding: 48px 32px 0;">
+   134→    <div style="display: flex; align-items: baseline; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid rgba(224,188,106,0.3);">
+   135→      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 32px;">Carnatic Basics</h2>
+   136→      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #E0BC6A;">5 LESSONS · START HERE</span>
+   137→      <span style="flex: 1;"></span>
+   138→      <span style="font-size: 14.5px; color: rgba(243,237,223,0.66);">Work through these in order before anything else.</span>
+   139→    </div>
+   140→    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; padding-top: 20px;">
+   141→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 24px 22px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   142→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #E0BC6A;">LEVEL 1</span>
+   143→        <span style="font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Sruthi Swara Varisai</span>
+   144→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: rgba(243,237,223,0.6);">2 PDFs</span>
+   145→      </a>
+   146→      <a href="Lesson.dc.html" style="border: 1px solid rgba(224,188,106,0.4); background: linear-gradient(155deg, rgba(224,188,106,0.13), rgba(107,75,168,0.16)); padding: 24px 22px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   147→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #E0BC6A;">LEVEL 2</span>
+   148→        <span style="font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Sarali Varisai</span>
+   149→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: rgba(243,237,223,0.72);">2 PDFs · 16 VIDEOS</span>
+   150→      </a>
+   151→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 24px 22px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   152→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #E0BC6A;">LEVEL 3</span>
+   153→        <span style="font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Janta Varisai</span>
+   154→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: rgba(243,237,223,0.6);">2 PDFs · 2 PLAYLISTS</span>
+   155→      </a>
+   156→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 24px 22px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   157→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #E0BC6A;">LEVEL 4</span>
+   158→        <span style="font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Melsthayi Varisai</span>
+   159→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: rgba(243,237,223,0.6);">2 PDFs · 2 PLAYLISTS</span>
+   160→      </a>
+   161→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 24px 22px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   162→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #E0BC6A;">LEVEL 5</span>
+   163→        <span style="font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Thattu Varisai</span>
+   164→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: rgba(243,237,223,0.6);">2 PDFs · 2 PLAYLISTS</span>
+   165→      </a>
+   166→    </div>
+   167→  </section>
+   168→
+   169→  <section data-screen-label="04 Geetham" style="padding: 44px 32px 0;">
+   170→    <div style="display: flex; align-items: baseline; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid rgba(224,188,106,0.3);">
+   171→      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 32px;">Geetham</h2>
+   172→      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #E0BC6A;">5 LESSONS</span>
+   173→      <span style="flex: 1;"></span>
+   174→      <span style="font-size: 14.5px; color: rgba(243,237,223,0.66);">First compositions — where swaram meets lyric.</span>
+   175→    </div>
+   176→    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; padding-top: 20px;">
+   177→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 24px 22px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   178→        <span style="font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Sree Gananatha</span>
+   179→        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">MALAHARI</span>
+   180→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10px; color: rgba(243,237,223,0.6);">Chathusra Jathi Rupakam</span>
+   181→      </a>
+   182→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 24px 22px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   183→        <span style="font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Varaveena</span>
+   184→        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">MOHANAM</span>
+   185→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10px; color: rgba(243,237,223,0.6);">2 PLAYLISTS</span>
+   186→      </a>
+   187→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 24px 22px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   188→        <span style="font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Kumara Muruga</span>
+   189→        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">HAMSADWANI</span>
+   190→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10px; color: rgba(243,237,223,0.6);">15 AUDIO TRACKS</span>
+   191→      </a>
+   192→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 24px 22px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   193→        <span style="font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Gananaatha</span>
+   194→        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">MAYAMALAVAGOWLAI</span>
+   195→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10px; color: rgba(243,237,223,0.6);">15 AUDIO TRACKS</span>
+   196→      </a>
+   197→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 24px 22px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   198→        <span style="font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Kereya Neeranu</span>
+   199→        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">MALAHARI</span>
+   200→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10px; color: rgba(243,237,223,0.6);">2 PDFs</span>
+   201→      </a>
+   202→    </div>
+   203→  </section>
+   204→
+   205→  <section data-screen-label="05 Advanced" style="padding: 44px 32px 0;">
+   206→    <div style="display: flex; align-items: baseline; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid rgba(224,188,106,0.3);">
+   207→      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 32px;">Swarajathi, Nottuswaram &amp; Varnam</h2>
+   208→      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #E0BC6A;">5 LESSONS</span>
+   209→    </div>
+   210→    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; padding-top: 20px;">
+   211→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 24px 22px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   212→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">SWARAJATHI</span>
+   213→        <span style="font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Raaravenu</span>
+   214→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">BILAHARI</span>
+   215→      </a>
+   216→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 24px 22px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   217→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">NOTTUSWARAM</span>
+   218→        <span style="font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Raama Janaardana</span>
+   219→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">SHANKARABHARANAM</span>
+   220→      </a>
+   221→      <a href="Lesson.dc.html" style="border: 1px solid rgba(224,188,106,0.4); background: linear-gradient(155deg, rgba(224,188,106,0.13), rgba(107,75,168,0.16)); padding: 24px 22px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   222→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.72);">VARNAM · FULLEST LESSON</span>
+   223→        <span style="font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Amma Aanandadayni</span>
+   224→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">GAMBHEERA NATTAI · 5 PARTS</span>
+   225→      </a>
+   226→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 24px 22px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   227→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">VARNAM</span>
+   228→        <span style="font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Jalajaaksha</span>
+   229→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">HAMSADWANI</span>
+   230→      </a>
+   231→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 24px 22px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   232→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">VARNAM</span>
+   233→        <span style="font-family: Marcellus, serif; font-size: 21px; line-height: 1.2;">Mohanam Varnam</span>
+   234→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">MOHANAM · 7 VIDEOS</span>
+   235→      </a>
+   236→    </div>
+   237→  </section>
+   238→
+   239→  <section data-screen-label="06 Krithi and devotional" style="padding: 44px 32px 0;">
+   240→    <div style="display: flex; align-items: baseline; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid rgba(224,188,106,0.3);">
+   241→      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 32px;">Krithi &amp; Devotional</h2>
+   242→      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #E0BC6A;">6 LESSONS</span>
+   243→    </div>
+   244→    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding-top: 20px;">
+   245→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 26px 26px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   246→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">KRITHI</span>
+   247→        <span style="font-family: Marcellus, serif; font-size: 23px; line-height: 1.2;">Maha Ganapathim</span>
+   248→        <span style="font-size: 14px; color: rgba(243,237,223,0.68);">Muthuswami Dikshitar</span>
+   249→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">NATTAI · AADHI · 2 LESSONS</span>
+   250→      </a>
+   251→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 26px 26px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   252→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">KRITHI</span>
+   253→        <span style="font-family: Marcellus, serif; font-size: 23px; line-height: 1.2;">Enna Thavam</span>
+   254→        <span style="font-size: 14px; color: rgba(243,237,223,0.68);">Papanasam Sivan</span>
+   255→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">KAAPI · AADHI · 2 LESSONS</span>
+   256→      </a>
+   257→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 26px 26px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   258→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">KRITHI</span>
+   259→        <span style="font-family: Marcellus, serif; font-size: 23px; line-height: 1.2;">Aadikkondar</span>
+   260→        <span style="font-size: 14px; color: rgba(243,237,223,0.68);">With practice audio in 5 sruthis</span>
+   261→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">MAYAMALAVAGOWLAI · AADHI</span>
+   262→      </a>
+   263→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 26px 26px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   264→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">THIRUPPUGAZH · 1</span>
+   265→        <span style="font-family: Marcellus, serif; font-size: 23px; line-height: 1.2;">Kaithala Niraikani</span>
+   266→        <span style="font-size: 14px; color: rgba(243,237,223,0.68);">Violin and vocal, four sruthis</span>
+   267→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">NATTAI · AADHI</span>
+   268→      </a>
+   269→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 26px 26px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   270→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">THIRUPPUGAZH · 2</span>
+   271→        <span style="font-family: Marcellus, serif; font-size: 23px; line-height: 1.2;">Muththai Tharu</span>
+   272→        <span style="font-size: 14px; color: rgba(243,237,223,0.68);">Violin and vocal, four sruthis</span>
+   273→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">SHANMUGAPRIYA · MISRA CHAPPU</span>
+   274→      </a>
+   275→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 26px 26px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   276→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">BHAKTHI</span>
+   277→        <span style="font-family: Marcellus, serif; font-size: 23px; line-height: 1.2;">Lingashtagam</span>
+   278→        <span style="font-size: 14px; color: rgba(243,237,223,0.68);">Brahmmamuraari</span>
+   279→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">2 PDFs</span>
+   280→      </a>
+   281→    </div>
+   282→  </section>
+   283→
+   284→  <section data-screen-label="07 Light music" style="padding: 44px 32px 0;">
+   285→    <div style="display: flex; align-items: baseline; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid rgba(224,188,106,0.3);">
+   286→      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 32px;">Light Music</h2>
+   287→      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #E0BC6A;">1 LESSON · GROWING</span>
+   288→    </div>
+   289→    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding-top: 20px;">
+   290→      <a href="Lesson.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 26px 26px; display: flex; flex-direction: column; gap: 11px; color: #F3EDDF;">
+   291→        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: rgba(243,237,223,0.6);">CINEMA SONGS</span>
+   292→        <span style="font-family: Marcellus, serif; font-size: 23px; line-height: 1.2;">Poongathave</span>
+   293→        <span style="font-size: 14px; color: rgba(243,237,223,0.68);">Tamil cinema, arranged for violin</span>
+   294→        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #E0BC6A;">MAYAMALAVAGOWLAI</span>
+   295→      </a>
+   296→      <div style="grid-column: span 2; border: 1px dashed rgba(224,188,106,0.4); padding: 26px 30px; display: flex; flex-direction: column; justify-content: center; gap: 10px;">
+   297→        <span style="font-family: Marcellus, serif; font-size: 23px;">English songs, other languages, Thevaram, Thillana</span>
+   298→        <span style="font-size: 15px; line-height: 1.55; color: rgba(243,237,223,0.7); max-width: 60ch;">
+   299→          These categories exist in the menu and are waiting for their first notation. New lessons
+   300→          appear here the moment they are published.
+   301→        </span>
+   302→      </div>
+   303→    </div>
+   304→  </section>
+   305→
+   306→  <section data-screen-label="08 Enrol" style="margin: 62px 0 0; padding: 62px 32px; background: linear-gradient(180deg, #2A1D4E, #16102A); border-top: 1px solid rgba(224,188,106,0.24);">
+   307→    <div style="display: flex; align-items: center; justify-content: space-between; gap: 44px; flex-wrap: wrap;">
+   308→      <div style="display: flex; flex-direction: column; gap: 14px; max-width: 58ch;">
+   309→        <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 42px; line-height: 1.08;">The library is free. The correction is what you pay for.</h2>
+   310→        <p style="margin: 0; font-size: 16.5px; line-height: 1.62; color: rgba(243,237,223,0.74);">
+   311→          Every sheet and every recording here stays open, permanently. When you want someone watching
+   312→          your bow, the first lesson costs nothing.
+   313→        </p>
+   314→      </div>
+   315→      <a href="Enquire.dc.html" style="padding: 17px 34px; background: #E0BC6A; color: #1B1233; font-family: Marcellus, serif; font-size: 16px; letter-spacing: 0.05em;">Book a free trial</a>
+   316→    </div>
+   317→  </section>
+   318→
+   319→  <div data-screen-label="Footer" style="padding: 46px 32px; border-top: 1px solid rgba(224,188,106,0.2); display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(243,237,223,0.55);">
+   320→    <span>© 2026 Violin Suka Pavalan · Karaikal, Puducherry</span>
+   321→    <div style="display: flex; gap: 24px;">
+   322→      <a href="Homepage Violet Gold.dc.html" style="color: rgba(243,237,223,0.7);">Home</a>
+   323→      <a href="The Guru.dc.html" style="color: rgba(243,237,223,0.7);">The Guru</a>
+   324→      <a href="Enquire.dc.html" style="color: rgba(243,237,223,0.7);">Contact</a>
+   325→          <a href="Legal.dc.html" style="color: rgba(243,237,223,0.7);">Privacy &amp; terms</a>
+   326→    </div>
+   327→  </div>
+   328→
+   329→</div>
+   330→
+   331→</x-dc>
+   332→<script type="text/x-dc" data-dc-script data-props="{}">class Component extends DCLogic {
+   333→  state = { menuOpen: false };
+   334→  renderVals() {
+   335→    const open = this.state.menuOpen;
+   336→    return {
+   337→      openMenu: () => this.setState({ menuOpen: true }),
+   338→      closeMenu: () => this.setState({ menuOpen: false }),
+   339→      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+   340→      onNavKey: (e) => {
+   341→        if (e.key === 'Escape') this.setState({ menuOpen: false });
+   342→      },
+   343→      onNavBlur: (e) => {
+   344→        if (!e.currentTarget.contains(e.relatedTarget)) this.setState({ menuOpen: false });
+   345→      },
+   346→      onTriggerKey: (e) => {
+   347→        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.setState(s => ({ menuOpen: !s.menuOpen })); }
+   348→        if (e.key === 'Escape') this.setState({ menuOpen: false });
+   349→      },
+   350→      menuOpenStr: open ? 'true' : 'false',
+   351→      menuHiddenStr: open ? 'false' : 'true',
+   352→      dropdownStyle: {
+   353→        position: 'absolute', left: 0, right: 0, top: '100%',
+   354→        background: 'rgba(37,26,66,0.98)', backdropFilter: 'blur(22px)',
+   355→        borderTop: '1px solid rgba(224,188,106,0.24)',
+   356→        borderBottom: '1px solid rgba(224,188,106,0.24)',
+   357→        padding: open ? '24px 32px' : '0 32px',
+   358→        display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px',
+   359→        maxHeight: open ? '340px' : '0px',
+   360→        opacity: open ? 1 : 0,
+   361→        visibility: open ? 'visible' : 'hidden',
+   362→        overflow: 'hidden',
+   363→        pointerEvents: open ? 'auto' : 'none',
+   364→        transition: 'max-height 340ms cubic-bezier(.16,1,.3,1), opacity 240ms ease, padding 340ms cubic-bezier(.16,1,.3,1), visibility 340ms'
+   365→      }
+   366→    };
+   367→  }
+   368→}</script>
+   369→</body>
+   370→</html>
+
+[showing lines 1-370 of 371; use offset=371 with limit to continue reading]

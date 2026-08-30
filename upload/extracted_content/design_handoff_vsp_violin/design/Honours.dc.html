@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Honours — Violin Suka Pavalan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="responsive.css" />
+<style>
+  html { background: #16102A; scroll-behavior: smooth; }
+  body { margin: 0; background: #16102A; color: #F3EDDF; font-family: 'Instrument Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #E0BC6A; text-decoration: none; }
+  a:hover { color: #F2D89A; }
+  ::selection { background: #E0BC6A; color: #1B1233; }
+</style>
+</helmet>
+
+<div style="max-width: 1440px; margin: 0 auto;">
+
+  <div data-screen-label="Nav" onMouseLeave="{{ closeMenu }}" onKeyDown="{{ onNavKey }}" onBlur="{{ onNavBlur }}" style="position: sticky; top: 0; z-index: 50; background: rgba(22,16,42,0.92); backdrop-filter: blur(22px); border-bottom: 1px solid rgba(224,188,106,0.24);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 16px 32px;">
+      <a href="Homepage Violet Gold.dc.html" style="font-family: Marcellus, serif; font-size: 21px; letter-spacing: 0.07em; color: #E0BC6A;">SUKA PAVALAN</a>
+      <div data-nav="links" style="display: flex; align-items: center; gap: 28px; font-size: 14px; font-weight: 500;">
+        <span role="button" tabindex="0" aria-expanded="{{ menuOpenStr }}" aria-controls="lessons-menu" aria-label="Lessons — open category menu" onClick="{{ toggleMenu }}" onMouseEnter="{{ openMenu }}" onFocus="{{ openMenu }}" onKeyDown="{{ onTriggerKey }}" style="position: relative; display: flex; align-items: center; gap: 6px; cursor: pointer; color: rgba(243,237,223,0.72); background: none; border: none; font-size: 14px; font-weight: 500; font-family: inherit;">Lessons <span style="font-size: 9px; color: #E0BC6A;">▼</span></span>
+        <a href="Learn the Violin.dc.html" style="color: rgba(243,237,223,0.72);">Learn the Violin</a>
+        <a href="The Guru.dc.html" style="color: rgba(243,237,223,0.72);">The Guru</a>
+        <a href="Honours.dc.html" style="color: #F3EDDF;">Honours</a>
+        <a href="Stage.dc.html" style="color: rgba(243,237,223,0.72);">Stage</a>
+      </div>
+      <a href="Enquire.dc.html" style="padding: 11px 24px; border: 1px solid #E0BC6A; color: #E0BC6A; font-family: Marcellus, serif; font-size: 14px; letter-spacing: 0.06em;">Enrol</a>
+    </div>
+    <div id="lessons-menu" data-dropdown="lessons" data-open="{{ menuOpenStr }}" aria-hidden="{{ menuHiddenStr }}" style="{{ dropdownStyle }}">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Carnatic — Basics</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Sruthi Swara Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Sarali Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Janta Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Melsthayi Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Thattu Varisai</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Carnatic — Advanced</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Geetham <span style="color: rgba(243,237,223,0.55);">5</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Swarajathi <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Nottuswaram <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Varnam <span style="color: rgba(243,237,223,0.55);">3</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Krithi <span style="color: rgba(243,237,223,0.55);">3</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">Thillana <span style="color: rgba(243,237,223,0.5);">0</span></a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Devotional</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Thiruppugazh <span style="color: rgba(243,237,223,0.55);">2</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Bhakthi <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">Thevaram <span style="color: rgba(243,237,223,0.5);">0</span></a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Light Music &amp; Media</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Cinema Songs <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">English Songs <span style="color: rgba(243,237,223,0.5);">0</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">Other Languages <span style="color: rgba(243,237,223,0.5);">0</span></a>
+        <a href="Stage.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Live Video <span style="color: rgba(243,237,223,0.55);">7</span></a>
+        <a href="Stage.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Live Audio <span style="color: rgba(243,237,223,0.55);">3</span></a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">More</span>
+        <a href="Learn the Violin.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Learn the Violin</a>
+        <a href="The Guru.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">The Guru</a>
+        <a href="Honours.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Honours</a>
+        <a href="Stage.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Stage</a>
+      </div>
+    </div>
+  </div>
+
+  <section data-screen-label="01 Header" style="padding: 62px 32px 0;">
+    <div style="display: grid; grid-template-columns: 1fr 400px; gap: 52px; align-items: end; padding-bottom: 34px; border-bottom: 1px solid rgba(224,188,106,0.26);">
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; color: #E0BC6A;">Honours · twelve titles</span>
+        <h1 style="margin: 0; font-family: Marcellus, serif; font-size: 62px; line-height: 1.06;">Conferred,<br />not claimed.</h1>
+        <p style="margin: 0; font-size: 17.5px; line-height: 1.68; color: rgba(243,237,223,0.78); max-width: 58ch;">
+          With the blessings of the Almighty, over the years I have been honoured with prestigious
+          titles that reflect my mastery, dedication, and contribution to the world of music, and
+          especially the violin. Each one below carries the body that awarded it.
+        </p>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(224,188,106,0.26); border: 1px solid rgba(224,188,106,0.26);">
+        <div style="background: #16102A; padding: 22px 24px; display: flex; flex-direction: column; gap: 5px;"><span style="font-family: Marcellus, serif; font-size: 32px; color: #E0BC6A;">12</span><span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.62);">Titles</span></div>
+        <div style="background: #16102A; padding: 22px 24px; display: flex; flex-direction: column; gap: 5px;"><span style="font-family: Marcellus, serif; font-size: 32px; color: #E0BC6A;">2009</span><span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.62);">First conferred</span></div>
+        <div style="background: #16102A; padding: 22px 24px; display: flex; flex-direction: column; gap: 5px;"><span style="font-family: Marcellus, serif; font-size: 32px; color: #E0BC6A;">2024</span><span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.62);">Most recent</span></div>
+        <div style="background: #16102A; padding: 22px 24px; display: flex; flex-direction: column; gap: 5px;"><span style="font-family: Marcellus, serif; font-size: 32px; color: #E0BC6A;">6</span><span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.62);">Years scholarship</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="02 Dated titles" style="padding: 46px 32px 0;">
+    <div style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 22px;">
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 32px;">With awarding body and year</h2>
+      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #E0BC6A;">5 TITLES</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;">
+      <div style="border: 1px solid rgba(224,188,106,0.45); background: linear-gradient(155deg, rgba(224,188,106,0.16), rgba(107,75,168,0.16)); padding: 30px 26px; display: flex; flex-direction: column; gap: 13px; min-height: 280px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #E0BC6A;">2024</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 27px; line-height: 1.15;">Violin Ratna</h3>
+        <span style="font-size: 14.5px; line-height: 1.5; color: rgba(243,237,223,0.76);">Jewel of violin artistry</span>
+        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10px; line-height: 1.6; letter-spacing: 0.06em; color: rgba(243,237,223,0.62);">DISTRICT COLLECTORATE KARAIKAL, GOVERNMENT OF PUDUCHERRY</span>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 30px 26px; display: flex; flex-direction: column; gap: 13px; min-height: 280px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: rgba(243,237,223,0.62);">2019</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 27px; line-height: 1.15;">Violin Chakravarthy</h3>
+        <span style="font-size: 14.5px; line-height: 1.5; color: rgba(243,237,223,0.76);">Emperor of violin</span>
+        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10px; line-height: 1.6; letter-spacing: 0.06em; color: rgba(243,237,223,0.62);">AGILA INDIA SAMUGA AMAIPPU, PONDICHERRY</span>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 30px 26px; display: flex; flex-direction: column; gap: 13px; min-height: 280px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: rgba(243,237,223,0.62);">2017</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 27px; line-height: 1.15;">Arutpa Innisai Maamani</h3>
+        <span style="font-size: 14.5px; line-height: 1.5; color: rgba(243,237,223,0.76);">Vallalar excellence award</span>
+        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10px; line-height: 1.6; letter-spacing: 0.06em; color: rgba(243,237,223,0.62);">SAMARA SANMARGA SANGAM, NIRAVI</span>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 30px 26px; display: flex; flex-direction: column; gap: 13px; min-height: 280px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: rgba(243,237,223,0.62);">2012</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 27px; line-height: 1.15;">Kalai Seer Kaavalar</h3>
+        <span style="font-size: 14.5px; line-height: 1.5; color: rgba(243,237,223,0.76);">Guardian of artistic excellence</span>
+        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10px; line-height: 1.6; letter-spacing: 0.06em; color: rgba(243,237,223,0.62);">KAAPIYA KAZHAGAM, KARAIKAL</span>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 30px 26px; display: flex; flex-direction: column; gap: 13px; min-height: 280px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: rgba(243,237,223,0.62);">2009</span>
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 27px; line-height: 1.15;">Sapthaswara Maamani</h3>
+        <span style="font-size: 14.5px; line-height: 1.5; color: rgba(243,237,223,0.76);">Jewel of the seven musical notes</span>
+        <span style="margin-top: auto; font-family: 'Geist Mono', monospace; font-size: 10px; line-height: 1.6; letter-spacing: 0.06em; color: rgba(243,237,223,0.62);">SAPTHASWARAM MUSIC ACADEMY, KARAIKAL</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="03 Further titles" style="padding: 42px 32px 0;">
+    <div style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 22px;">
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 32px;">Further titles held</h2>
+      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #E0BC6A;">7 TITLES</span>
+      <span style="flex: 1;"></span>
+      <span style="font-size: 14px; color: rgba(243,237,223,0.62);">Awarding bodies and years to be confirmed from the certificates</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
+      <div style="border: 1px solid rgba(243,237,223,0.14); background: rgba(243,237,223,0.03); padding: 24px 24px; display: flex; flex-direction: column; gap: 8px;">
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px; line-height: 1.2;">Innisai Ilaval</h3>
+        <span style="font-size: 14px; line-height: 1.5; color: rgba(243,237,223,0.7);">Prince of sweet music</span>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.14); background: rgba(243,237,223,0.03); padding: 24px 24px; display: flex; flex-direction: column; gap: 8px;">
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px; line-height: 1.2;">Villisai Vendan</h3>
+        <span style="font-size: 14px; line-height: 1.5; color: rgba(243,237,223,0.7);">King of violin music</span>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.14); background: rgba(243,237,223,0.03); padding: 24px 24px; display: flex; flex-direction: column; gap: 8px;">
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px; line-height: 1.2;">Sangeetha Sangoli</h3>
+        <span style="font-size: 14px; line-height: 1.5; color: rgba(243,237,223,0.7);">Resonating voice of music</span>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.14); background: rgba(243,237,223,0.03); padding: 24px 24px; display: flex; flex-direction: column; gap: 8px;">
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px; line-height: 1.2;">Violin Vidhva Vibhushan</h3>
+        <span style="font-size: 14px; line-height: 1.5; color: rgba(243,237,223,0.7);">Ornament of violin expertise</span>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.14); background: rgba(243,237,223,0.03); padding: 24px 24px; display: flex; flex-direction: column; gap: 8px;">
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px; line-height: 1.2;">Sunadham</h3>
+        <span style="font-size: 14px; line-height: 1.5; color: rgba(243,237,223,0.7);">Melodious sound</span>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.14); background: rgba(243,237,223,0.03); padding: 24px 24px; display: flex; flex-direction: column; gap: 8px;">
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px; line-height: 1.2;">Kalai Valar Maamani</h3>
+        <span style="font-size: 14px; line-height: 1.5; color: rgba(243,237,223,0.7);">Jewel of growing art</span>
+      </div>
+      <div style="border: 1px solid rgba(243,237,223,0.14); background: rgba(243,237,223,0.03); padding: 24px 24px; display: flex; flex-direction: column; gap: 8px;">
+        <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px; line-height: 1.2;">Isai Saathanayaalan</h3>
+        <span style="font-size: 14px; line-height: 1.5; color: rgba(243,237,223,0.7);">Master of music</span>
+      </div>
+      <div style="border: 1px dashed rgba(224,188,106,0.4); padding: 24px 24px; display: flex; flex-direction: column; justify-content: center; gap: 8px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #E0BC6A;">Photographs</span>
+        <span style="font-size: 14px; line-height: 1.55; color: rgba(243,237,223,0.7);">Ceremony photographs exist for all twelve and will appear on each card once supplied.</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="04 Accolades" style="margin: 66px 0 0; padding: 66px 32px; background: linear-gradient(180deg, #241A44, #1A1234); border-top: 1px solid rgba(224,188,106,0.22); border-bottom: 1px solid rgba(224,188,106,0.22);">
+    <div style="display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 52px; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">Prestigious accolades</span>
+        <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 42px; line-height: 1.08;">Before the titles came the prizes</h2>
+        <p style="margin: 0; font-size: 16px; line-height: 1.62; color: rgba(243,237,223,0.72); max-width: 40ch;">
+          A national scholarship at fourteen, and a competition record that began before that.
+        </p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="border: 1px solid rgba(224,188,106,0.36); background: linear-gradient(150deg, rgba(224,188,106,0.11), rgba(243,237,223,0.02)); padding: 30px 32px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px;">
+            <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 24px; line-height: 1.2;">Cultural Talent Search Scholarship</h3>
+            <span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #E0BC6A; white-space: nowrap;">1994 – 2000</span>
+          </div>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.62; color: rgba(243,237,223,0.78);">
+            Awarded by the Centre for Cultural Resources and Training, New Delhi, in recognition of
+            exceptional talent and dedication to the cultural arts. Six consecutive years.
+          </p>
+        </div>
+        <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 30px 32px; display: flex; flex-direction: column; gap: 10px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 24px; line-height: 1.2;">First prize across numerous competitions</h3>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.62; color: rgba(243,237,223,0.78);">
+            Consistently secured top honours in various prestigious competitions, showcasing
+            unparalleled skill and artistry.
+          </p>
+        </div>
+        <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 30px 32px; display: flex; flex-direction: column; gap: 10px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 24px; line-height: 1.2;">Thamizhisai Sangam, Chennai</h3>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.62; color: rgba(243,237,223,0.78);">
+            Awarded first prize and honoured with a violin as special recognition for outstanding
+            musical excellence.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="05 Enrol" style="padding: 66px 32px 0;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 44px; flex-wrap: wrap; border: 1px solid rgba(224,188,106,0.34); background: linear-gradient(135deg, rgba(224,188,106,0.1), rgba(107,75,168,0.15)); padding: 44px 46px;">
+      <div style="display: flex; flex-direction: column; gap: 14px; max-width: 56ch;">
+        <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 40px; line-height: 1.08;">Titles are for committees. Teaching is for your child.</h2>
+        <p style="margin: 0; font-size: 16.5px; line-height: 1.62; color: rgba(243,237,223,0.78);">
+          The awards say the tradition recognises him. What matters more is that students who started
+          at six now perform across India and America.
+        </p>
+      </div>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <a href="Enquire.dc.html" style="padding: 17px 32px; background: #E0BC6A; color: #1B1233; font-family: Marcellus, serif; font-size: 16px; letter-spacing: 0.05em;">Book a free trial</a>
+        <a href="Stage.dc.html" style="padding: 17px 30px; border: 1px solid rgba(243,237,223,0.32); color: #F3EDDF; font-family: Marcellus, serif; font-size: 16px; letter-spacing: 0.05em;">Invite him to perform</a>
+      </div>
+    </div>
+  </section>
+
+  <div data-screen-label="Footer" style="margin-top: 66px; padding: 46px 32px; border-top: 1px solid rgba(224,188,106,0.2); display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(243,237,223,0.55);">
+    <span>© 2026 Violin Suka Pavalan · Karaikal, Puducherry</span>
+    <div style="display: flex; gap: 24px;">
+      <a href="Homepage Violet Gold.dc.html" style="color: rgba(243,237,223,0.7);">Home</a>
+      <a href="Library.dc.html" style="color: rgba(243,237,223,0.7);">All lessons</a>
+      <a href="Enquire.dc.html" style="color: rgba(243,237,223,0.7);">Contact</a>
+          <a href="Legal.dc.html" style="color: rgba(243,237,223,0.7);">Privacy &amp; terms</a>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">class Component extends DCLogic {
+  state = { menuOpen: false };
+  renderVals() {
+    const open = this.state.menuOpen;
+    return {
+      openMenu: () => this.setState({ menuOpen: true }),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      onNavKey: (e) => {
+        if (e.key === 'Escape') this.setState({ menuOpen: false });
+      },
+      onNavBlur: (e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) this.setState({ menuOpen: false });
+      },
+      onTriggerKey: (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.setState(s => ({ menuOpen: !s.menuOpen })); }
+        if (e.key === 'Escape') this.setState({ menuOpen: false });
+      },
+      menuOpenStr: open ? 'true' : 'false',
+      menuHiddenStr: open ? 'false' : 'true',
+      dropdownStyle: {
+        position: 'absolute', left: 0, right: 0, top: '100%',
+        background: 'rgba(37,26,66,0.98)', backdropFilter: 'blur(22px)',
+        borderTop: '1px solid rgba(224,188,106,0.24)',
+        borderBottom: '1px solid rgba(224,188,106,0.24)',
+        padding: open ? '24px 32px' : '0 32px',
+        display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px',
+        maxHeight: open ? '340px' : '0px',
+        opacity: open ? 1 : 0,
+        visibility: open ? 'visible' : 'hidden',
+        overflow: 'hidden',
+        pointerEvents: open ? 'auto' : 'none',
+        transition: 'max-height 340ms cubic-bezier(.16,1,.3,1), opacity 240ms ease, padding 340ms cubic-bezier(.16,1,.3,1), visibility 340ms'
+      }
+    };
+  }
+}</script>
+</body>
+</html>

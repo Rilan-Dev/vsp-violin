@@ -1,0 +1,32 @@
+{
+  "source": "sukapavalan.com — fetched 30 Aug 2026, carried over verbatim",
+  "pages": [
+    "Privacy Policy (/p/privacy-policy.html)",
+    "Terms and Conditions (/p/terms-and-conditions.html)",
+    "Disclaimer (/p/disclaimer.html)"
+  ],
+  "generatorOrigin": "Privacy Policy via privacypolicyonline.com; Terms via termsandconditionsgenerator.com; Disclaimer via disclaimergenerator.net",
+  "flagsForLegalReview": [
+    {
+      "where": "Terms — opening terminology paragraph",
+      "issue": "Governing law reads \"prevailing law of Netherlands\" — a generator default. Business operates from Karaikal, Puducherry, India."
+    },
+    {
+      "where": "Terms — Comments section (5 paragraphs + 4 warranties)",
+      "issue": "Governs user comments. The new site has no comments; enquiries go through a private form. Cut or rewrite to cover form submissions."
+    },
+    {
+      "where": "Privacy — Google DoubleClick DART Cookie",
+      "issue": "References \"www.website.com\", a template placeholder."
+    },
+    {
+      "where": "Privacy — Information we collect",
+      "issue": "Describes registering an Account. There are no visitor accounts on the new site."
+    },
+    {
+      "where": "Privacy — Advertising Partners / DART",
+      "issue": "Both assume ad serving. If the new site runs no ads, these sections can go entirely."
+    }
+  ],
+  "note": "Text is reproduced verbatim in Legal.dc.html. Generator attribution links present on the old pages were dropped; confirm whether the generators require them to be retained."
+}

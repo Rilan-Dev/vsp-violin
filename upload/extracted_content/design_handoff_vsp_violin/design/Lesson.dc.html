@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sarali Varisai — Carnatic Basics — Violin Suka Pavalan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="responsive.css" />
+<style>
+  html { background: #16102A; scroll-behavior: smooth; }
+  body { margin: 0; background: #16102A; color: #F3EDDF; font-family: 'Instrument Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #E0BC6A; text-decoration: none; }
+  a:hover { color: #F2D89A; }
+  ::selection { background: #E0BC6A; color: #1B1233; }
+</style>
+</helmet>
+
+<div style="max-width: 1440px; margin: 0 auto;">
+
+  <div data-screen-label="Nav" onMouseLeave="{{ closeMenu }}" onKeyDown="{{ onNavKey }}" onBlur="{{ onNavBlur }}" style="position: sticky; top: 0; z-index: 50; background: rgba(22,16,42,0.92); backdrop-filter: blur(22px); border-bottom: 1px solid rgba(224,188,106,0.24);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 16px 32px;">
+      <a href="Homepage Violet Gold.dc.html" style="font-family: Marcellus, serif; font-size: 21px; letter-spacing: 0.07em; color: #E0BC6A;">SUKA PAVALAN</a>
+      <div data-nav="links" style="display: flex; align-items: center; gap: 28px; font-size: 14px; font-weight: 500;">
+        <span role="button" tabindex="0" aria-expanded="{{ menuOpenStr }}" aria-controls="lessons-menu" aria-label="Lessons — open category menu" onClick="{{ toggleMenu }}" onMouseEnter="{{ openMenu }}" onFocus="{{ openMenu }}" onKeyDown="{{ onTriggerKey }}" style="position: relative; display: flex; align-items: center; gap: 6px; cursor: pointer; color: #F3EDDF; background: none; border: none; font-size: 14px; font-weight: 500; font-family: inherit;">Lessons <span style="font-size: 9px; color: #E0BC6A;">▼</span></span>
+        <a href="Learn the Violin.dc.html" style="color: rgba(243,237,223,0.72);">Learn the Violin</a>
+        <a href="The Guru.dc.html" style="color: rgba(243,237,223,0.72);">The Guru</a>
+        <a href="Honours.dc.html" style="color: rgba(243,237,223,0.72);">Honours</a>
+        <a href="Stage.dc.html" style="color: rgba(243,237,223,0.72);">Stage</a>
+      </div>
+      <a href="Enquire.dc.html" style="padding: 11px 24px; border: 1px solid #E0BC6A; color: #E0BC6A; font-family: Marcellus, serif; font-size: 14px; letter-spacing: 0.06em;">Enrol</a>
+    </div>
+    <div id="lessons-menu" data-dropdown="lessons" data-open="{{ menuOpenStr }}" aria-hidden="{{ menuHiddenStr }}" style="{{ dropdownStyle }}">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Carnatic — Basics</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Sruthi Swara Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Sarali Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Janta Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Melsthayi Varisai</a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Thattu Varisai</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Carnatic — Advanced</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Geetham <span style="color: rgba(243,237,223,0.55);">5</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Swarajathi <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Nottuswaram <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Varnam <span style="color: rgba(243,237,223,0.55);">3</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Krithi <span style="color: rgba(243,237,223,0.55);">3</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">Thillana <span style="color: rgba(243,237,223,0.5);">0</span></a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Devotional</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Thiruppugazh <span style="color: rgba(243,237,223,0.55);">2</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Bhakthi <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">Thevaram <span style="color: rgba(243,237,223,0.5);">0</span></a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">Light Music &amp; Media</span>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Cinema Songs <span style="color: rgba(243,237,223,0.55);">1</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">English Songs <span style="color: rgba(243,237,223,0.5);">0</span></a>
+        <a href="Library.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.6);">Other Languages <span style="color: rgba(243,237,223,0.5);">0</span></a>
+        <a href="Stage.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Live Video <span style="color: rgba(243,237,223,0.55);">7</span></a>
+        <a href="Stage.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Live Audio <span style="color: rgba(243,237,223,0.55);">3</span></a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #E0BC6A;">More</span>
+        <a href="Learn the Violin.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Learn the Violin</a>
+        <a href="The Guru.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">The Guru</a>
+        <a href="Honours.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Honours</a>
+        <a href="Stage.dc.html" style="font-size: 13.5px; color: rgba(243,237,223,0.82);">Stage</a>
+      </div>
+    </div>
+  </div>
+
+  <section data-screen-label="01 Lesson header" style="padding: 30px 32px 0;">
+    <div style="display: flex; align-items: center; gap: 10px; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.6); margin-bottom: 26px;">
+      <a href="Library.dc.html" style="color: rgba(243,237,223,0.6);">Lessons</a><span style="color: #E0BC6A;">/</span>
+      <a href="Library.dc.html" style="color: rgba(243,237,223,0.6);">Carnatic Basics</a><span style="color: #E0BC6A;">/</span>
+      <span style="color: #F3EDDF;">Sarali Varisai</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 340px; gap: 44px; align-items: start; padding-bottom: 34px; border-bottom: 1px solid rgba(224,188,106,0.26);">
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <span style="padding: 6px 13px; background: rgba(224,188,106,0.2); border: 1px solid rgba(224,188,106,0.4); font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #E0BC6A;">Carnatic Basics · Level 2</span>
+          <span style="padding: 6px 13px; border: 1px solid rgba(243,237,223,0.22); font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,237,223,0.72);">Free</span>
+        </div>
+        <h1 style="margin: 0; font-family: Marcellus, serif; font-size: 62px; line-height: 1.06;">Sarali Varisai</h1>
+        <p style="margin: 0; font-size: 17.5px; line-height: 1.65; color: rgba(243,237,223,0.76); max-width: 58ch;">
+          The first sequence every Carnatic student learns, and the one every later lesson rests on.
+          Fourteen exercises, taught at three speeds and then in thrikaalam, recorded separately on
+          violin and in voice.
+        </p>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 4px;">
+          <a href="https://drive.google.com/file/d/1_1cXpqSOS2a_ZEMMvbVvAk5tVRAUNx3n/view?usp=sharing" style="padding: 14px 26px; background: #E0BC6A; color: #1B1233; font-family: Marcellus, serif; font-size: 15px; letter-spacing: 0.04em;">Download notation — English</a>
+          <a href="https://drive.google.com/file/d/1xeTtaIFEueza_1EypfnAQ9Se1VR9EXIs/view?usp=sharing" style="padding: 14px 26px; border: 1px solid rgba(243,237,223,0.3); color: #F3EDDF; font-family: Marcellus, serif; font-size: 15px; letter-spacing: 0.04em;">Download notation — Tamil</a>
+        </div>
+      </div>
+
+      <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 26px 28px; display: flex; flex-direction: column; gap: 0;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A; padding-bottom: 14px;">Lesson details</span>
+        <div style="display: flex; justify-content: space-between; gap: 14px; padding: 11px 0; border-top: 1px solid rgba(243,237,223,0.12);"><span style="font-size: 14px; color: rgba(243,237,223,0.62);">Category</span><span style="font-size: 14px; font-weight: 500;">Carnatic Basics</span></div>
+        <div style="display: flex; justify-content: space-between; gap: 14px; padding: 11px 0; border-top: 1px solid rgba(243,237,223,0.12);"><span style="font-size: 14px; color: rgba(243,237,223,0.62);">Level</span><span style="font-size: 14px; font-weight: 500;">2 of 5</span></div>
+        <div style="display: flex; justify-content: space-between; gap: 14px; padding: 11px 0; border-top: 1px solid rgba(243,237,223,0.12);"><span style="font-size: 14px; color: rgba(243,237,223,0.62);">Exercises</span><span style="font-size: 14px; font-weight: 500;">14</span></div>
+        <div style="display: flex; justify-content: space-between; gap: 14px; padding: 11px 0; border-top: 1px solid rgba(243,237,223,0.12);"><span style="font-size: 14px; color: rgba(243,237,223,0.62);">Videos</span><span style="font-size: 14px; font-weight: 500;">16</span></div>
+        <div style="display: flex; justify-content: space-between; gap: 14px; padding: 11px 0; border-top: 1px solid rgba(243,237,223,0.12);"><span style="font-size: 14px; color: rgba(243,237,223,0.62);">Notation</span><span style="font-size: 14px; font-weight: 500;">English · Tamil</span></div>
+        <div style="display: flex; justify-content: space-between; gap: 14px; padding: 11px 0; border-top: 1px solid rgba(243,237,223,0.12);"><span style="font-size: 14px; color: rgba(243,237,223,0.62);">Published</span><span style="font-size: 14px; font-weight: 500;">March 2021</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="02 Notation" style="padding: 52px 32px 0;">
+    <div style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 20px; align-items: start;">
+
+      <div style="border: 1px solid rgba(224,188,106,0.3); background: rgba(243,237,223,0.035);">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 24px; border-bottom: 1px solid rgba(224,188,106,0.26);">
+          <span style="font-family: Marcellus, serif; font-size: 20px;">Notation</span>
+          <div style="display: flex; gap: 4px; padding: 4px; border: 1px solid rgba(243,237,223,0.16);">
+            <span style="padding: 7px 16px; background: #E0BC6A; color: #1B1233; font-size: 12.5px; font-weight: 600;">English</span>
+            <span style="padding: 7px 16px; font-size: 12.5px; color: rgba(243,237,223,0.68);">Tamil</span>
+          </div>
+        </div>
+        <div style="padding: 30px 32px; display: flex; flex-direction: column; gap: 24px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px;">
+            <span style="font-family: Marcellus, serif; font-size: 19px; color: #E0BC6A;">Exercise 1</span>
+            <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(243,237,223,0.6);">Mayamalavagowlai · Aadhi</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0; font-family: 'Geist Mono', monospace; font-size: 17px; letter-spacing: 0.14em; color: #F3EDDF;">
+            <span style="padding: 14px 0; border-bottom: 1px solid rgba(243,237,223,0.12);">S R G M | P D N Ṡ</span>
+            <span style="padding: 14px 0; border-bottom: 1px solid rgba(243,237,223,0.12);">Ṡ N D P | M G R S</span>
+            <span style="padding: 14px 0; border-bottom: 1px solid rgba(243,237,223,0.12); color: rgba(243,237,223,0.62);">S R G M | P M G R</span>
+            <span style="padding: 14px 0; color: rgba(243,237,223,0.45);">S R G M | P D N Ṡ</span>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 18px; border-top: 1px solid rgba(224,188,106,0.24);">
+            <div style="display: flex; gap: 7px;">
+              <span style="padding: 8px 13px; background: rgba(224,188,106,0.22); border: 1px solid rgba(224,188,106,0.45); font-family: 'Geist Mono', monospace; font-size: 11.5px;">1</span>
+              <span style="padding: 8px 13px; border: 1px solid rgba(243,237,223,0.16); font-family: 'Geist Mono', monospace; font-size: 11.5px; color: rgba(243,237,223,0.66);">2</span>
+              <span style="padding: 8px 13px; border: 1px solid rgba(243,237,223,0.16); font-family: 'Geist Mono', monospace; font-size: 11.5px; color: rgba(243,237,223,0.66);">3</span>
+              <span style="padding: 8px 13px; border: 1px solid rgba(243,237,223,0.16); font-family: 'Geist Mono', monospace; font-size: 11.5px; color: rgba(243,237,223,0.66);">4</span>
+              <span style="padding: 8px 13px; border: 1px solid rgba(243,237,223,0.16); font-family: 'Geist Mono', monospace; font-size: 11.5px; color: rgba(243,237,223,0.66);">…</span>
+              <span style="padding: 8px 13px; border: 1px solid rgba(243,237,223,0.16); font-family: 'Geist Mono', monospace; font-size: 11.5px; color: rgba(243,237,223,0.66);">14</span>
+            </div>
+            <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(243,237,223,0.6);">Full sheet in the PDF</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="border: 1px solid rgba(224,188,106,0.34); background: linear-gradient(155deg, rgba(224,188,106,0.1), rgba(107,75,168,0.16)); padding: 28px 30px; display: flex; flex-direction: column; gap: 22px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+          <span style="font-family: Marcellus, serif; font-size: 20px;">Practice track</span>
+          <div style="display: flex; gap: 4px; padding: 3px; border: 1px solid rgba(243,237,223,0.16);">
+            <span style="padding: 6px 13px; background: #E0BC6A; color: #1B1233; font-size: 12px; font-weight: 600;">Violin</span>
+            <span style="padding: 6px 13px; font-size: 12px; color: rgba(243,237,223,0.68);">Vocal</span>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(243,237,223,0.6);">Sruthi</span>
+          <div data-selector="sruthi" style="display: flex; gap: 6px;">
+            <span style="flex: 1; padding: 12px 0; text-align: center; border: 1px solid rgba(243,237,223,0.18); font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(243,237,223,0.7);">C</span>
+            <span style="flex: 1; padding: 12px 0; text-align: center; background: #E0BC6A; color: #1B1233; font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 500;">D#</span>
+            <span style="flex: 1; padding: 12px 0; text-align: center; border: 1px solid rgba(243,237,223,0.18); font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(243,237,223,0.7);">F</span>
+            <span style="flex: 1; padding: 12px 0; text-align: center; border: 1px solid rgba(243,237,223,0.18); font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(243,237,223,0.7);">G#</span>
+            <span style="flex: 1; padding: 12px 0; text-align: center; border: 1px solid rgba(243,237,223,0.18); font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(243,237,223,0.7);">A#</span>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(243,237,223,0.6);">Speed</span>
+          <div data-selector="speed" style="display: flex; gap: 6px;">
+            <span style="flex: 1; padding: 11px 0; text-align: center; border: 1px solid rgba(243,237,223,0.18); font-size: 12.5px; color: rgba(243,237,223,0.7);">1st</span>
+            <span style="flex: 1; padding: 11px 0; text-align: center; background: rgba(224,188,106,0.22); border: 1px solid rgba(224,188,106,0.5); font-size: 12.5px; font-weight: 600;">2nd</span>
+            <span style="flex: 1; padding: 11px 0; text-align: center; border: 1px solid rgba(243,237,223,0.18); font-size: 12.5px; color: rgba(243,237,223,0.7);">3rd</span>
+            <span style="flex: 1; padding: 11px 0; text-align: center; border: 1px solid rgba(243,237,223,0.18); font-size: 12.5px; color: rgba(243,237,223,0.7);">Thrikaalam</span>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 14px; padding-top: 18px; border-top: 1px solid rgba(224,188,106,0.28);">
+          <span style="width: 46px; height: 46px; border-radius: 50%; background: #E0BC6A; color: #1B1233; display: grid; place-items: center; font-size: 15px; flex: none;">▶</span>
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+            <span style="height: 4px; background: linear-gradient(90deg, #E0BC6A 0 34%, rgba(243,237,223,0.16) 34%);"></span>
+            <div style="display: flex; justify-content: space-between; font-family: 'Geist Mono', monospace; font-size: 10.5px; color: rgba(243,237,223,0.6);"><span>0:38</span><span>1:52</span></div>
+          </div>
+        </div>
+
+        <p style="margin: 0; font-size: 13.5px; line-height: 1.55; color: rgba(243,237,223,0.62);">
+          Pick the pitch your instrument is tuned to. Beginners usually start at D#&nbsp;2.5 on violin,
+          C&nbsp;1 or F&nbsp;4 for most voices.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="03 Videos" style="padding: 52px 32px 0;">
+    <div style="display: flex; align-items: end; justify-content: space-between; gap: 28px; flex-wrap: wrap; margin-bottom: 22px;">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">Watch and follow · 16 videos</span>
+        <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 38px; line-height: 1.1;">Taught at every speed, twice over</h2>
+      </div>
+      <div style="display: flex; gap: 4px; padding: 4px; border: 1px solid rgba(243,237,223,0.18);">
+        <span style="padding: 9px 20px; background: #E0BC6A; color: #1B1233; font-size: 13px; font-weight: 600;">Violin · 8</span>
+        <span style="padding: 9px 20px; font-size: 13px; color: rgba(243,237,223,0.7);">Vocal · 8</span>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+      <a href="https://www.youtube.com/watch?v=MhnVd3BaJaY" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; color: #F3EDDF;">
+        <span style="width: 38px; height: 38px; border: 1px solid #E0BC6A; color: #E0BC6A; display: grid; place-items: center; font-size: 12px;">▶</span>
+        <span style="font-family: Marcellus, serif; font-size: 19px; line-height: 1.25;">1st Speed</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: rgba(243,237,223,0.62);">EXERCISES 1–7</span>
+      </a>
+      <a href="https://www.youtube.com/watch?v=7gEL8ZAt96g" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; color: #F3EDDF;">
+        <span style="width: 38px; height: 38px; border: 1px solid #E0BC6A; color: #E0BC6A; display: grid; place-items: center; font-size: 12px;">▶</span>
+        <span style="font-family: Marcellus, serif; font-size: 19px; line-height: 1.25;">1st Speed</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: rgba(243,237,223,0.62);">EXERCISES 8–14</span>
+      </a>
+      <a href="https://www.youtube.com/watch?v=JL-wyWldLqU" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; color: #F3EDDF;">
+        <span style="width: 38px; height: 38px; border: 1px solid #E0BC6A; color: #E0BC6A; display: grid; place-items: center; font-size: 12px;">▶</span>
+        <span style="font-family: Marcellus, serif; font-size: 19px; line-height: 1.25;">2nd Speed</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: rgba(243,237,223,0.62);">EXERCISES 1–7</span>
+      </a>
+      <a href="https://www.youtube.com/watch?v=taQlWh-Y0GI" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; color: #F3EDDF;">
+        <span style="width: 38px; height: 38px; border: 1px solid #E0BC6A; color: #E0BC6A; display: grid; place-items: center; font-size: 12px;">▶</span>
+        <span style="font-family: Marcellus, serif; font-size: 19px; line-height: 1.25;">2nd Speed</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: rgba(243,237,223,0.62);">EXERCISES 8–14</span>
+      </a>
+      <a href="https://www.youtube.com/watch?v=Y4ZV1y9mhaw" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; color: #F3EDDF;">
+        <span style="width: 38px; height: 38px; border: 1px solid #E0BC6A; color: #E0BC6A; display: grid; place-items: center; font-size: 12px;">▶</span>
+        <span style="font-family: Marcellus, serif; font-size: 19px; line-height: 1.25;">3rd Speed</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: rgba(243,237,223,0.62);">EXERCISES 1–7</span>
+      </a>
+      <a href="https://www.youtube.com/watch?v=Z82jwmOOLOk" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; color: #F3EDDF;">
+        <span style="width: 38px; height: 38px; border: 1px solid #E0BC6A; color: #E0BC6A; display: grid; place-items: center; font-size: 12px;">▶</span>
+        <span style="font-family: Marcellus, serif; font-size: 19px; line-height: 1.25;">3rd Speed</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: rgba(243,237,223,0.62);">EXERCISES 8–14</span>
+      </a>
+      <a href="https://www.youtube.com/watch?v=GjuFepzLmqE" style="border: 1px solid rgba(224,188,106,0.36); background: linear-gradient(150deg, rgba(224,188,106,0.1), rgba(107,75,168,0.14)); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; color: #F3EDDF;">
+        <span style="width: 38px; height: 38px; border: 1px solid #E0BC6A; background: rgba(224,188,106,0.2); color: #E0BC6A; display: grid; place-items: center; font-size: 12px;">▶</span>
+        <span style="font-family: Marcellus, serif; font-size: 19px; line-height: 1.25;">Thrikaalam</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: rgba(243,237,223,0.62);">EXERCISES 1–7</span>
+      </a>
+      <a href="https://www.youtube.com/watch?v=LQxgmhx6W24" style="border: 1px solid rgba(224,188,106,0.36); background: linear-gradient(150deg, rgba(224,188,106,0.1), rgba(107,75,168,0.14)); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; color: #F3EDDF;">
+        <span style="width: 38px; height: 38px; border: 1px solid #E0BC6A; background: rgba(224,188,106,0.2); color: #E0BC6A; display: grid; place-items: center; font-size: 12px;">▶</span>
+        <span style="font-family: Marcellus, serif; font-size: 19px; line-height: 1.25;">Thrikaalam</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: rgba(243,237,223,0.62);">EXERCISES 8–14</span>
+      </a>
+    </div>
+  </section>
+
+  <section data-screen-label="04 Guidance" style="margin: 62px 0 0; padding: 58px 32px; background: linear-gradient(180deg, #241A44, #1A1234); border-top: 1px solid rgba(224,188,106,0.22); border-bottom: 1px solid rgba(224,188,106,0.22);">
+    <div style="display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 52px; align-items: center;">
+      <div style="display: flex; flex-direction: column; gap: 18px;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #E0BC6A;">How to work through it</span>
+        <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 40px; line-height: 1.1;">Three stages, in order.</h2>
+        <p style="margin: 0; font-size: 16px; line-height: 1.62; color: rgba(243,237,223,0.72); max-width: 42ch;">
+          The same progression Suka Pavalan uses in class. Do not move to the next speed until the
+          current one is clean at every exercise.
+        </p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.04); padding: 24px 28px; display: grid; grid-template-columns: 46px 1fr; gap: 20px; align-items: start;">
+          <span style="font-family: Marcellus, serif; font-size: 26px; color: #E0BC6A;">1</span>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-family: Marcellus, serif; font-size: 20px;">Step by step</span>
+            <span style="font-size: 15px; line-height: 1.55; color: rgba(243,237,223,0.72);">Recite the swaram aloud before you play it. Watch the video, pause after each line, match the fingering.</span>
+          </div>
+        </div>
+        <div style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.04); padding: 24px 28px; display: grid; grid-template-columns: 46px 1fr; gap: 20px; align-items: start;">
+          <span style="font-family: Marcellus, serif; font-size: 26px; color: #E0BC6A;">2</span>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-family: Marcellus, serif; font-size: 20px;">Practise together</span>
+            <span style="font-size: 15px; line-height: 1.55; color: rgba(243,237,223,0.72);">Play along with the track at your sruthi. Stay at first speed until every exercise is even.</span>
+          </div>
+        </div>
+        <div style="border: 1px solid rgba(224,188,106,0.34); background: linear-gradient(140deg, rgba(224,188,106,0.1), rgba(243,237,223,0.02)); padding: 24px 28px; display: grid; grid-template-columns: 46px 1fr; gap: 20px; align-items: start;">
+          <span style="font-family: Marcellus, serif; font-size: 26px; color: #E0BC6A;">3</span>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-family: Marcellus, serif; font-size: 20px;">On your own</span>
+            <span style="font-size: 15px; line-height: 1.55; color: rgba(243,237,223,0.72);">Drop the track and play unaccompanied. If it falls apart without the recording, go back to stage two.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="05 Next lesson" style="padding: 58px 32px 0;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+      <a href="Library.dc.html" style="border: 1px solid rgba(243,237,223,0.16); background: rgba(243,237,223,0.035); padding: 28px 30px; display: flex; flex-direction: column; gap: 10px; color: #F3EDDF;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(243,237,223,0.6);">← Previous · Level 1</span>
+        <span style="font-family: Marcellus, serif; font-size: 26px;">Sruthi Swara Varisai</span>
+        <span style="font-size: 14.5px; color: rgba(243,237,223,0.68);">The very first exercises — pitch and note names.</span>
+      </a>
+      <a href="Library.dc.html" style="border: 1px solid rgba(224,188,106,0.36); background: linear-gradient(150deg, rgba(224,188,106,0.11), rgba(107,75,168,0.15)); padding: 28px 30px; display: flex; flex-direction: column; gap: 10px; color: #F3EDDF; text-align: right;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">Next · Level 3 →</span>
+        <span style="font-family: Marcellus, serif; font-size: 26px;">Janta Varisai</span>
+        <span style="font-size: 14.5px; color: rgba(243,237,223,0.68);">Paired notes. The first real test of bow control.</span>
+      </a>
+    </div>
+  </section>
+
+  <section data-screen-label="06 Enrol" style="margin: 58px 0 0; padding: 62px 32px; background: linear-gradient(180deg, #2A1D4E, #16102A); border-top: 1px solid rgba(224,188,106,0.24);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 44px; flex-wrap: wrap;">
+      <div style="display: flex; flex-direction: column; gap: 14px; max-width: 56ch;">
+        <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 42px; line-height: 1.08;">You have the notes. Now get the correction.</h2>
+        <p style="margin: 0; font-size: 16.5px; line-height: 1.62; color: rgba(243,237,223,0.74);">
+          Notation shows you what to play. It cannot tell you that your bow is drifting or your fourth
+          finger is flat. The first lesson is free.
+        </p>
+      </div>
+      <a href="Enquire.dc.html" style="padding: 17px 34px; background: #E0BC6A; color: #1B1233; font-family: Marcellus, serif; font-size: 16px; letter-spacing: 0.05em;">Book a free trial</a>
+    </div>
+  </section>
+
+  <div data-screen-label="Footer" style="padding: 46px 32px; border-top: 1px solid rgba(224,188,106,0.2); display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(243,237,223,0.55);">
+    <span>© 2026 Violin Suka Pavalan · Karaikal, Puducherry</span>
+    <div style="display: flex; gap: 24px;">
+      <a href="Library.dc.html" style="color: rgba(243,237,223,0.7);">All lessons</a>
+      <a href="The Guru.dc.html" style="color: rgba(243,237,223,0.7);">The Guru</a>
+      <a href="Enquire.dc.html" style="color: rgba(243,237,223,0.7);">Contact</a>
+          <a href="Legal.dc.html" style="color: rgba(243,237,223,0.7);">Privacy &amp; terms</a>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">class Component extends DCLogic {
+  state = { menuOpen: false };
+  renderVals() {
+    const open = this.state.menuOpen;
+    return {
+      openMenu: () => this.setState({ menuOpen: true }),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      onNavKey: (e) => {
+        if (e.key === 'Escape') this.setState({ menuOpen: false });
+      },
+      onNavBlur: (e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) this.setState({ menuOpen: false });
+      },
+      onTriggerKey: (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.setState(s => ({ menuOpen: !s.menuOpen })); }
+        if (e.key === 'Escape') this.setState({ menuOpen: false });
+      },
+      menuOpenStr: open ? 'true' : 'false',
+      menuHiddenStr: open ? 'false' : 'true',
+      dropdownStyle: {
+        position: 'absolute', left: 0, right: 0, top: '100%',
+        background: 'rgba(37,26,66,0.98)', backdropFilter: 'blur(22px)',
+        borderTop: '1px solid rgba(224,188,106,0.24)',
+        borderBottom: '1px solid rgba(224,188,106,0.24)',
+        padding: open ? '24px 32px' : '0 32px',
+        display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px',
+        maxHeight: open ? '340px' : '0px',
+        opacity: open ? 1 : 0,
+        visibility: open ? 'visible' : 'hidden',
+        overflow: 'hidden',
+        pointerEvents: open ? 'auto' : 'none',
+        transition: 'max-height 340ms cubic-bezier(.16,1,.3,1), opacity 240ms ease, padding 340ms cubic-bezier(.16,1,.3,1), visibility 340ms'
+      }
+    };
+  }
+}</script>
+</body>
+</html>

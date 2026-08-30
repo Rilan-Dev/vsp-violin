@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Build Audit — what is done, what is pending</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html { background: #16102A; }
+  body { margin: 0; background: #16102A; color: #F3EDDF; font-family: 'Instrument Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #E0BC6A; text-decoration: none; border-bottom: 1px solid rgba(224,188,106,0.4); }
+  a:hover { color: #F2D89A; border-bottom-color: #F2D89A; }
+  ::selection { background: #E0BC6A; color: #1B1233; }
+</style>
+</helmet>
+
+<div style="max-width: 1300px; margin: 0 auto; padding: 0 40px 130px;">
+
+  <section data-screen-label="Cover" style="padding: 84px 0 58px; border-bottom: 1px solid rgba(224,188,106,0.26);">
+    <div style="display: flex; align-items: center; gap: 16px; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(243,237,223,0.6); margin-bottom: 28px;">
+      <span>Build audit</span><span style="flex: 1; height: 1px; background: rgba(224,188,106,0.5);"></span><span style="color: #E0BC6A;">vs. both original sites</span>
+    </div>
+    <h1 style="margin: 0 0 24px; font-family: Marcellus, serif; font-size: 58px; line-height: 1.07;">One page of nine is built. <span style="color: #E0BC6A;">Here is the rest.</span></h1>
+    <p style="margin: 0 0 34px; font-size: 18px; line-height: 1.65; color: rgba(243,237,223,0.76); max-width: 74ch;">
+      Every block of content on vspviolinrainbow.com and sukapavalan.com, checked against what now
+      exists in the new build. Every figure below is a count taken from the extraction in
+      <code style="font-family: 'Geist Mono', monospace; font-size: 15px; color: #E0BC6A;">data/</code>,
+      not an estimate — where something is only partly recorded, it says so.
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; background: rgba(224,188,106,0.26); border: 1px solid rgba(224,188,106,0.26);">
+      <div style="background: #16102A; padding: 26px 24px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-family: Marcellus, serif; font-size: 42px; line-height: 1; color: #E0BC6A;">1<span style="font-size: 22px; color: rgba(243,237,223,0.5);">/9</span></span>
+        <span style="font-size: 14px; line-height: 1.45; color: rgba(243,237,223,0.7);">Public pages designed</span>
+      </div>
+      <div style="background: #16102A; padding: 26px 24px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-family: Marcellus, serif; font-size: 42px; line-height: 1; color: #E0BC6A;">5<span style="font-size: 22px; color: rgba(243,237,223,0.5);">/22</span></span>
+        <span style="font-size: 14px; line-height: 1.45; color: rgba(243,237,223,0.7);">Lessons shown anywhere — as homepage cards</span>
+      </div>
+      <div style="background: #16102A; padding: 26px 24px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-family: Marcellus, serif; font-size: 42px; line-height: 1; color: #E0BC6A;">0<span style="font-size: 22px; color: rgba(243,237,223,0.5);">/22</span></span>
+        <span style="font-size: 14px; line-height: 1.45; color: rgba(243,237,223,0.7);">Lesson pages built — the actual product</span>
+      </div>
+      <div style="background: #16102A; padding: 26px 24px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-family: Marcellus, serif; font-size: 42px; line-height: 1; color: #E0BC6A;">0<span style="font-size: 22px; color: rgba(243,237,223,0.5);">/3</span></span>
+        <span style="font-size: 14px; line-height: 1.45; color: rgba(243,237,223,0.7);">Breakpoints — desktop only so far</span>
+      </div>
+      <div style="background: #16102A; padding: 26px 24px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-family: Marcellus, serif; font-size: 42px; line-height: 1; color: #78DCAA;">All<span style="font-size: 22px; color: rgba(243,237,223,0.5);"> but 14</span></span>
+        <span style="font-size: 14px; line-height: 1.45; color: rgba(243,237,223,0.7);">Pages and lessons extracted — 14 media posts still need their video ids</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="01 Page parity" style="padding: 70px 0; border-bottom: 1px solid rgba(224,188,106,0.26);">
+    <div style="display: flex; align-items: baseline; gap: 18px; margin-bottom: 14px;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #E0BC6A;">01</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 42px; line-height: 1.1;">Page-for-page against the originals</h2>
+    </div>
+    <p style="margin: 0 0 30px; font-size: 16.5px; line-height: 1.62; color: rgba(243,237,223,0.72); max-width: 76ch;">
+      The old sites had twelve public pages between them. The new structure needs nine, plus the
+      private studio. One is designed.
+    </p>
+
+    <div style="border: 1px solid rgba(243,237,223,0.14);">
+      <div style="padding: 15px 24px; background: rgba(243,237,223,0.05); display: grid; grid-template-columns: 1.15fr 1.5fr 1fr 118px; gap: 22px; font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(243,237,223,0.62);">
+        <span>New page</span><span>Carries content from</span><span>Business job</span><span>Status</span>
+      </div>
+
+      <div style="padding: 19px 24px; border-top: 1px solid rgba(243,237,223,0.11); display: grid; grid-template-columns: 1.15fr 1.5fr 1fr 118px; gap: 22px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 19px;">Home</span>
+        <span style="font-size: 14.5px; line-height: 1.5; color: rgba(243,237,223,0.72);">vsp index + blog profile highlights</span>
+        <span style="font-size: 14px; color: rgba(243,237,223,0.66);">Convert &amp; impress</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #78DCAA;">Designed</span>
+      </div>
+      <div style="padding: 19px 24px; border-top: 1px solid rgba(243,237,223,0.11); display: grid; grid-template-columns: 1.15fr 1.5fr 1fr 118px; gap: 22px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 19px;">Lesson detail <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">×22</span></span>
+        <span style="font-size: 14.5px; line-height: 1.5; color: rgba(243,237,223,0.72);">22 blog lesson posts — PDFs, videos, audio, raga, thala</span>
+        <span style="font-size: 14px; color: rgba(243,237,223,0.66);">The product itself</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #E08C50;">Pending</span>
+      </div>
+      <div style="padding: 19px 24px; border-top: 1px solid rgba(243,237,223,0.11); display: grid; grid-template-columns: 1.15fr 1.5fr 1fr 118px; gap: 22px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 19px;">Library index</span>
+        <span style="font-size: 14.5px; line-height: 1.5; color: rgba(243,237,223,0.72);">carnatic_lessons + light_music_lessons + blog labels</span>
+        <span style="font-size: 14px; color: rgba(243,237,223,0.66);">Retention</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #E08C50;">Pending</span>
+      </div>
+      <div style="padding: 19px 24px; border-top: 1px solid rgba(243,237,223,0.11); display: grid; grid-template-columns: 1.15fr 1.5fr 1fr 118px; gap: 22px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 19px;">The Guru</span>
+        <span style="font-size: 14.5px; line-height: 1.5; color: rgba(243,237,223,0.72);">vsp about (full) + blog profile — 9 bullets, 5 degrees, 6 interests, tours, TV</span>
+        <span style="font-size: 14px; color: rgba(243,237,223,0.66);">Convince parents</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #E08C50;">Pending</span>
+      </div>
+      <div style="padding: 19px 24px; border-top: 1px solid rgba(243,237,223,0.11); display: grid; grid-template-columns: 1.15fr 1.5fr 1fr 118px; gap: 22px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 19px;">Honours</span>
+        <span style="font-size: 14.5px; line-height: 1.5; color: rgba(243,237,223,0.72);">achievement page — 12 titles, 3 accolades, 12 award photos</span>
+        <span style="font-size: 14px; color: rgba(243,237,223,0.66);">Credibility</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #E08C50;">Pending</span>
+      </div>
+      <div style="padding: 19px 24px; border-top: 1px solid rgba(243,237,223,0.11); display: grid; grid-template-columns: 1.15fr 1.5fr 1fr 118px; gap: 22px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 19px;">Stage</span>
+        <span style="font-size: 14.5px; line-height: 1.5; color: rgba(243,237,223,0.72);">gallery (15 photos) + 7 live videos + 3 live audio + 5 photo posts</span>
+        <span style="font-size: 14px; color: rgba(243,237,223,0.66);">Get booked</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #E08C50;">Pending</span>
+      </div>
+      <div style="padding: 19px 24px; border-top: 1px solid rgba(243,237,223,0.11); display: grid; grid-template-columns: 1.15fr 1.5fr 1fr 118px; gap: 22px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 19px;">Learn the Violin</span>
+        <span style="font-size: 14.5px; line-height: 1.5; color: rgba(243,237,223,0.72);">learn_the_violin — history, 4 strings, 3 materials, 5 fingerings, 11 diagrams</span>
+        <span style="font-size: 14px; color: rgba(243,237,223,0.66);">Search traffic</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #E08C50;">Pending</span>
+      </div>
+      <div style="padding: 19px 24px; border-top: 1px solid rgba(243,237,223,0.11); display: grid; grid-template-columns: 1.15fr 1.5fr 1fr 118px; gap: 22px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 19px;">Enquire</span>
+        <span style="font-size: 14.5px; line-height: 1.5; color: rgba(243,237,223,0.72);">vsp contact + blog Google Form — three intents</span>
+        <span style="font-size: 14px; color: rgba(243,237,223,0.66);">Close</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #E08C50;">Pending</span>
+      </div>
+      <div style="padding: 19px 24px; border-top: 1px solid rgba(243,237,223,0.11); display: grid; grid-template-columns: 1.15fr 1.5fr 1fr 118px; gap: 22px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 19px;">Legal <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">×3</span></span>
+        <span style="font-size: 14.5px; line-height: 1.5; color: rgba(243,237,223,0.72);">Privacy Policy, Terms &amp; Conditions, Disclaimer — exist on blog only</span>
+        <span style="font-size: 14px; color: rgba(243,237,223,0.66);">Compliance</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #E08C50;">Pending</span>
+      </div>
+      <div style="padding: 19px 24px; border-top: 1px solid rgba(224,188,106,0.3); background: rgba(224,188,106,0.06); display: grid; grid-template-columns: 1.15fr 1.5fr 1fr 118px; gap: 22px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 19px;">Studio <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E0BC6A;">private</span></span>
+        <span style="font-size: 14.5px; line-height: 1.5; color: rgba(243,237,223,0.72);">Nothing — new work. Replaces the Blogger dashboard.</span>
+        <span style="font-size: 14px; color: rgba(243,237,223,0.66);">Your independence</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #E0BC6A;">1 of 4</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="02 Orphan content" style="padding: 70px 0; border-bottom: 1px solid rgba(224,188,106,0.26);">
+    <div style="display: flex; align-items: baseline; gap: 18px; margin-bottom: 14px;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #E0BC6A;">02</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 42px; line-height: 1.1;">Content captured but not yet on any page</h2>
+    </div>
+    <p style="margin: 0 0 30px; font-size: 16.5px; line-height: 1.62; color: rgba(243,237,223,0.72); max-width: 76ch;">
+      This is the real backlog. All of it is extracted and sitting in
+      <code style="font-family: 'Geist Mono', monospace; font-size: 15px; color: #E0BC6A;">data/</code> —
+      it just has nowhere to live yet. Nothing here needs to be re-gathered.
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+      <div style="border: 1px solid rgba(224,140,80,0.42); background: rgba(224,140,80,0.06); padding: 28px 30px; display: flex; flex-direction: column; gap: 15px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px;">Lesson material</h3>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E08C50;">22 lessons</span>
+        </div>
+        <ul style="margin: 0; padding-left: 19px; display: flex; flex-direction: column; gap: 8px; font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.78);">
+          <li>44 notation PDFs — English and Tamil per lesson</li>
+          <li>43 practice audio tracks — up to 15 per lesson, in 5 sruthis × 3 speeds, on the 5 lessons that carry them</li>
+          <li>Violin and vocal video sets, incl. 16 for Sarali Varisai alone</li>
+          <li>22 high-resolution title cards</li>
+          <li>Raga, thala and composer metadata</li>
+        </ul>
+        <span style="font-size: 13.5px; line-height: 1.5; color: rgba(243,237,223,0.62); padding-top: 4px; border-top: 1px solid rgba(224,140,80,0.28);">Needs: lesson page + library index</span>
+      </div>
+
+      <div style="border: 1px solid rgba(224,140,80,0.42); background: rgba(224,140,80,0.06); padding: 28px 30px; display: flex; flex-direction: column; gap: 15px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px;">Biography</h3>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E08C50;">9 blocks</span>
+        </div>
+        <ul style="margin: 0; padding-left: 19px; display: flex; flex-direction: column; gap: 8px; font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.78);">
+          <li>Mission — 4 statements</li>
+          <li>Vision — 4 statements</li>
+          <li>Six areas of interest, with their icons</li>
+          <li>Education — 5 qualifications (2 shown so far)</li>
+          <li>Abroad tours — narrative plus individual years</li>
+          <li>Radio record — AIR Trichy, Puducherry, Karaikal, named</li>
+          <li><strong>Television — 6 channels since 2015</strong>, on the blog only</li>
+        </ul>
+        <span style="font-size: 13.5px; line-height: 1.5; color: rgba(243,237,223,0.62); padding-top: 4px; border-top: 1px solid rgba(224,140,80,0.28);">Needs: The Guru page</span>
+      </div>
+
+      <div style="border: 1px solid rgba(224,140,80,0.42); background: rgba(224,140,80,0.06); padding: 28px 30px; display: flex; flex-direction: column; gap: 15px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px;">Recognition</h3>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E08C50;">7 + 3</span>
+        </div>
+        <ul style="margin: 0; padding-left: 19px; display: flex; flex-direction: column; gap: 8px; font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.78);">
+          <li>7 of the 12 titles — home shows only 5</li>
+          <li>All 12 award ceremony photographs</li>
+          <li>CCRT National Scholarship, 1994–2000</li>
+          <li>First-prize competition record</li>
+          <li>Thamizhisai Sangam Chennai — awarded a violin</li>
+        </ul>
+        <span style="font-size: 13.5px; line-height: 1.5; color: rgba(243,237,223,0.62); padding-top: 4px; border-top: 1px solid rgba(224,140,80,0.28);">Needs: Honours page</span>
+      </div>
+
+      <div style="border: 1px solid rgba(224,140,80,0.42); background: rgba(224,140,80,0.06); padding: 28px 30px; display: flex; flex-direction: column; gap: 15px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px;">Teaching content</h3>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E08C50;">Whole page</span>
+        </div>
+        <ul style="margin: 0; padding-left: 19px; display: flex; flex-direction: column; gap: 8px; font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.78);">
+          <li>Violin history — three paragraphs, Amati to Stradivari</li>
+          <li>The four strings, G3 to E5, each described</li>
+          <li>Three string materials — gut, steel, synthetic</li>
+          <li>Five finger placements with diagrams</li>
+          <li>Joshua Bell pull quote</li>
+          <li>11 instructional diagrams</li>
+        </ul>
+        <span style="font-size: 13.5px; line-height: 1.5; color: rgba(243,237,223,0.62); padding-top: 4px; border-top: 1px solid rgba(224,140,80,0.28);">Needs: Learn the Violin page</span>
+      </div>
+
+      <div style="border: 1px solid rgba(224,140,80,0.42); background: rgba(224,140,80,0.06); padding: 28px 30px; display: flex; flex-direction: column; gap: 15px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px;">Media</h3>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E08C50;">30 items</span>
+        </div>
+        <ul style="margin: 0; padding-left: 19px; display: flex; flex-direction: column; gap: 8px; font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.78);">
+          <li>15 gallery photographs from the old gallery page</li>
+          <li>7 live video performances</li>
+          <li>3 live audio sets, incl. the Ilayaraja collection</li>
+          <li>5 archive photo posts — first competition, S. Janaki, press cutting</li>
+        </ul>
+        <span style="font-size: 13.5px; line-height: 1.5; color: rgba(243,237,223,0.62); padding-top: 4px; border-top: 1px solid rgba(224,140,80,0.28);">Needs: Stage page. Plus: 14 media posts still need their YouTube ids pulled — one more extraction pass.</span>
+      </div>
+
+      <div style="border: 1px solid rgba(224,140,80,0.42); background: rgba(224,140,80,0.06); padding: 28px 30px; display: flex; flex-direction: column; gap: 15px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 22px;">Dropped so far</h3>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #E08C50;">Decide</span>
+        </div>
+        <ul style="margin: 0; padding-left: 19px; display: flex; flex-direction: column; gap: 8px; font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.78);">
+          <li>The Tamil testimonial from ASI V. Savarirajan — cut when we moved to English-only. It is the only local voice among four foreign ones. My recommendation: keep it, in English translation, with the Tamil available.</li>
+          <li>Three legal pages exist only on Blogger and are not yet in the new plan.</li>
+        </ul>
+        <span style="font-size: 13.5px; line-height: 1.5; color: rgba(243,237,223,0.62); padding-top: 4px; border-top: 1px solid rgba(224,140,80,0.28);">Needs: your call</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="03 Non-content gaps" style="padding: 70px 0; border-bottom: 1px solid rgba(224,188,106,0.26);">
+    <div style="display: flex; align-items: baseline; gap: 18px; margin-bottom: 14px;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #E0BC6A;">03</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 42px; line-height: 1.1;">The gaps that are not about content</h2>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="border: 1px solid rgba(198,64,47,0.5); background: rgba(198,64,47,0.08); padding: 28px 32px; display: grid; grid-template-columns: 168px 1fr; gap: 26px; align-items: start;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E5705C;">Blocks launch</span>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 23px;">Mobile and tablet do not exist yet</h3>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.62; color: rgba(243,237,223,0.8);">
+            Everything built so far is desktop-width. Your primary audience — diaspora parents — will
+            mostly arrive on a phone, and the four-column menu, the hero split and the three-card
+            enrol row all need composing again at narrow widths, not shrinking. This is the single
+            largest remaining piece of design work.
+          </p>
+        </div>
+      </div>
+
+      <div style="border: 1px solid rgba(198,64,47,0.5); background: rgba(198,64,47,0.08); padding: 28px 32px; display: grid; grid-template-columns: 168px 1fr; gap: 26px; align-items: start;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E5705C;">Blocks launch</span>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 23px;">38 old addresses need forwarding</h3>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.62; color: rgba(243,237,223,0.8);">
+            Your lesson links are in YouTube descriptions, WhatsApp threads and Google's index. Each
+            of the 38 old URLs must redirect to its new home or that audience lands on nothing.
+          </p>
+        </div>
+      </div>
+
+      <div style="border: 1px solid rgba(224,188,106,0.34); padding: 28px 32px; display: grid; grid-template-columns: 168px 1fr; gap: 26px; align-items: start;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">Studio, 3 of 4</span>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 23px;">The publish flow is one screen of four</h3>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.62; color: rgba(243,237,223,0.8);">
+            "New notation" is designed. Still needed: the enquiries inbox so no message goes unread,
+            the lesson list for editing and reordering what is already published, and the category
+            manager for adding a menu like Thillana. Plus the login screen itself.
+          </p>
+        </div>
+      </div>
+
+      <div style="border: 1px solid rgba(224,188,106,0.34); padding: 28px 32px; display: grid; grid-template-columns: 168px 1fr; gap: 26px; align-items: start;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">Assets</span>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 23px;">Three photos in, and a logo still missing</h3>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.62; color: rgba(243,237,223,0.8);">
+            Your new session gave three usable portraits, all now placed. Still needed: the logo as a
+            vector file (only low-resolution PNGs exist), photographs of the twelve awards, and the
+            performance photography for the Stage page. The blue kurta reads well against the violet,
+            so more from that session would sit naturally.
+          </p>
+        </div>
+      </div>
+
+      <div style="border: 1px solid rgba(224,188,106,0.34); padding: 28px 32px; display: grid; grid-template-columns: 168px 1fr; gap: 26px; align-items: start;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #E0BC6A;">Copy</span>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <h3 style="margin: 0; font-family: Marcellus, serif; font-size: 23px;">Six lessons still have no title</h3>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.62; color: rgba(243,237,223,0.8);">
+            The 2023 batch shipped untitled on the live site. I have inferred names from the notation
+            filenames — Mohanam Varnam, Enna Thavam, Maha Ganapathim, Lingashtagam, Poongathave,
+            Ilayaraja Hits — and need you to confirm or correct them. Two lessons also carry the wrong
+            heading copied from a neighbour.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="04 Order of work" style="padding: 70px 0 0;">
+    <div style="display: flex; align-items: baseline; gap: 18px; margin-bottom: 14px;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #E0BC6A;">04</span>
+      <h2 style="margin: 0; font-family: Marcellus, serif; font-size: 42px; line-height: 1.1;">The order I would build it in</h2>
+    </div>
+    <p style="margin: 0 0 30px; font-size: 16.5px; line-height: 1.62; color: rgba(243,237,223,0.72); max-width: 76ch;">
+      Sequenced so the highest-value thing exists earliest, and so nothing waits on a decision that
+      has not been made.
+    </p>
+
+    <div style="display: flex; flex-direction: column; gap: 0; border-top: 1px solid rgba(224,188,106,0.3);">
+      <div style="padding: 22px 0; border-bottom: 1px solid rgba(243,237,223,0.11); display: grid; grid-template-columns: 60px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 26px; color: #E0BC6A;">01</span>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <span style="font-family: Marcellus, serif; font-size: 21px;">Lesson page</span>
+          <span style="font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.7);">Notation switch, sruthi dial, violin/vocal tabs, three-stage progression. Built once, used 22 times.</span>
+        </div>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: rgba(243,237,223,0.6);">No decisions needed</span>
+      </div>
+      <div style="padding: 22px 0; border-bottom: 1px solid rgba(243,237,223,0.11); display: grid; grid-template-columns: 60px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 26px; color: #E0BC6A;">02</span>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <span style="font-family: Marcellus, serif; font-size: 21px;">Library index</span>
+          <span style="font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.7);">All 22, filtered by category, raga and level. Completes the loop from menu to lesson.</span>
+        </div>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: rgba(243,237,223,0.6);">No decisions needed</span>
+      </div>
+      <div style="padding: 22px 0; border-bottom: 1px solid rgba(243,237,223,0.11); display: grid; grid-template-columns: 60px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 26px; color: #E0BC6A;">03</span>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <span style="font-family: Marcellus, serif; font-size: 21px;">Mobile for those three pages</span>
+          <span style="font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.7);">Home, library, lesson — composed for phone before more pages are added at desktop only.</span>
+        </div>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: rgba(243,237,223,0.6);">No decisions needed</span>
+      </div>
+      <div style="padding: 22px 0; border-bottom: 1px solid rgba(243,237,223,0.11); display: grid; grid-template-columns: 60px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 26px; color: #E0BC6A;">04</span>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <span style="font-family: Marcellus, serif; font-size: 21px;">Guru, Honours, Stage, Learn the Violin</span>
+          <span style="font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.7);">Four content pages that absorb the entire orphan backlog above.</span>
+        </div>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #E0BC6A;">Wants award photos</span>
+      </div>
+      <div style="padding: 22px 0; border-bottom: 1px solid rgba(243,237,223,0.11); display: grid; grid-template-columns: 60px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 26px; color: #E0BC6A;">05</span>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <span style="font-family: Marcellus, serif; font-size: 21px;">Enquire page and the three forms</span>
+          <span style="font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.7);">Learn, book, collaborate — each asking only what that intent needs.</span>
+        </div>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #E08C50;">Needs the fee decision</span>
+      </div>
+      <div style="padding: 22px 0; border-bottom: 1px solid rgba(243,237,223,0.11); display: grid; grid-template-columns: 60px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 26px; color: #E0BC6A;">06</span>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <span style="font-family: Marcellus, serif; font-size: 21px;">Studio — the remaining three screens</span>
+          <span style="font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.7);">Enquiries inbox, lesson list, category manager, login.</span>
+        </div>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #E08C50;">Needs the backend decision</span>
+      </div>
+      <div style="padding: 22px 0; display: grid; grid-template-columns: 60px 1fr 220px; gap: 26px; align-items: baseline;">
+        <span style="font-family: Marcellus, serif; font-size: 26px; color: #E0BC6A;">07</span>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <span style="font-family: Marcellus, serif; font-size: 21px;">Legal pages, redirect map, handoff</span>
+          <span style="font-size: 14.5px; line-height: 1.55; color: rgba(243,237,223,0.7);">The unglamorous work that decides whether the launch keeps your existing audience.</span>
+        </div>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #E08C50;">Needs the domain decision</span>
+      </div>
+    </div>
+
+    <div style="margin-top: 34px; border: 1px solid rgba(224,188,106,0.34); background: linear-gradient(140deg, rgba(224,188,106,0.1), rgba(107,75,168,0.14)); padding: 30px 34px;">
+      <p style="margin: 0; font-size: 16.5px; line-height: 1.65; color: rgba(243,237,223,0.86);">
+        Steps 1 to 3 need nothing from you — say the word and I will start on the lesson page. Steps 4
+        onward are waiting on the four decisions in the Migration Plan: self-publishing or not,
+        published fees or not, which domain wins, and the six lesson titles.
+      </p>
+    </div>
+  </section>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1300}}"></script>
+</body>
+</html>

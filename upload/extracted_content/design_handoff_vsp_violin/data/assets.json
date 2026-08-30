@@ -1,0 +1,108 @@
+{
+  "note": "Remote asset inventory. Files could not be downloaded into the project (network fetch is sandboxed); URLs are absolute and hotlinkable, or the owner should supply originals.",
+  "base": "https://vspviolinrainbow.com/",
+  "brandMarks": [
+    "images/logo-vsp.svg",
+    "images/footer-logo.svg"
+  ],
+  "photography": {
+    "hero": "images/suka.png",
+    "aboutCircle": "images/circle-img.png",
+    "missionWide": "images/mission-three-img.webp",
+    "visionDecoration": "images/blue-decoration-img.webp",
+    "mobileMission": [
+      "images/mobile-img-1.png",
+      "images/mobile-img-2.webp"
+    ],
+    "achievementStrip": [
+      "images/achievement-img-1.png",
+      "images/achievement-img-2.png",
+      "images/achievement-img-3.png"
+    ],
+    "gallery": [
+      "images/gallery/gallery-img (12).webp",
+      "images/gallery/gallery-img (10).webp",
+      "images/gallery/gallery-img (9).webp",
+      "images/gallery/gallery-img (11).webp",
+      "images/gallery/gallery-img (7).webp",
+      "images/gallery/gallery-img (6).webp",
+      "images/gallery/gallery-img (3).webp",
+      "images/gallery/gallery-img (8).webp",
+      "images/gallery/gallery-img (4).webp",
+      "images/gallery/gallery-img (5).webp",
+      "images/gallery/gallery-img (15).webp",
+      "images/gallery/gallery-img (14).webp",
+      "images/gallery/gallery-img (2).webp",
+      "images/gallery/gallery-img (1).webp",
+      "images/gallery/gallery-img (13).webp"
+    ],
+    "honors": [
+      "images/honors/Violin Rathna District Collectorate Karaikal Govt Of Puducherry 2024.jpg",
+      "images/honors/Karaikal Arutpa Innisai Maamamni - Samara Sanmarga Sangam Niravi 2017.jpg",
+      "images/honors/Violin Chakravarthi - Agila India Samuga Amaippu - Pondy 2019.jpg",
+      "images/honors/honor (1).jpg",
+      "images/honors/honor (1).webp",
+      "images/honors/honor (2).jpg",
+      "images/honors/violin_vithya_vibushanam.jpg",
+      "images/honors/honor (2).webp",
+      "images/honors/kalaivaalar_maamani.jpg",
+      "images/honors/Kalaiseer Kavalar - Kaapiya Kazhagam Karaikal 2012.jpg",
+      "images/honors/honor (3).webp",
+      "images/honors/Sapthaswara Maamani - Sapthaswaram Music Academy Karaikal 2009.jpg"
+    ],
+    "airStations": [
+      "images/trichy.png",
+      "images/puducherry.png",
+      "images/karaikal.png"
+    ],
+    "violinDiagrams": [
+      "images/violin_Strings.svg",
+      "images/default_violin_img.png",
+      "images/default.png",
+      "images/openfinger.png",
+      "images/indexfinger.png",
+      "images/middle finger.png",
+      "images/3f – Ring Finger.png",
+      "images/4f – Little Finger.png",
+      "images/violin-materials (1).png",
+      "images/violin-materials (2).png",
+      "images/violin-materials (3).png"
+    ]
+  },
+  "decorative": [
+    "images/banner_bg_star.png"
+  ],
+  "icons": [
+    "icons/gototop-arrow.svg",
+    "icons/right-arrow.svg",
+    "icons/left-arrow.svg",
+    "icons/blue-arrow.svg",
+    "images/button-arrow.svg",
+    "images/prev_icon.svg",
+    "images/next_icon.svg",
+    "icons/phonei-icon.svg",
+    "icons/instai-icon.svg",
+    "icons/youtubei-icon.svg",
+    "icons/facebooki-icon.svg",
+    "icons/twitteri-icon.svg",
+    "icons/menu-social-icons (1).svg",
+    "icons/menu-social-icons (2).svg",
+    "icons/menu-social-icons (3).svg",
+    "icons/menu-social-icon-fb.svg",
+    "icons/music_ic.svg",
+    "icons/carnatic_ic.svg",
+    "icons/fusion_ic.svg",
+    "icons/bg_ic.svg",
+    "icons/homestudio_ic.svg",
+    "icons/playback_ic.svg",
+    "icons/location-fill-icon.svg",
+    "icons/phone-fill-icon.svg",
+    "icons/email-fill-icon.svg"
+  ],
+  "counts": {
+    "gallery": 15,
+    "honorAwards": 12,
+    "violinDiagrams": 11,
+    "icons": 25
+  }
+}

@@ -1,0 +1,197 @@
+/* Responsive overrides only. All visual design lives in inline styles on the elements;
+   these media queries recompose the layout at tablet and phone widths, which inline
+   styles cannot express. Nothing here introduces new colour, type or spacing language. */
+
+/* ---------- Tablet: 1024px and below ---------- */
+@media (max-width: 1024px) {
+  [style*="grid-template-columns: repeat(5, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
+  [style*="grid-template-columns: repeat(4, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
+  [style*="grid-template-columns: repeat(3, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
+  [style*="grid-template-columns: 1.25fr 1fr 1fr"] { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns: 1.2fr 1fr 1fr"] { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns: 1fr 1fr 1fr"] { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Two-column page splits become single column */
+  [style*="grid-template-columns: 1fr 340px"],
+  [style*="grid-template-columns: 1fr 380px"],
+  [style*="grid-template-columns: 1fr 400px"],
+  [style*="grid-template-columns: 1fr 420px"],
+  [style*="grid-template-columns: 1.35fr 0.65fr"],
+  [style*="grid-template-columns: 1.15fr 0.85fr"],
+  [style*="grid-template-columns: 1.25fr 0.75fr"],
+  [style*="grid-template-columns: 1.05fr 0.95fr"],
+  [style*="grid-template-columns: 0.95fr 1.05fr"],
+  [style*="grid-template-columns: 0.9fr 1.1fr"],
+  [style*="grid-template-columns: 0.85fr 1.15fr"],
+  [style*="grid-template-columns: 0.8fr 1.2fr"],
+  [style*="grid-template-columns: 0.75fr 1.25fr"],
+  [style*="grid-template-columns: 1fr 0.92fr"] { grid-template-columns: 1fr !important; }
+
+  /* Sticky side rails stop sticking once stacked */
+  [style*="position: sticky"][style*="top: 92px"],
+  [style*="position: sticky"][style*="top: 100px"] { position: static !important; }
+
+  /* The hero arch and portraits get their own row */
+  [style*="border-radius: 226px 226px 0 0"],
+  [style*="border-radius: 215px 215px 0 0"] { max-width: 380px !important; height: 460px !important; margin: 0 auto !important; }
+
+  /* Nav wraps rather than overflowing. Once it wraps, the links take their own full-width
+     line as a sideways scroller — otherwise flex shrinks each label to min-content and the
+     Enrol CTA is orphaned on a line of its own. */
+  [data-screen-label="Nav"] > div:first-child,
+  [data-screen-label="Studio bar"] > div:first-child { flex-wrap: wrap !important; row-gap: 12px !important; }
+  [data-nav="links"] {
+    flex-wrap: nowrap !important;
+    gap: 20px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    padding-bottom: 2px !important;
+  }
+  [data-nav="links"] > a, [data-nav="links"] > span {
+    flex: none !important;
+    white-space: nowrap !important;
+  }
+
+  /* Homepage category dropdown — style comes from the logic class, so target the hook.
+     Fewer columns means taller content, so the open panel needs to scroll from here down;
+     the closed panel keeps the logic class's 0px collapse. */
+  [data-dropdown="lessons"] { grid-template-columns: repeat(2, 1fr) !important; }
+  [data-dropdown="lessons"][data-open="true"] { max-height: 70vh !important; overflow-y: auto !important; }
+}
+
+/* ---------- Narrow tablet / large phone: 830px and below ---------- */
+@media (max-width: 830px) {
+  /* One row, still sticky. The dropdown panel now carries all nineteen categories plus
+     Learn the Violin / The Guru / Honours / Stage, so the secondary anchors in the bar are
+     redundant here — hiding them keeps the bar at ~73px instead of stacking to ~188px.
+     The Lessons trigger is a span, so it survives this rule and remains the way in.
+     No flex-direction change and no order: DOM order is left intact, so tab order still
+     matches visual order. */
+  [data-screen-label="Nav"] > div:first-child {
+    flex-wrap: nowrap !important;
+    row-gap: 0 !important;
+    gap: 16px !important;
+  }
+  [data-nav="links"] > a { display: none !important; }
+  /* Scroller kept as a safety net rather than switched off: the links container must be
+     able to shrink, so no flex: none here — if the row ever exceeds the viewport it
+     scrolls sideways (overflow-x: auto, line 46) instead of clipping the Enrol CTA. */
+  [data-nav="links"] { min-width: 0 !important; }
+
+  /* 44px floor for the only nav controls left at this width. Declared here, not only in
+     the ≤720 block, so the 721–830 band gets it too. */
+  [data-nav="links"] > span,
+  [data-screen-label="Nav"] > div:first-child > a {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  /* No layout at this width should exceed the viewport. `clip`, never `hidden`: hidden on
+     body would make body a scroll container, and every nav here is position: sticky — a
+     sticky element whose scroll container never scrolls stops sticking altogether. */
+  html, body { overflow-x: clip !important; }
+
+  /* Wordmark gives up a little size so logo + Lessons + Enrol never crowd. */
+  [data-screen-label="Nav"] > div:first-child > a:first-child { font-size: 17px !important; letter-spacing: 0.05em !important; }
+}
+
+/* ---------- Narrowest phones: 380px and below ---------- */
+@media (max-width: 380px) {
+  /* Wordmark + trigger + CTA measure ~342px intrinsic; below this the row needs the room. */
+  [data-screen-label="Nav"] > div:first-child { gap: 10px !important; }
+  [data-screen-label="Nav"] > div:first-child > a:first-child { font-size: 15px !important; letter-spacing: 0.03em !important; }
+}
+
+/* ---------- Phone: 720px and below ---------- */
+@media (max-width: 720px) {
+  [style*="grid-template-columns: repeat(5, 1fr)"],
+  [style*="grid-template-columns: repeat(4, 1fr)"],
+  [style*="grid-template-columns: repeat(3, 1fr)"],
+  [style*="grid-template-columns: repeat(2, 1fr)"],
+  [style*="grid-template-columns: 1fr 1fr 1fr"],
+  [style*="grid-template-columns: 1fr 1fr"],
+  [style*="grid-template-columns: 1.4fr 1fr 1fr 1fr"] { grid-template-columns: 1fr !important; }
+
+  /* Bento tiles lose their spans and their fixed row height */
+  [style*="grid-column: span 2"] { grid-column: span 1 !important; }
+  [style*="grid-row: span 2"] { grid-row: span 1 !important; }
+  [style*="grid-auto-rows"] { grid-auto-rows: auto !important; }
+
+  /* Icon-and-text rows: drop the numeral gutter */
+  [style*="grid-template-columns: 54px 1fr"],
+  [style*="grid-template-columns: 62px 1fr"],
+  [style*="grid-template-columns: 46px 1fr"],
+  [style*="grid-template-columns: 40px 1.1fr"],
+  [style*="grid-template-columns: 34px 1fr"],
+  [style*="grid-template-columns: 84px 1fr 300px"],
+  [style*="grid-template-columns: 90px 150px 1fr 1fr"],
+  [style*="grid-template-columns: 150px 1fr 220px"],
+  [style*="grid-template-columns: 260px 1fr"],
+  [style*="grid-template-columns: 1fr 260px"] { grid-template-columns: 1fr !important; gap: 10px !important; }
+
+  /* Section padding tightens */
+  section { padding-left: 20px !important; padding-right: 20px !important; }
+  [data-screen-label="Nav"] > div:first-child,
+  [data-screen-label="Studio bar"] > div:first-child,
+  [data-screen-label="Footer"],
+  [data-screen-label="Category map"] > div { padding-left: 20px !important; padding-right: 20px !important; }
+  /* Panel keeps its own horizontal padding so the open/closed padding transition is not fought */
+  [data-dropdown="lessons"] { padding-left: 20px !important; padding-right: 20px !important; }
+
+  /* Display type steps down so headlines do not break mid-word */
+  h1 { font-size: 40px !important; line-height: 1.08 !important; }
+  h2 { font-size: 30px !important; line-height: 1.12 !important; }
+  h3 { font-size: 21px !important; }
+
+  /* Horizontal rails keep scrolling but with phone-sized cards */
+  [style*="overflow-x: auto"] > div[style*="width: 272px"],
+  [style*="overflow-x: auto"] > div[style*="width: 268px"] { width: 234px !important; }
+  [style*="overflow-x: auto"] > div[style*="width: 236px"],
+  [style*="overflow-x: auto"] > div[style*="width: 232px"] { width: 210px !important; }
+
+  /* Hero arch shrinks to fit a phone */
+  [style*="border-radius: 226px 226px 0 0"],
+  [style*="border-radius: 215px 215px 0 0"] { max-width: 100% !important; height: 380px !important; border-radius: 50% 50% 0 0 / 28% 28% 0 0 !important; }
+
+  /* Anything with a desktop min-width releases it */
+  [style*="min-width: 400px"] { min-width: 0 !important; }
+
+  /* Nav links keep the tablet treatment; tighten the gap on phone. */
+  [data-nav="links"] { gap: 18px !important; }
+  /* Tap targets: set the 44px floor directly rather than adding padding to a text box.
+     [data-nav="links"] > a is deliberately NOT in this list — those four anchors are
+     hidden from 830px down, and naming them here would tie specificity with that hide
+     rule and win on source order, un-hiding them. */
+  [data-nav="links"] > span,
+  [data-screen-label="Nav"] > div:first-child > a,
+  [data-dropdown="lessons"] a {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Category dropdown: one column; height and scroll only while open, so the closed
+     panel keeps the logic class's 0px collapse (an !important here would beat it) */
+  [data-dropdown="lessons"] { grid-template-columns: 1fr !important; padding-left: 20px !important; padding-right: 20px !important; }
+
+  /* Stacked stat rows breathe */
+  [data-screen-label="01 Hero"] [style*="gap: 40px"] { gap: 22px !important; }
+  [style*="gap: 52px"], [style*="gap: 56px"], [style*="gap: 60px"] { gap: 30px !important; }
+}
+
+/* ---------- Small phone: 420px and below ---------- */
+@media (max-width: 420px) {
+  h1 { font-size: 33px !important; }
+  h2 { font-size: 26px !important; }
+  section { padding-left: 16px !important; padding-right: 16px !important; }
+  /* Sruthi and speed selectors wrap instead of squeezing to unreadable widths.
+     Hooked rather than matched on inline gap, which also caught the nav caret. */
+  [data-selector] { flex-wrap: wrap !important; }
+  [data-selector] > span { min-width: 62px !important; }
+}
