@@ -26,6 +26,13 @@ model Lesson {
   vocalVideo       String?
   titleCard        String?
   sourceUrl        String?
+  // Rich pedagogical data — stored as JSON strings (SQLite has no native array type).
+  // perVideoEmbeds: { violin: [{label, youtubeId}], vocal: [...] }
+  // audioLessons: [{ label, audio }]
+  // videoParts: [{ label, embed }]
+  perVideoEmbeds   String?
+  audioLessons     String?
+  videoParts       String?
   status           String   @default("published")
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt

@@ -165,10 +165,14 @@ export function Footer() {
             © {year} Violin Suka Pavalan. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
-            {["Privacy", "Terms", "Disclaimer"].map((l) => (
+            {[
+              { label: "Privacy", hash: "#legal-privacy" },
+              { label: "Terms", hash: "#legal-terms" },
+              { label: "Disclaimer", hash: "#legal-disclaimer" },
+            ].map((l) => (
               <a
-                key={l}
-                href="#legal"
+                key={l.label}
+                href={l.hash}
                 className="transition-colors hover:text-gold-hover"
                 style={{
                   fontSize: "12.5px",
@@ -177,7 +181,7 @@ export function Footer() {
                   letterSpacing: "0.04em",
                 }}
               >
-                {l}
+                {l.label}
               </a>
             ))}
           </div>

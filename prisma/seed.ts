@@ -86,6 +86,10 @@ async function main() {
     vocalVideo?: string;
     titleCard?: string;
     sourceUrl?: string;
+    // Rich pedagogical data (optional, not on every lesson):
+    perVideoEmbeds?: { violin: { label: string; youtubeId: string }[]; vocal: { label: string; youtubeId: string }[] };
+    audioLessons?: { label: string; audio: string }[];
+    videoParts?: { label: string; embed: string }[];
   };
 
   const items = (lessonsData as { items: RawLesson[] }).items;
@@ -108,6 +112,9 @@ async function main() {
         vocalVideo: l.vocalVideo ?? null,
         titleCard: l.titleCard ?? null,
         sourceUrl: l.sourceUrl ?? null,
+        perVideoEmbeds: l.perVideoEmbeds ? JSON.stringify(l.perVideoEmbeds) : null,
+        audioLessons: l.audioLessons ? JSON.stringify(l.audioLessons) : null,
+        videoParts: l.videoParts ? JSON.stringify(l.videoParts) : null,
         status: "published",
       },
     });

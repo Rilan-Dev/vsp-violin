@@ -32,7 +32,7 @@ export function Hero() {
     <section
       id="top"
       aria-label="Hero — Violin Suka Pavalan"
-      className="relative overflow-hidden"
+      className="vsp-grain relative overflow-hidden"
       style={{
         minHeight: "100vh",
         paddingTop: "120px", // clears the fixed nav

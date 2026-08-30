@@ -10,6 +10,7 @@ import { Enrol } from "@/components/site/enrol";
 import { Stage } from "@/components/site/stage";
 import { LearnViolin } from "@/components/site/learn-violin";
 import { Footer } from "@/components/site/footer";
+import { Reveal } from "@/components/site/reveal";
 import {
   getCategoriesWithCounts,
   getLessons,
@@ -45,26 +46,50 @@ export default async function Home() {
         <main style={{ flex: 1, paddingTop: 0 }}>
           <Hero />
           <Marquee />
-          <LibraryPreview
-            lessons={lessons.map((l) => ({
-              ...l,
-              assets: {
-                hasEnglishNotation: Boolean(l.raga || l.titleTamil), // proxy: lessons with metadata have notation
-                hasTamilNotation: Boolean(l.titleTamil),
-                hasAudio: true,
-                hasVideo: true,
-              },
-            }))}
-            categories={categories}
-            stats={stats}
-          />
-          <PracticeRoom />
-          <Guru />
-          <Honours />
-          <Stage />
-          <LearnViolin />
-          <Testimonials />
-          <Enrol />
+
+          <Reveal as="div" threshold={0.08}>
+            <LibraryPreview
+              lessons={lessons.map((l) => ({
+                ...l,
+                assets: {
+                  hasEnglishNotation: Boolean(l.raga || l.titleTamil),
+                  hasTamilNotation: Boolean(l.titleTamil),
+                  hasAudio: true,
+                  hasVideo: true,
+                },
+              }))}
+              categories={categories}
+              stats={stats}
+            />
+          </Reveal>
+
+          <Reveal as="div" threshold={0.1}>
+            <PracticeRoom />
+          </Reveal>
+
+          <Reveal as="div" threshold={0.08}>
+            <Guru />
+          </Reveal>
+
+          <Reveal as="div" threshold={0.06}>
+            <Honours />
+          </Reveal>
+
+          <Reveal as="div" threshold={0.08}>
+            <Stage />
+          </Reveal>
+
+          <Reveal as="div" threshold={0.06}>
+            <LearnViolin />
+          </Reveal>
+
+          <Reveal as="div" threshold={0.1}>
+            <Testimonials />
+          </Reveal>
+
+          <Reveal as="div" threshold={0.08}>
+            <Enrol />
+          </Reveal>
         </main>
 
         <Footer />

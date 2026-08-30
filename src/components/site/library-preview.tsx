@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useReveal } from "@/components/site/use-reveal";
 
 /* ------------------------------------------------------------------ *
@@ -375,6 +376,11 @@ function LessonCard({
   };
 
   return (
+    <Link
+      href={`/lessons/${lesson.id}`}
+      className="block"
+      style={{ textDecoration: "none", color: "inherit" }}
+    >
     <article
       className={`lib-card ${gold ? "lib-card-gold vsp-card-gold" : "vsp-card-neutral"}`}
       style={{
@@ -546,6 +552,7 @@ function LessonCard({
         </div>
       </div>
     </article>
+    </Link>
   );
 }
 

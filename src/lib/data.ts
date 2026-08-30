@@ -24,12 +24,20 @@ export type LessonSummary = {
   titleCard: string | null;
 };
 
+export type LessonVideoEmbed = { label: string; youtubeId: string };
+export type PerVideoEmbeds = { violin: LessonVideoEmbed[]; vocal: LessonVideoEmbed[] };
+export type AudioLesson = { label: string; audio: string };
+export type VideoPart = { label: string; embed: string };
+
 export type LessonDetail = LessonSummary & {
   notationTamil: string | null;
   notationEnglish: string | null;
   violinVideo: string | null;
   vocalVideo: string | null;
   sourceUrl: string | null;
+  perVideoEmbeds: PerVideoEmbeds | null;
+  audioLessons: AudioLesson[] | null;
+  videoParts: VideoPart[] | null;
 };
 
 export type SiteContent = typeof siteContent;
@@ -95,6 +103,38 @@ export async function getLessonById(id: string): Promise<LessonDetail | null> {
     violinVideo: l.violinVideo,
     vocalVideo: l.vocalVideo,
     sourceUrl: l.sourceUrl,
+    perVideoEmbeds: l.perVideoEmbeds ? (JSON.parse(l.perVideoEmbeds) as PerVideoEmbeds) : null,
+    audioLessons: l.audioLessons ? (JSON.parse(l.audioLessons) as AudioLesson[]) : null,
+    videoParts: l.videoParts ? (JSON.parse(l.videoParts) as VideoPart[]) : null,
+  };
+}
+
+/**
+ * Prev/next navigation for the lesson page.
+ * Basics (5 lessons across 5 sub-categories) are treated as one family —
+ * prev/next walks the 5 in level order. Other categories order by date.
+ */
+const BASICS_SLUGS = ["sruthi-swara-varisai", "sarali-varisai", "janta-varisai", "melsthayi-varisai", "thattu-varisai"];
+
+export async function getPrevNextLessons(currentId: string, category: string) {
+  const isBasics = BASICS_SLUGS.includes(category);
+  const where = isBasics
+    ? { status: "published" as const, category: { in: BASICS_SLUGS } }
+    : { status: "published" as const, category };
+  const orderBy = isBasics
+    ? [{ level: "asc" as const }, { date: "asc" as const }]
+    : [{ date: "asc" as const }];
+  const lessons = await db.lesson.findMany({
+    where,
+    orderBy,
+    select: { id: true, title: true, titleTamil: true, category: true, level: true },
+  });
+  const idx = lessons.findIndex((l) => l.id === currentId);
+  return {
+    prev: idx > 0 ? lessons[idx - 1] : null,
+    next: idx >= 0 && idx < lessons.length - 1 ? lessons[idx + 1] : null,
+    siblings: lessons,
+    currentIndex: idx,
   };
 }
 

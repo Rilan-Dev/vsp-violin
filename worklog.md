@@ -364,3 +364,69 @@ Unresolved items / next-phase priorities:
 - The Live Video category shows 0 (the 7 live-video performance posts from the old Blogger site were not in the detailed lessons.json — only their counts were captured). A future task could seed these from `blog-sukapavalan.json`.
 - Individual lesson detail pages (the handoff describes a full Lesson page with notation panel, video grid, three-stage guidance) are not built — the homepage links to `#library` anchors rather than `/lessons/[slug]` routes. This is a natural next-phase feature.
 - The Studio (owner CMS) screens are not built — they're behind a login and a separate phase per the handoff.
+
+---
+Task ID: 15
+Agent: cron-review-round-1 (webDevReview)
+Task: QA the existing build, fix the dead `#legal` footer anchor, build dynamic Lesson detail pages, add back-to-top + reading progress, apply scroll-reveal + premium texture.
+
+## Current project status assessment
+- Dev server healthy (port 3000, 200s on `/`, `/api/categories`, `/api/lessons`).
+- `bun run lint` clean.
+- agent-browser QA: all 8 anchored sections render, nav mega-menu toggles correctly (19 category links with live counts), library filter chips work (15 chips), sruthi dial interactive (12 toggle buttons), enrol form has all 8 fields.
+- No console errors.
+- One real bug found: footer "Privacy/Terms/Disclaimer" links pointed at `#legal` but no `#legal` section existed — dead anchor.
+
+## Completed modifications + verification
+
+### 1. Fix: Legal dialog (resolves dead `#legal` anchor)
+- Extracted the three legal policies (Privacy Policy, Terms and Conditions, Disclaimer) verbatim from the design handoff's `Legal.dc.html` into a structured `src/lib/legal-content.json` (24 sections total: 12 privacy, 9 terms, 3 disclaimer).
+- Built `src/components/site/legal-dialog.tsx` — a Radix Dialog that opens on `#legal-*` hash change, with a 3-button policy switcher (Privacy/Terms/Disclaimer). The five passages flagged for legal review in the handoff are rendered inline in warm-orange (#E08C50) bordered callouts with a "✦ Needs legal review" eyebrow and the specific issue note (Netherlands jurisdiction, comments clauses, www.website.com placeholder, account language, advertising sections).
+- Updated footer links: Privacy → `#legal-privacy`, Terms → `#legal-terms`, Disclaimer → `#legal-disclaimer`.
+- Mounted `<LegalDialog />` globally in `src/app/layout.tsx`.
+- Verified: clicking "Privacy" in the footer opens the dialog with Privacy Policy active (3 flagged sections), switching to Terms shows 9 sections with 2 flagged (Comments + License), the dialog closes on Escape/backdrop click.
+
+### 2. Feature: Dynamic Lesson detail pages (`/lessons/[slug]`)
+- Extended the Prisma `Lesson` model with three JSON-string fields: `perVideoEmbeds` (Sarali-style 8 violin + 8 vocal individual video embeds), `audioLessons` (Geetham/Krithi-style 5 sruthis × 3 speeds = 15 Drive audio tracks), `videoParts` (Varnam-style 5-part step-by-step/practice/karaoke video series). Re-ran `db:push` + seed. All 23 lessons now carry their rich pedagogical data.
+- Extended the data layer (`src/lib/data.ts`): `getLessonById` now returns parsed `perVideoEmbeds`, `audioLessons`, `videoParts` arrays. Added `getPrevNextLessons()` that treats the 5 Basics sub-categories as one family (prev/next walks the 5 in level order).
+- Built `src/app/lessons/[slug]/page.tsx` — server component with `generateStaticParams` (pre-renders all 23 lesson pages) + `generateMetadata` (per-lesson SEO title/description/OpenGraph).
+- Built `src/components/site/lesson-page.tsx` — the rich lesson experience:
+  - Breadcrumb (Lessons > category > lesson), level + category badges, h1 title, Tamil title, lead paragraph, two download CTAs (English notation gold fill / Tamil outline — links to Drive/Dropbox PDFs), an 8-cell details table (category, level, raga, thala, composer, notation, videos, published date).
+  - Notation panel (1.15fr) with English/தமிழ் toggle and a rendered swara-line preview (5 lines, Geist Mono 17px / 0.14em tracking, Tamil fallback font stack).
+  - Practice track panel (0.85fr, gold-tinted card) — violin/vocal toggle, 5 sruthi buttons, 4 speed buttons, active sruthi readout in Marcellus 32px gold, and a filtered list of matching audio tracks (when the lesson has audioLessons). Audio filtering matches the selected sruthi + speed.
+  - Video grid — renders up to 16 YouTube iframes in a 4-col grid (responsive: 1/2/4 cols). Thrikaalam cards use the gold card variant. Video voice toggle (violin/vocal) when both exist.
+  - Three-stage guidance — "Step by step → practise together → on your own" as 3 numbered cards.
+  - Sibling lessons rail — horizontal scroll of all lessons in the same category family (5 basics together), with the current lesson highlighted in gold.
+  - Prev/next navigation — neutral card (prev) + gold card (next); when at the end of a category, the next card becomes a "Book a one-to-one lesson →" CTA pointing to `#enrol`.
+  - Back-to-library link.
+- Linked the homepage library cards to `/lessons/[slug]` (wrapped each `<article>` in a Next.js `<Link>`).
+- Verified: `/lessons/basic-02-sarali-varisai` renders with 8 YouTube iframes (violin videos), notation panel, practice track, three-stage guidance, 5 sibling lessons, prev/next nav. `/lessons/varnam-mohanam` renders with 7 video parts, 2 Dropbox PDFs, siblings. VLM rated the lesson page 9/10.
+
+### 3. Feature: Back-to-top + reading progress indicator
+- Built `src/components/site/back-to-top.tsx` — a 2px gold reading-progress bar fixed to the top of the viewport (width tied to scroll %, 80ms linear transition) + a 44px circular gold-bordered back-to-top button anchored bottom-right that appears after 500px scroll. Respects prefers-reduced-motion (transitions collapse globally).
+- Mounted globally in `src/app/layout.tsx`.
+- Verified: progress bar visible at top after scrolling, back-to-top button appears (display: flex, opacity: 1) after 500px scroll, clicking it smooth-scrolls to top.
+
+### 4. Styling: Scroll-reveal on static sections
+- Built `src/components/site/reveal.tsx` — a shared client wrapper that applies the `.reveal` + `.is-visible` classes via the `useReveal` IntersectionObserver hook. Renders as any tag (`section`/`div`/`article`/etc.), supports `delay` and `threshold` props.
+- Wrapped all 8 homepage sections in `<Reveal>` in `src/app/page.tsx` (Library, Practice Room, Guru, Honours, Stage, Learn Violin, Testimonials, Enrol). Hero and Marquee keep their own CSS-keyframe entrances (rise + marquee).
+- Verified: sections now fade-and-rise into view on scroll, respecting reduced motion.
+
+### 5. Styling: Premium texture + hover micro-interactions
+- Added to `src/app/globals.css`:
+  - `.vsp-grain` — a subtle SVG fractal-noise film-grain overlay (opacity 0.04, mix-blend-mode overlay) applied via `::after`. The "shot on film" texture that separates $5K-$10K sites from generic AI output. Applied to the Hero section.
+  - `.vsp-lift` — hover micro-interaction: translateY(-3px) + gold border brighten (280ms cubic-bezier). For cards.
+  - `.vsp-cta-gold` — gold CTA hover: fill brightens to `#F2D89A` + translateY(-1px) (220ms ease). For primary buttons.
+  - `.vsp-stagger` — staggered children reveal (6 children, 80ms increments).
+  - `.vsp-grow-line` — decorative gold hairline that animates width 0→100% on reveal (900ms, 200ms delay).
+- Applied `.vsp-grain` to the Hero section.
+
+## Unresolved issues / risks / next-phase priorities
+
+1. **YouTube iframes appear as dark blocks in static screenshots** — this is expected (lazy-loaded iframes don't render a thumbnail until scrolled into view / interacted with). Not a bug; verified the iframes are present in the DOM (8 on Sarali, 7 on Mohanam).
+2. **The 6 placeholder gallery images in the Stage section** are still "file needed" (client hasn't supplied award-ceremony photos) — by design per the handoff.
+3. **Live Video category shows 0** — the 7 live-video performance posts from the old Blogger site are captured in `blog-sukapavalan.json` but not seeded into the DB. A future task could extract and seed these.
+4. **Studio admin (owner CMS)** is still not built — it's behind a login and a separate phase per the handoff. A future `/studio` route with enquiry inbox + lessons table would be the natural next feature.
+5. **Mobile deep-testing** — the VLM confirmed the desktop layout is polished, but a dedicated mobile (375px) and tablet (768px) screenshot pass would catch any responsive edge cases (the handoff's responsive.css notes three CSS traps that Tailwind mostly sidesteps, but `overflow-x: clip` on body is still required to avoid breaking sticky nav — already applied in globals.css).
+6. **Per-lesson OpenGraph images** — the lesson pages have `titleCard` URLs (remote blogger images) that could be used as OG images in `generateMetadata`. Not yet wired up.
+

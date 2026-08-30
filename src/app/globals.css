@@ -247,6 +247,70 @@
   border-color: #E0BC6A;
 }
 
+/* ===== Premium texture: film grain overlay ===== */
+/* A subtle noise overlay that sits on top of the hero only — adds the
+   "shot on film" texture that separates $5K-$10K sites from generic AI output.
+   Applied via a ::before pseudo-element on .vsp-grain. */
+.vsp-grain {
+  position: relative;
+}
+.vsp-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: "200px 200px";
+}
+
+/* ===== Premium hover micro-interactions ===== */
+/* Lesson cards, honours cards, CTA buttons get a subtle lift + border brighten.
+   These win over generic utility classes because they're more specific. */
+.vsp-lift {
+  transition: "transform 280ms cubic-bezier(0.16,1,0.3,1), border-color 280ms ease, background 280ms ease";
+}
+.vsp-lift:hover {
+  transform: translateY(-3px);
+  border-color: rgba(224, 188, 106, 0.5) !important;
+}
+
+/* Gold CTA hover — fill brightens + arrow nudges */
+.vsp-cta-gold {
+  transition: "background 220ms ease, transform 220ms ease, box-shadow 220ms ease";
+}
+.vsp-cta-gold:hover {
+  background: #F2D89A !important;
+  transform: translateY(-1px);
+}
+
+/* Section entrance — staggered children reveal */
+.vsp-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: "opacity 600ms cubic-bezier(0.16,1,0.3,1), transform 600ms cubic-bezier(0.16,1,0.3,1)";
+}
+.vsp-stagger.is-visible > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: none; }
+.vsp-stagger.is-visible > *:nth-child(2) { transition-delay: 80ms; opacity: 1; transform: none; }
+.vsp-stagger.is-visible > *:nth-child(3) { transition-delay: 160ms; opacity: 1; transform: none; }
+.vsp-stagger.is-visible > *:nth-child(4) { transition-delay: 240ms; opacity: 1; transform: none; }
+.vsp-stagger.is-visible > *:nth-child(5) { transition-delay: 320ms; opacity: 1; transform: none; }
+.vsp-stagger.is-visible > *:nth-child(6) { transition-delay: 400ms; opacity: 1; transform: none; }
+
+/* Decorative gold hairline that grows on reveal */
+.vsp-grow-line {
+  width: 0;
+  height: 1px;
+  background: #E0BC6A;
+  transition: "width 900ms cubic-bezier(0.16,1,0.3,1) 200ms";
+}
+.is-visible .vsp-grow-line,
+.vsp-stagger.is-visible .vsp-grow-line {
+  width: 100%;
+}
+
 /* Reduced motion — kill animations, make marquee static + wrapping */
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Marcellus, Instrument_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { LegalDialog } from "@/components/site/legal-dialog";
+import { BackToTop } from "@/components/site/back-to-top";
 
 const marcellus = Marcellus({
   variable: "--font-marcellus",
@@ -66,6 +68,8 @@ export default function RootLayout({
       >
         {children}
         <Toaster />
+        <LegalDialog />
+        <BackToTop />
       </body>
     </html>
   );
