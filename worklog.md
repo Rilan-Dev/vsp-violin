@@ -811,3 +811,59 @@ Task: QA the build, add custom favicon + manifest, add print stylesheet + print 
 5. **Apple touch icon as PNG** — the SVG works for modern browsers but Apple devices prefer a PNG apple-touch-icon. A future task could generate a 180×180 PNG from the SVG.
 6. **OG image** — the homepage and dedicated pages don't have a custom OG image (only lesson pages have titleCard OG images). A future task could generate a branded OG image (violet ground, gold wordmark, tagline) via `next/og` ImageResponse.
 
+
+---
+Task ID: 22
+Agent: cron-review-round-8 (webDevReview)
+Task: QA the build, generate branded OG image via next/og, add /testimonials page, add cookie consent banner.
+
+## Current project status assessment
+- Dev server healthy (port 3000). All 15 routes 200 (`/`, `/library`, `/about`, `/honours`, `/stage`, `/learn`, `/testimonials`, `/lessons/[slug]`, `/studio`, `/feed.xml`, `/sitemap.xml`, `/robots.txt`, `/favicon.svg`, `/manifest.json`, `/opengraph-image`).
+- `bun run lint` clean.
+- agent-browser QA: homepage intact, no console errors.
+
+## Completed modifications + verification
+
+### 1. Feature: Branded OG image via next/og
+- Created `src/app/opengraph-image.tsx` — uses Next.js's `ImageResponse` from `next/og` to generate a 1200×630 PNG at build/request time:
+  - Violet ground (#16102A), 72×80px padding.
+  - Top: gold eyebrow "Karaikal · since 1990" with a 40px gold hairline.
+  - Middle: "SUKA PAVALAN" in 96px gold (#E0BC6A) serif + "Music, kept as worship." in 42px cream (worship in gold).
+  - Bottom: 4-stat row (37 / 22 / 5,000+ / 12) in gold serif numbers + cream mono labels.
+- `runtime = "edge"` for fast generation.
+- Verified: `curl /opengraph-image` → 200, valid PNG (1200×630, 37KB, RGBA). VLM confirmed: "gold wordmark SUKA PAVALAN on dark violet background" with all 4 stats visible.
+- This image is automatically used by Next.js for the homepage and any page without its own OG image. Lesson pages override with their `titleCard`.
+
+### 2. Feature: `/testimonials` dedicated page
+- A full testimonials page with all 4 testimonials from `getSiteContent().home.testimonials`:
+  - Header: eyebrow, h1 "See what all the talk is about." (talk in gold), lead paragraph.
+  - 4 testimonial articles in a vertical stack, each with:
+    - Quote icon (lucide `Quote`) + "Testimonial 01 of 04" eyebrow + title.
+    - Blockquote with gold left border, `text-wrap: pretty`, cream 0.88 alpha.
+    - Attribution: author in Marcellus gold + place in Geist Mono cream 0.62.
+    - Middle testimonial (index 1) uses `.vsp-card-gold`; others use `.vsp-card-neutral`.
+    - Tamil testimonial (4th) carries `lang="ta"` on title, blockquote, and attribution.
+  - CTA: "Join the students who found their guru." + "Book a free trial" gold button.
+- Updated sitemap to include `/testimonials` (priority 0.6, monthly).
+- Verified: `/testimonials` → 200, h1 present, 4 testimonial articles, CTA present. VLM confirmed: "testimonial cards displaying quotes with attributions" and "Testimonial 01 of 04".
+
+### 3. Feature: Cookie consent banner (GDPR-lite)
+- Built `src/components/site/cookie-consent.tsx` — a fixed bottom banner for the EU/UK diaspora audience:
+  - Violet ground (rgba(22,16,42,0.97)) with blur backdrop + gold top border.
+  - "✦ This site uses cookies for a better experience. See our Privacy Policy." (Privacy Policy links to `#legal-privacy`).
+  - Decline button (cream outline) + Accept button (gold fill) + close X.
+  - Consent stored in `localStorage` (key: `vsp-cookie-consent`, value: `accepted` | `rejected`). No cookie set — keeping it cookie-free.
+  - SSR-safe: uses a lazy `useState` initializer (`getInitialConsent`) that returns `null` on the server and reads localStorage only on the client. No `useEffect` needed, avoiding the React 19 `set-state-in-effect` lint rule.
+  - Banner only shows when consent is null (first visit). Once accepted/declined, it never shows again.
+- Mounted globally in `src/app/layout.tsx`.
+- Verified: banner appears on first visit, clicking Accept stores "accepted" in localStorage and hides the banner. VLM confirmed: "cookie consent banner appears at the bottom of the screen."
+
+## Unresolved issues / next-phase priorities
+
+1. **Image optimization** — lesson title-card images are loaded from remote blogger URLs. A future task could download + optimize them via `next/image` with a remote loader, or migrate to local `/public/assets/title-cards/`.
+2. **Live Video seeding** — the 7 Live Video posts from the old Blogger site aren't in the structured data. Low priority.
+3. **Mobile deep-testing at 375px** — all responsive CSS is in place, but a true device-emulation pass would catch any remaining edge cases.
+4. **Studio: lesson video/audio management** — the Studio can create lessons with notation URLs but not manage the per-video embeds or audio tracks.
+5. **Studio analytics** — a Studio stats tab showing enquiries over time, conversion rate, and source breakdown would give the owner insight. The source-breakdown card already exists; a time-series chart would be the next step.
+6. **Apple touch icon as PNG** — the SVG works for modern browsers but Apple devices prefer a 180×180 PNG apple-touch-icon.
+

@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { LegalDialog } from "@/components/site/legal-dialog";
 import { BackToTop } from "@/components/site/back-to-top";
 import { KeyboardShortcuts } from "@/components/site/keyboard-shortcuts";
+import { CookieConsent } from "@/components/site/cookie-consent";
 
 const marcellus = Marcellus({
   variable: "--font-marcellus",
@@ -77,6 +78,7 @@ export default function RootLayout({
         <LegalDialog />
         <BackToTop />
         <KeyboardShortcuts />
+        <CookieConsent />
       </body>
     </html>
   );
