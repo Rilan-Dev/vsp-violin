@@ -637,3 +637,67 @@ Task: QA the build, add custom 404 page, build Studio lesson inline editing, add
 5. **Performance monitoring** — a Lighthouse pass would quantify the YouTube facade improvement and surface any remaining opportunities.
 6. **RSS/Atom feed** — a `/feed.xml` route for the lesson library would let diaspora parents subscribe to new lessons. Low priority but a nice retention feature.
 
+
+---
+Task ID: 19
+Agent: cron-review-round-5 (webDevReview)
+Task: QA the build, build Studio categories editor, add /stage dedicated page, add RSS feed, add share button to lesson pages, fix footer links.
+
+## Current project status assessment
+- Dev server healthy (port 3000). All routes 200 (`/`, `/library`, `/about`, `/honours`, `/stage`, `/lessons/[slug]`, `/studio`, `/feed.xml`, `/sitemap.xml`, `/robots.txt`, all `/api/*`).
+- `bun run lint` clean.
+- agent-browser QA: homepage intact, lesson page facades work, no console errors.
+- One UX bug found: footer "The Guru" / "Honours" / "Stage" links pointed to homepage anchors (`#guru`, `#honours`, `#stage`) instead of the new dedicated pages (`/about`, `/honours`, `/stage`).
+
+## Completed modifications + verification
+
+### 1. Fix: Footer links point to dedicated pages
+- Updated `src/components/site/footer.tsx` Explore column: "Free Lessons" → `/library`, "The Guru" → `/about`, "Honours" → `/honours`, "Stage" → `/stage`. Only "Learn the Violin" remains as `/#learn` (no dedicated page yet).
+- Verified: footer links now resolve to the correct dedicated pages.
+
+### 2. Feature: Studio categories editor
+- **API:** `GET /api/studio/categories` (list with lesson counts), `POST /api/studio/categories` (create, Zod-validated slug/name/group/order), `PATCH /api/studio/categories/[id]` (rename/regroup/reorder), `DELETE /api/studio/categories/[id]` (blocked if lessons exist — returns 409).
+- **Dashboard:** Added "Categories" tab (3rd tab, with FolderTree icon) to the Studio bar.
+- **CategoriesTab component:** Categories grouped by the 5 groups (Basics/Advanced/Devotional/Light/Media), each category is a row with:
+  - Order input (number, editable inline, PATCH on change).
+  - Name (click to rename inline — input with Marcellus font, Enter/blur saves, Escape cancels).
+  - Slug display (mono, read-only).
+  - Lesson count badge (gold if >0, neutral if 0).
+  - Group selector (dropdown — change regroups the category instantly).
+  - Delete button (disabled if lessons exist; shows error toast if attempted).
+- **Add category form:** Gold-tinted card with slug, name, group, order fields + "Create category" button. Slug validated as lowercase-hyphens-only.
+- **Verified:** renamed "Sruthi Swara Varisai" → "Sruthi Swara Varisai-Renamed" via the inline edit → DB updated (Prisma query confirmed). Reverted. VLM confirmed: "categories management interface" with "Add category" button.
+
+### 3. Feature: `/stage` dedicated page
+- A full stage/performance page with:
+  - Header: eyebrow, h1 "Five thousand performances. One instrument." (thousand in gold), lead paragraph.
+  - 3 performance record cards: All India Radio (with station chips), Stage (5000+ performances), Thyagaraja Aradhana (gold card).
+  - Closing italic line.
+  - "Gallery of Glory" — 2×2 lead portrait (portrait-seated.jpeg) + 6 placeholder cards with "file needed" labels.
+  - USA Tours gold-bordered band with year chips.
+  - CTA: "Book a performance." + "Enquire about booking".
+- Verified: `/stage` → 200, h1 present, gallery, tours, CTA all present. VLM confirmed: "performance record cards" and "gallery section".
+
+### 4. Feature: RSS feed (`/feed.xml`)
+- `src/app/feed.xml/route.ts` — RSS 2.0 feed of the 50 most recent published lessons. Each item has title, link, guid (permalink), description (Tamil/category/raga/thala metadata), pubDate. Includes Atom self-link.
+- Returns `Content-Type: application/rss+xml` with 1-hour cache.
+- Added "RSS" link to the footer bottom bar.
+- Verified: `curl /feed.xml` → 200 with valid XML, channel title "Violin Suka Pavalan — Free Carnatic Violin Lessons", items present.
+
+### 5. Feature: Share button on lesson pages
+- `src/components/site/share-button.tsx` — a share button that uses the native Web Share API on mobile (WhatsApp, email, copy) and falls back to a dropdown (Copy link / WhatsApp / Email) on desktop.
+- Added to the lesson page header next to the download CTAs.
+- Verified: share button present on `/lessons/basic-02-sarali-varisai`, clicking opens dropdown with Copy link + WhatsApp + Email options.
+
+### 6. Styling: Sitemap + footer updates
+- Updated `src/app/sitemap.ts` to include `/about`, `/honours`, `/stage` (priority 0.7, monthly change frequency).
+- Footer now has an "RSS" link to `/feed.xml`.
+
+## Unresolved issues / next-phase priorities
+
+1. **Image optimization** — lesson title-card images are loaded from remote blogger URLs. A future task could download + optimize them via `next/image` with a remote loader, or migrate to local `/public/assets/title-cards/`.
+2. **Live Video seeding** — the 7 Live Video posts from the old Blogger site aren't in the structured data. Low priority.
+3. **Mobile deep-testing at 375px** — all responsive CSS is in place, but a true device-emulation pass would catch any remaining edge cases.
+4. **Studio lesson creation** — the Studio can now edit/delete lessons and categories, but not create new lessons. A "New lesson" form (matching the handoff's "Studio.dc.html — New notation" screen) would complete the CMS.
+5. **Learn the Violin dedicated page** — the `/learn` section is still a homepage anchor; a dedicated `/learn` page with the full violin-history/strings/materials/fingering content would round out the page set.
+

@@ -105,11 +105,11 @@ export function Footer() {
             <div className="flex flex-col gap-2.5">
               <span className="vsp-eyebrow">Explore</span>
               {[
-                { href: "#library", label: "Free Lessons" },
-                { href: "#guru", label: "The Guru" },
-                { href: "#honours", label: "Honours" },
-                { href: "#stage", label: "Stage" },
-                { href: "#learn", label: "Learn the Violin" },
+                { href: "/library", label: "Free Lessons" },
+                { href: "/about", label: "The Guru" },
+                { href: "/honours", label: "Honours" },
+                { href: "/stage", label: "Stage" },
+                { href: "/#learn", label: "Learn the Violin" },
               ].map((l) => (
                 <a
                   key={l.href}
@@ -184,6 +184,18 @@ export function Footer() {
                 {l.label}
               </a>
             ))}
+            <a
+              href="/feed.xml"
+              className="transition-colors hover:text-gold-hover"
+              style={{
+                fontSize: "12.5px",
+                color: "rgba(243,237,223,0.5)",
+                fontFamily: "var(--font-geist-mono), monospace",
+                letterSpacing: "0.04em",
+              }}
+            >
+              RSS
+            </a>
           </div>
         </div>
       </div>

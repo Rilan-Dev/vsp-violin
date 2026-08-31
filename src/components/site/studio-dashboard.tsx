@@ -16,6 +16,9 @@ import {
   ExternalLink,
   Check as CheckIcon,
   X,
+  FolderTree,
+  Plus,
+  Tags,
 } from "lucide-react";
 import type { LessonSummary } from "@/lib/data";
 
@@ -60,7 +63,7 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
   const [data, setData] = useState<StudioData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"enquiries" | "lessons">("enquiries");
+  const [activeTab, setActiveTab] = useState<"enquiries" | "lessons" | "categories">("enquiries");
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
   const [filter, setFilter] = useState<"all" | "new" | "replied" | "archived">("all");
   const router = useRouter();
@@ -258,6 +261,26 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
             >
               <BookOpen size={13} aria-hidden />
               Lessons ({data.lessons.length})
+            </button>
+            <button
+              onClick={() => setActiveTab("categories")}
+              aria-pressed={activeTab === "categories"}
+              className="flex items-center gap-2 transition-colors"
+              style={{
+                padding: "8px 14px",
+                border: `1px solid ${activeTab === "categories" ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
+                background: activeTab === "categories" ? "#E0BC6A" : "transparent",
+                color: activeTab === "categories" ? "#1B1233" : "rgba(243,237,223,0.82)",
+                fontFamily: "var(--font-geist-mono), monospace",
+                fontSize: "11px",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                cursor: "pointer",
+                borderRadius: 0,
+              }}
+            >
+              <FolderTree size={13} aria-hidden />
+              Categories
             </button>
             <button
               onClick={logout}
@@ -538,7 +561,7 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
               </div>
             )}
           </>
-        ) : (
+        ) : activeTab === "lessons" ? (
           /* Lessons tab */
           <>
             <div className="grid gap-4 mb-8" style={{ gridTemplateColumns: "repeat(2, minmax(0,1fr)) md:repeat(3, minmax(0,1fr))" }}>
@@ -599,6 +622,8 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
               </div>
             </div>
           </>
+        ) : (
+          <CategoriesTab />
         )}
       </div>
     </div>
@@ -849,6 +874,310 @@ function EditableLessonRow({
         </div>
       </td>
     </tr>
+  );
+}
+
+type StudioCategory = {
+  slug: string;
+  name: string;
+  group: string;
+  order: number;
+  lessonCount: number;
+  publishedCount: number;
+};
+
+const GROUP_LABELS: Record<string, string> = {
+  basics: "Carnatic — Basics",
+  advanced: "Carnatic — Advanced",
+  devotional: "Devotional",
+  light: "Light Music",
+  media: "Media",
+};
+
+const GROUP_ORDER = ["basics", "advanced", "devotional", "light", "media"];
+
+/** Categories tab — rename, regroup, reorder, add, delete categories. */
+function CategoriesTab() {
+  const [categories, setCategories] = useState<StudioCategory[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editingSlug, setEditingSlug] = useState<string | null>(null);
+  const [draftName, setDraftName] = useState("");
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newCat, setNewCat] = useState({ slug: "", name: "", group: "advanced", order: 10 });
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchCategories = useCallback(async () => {
+    try {
+      const res = await fetch("/api/studio/categories");
+      if (!res.ok) throw new Error("Failed");
+      const json = await res.json();
+      setCategories(json.categories);
+    } catch {
+      setError("Failed to load categories");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
+
+  const saveName = async (slug: string) => {
+    const value = draftName.trim();
+    if (!value) {
+      setEditingSlug(null);
+      return;
+    }
+    await fetch(`/api/studio/categories/${slug}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: value }),
+    });
+    setCategories((prev) => prev.map((c) => (c.slug === slug ? { ...c, name: value } : c)));
+    setEditingSlug(null);
+  };
+
+  const changeGroup = async (slug: string, group: string) => {
+    await fetch(`/api/studio/categories/${slug}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ group }),
+    });
+    setCategories((prev) => prev.map((c) => (c.slug === slug ? { ...c, group } : c)));
+  };
+
+  const changeOrder = async (slug: string, order: number) => {
+    await fetch(`/api/studio/categories/${slug}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ order }),
+    });
+    setCategories((prev) => prev.map((c) => (c.slug === slug ? { ...c, order } : c)));
+  };
+
+  const deleteCategory = async (slug: string) => {
+    const res = await fetch(`/api/studio/categories/${slug}`, { method: "DELETE" });
+    if (res.ok) {
+      setCategories((prev) => prev.filter((c) => c.slug !== slug));
+    } else {
+      const data = await res.json().catch(() => ({}));
+      setError(data.error ?? "Failed to delete");
+      setTimeout(() => setError(null), 4000);
+    }
+  };
+
+  const addCategory = async () => {
+    setError(null);
+    const slug = newCat.slug.trim().toLowerCase().replace(/\s+/g, "-");
+    if (!slug || !newCat.name.trim()) {
+      setError("Slug and name are required");
+      return;
+    }
+    const res = await fetch("/api/studio/categories", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug, name: newCat.name.trim(), group: newCat.group, order: newCat.order }),
+    });
+    if (res.ok) {
+      const json = await res.json();
+      setCategories((prev) => [...prev, { ...json.category, lessonCount: 0, publishedCount: 0 }]);
+      setNewCat({ slug: "", name: "", group: "advanced", order: 10 });
+      setShowAddForm(false);
+    } else {
+      const data = await res.json().catch(() => ({}));
+      setError(data.error ?? "Failed to create");
+    }
+  };
+
+  if (loading) {
+    return <p style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "12px", color: "rgba(243,237,223,0.5)" }}>Loading categories…</p>;
+  }
+
+  return (
+    <div>
+      {/* Header + add button */}
+      <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+        <div>
+          <div className="flex items-center gap-3 mb-1">
+            <Tags size={18} aria-hidden style={{ color: "#E0BC6A" }} />
+            <span className="vsp-eyebrow">Categories · {categories.length}</span>
+          </div>
+          <p style={{ fontSize: "14px", color: "rgba(243,237,223,0.62)", margin: 0 }}>
+            Rename, regroup, reorder, or add categories. Changes propagate to the nav menu, library filters, and breadcrumbs.
+          </p>
+        </div>
+        <button
+          onClick={() => setShowAddForm(!showAddForm)}
+          aria-pressed={showAddForm}
+          className="vsp-cta-gold flex items-center gap-2"
+          style={{
+            padding: "10px 18px",
+            background: showAddForm ? "transparent" : "#E0BC6A",
+            color: showAddForm ? "#E0BC6A" : "#1B1233",
+            border: showAddForm ? "1px solid #E0BC6A" : "none",
+            fontFamily: "var(--font-marcellus), serif",
+            fontSize: "13px",
+            letterSpacing: "0.04em",
+            cursor: "pointer",
+            borderRadius: 0,
+          }}
+        >
+          <Plus size={15} aria-hidden />
+          {showAddForm ? "Cancel" : "Add category"}
+        </button>
+      </div>
+
+      {/* Error */}
+      {error && (
+        <div role="status" aria-live="polite" style={{ marginBottom: "16px", padding: "12px 16px", border: "1px solid #E08C50", background: "rgba(224,140,80,0.08)", color: "#F2C5A5", fontSize: "13px" }}>
+          {error}
+        </div>
+      )}
+
+      {/* Add form */}
+      {showAddForm && (
+        <div className="vsp-card-gold" style={{ padding: "24px", marginBottom: "24px" }}>
+          <span className="vsp-eyebrow" style={{ display: "block", marginBottom: "14px" }}>New category</span>
+          <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-4", marginBottom: "14px" }}>
+            <label className="flex flex-col gap-1.5">
+              <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)" }}>Slug</span>
+              <input
+                type="text"
+                value={newCat.slug}
+                onChange={(e) => setNewCat({ ...newCat, slug: e.target.value })}
+                placeholder="e.g. thillana"
+                style={{ padding: "9px 12px", background: "rgba(22,16,42,0.6)", border: "1px solid rgba(243,237,223,0.2)", color: "#F3EDDF", fontFamily: "var(--font-geist-mono), monospace", fontSize: "13px", borderRadius: 0 }}
+              />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)" }}>Display name</span>
+              <input
+                type="text"
+                value={newCat.name}
+                onChange={(e) => setNewCat({ ...newCat, name: e.target.value })}
+                placeholder="e.g. Thillana"
+                style={{ padding: "9px 12px", background: "rgba(22,16,42,0.6)", border: "1px solid rgba(243,237,223,0.2)", color: "#F3EDDF", fontFamily: "var(--font-instrument-sans)", fontSize: "13px", borderRadius: 0 }}
+              />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)" }}>Group</span>
+              <select
+                value={newCat.group}
+                onChange={(e) => setNewCat({ ...newCat, group: e.target.value })}
+                style={{ padding: "9px 12px", background: "rgba(22,16,42,0.6)", border: "1px solid rgba(243,237,223,0.2)", color: "#F3EDDF", fontFamily: "var(--font-instrument-sans)", fontSize: "13px", borderRadius: 0 }}
+              >
+                {GROUP_ORDER.map((g) => <option key={g} value={g}>{GROUP_LABELS[g]}</option>)}
+              </select>
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)" }}>Order</span>
+              <input
+                type="number"
+                value={newCat.order}
+                onChange={(e) => setNewCat({ ...newCat, order: parseInt(e.target.value, 10) || 0 })}
+                style={{ padding: "9px 12px", background: "rgba(22,16,42,0.6)", border: "1px solid rgba(243,237,223,0.2)", color: "#F3EDDF", fontFamily: "var(--font-geist-mono), monospace", fontSize: "13px", borderRadius: 0 }}
+              />
+            </label>
+          </div>
+          <button
+            onClick={addCategory}
+            className="vsp-cta-gold"
+            style={{ padding: "10px 20px", background: "#E0BC6A", color: "#1B1233", fontFamily: "var(--font-marcellus), serif", fontSize: "13px", border: "none", cursor: "pointer", borderRadius: 0 }}
+          >
+            Create category
+          </button>
+        </div>
+      )}
+
+      {/* Categories grouped */}
+      {GROUP_ORDER.map((group) => {
+        const groupCats = categories.filter((c) => c.group === group).sort((a, b) => a.order - b.order);
+        if (groupCats.length === 0) return null;
+        return (
+          <section key={group} style={{ marginBottom: "28px" }}>
+            <div className="flex items-baseline justify-between mb-3" style={{ paddingBottom: "10px", borderBottom: "1px solid rgba(224,188,106,0.2)" }}>
+              <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "20px", color: "#F3EDDF", margin: 0 }}>
+                {GROUP_LABELS[group]}
+              </h3>
+              <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10.5px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(243,237,223,0.5)" }}>
+                {groupCats.length} categor{groupCats.length !== 1 ? "ies" : "y"}
+              </span>
+            </div>
+            <div className="flex flex-col" style={{ gap: "8px" }}>
+              {groupCats.map((c) => {
+                const isEditing = editingSlug === c.slug;
+                const canDelete = c.lessonCount === 0;
+                return (
+                  <div
+                    key={c.slug}
+                    className="vsp-card-neutral flex items-center gap-3 flex-wrap"
+                    style={{ padding: "14px 18px" }}
+                  >
+                    {/* Order input */}
+                    <input
+                      type="number"
+                      value={c.order}
+                      onChange={(e) => changeOrder(c.slug, parseInt(e.target.value, 10) || 0)}
+                      aria-label="Order"
+                      style={{ width: "48px", padding: "6px 8px", background: "rgba(22,16,42,0.6)", border: "1px solid rgba(243,237,223,0.2)", color: "#E0BC6A", fontFamily: "var(--font-geist-mono), monospace", fontSize: "12px", textAlign: "center", borderRadius: 0 }}
+                    />
+                    {/* Name (editable) */}
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={draftName}
+                        onChange={(e) => setDraftName(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === "Enter") saveName(c.slug); if (e.key === "Escape") setEditingSlug(null); }}
+                        onBlur={() => saveName(c.slug)}
+                        autoFocus
+                        style={{ flex: "1", minWidth: "140px", padding: "6px 10px", background: "rgba(22,16,42,0.6)", border: "1px solid rgba(224,188,106,0.46)", color: "#F3EDDF", fontFamily: "var(--font-marcellus), serif", fontSize: "15px", borderRadius: 0 }}
+                      />
+                    ) : (
+                      <span
+                        onClick={() => { setEditingSlug(c.slug); setDraftName(c.name); }}
+                        className="vsp-lift"
+                        style={{ flex: "1", minWidth: "140px", fontFamily: "var(--font-marcellus), serif", fontSize: "16px", color: "#F3EDDF", cursor: "pointer", padding: "4px 8px", border: "1px solid transparent", borderRadius: 0 }}
+                        title="Click to rename"
+                      >
+                        {c.name}
+                      </span>
+                    )}
+                    {/* Slug */}
+                    <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", color: "rgba(243,237,223,0.5)" }}>
+                      /{c.slug}
+                    </span>
+                    {/* Lesson count */}
+                    <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", letterSpacing: "0.08em", color: c.lessonCount > 0 ? "#E0BC6A" : "rgba(243,237,223,0.4)", padding: "3px 8px", border: `1px solid ${c.lessonCount > 0 ? "rgba(224,188,106,0.34)" : "rgba(243,237,223,0.1)"}` }}>
+                      {c.lessonCount} lesson{c.lessonCount !== 1 ? "s" : ""}
+                    </span>
+                    {/* Group selector */}
+                    <select
+                      value={c.group}
+                      onChange={(e) => changeGroup(c.slug, e.target.value)}
+                      aria-label="Group"
+                      style={{ padding: "5px 10px", background: "rgba(22,16,42,0.6)", border: "1px solid rgba(243,237,223,0.2)", color: "rgba(243,237,223,0.72)", fontFamily: "var(--font-geist-mono), monospace", fontSize: "10.5px", letterSpacing: "0.08em", textTransform: "uppercase", borderRadius: 0 }}
+                    >
+                      {GROUP_ORDER.map((g) => <option key={g} value={g}>{GROUP_LABELS[g]}</option>)}
+                    </select>
+                    {/* Delete */}
+                    <button
+                      onClick={() => canDelete ? deleteCategory(c.slug) : setError(`Cannot delete "${c.name}": ${c.lessonCount} lesson(s) still in it. Move them first.`)}
+                      disabled={!canDelete}
+                      aria-label="Delete category"
+                      title={canDelete ? "Delete" : "Move lessons first"}
+                      style={{ background: "transparent", border: "none", color: canDelete ? "rgba(243,237,223,0.4)" : "rgba(243,237,223,0.15)", cursor: canDelete ? "pointer" : "not-allowed", padding: "4px", borderRadius: 0 }}
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })}
+    </div>
   );
 }
 

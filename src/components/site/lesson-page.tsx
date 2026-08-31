@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, Download, Play, Music, FileText, ChevronRight } from "lucide-react";
 import type { LessonDetail } from "@/lib/data";
 import { YouTubeFacade } from "@/components/site/youtube-facade";
+import { ShareButton } from "@/components/site/share-button";
 
 type Sibling = { id: string; title: string; titleTamil: string | null; category: string; level: number | null };
 
@@ -170,6 +171,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
               தமிழ் notation
             </a>
           )}
+          <ShareButton title={lesson.title} />
         </div>
 
         {/* Details table */}
