@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { cookies } from "next/headers";
 import { StudioLogin } from "@/components/site/studio-login";
 import { StudioDashboard } from "@/components/site/studio-dashboard";
-import { getLessons } from "@/lib/data";
+import { getAllLessonsForStudio } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -17,6 +17,6 @@ export default async function StudioPage() {
     return <StudioLogin />;
   }
 
-  const lessons = await getLessons();
+  const lessons = await getAllLessonsForStudio();
   return <StudioDashboard lessons={lessons} />;
 }

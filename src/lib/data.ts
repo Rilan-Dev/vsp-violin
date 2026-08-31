@@ -22,6 +22,7 @@ export type LessonSummary = {
   composer: string | null;
   date: string;
   titleCard: string | null;
+  status: string;
 };
 
 export type LessonVideoEmbed = { label: string; youtubeId: string };
@@ -81,6 +82,30 @@ export async function getLessons(categorySlug?: string): Promise<LessonSummary[]
     composer: l.composer,
     date: l.date,
     titleCard: l.titleCard,
+    status: l.status,
+  }));
+}
+
+/**
+ * Studio-only: returns ALL lessons including drafts, for the owner dashboard.
+ * The public `getLessons` filters to published only.
+ */
+export async function getAllLessonsForStudio(): Promise<LessonSummary[]> {
+  const lessons = await db.lesson.findMany({
+    orderBy: [{ category: "asc" }, { level: "asc" }, { date: "desc" }],
+  });
+  return lessons.map((l) => ({
+    id: l.id,
+    title: l.title,
+    titleTamil: l.titleTamil,
+    category: l.category,
+    level: l.level,
+    raga: l.raga,
+    thala: l.thala,
+    composer: l.composer,
+    date: l.date,
+    titleCard: l.titleCard,
+    status: l.status,
   }));
 }
 

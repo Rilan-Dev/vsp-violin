@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Search, X, ArrowLeft } from "lucide-react";
 import { useReveal } from "@/components/site/use-reveal";
@@ -43,6 +43,19 @@ export function LibraryPage({ lessons, categories, stats, initialCategory = "all
   const [activeRaga, setActiveRaga] = useState<string>(initialRaga);
   const [search, setSearch] = useState("");
   const { ref, visible } = useReveal<HTMLElement>({ threshold: 0.05 });
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Keyboard shortcut: press "/" to focus the search input (like GitHub/YouTube).
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "/" && document.activeElement?.tagName !== "INPUT" && document.activeElement?.tagName !== "TEXTAREA") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
 
   // Build raga index from lessons.
   const ragaIndex = useMemo(() => {
@@ -159,12 +172,14 @@ export function LibraryPage({ lessons, categories, stats, initialCategory = "all
         {/* Search + filters */}
         <div style={{ marginBottom: "32px" }}>
           {/* Search */}
-          <div className="flex items-center gap-3 mb-6" style={{ position: "relative" }}>
+          <div className="flex items-center gap-3 mb-2" style={{ position: "relative" }}>
             <Search size={18} aria-hidden style={{ color: "#E0BC6A", position: "absolute", left: "14px" }} />
             <input
+              ref={searchInputRef}
               type="search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Escape") { setSearch(""); (e.target as HTMLInputElement).blur(); } }}
               placeholder="Search by title, raga, thala, or composer…"
               aria-label="Search lessons"
               style={{
@@ -198,6 +213,13 @@ export function LibraryPage({ lessons, categories, stats, initialCategory = "all
               </button>
             )}
           </div>
+          {/* Keyboard hint */}
+          <p style={{ fontSize: "11.5px", color: "rgba(243,237,223,0.4)", margin: "0 0 20px", fontFamily: "var(--font-geist-mono), monospace", letterSpacing: "0.04em" }}>
+            Press{" "}
+            <kbd style={{ padding: "2px 7px", border: "1px solid rgba(224,188,106,0.34)", color: "#E0BC6A", fontSize: "11px", borderRadius: 0 }}>/</kbd>
+            {" "}to focus search · <kbd style={{ padding: "2px 7px", border: "1px solid rgba(243,237,223,0.2)", color: "rgba(243,237,223,0.62)", fontSize: "11px", borderRadius: 0 }}>Esc</kbd>
+            {" "}to clear
+          </p>
 
           {/* Category chips */}
           <div style={{ marginBottom: "14px" }}>

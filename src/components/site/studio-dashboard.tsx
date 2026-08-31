@@ -12,6 +12,10 @@ import {
   BookOpen,
   TrendingUp,
   Clock,
+  PencilLine,
+  ExternalLink,
+  Check as CheckIcon,
+  X,
 } from "lucide-react";
 import type { LessonSummary } from "@/lib/data";
 
@@ -543,13 +547,21 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
               <StatCard icon={<BookOpen size={18} />} label="With notation" value={data.lessons.filter((l) => l.hasNotation).length} color="#78DCAA" />
             </div>
 
+            {/* Edit hint */}
+            <div className="flex items-center gap-2 mb-4" style={{ fontSize: "12.5px", color: "rgba(243,237,223,0.5)" }}>
+              <PencilLine size={13} aria-hidden style={{ color: "#E0BC6A" }} />
+              <span style={{ fontFamily: "var(--font-geist-mono), monospace", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+                Click any field to edit · changes save instantly
+              </span>
+            </div>
+
             {/* Lessons table */}
             <div className="vsp-card-neutral" style={{ padding: "0", overflow: "hidden" }}>
               <div className="vsp-scroll" style={{ overflowX: "auto" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13.5px" }}>
                   <thead>
                     <tr style={{ borderBottom: "1px solid rgba(224,188,106,0.26)" }}>
-                      {["Title", "Category", "Raga", "Thala", "Date", "Assets", ""].map((h) => (
+                      {["Title", "Category", "Raga", "Thala", "Level", "Status", "Actions"].map((h) => (
                         <th key={h} style={{
                           textAlign: "left",
                           padding: "14px 16px",
@@ -568,38 +580,19 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
                   </thead>
                   <tbody>
                     {data.lessons.map((l) => (
-                      <tr key={l.id} style={{ borderBottom: "1px solid rgba(243,237,223,0.08)" }}>
-                        <td style={{ padding: "14px 16px" }}>
-                          <a href={`/lessons/${l.id}`} target="_blank" rel="noopener noreferrer" style={{ color: "#F3EDDF", fontFamily: "var(--font-marcellus), serif", fontSize: "14.5px" }}>
-                            {l.title}
-                          </a>
-                          {l.titleTamil && (
-                            <span lang="ta" style={{ display: "block", fontSize: "11.5px", color: "rgba(243,237,223,0.5)", marginTop: "2px" }}>
-                              {l.titleTamil}
-                            </span>
-                          )}
-                        </td>
-                        <td style={{ padding: "14px 16px", fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(243,237,223,0.72)" }}>
-                          {l.category}
-                        </td>
-                        <td style={{ padding: "14px 16px", color: "#E0BC6A", fontSize: "13px" }}>{l.raga ?? "—"}</td>
-                        <td style={{ padding: "14px 16px", color: "rgba(243,237,223,0.72)", fontSize: "13px" }}>{l.thala ?? "—"}</td>
-                        <td style={{ padding: "14px 16px", fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", color: "rgba(243,237,223,0.5)" }}>
-                          {new Date(l.date).toLocaleDateString("en-US", { year: "numeric", month: "short" })}
-                        </td>
-                        <td style={{ padding: "14px 16px" }}>
-                          <div className="flex gap-1">
-                            <span style={{ fontSize: "9px", padding: "2px 5px", border: "1px solid rgba(224,188,106,0.34)", color: "#E0BC6A", fontFamily: "var(--font-geist-mono), monospace" }}>EN</span>
-                            <span style={{ fontSize: "9px", padding: "2px 5px", border: "1px solid rgba(224,188,106,0.34)", color: "#E0BC6A", fontFamily: "var(--font-geist-mono), monospace" }}>TA</span>
-                            {l.hasVideo && <span style={{ fontSize: "9px", padding: "2px 5px", border: "1px solid rgba(224,188,106,0.34)", color: "#E0BC6A", fontFamily: "var(--font-geist-mono), monospace" }}>▶</span>}
-                          </div>
-                        </td>
-                        <td style={{ padding: "14px 16px" }}>
-                          <a href={`/lessons/${l.id}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: "11px", color: "rgba(243,237,223,0.62)", fontFamily: "var(--font-geist-mono), monospace", letterSpacing: "0.08em", textTransform: "uppercase" }}>
-                            View →
-                          </a>
-                        </td>
-                      </tr>
+                      <EditableLessonRow key={l.id} lesson={l} onUpdate={(updated) => {
+                        setData((prev) => {
+                          if (!prev) return prev;
+                          const lessons = prev.lessons.map((row) => row.id === l.id ? { ...row, ...updated } : row);
+                          return { ...prev, lessons };
+                        });
+                      }} onDelete={() => {
+                        setData((prev) => {
+                          if (!prev) return prev;
+                          const lessons = prev.lessons.filter((row) => row.id !== l.id);
+                          return { ...prev, lessons };
+                        });
+                      }} />
                     ))}
                   </tbody>
                 </table>
@@ -625,6 +618,237 @@ function StatCard({ icon, label, value, color }: { icon: React.ReactNode; label:
         {value}
       </p>
     </div>
+  );
+}
+
+/**
+ * Editable lesson row — inline editing for title, raga, thala, level.
+ * Click a field to edit; Enter or blur to save (PATCH); Escape to cancel.
+ * Status is a toggle button (draft/published).
+ */
+function EditableLessonRow({
+  lesson,
+  onUpdate,
+  onDelete,
+}: {
+  lesson: LessonRow;
+  onUpdate: (updated: Partial<LessonRow>) => void;
+  onDelete: () => void;
+}) {
+  const [editingField, setEditingField] = useState<string | null>(null);
+  const [draft, setDraft] = useState<string>("");
+  const [saving, setSaving] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  const startEdit = (field: string, currentValue: string) => {
+    setEditingField(field);
+    setDraft(currentValue);
+  };
+
+  const saveField = async (field: string) => {
+    const value = draft.trim();
+    setSaving(true);
+    try {
+      const body: Record<string, unknown> = {};
+      if (field === "level") {
+        body.level = value ? parseInt(value, 10) : null;
+      } else {
+        body[field] = value;
+      }
+      const res = await fetch(`/api/studio/lessons/${lesson.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (res.ok) {
+        const update: Partial<LessonRow> = {};
+        if (field === "level") {
+          update.level = value ? parseInt(value, 10) : null;
+        } else {
+          (update as Record<string, unknown>)[field] = value;
+        }
+        onUpdate(update);
+      }
+    } catch {
+      // silent — the row keeps its original value
+    } finally {
+      setSaving(false);
+      setEditingField(null);
+    }
+  };
+
+  const cancelEdit = () => {
+    setEditingField(null);
+    setDraft("");
+  };
+
+  const toggleStatus = async () => {
+    const next = lesson.status === "published" ? "draft" : "published";
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/studio/lessons/${lesson.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: next }),
+      });
+      if (res.ok) {
+        onUpdate({ status: next });
+      }
+    } catch {
+      // silent
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      setTimeout(() => setConfirmDelete(false), 3000);
+      return;
+    }
+    await fetch(`/api/studio/lessons/${lesson.id}`, { method: "DELETE" });
+    onDelete();
+  };
+
+  const tdStyle: React.CSSProperties = {
+    padding: "12px 16px",
+    verticalAlign: "middle",
+  };
+
+  const fieldBaseStyle: React.CSSProperties = {
+    background: "rgba(22,16,42,0.6)",
+    border: "1px solid rgba(224,188,106,0.46)",
+    color: "#F3EDDF",
+    fontFamily: "var(--font-instrument-sans)",
+    fontSize: "13px",
+    padding: "6px 10px",
+    borderRadius: 0,
+    width: "100%",
+    minWidth: "80px",
+  };
+
+  const displayStyle: React.CSSProperties = {
+    cursor: "pointer",
+    padding: "6px 10px",
+    border: "1px solid transparent",
+    borderRadius: 0,
+    transition: "border-color 160ms ease, background 160ms ease",
+  };
+
+  const renderField = (field: string, value: string, displayValue?: string, opts?: { mono?: boolean; gold?: boolean }) => {
+    const isEditing = editingField === field;
+    const show = displayValue ?? value ?? "—";
+    if (isEditing) {
+      return (
+        <div className="flex items-center gap-1">
+          <input
+            type={field === "level" ? "number" : "text"}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") saveField(field);
+              if (e.key === "Escape") cancelEdit();
+            }}
+            onBlur={() => saveField(field)}
+            autoFocus
+            disabled={saving}
+            style={fieldBaseStyle}
+            aria-label={`Edit ${field}`}
+          />
+          {saving && <span style={{ fontSize: "10px", color: "rgba(224,188,106,0.6)" }}>…</span>}
+        </div>
+      );
+    }
+    return (
+      <span
+        onClick={() => startEdit(field, value ?? "")}
+        className="vsp-lift inline-block"
+        style={{
+          ...displayStyle,
+          fontFamily: opts?.mono ? "var(--font-geist-mono), monospace" : "var(--font-instrument-sans)",
+          fontSize: opts?.mono ? "11px" : "13px",
+          letterSpacing: opts?.mono ? "0.06em" : "0",
+          color: opts?.gold ? "#E0BC6A" : value ? "#F3EDDF" : "rgba(243,237,223,0.4)",
+        }}
+        title="Click to edit"
+      >
+        {show}
+      </span>
+    );
+  };
+
+  return (
+    <tr style={{ borderBottom: "1px solid rgba(243,237,223,0.08)" }}>
+      <td style={tdStyle}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+          {renderField("title", lesson.title)}
+          {lesson.titleTamil && (
+            <span lang="ta" style={{ fontSize: "11px", color: "rgba(243,237,223,0.5)", paddingLeft: "10px" }}>
+              {lesson.titleTamil}
+            </span>
+          )}
+        </div>
+      </td>
+      <td style={tdStyle}>
+        <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(243,237,223,0.72)" }}>
+          {lesson.category.replace(/-/g, " ")}
+        </span>
+      </td>
+      <td style={tdStyle}>{renderField("raga", lesson.raga ?? "", undefined, { gold: true })}</td>
+      <td style={tdStyle}>{renderField("thala", lesson.thala ?? "")}</td>
+      <td style={tdStyle}>{renderField("level", lesson.level?.toString() ?? "", lesson.level?.toString() ?? "—", { mono: true })}</td>
+      <td style={tdStyle}>
+        <button
+          onClick={toggleStatus}
+          disabled={saving}
+          aria-pressed={lesson.status === "published"}
+          className="transition-colors"
+          style={{
+            padding: "4px 10px",
+            border: `1px solid ${lesson.status === "published" ? "#78DCAA" : "rgba(243,237,223,0.3)"}`,
+            background: lesson.status === "published" ? "rgba(120,220,170,0.08)" : "transparent",
+            color: lesson.status === "published" ? "#78DCAA" : "rgba(243,237,223,0.5)",
+            fontFamily: "var(--font-geist-mono), monospace",
+            fontSize: "10px",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            cursor: "pointer",
+            borderRadius: 0,
+          }}
+        >
+          {lesson.status ?? "published"}
+        </button>
+      </td>
+      <td style={tdStyle}>
+        <div className="flex items-center gap-2">
+          <a
+            href={`/lessons/${lesson.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open lesson page"
+            style={{ color: "rgba(243,237,223,0.5)", display: "flex", padding: "4px" }}
+          >
+            <ExternalLink size={13} />
+          </a>
+          <button
+            onClick={handleDelete}
+            aria-label={confirmDelete ? "Confirm delete" : "Delete lesson"}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: confirmDelete ? "#E08C50" : "rgba(243,237,223,0.4)",
+              cursor: "pointer",
+              padding: "4px",
+              borderRadius: 0,
+            }}
+            title={confirmDelete ? "Click again to confirm" : "Delete"}
+          >
+            {confirmDelete ? <CheckIcon size={13} /> : <Trash2 size={13} />}
+          </button>
+        </div>
+      </td>
+    </tr>
   );
 }
 

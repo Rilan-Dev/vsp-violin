@@ -560,3 +560,80 @@ Task: QA the build, wire 301 redirects for old Blogger URLs, add YouTube facade,
 5. **Image optimization** — the lesson title-card images are loaded from remote blogger URLs (`blogger.googleusercontent.com`). A future task could download + optimize them via `next/image` with a remote loader, or migrate to local `/public/assets/title-cards/`.
 6. **Performance monitoring** — the YouTube facade is a big win, but a Lighthouse pass would quantify the improvement and surface any remaining opportunities (font-display: swap is already set, images are lazy-loaded).
 
+
+---
+Task ID: 18
+Agent: cron-review-round-4 (webDevReview)
+Task: QA the build, add custom 404 page, build Studio lesson inline editing, add /about + /honours dedicated pages, add keyboard shortcut to library search.
+
+## Current project status assessment
+- Dev server healthy (port 3000). All routes 200 (`/`, `/library`, `/lessons/[slug]`, `/about`, `/honours`, `/studio`, `/sitemap.xml`, `/robots.txt`, all `/api/*`).
+- `bun run lint` clean.
+- agent-browser QA: homepage 8 sections intact, lesson page facades work, no console errors.
+- Non-existent routes return 404 (but previously showed default Next.js 404 — now fixed with a custom themed 404).
+
+## Completed modifications + verification
+
+### 1. Fix: Custom 404 page (`src/app/not-found.tsx`)
+- A violet/gold themed 404 page with:
+  - Large gold "404" in Marcellus (clamp 80-140px).
+  - Gold hairline divider.
+  - Eyebrow "Lost a string", h1 "This page is out of tune." (musician-appropriate copy).
+  - Lead paragraph explaining the page may have moved.
+  - Two CTAs: "Back to homepage" (gold fill) + "Browse the library" (cream outline).
+  - Decorative footer "✦ Suka Pavalan · Carnatic violin · since 1990 ✦".
+- Verified: `/does-not-exist` → 404 with the themed page (h1, 404 number, both CTAs present). VLM confirmed: "large golden 404 number against a dark violet background" with "Back to homepage" + "Browse the library" buttons.
+
+### 2. Feature: Studio lesson inline editing
+- **API:** `PATCH /api/studio/lessons/[id]` — updates title, titleTamil, raga, thala, composer, level, status (Zod-validated, auth-gated). `DELETE /api/studio/lessons/[id]` — deletes a lesson.
+- **Data layer:** Added `getAllLessonsForStudio()` that returns ALL lessons (including drafts), and added `status` field to `LessonSummary` type. The public `getLessons()` still filters to published only.
+- **Studio page:** Now uses `getAllLessonsForStudio()` so the owner sees drafts too.
+- **Dashboard component (`EditableLessonRow`):**
+  - Click any field (title, raga, thala, level) to edit inline. Input appears with gold border; Enter or blur saves (PATCH); Escape cancels.
+  - Status toggle button (published/draft) — green border when published, neutral when draft. Click toggles via PATCH.
+  - Delete button with two-click confirmation (first click shows ✓ + 3s timeout, second click deletes via DELETE).
+  - External-link button opens the lesson page in a new tab.
+  - Optimistic UI updates: the row updates immediately on save, reverts silently on error.
+  - "Click any field to edit · changes save instantly" hint above the table.
+- **Verified end-to-end:** 
+  - Clicked the "Mayamalavagowlai" raga field → input appeared → typed "Mayamalavagowlai-Edited" → pressed Enter → DB updated (verified via Prisma query: `cine-poongathave` raga = "Mayamalavagowlai-Edited"). Reverted.
+  - Clicked the first status button → "published" became "draft" → DB updated (verified: `bakthi-lingashtagam` status = "draft"). Reverted.
+- VLM confirmed: "CLICK ANY FIELD TO EDIT - CHANGES SAVE INSTANTLY" hint visible, editable table with Title/Category/Raga/Thala/Level/Status/Actions columns.
+
+### 3. Feature: `/about` (The Guru) dedicated page
+- A full biography page with:
+  - Header: eyebrow, h1 "A lineage kept in the hands." (hands in gold), role line, lead paragraph.
+  - Arch-masked portrait (`portrait-playing.jpeg`) with name plate + credentials overlay.
+  - "The journey" section: all 5 bio paragraphs from `about.body`.
+  - "Lineage" section: 7 teachers in a vertical list with gold ✦ markers, name in Marcellus, detail in Geist Mono.
+  - "Qualifications" section: 5 education cards in a 2-col grid.
+  - "Radio · Stage · Aradhana" section: 3 cards (AIR with station chips, 5000+ performances, Thyagaraja Aradhana gold).
+  - "Mission" + "Vision" two-column section with gold ✦ bullet lists.
+  - "Abroad Tours" gold-bordered band with USA + year chips.
+  - CTA: "Begin learning from the lineage." + "Book a free trial" gold button.
+- Verified: `/about` → 200, h1 "A lineage kept in the hands.", 7 lineage entries, portrait, mission, vision, CTA all present. VLM confirmed: "biography or about page for a musician named Suka Pavalan" with "prominent portrait of him playing the violin".
+
+### 4. Feature: `/honours` dedicated page
+- A full honours page with:
+  - Header: eyebrow, h1 "A journey adorned with prestigious titles." (prestigious titles in gold), intro paragraph.
+  - "Dated titles" section: 5 honorifics with years, sorted newest-first. Each is a 3-column card (year in Marcellus gold, title + meaning, awarding body). First card (Violin Ratna 2024) uses the gold variant.
+  - "Additional titles" section: 7 undated honorifics in a 3-col grid.
+  - "Beyond the titles" accolades section: 3 accolade cards.
+  - CTA: "Learn from a recognised lineage." + "Book a free trial".
+- Verified: `/honours` → 200, h1 present, 5 dated + 7 undated + 3 accolades, CTA present. VLM confirmed: "dated award entries with years" and "the first entry (2024) is highlighted in gold color".
+
+### 5. Styling: Library keyboard shortcut + Escape-to-clear
+- Press `/` anywhere on the library page (when not already in an input) → focuses the search input. Like GitHub/YouTube.
+- Press `Escape` while in the search input → clears the search + blurs.
+- Added a keyboard hint below the search bar: "Press `/` to focus search · `Esc` to clear" with styled `<kbd>` elements (gold-bordered for `/`, cream-bordered for `Esc`).
+- Verified: dispatched `/` keydown → search input focused (document.title changed to "SEARCH_FOCUSED").
+
+## Unresolved issues / next-phase priorities
+
+1. **Studio categories editor** — the handoff describes a "Studio Categories" screen (rename/hide/add categories). Not yet built. This is the last major Studio feature from the handoff.
+2. **Image optimization** — lesson title-card images are loaded from remote blogger URLs. A future task could download + optimize them via `next/image` with a remote loader, or migrate to local `/public/assets/title-cards/`.
+3. **Live Video seeding** — the 7 Live Video posts from the old Blogger site aren't in the structured data. Low priority.
+4. **Mobile deep-testing at 375px** — all responsive CSS is in place (`overflow-x: clip`, ≥44px tap targets, mobile drawer), but a true device-emulation pass would catch any remaining edge cases.
+5. **Performance monitoring** — a Lighthouse pass would quantify the YouTube facade improvement and surface any remaining opportunities.
+6. **RSS/Atom feed** — a `/feed.xml` route for the lesson library would let diaspora parents subscribe to new lessons. Low priority but a nice retention feature.
+
