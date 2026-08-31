@@ -130,7 +130,7 @@ export default function LearnPage() {
           <p style={{ fontSize: "14.5px", color: "rgba(243,237,223,0.72)", margin: "0 0 24px" }}>
             {lv.strings.intro}
           </p>
-          <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) sm:grid-cols-2 lg:grid-cols-4" }}>
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {lv.strings.items.map((s) => (
               <article key={s.name} className="vsp-card-neutral" style={{ padding: "24px", position: "relative", overflow: "hidden", minHeight: "160px" }}>
                 <span
@@ -161,7 +161,7 @@ export default function LearnPage() {
 
         {/* Materials + Fingering */}
         <section style={{ marginBottom: "64px" }}>
-          <div className="grid gap-8" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) lg:grid-cols-2" }}>
+          <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
             {/* Materials */}
             <div>
               <div className="flex items-center gap-3 mb-3">

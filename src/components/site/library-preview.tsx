@@ -378,8 +378,8 @@ function LessonCard({
   return (
     <Link
       href={`/lessons/${lesson.id}`}
-      className="block"
-      style={{ textDecoration: "none", color: "inherit" }}
+      className="block h-full"
+      style={{ textDecoration: "none", color: "inherit", height: "100%" }}
     >
     <article
       className={`lib-card ${gold ? "lib-card-gold vsp-card-gold" : "vsp-card-neutral"}`}
@@ -387,6 +387,7 @@ function LessonCard({
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
+        height: "100%",
       }}
     >
       {/* Title card image / placeholder (16:9) */}

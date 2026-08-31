@@ -59,7 +59,7 @@ export default function StagePage() {
 
         {/* Performance record cards */}
         <section style={{ marginBottom: "64px" }}>
-          <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-3" }}>
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
             {/* AIR */}
             <article className="vsp-card-neutral" style={{ padding: "26px" }}>
               <div className="flex items-center gap-3 mb-3">
@@ -75,9 +75,9 @@ export default function StagePage() {
               <p style={{ fontSize: "14.5px", lineHeight: 1.6, color: "rgba(243,237,223,0.82)", marginBottom: "16px" }}>
                 {perf.radio.body}
               </p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2" style={{ marginTop: "8px" }}>
                 {perf.radio.stations.map((s) => (
-                  <span key={s} style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", letterSpacing: "0.1em", padding: "5px 10px", border: "1px solid rgba(224,188,106,0.34)", color: "#E0BC6A" }}>
+                  <span key={s} style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", letterSpacing: "0.1em", padding: "5px 10px", border: "1px solid rgba(224,188,106,0.34)", color: "#E0BC6A", whiteSpace: "nowrap" }}>
                     {s}
                   </span>
                 ))}
@@ -135,7 +135,7 @@ export default function StagePage() {
               archive · 15 images · file needed
             </span>
           </div>
-          <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(2, minmax(0,1fr)) md:repeat(4, minmax(0,1fr))" }}>
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
             {/* Lead portrait */}
             <figure style={{ position: "relative", height: "240px", border: "1px solid rgba(224,188,106,0.34)", gridColumn: "span 2", gridRow: "span 2" }}>
               <Image

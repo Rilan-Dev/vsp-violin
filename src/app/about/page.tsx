@@ -195,7 +195,7 @@ export default function AboutPage() {
             <GraduationCap size={18} aria-hidden style={{ color: "#E0BC6A" }} />
             <span className="vsp-eyebrow">Qualifications</span>
           </div>
-          <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-2" }}>
+          <div className="grid gap-3 grid-cols-1 md:grid-cols-2">
             {about.education.map((q, i) => (
               <article key={i} className="vsp-card-neutral" style={{ padding: "20px 22px" }}>
                 <h3 style={{ fontFamily: "var(--font-instrument-sans)", fontWeight: 600, fontSize: "15px", color: "#F3EDDF", margin: 0 }}>
@@ -215,7 +215,7 @@ export default function AboutPage() {
             <Award size={18} aria-hidden style={{ color: "#E0BC6A" }} />
             <span className="vsp-eyebrow">Radio · Stage · Aradhana</span>
           </div>
-          <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-3" }}>
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
             <article className="vsp-card-neutral" style={{ padding: "22px" }}>
               <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "22px", color: "#E0BC6A", margin: 0 }}>
                 All India Radio
@@ -258,7 +258,7 @@ export default function AboutPage() {
 
         {/* Mission + Vision */}
         <section style={{ marginBottom: "64px" }}>
-          <div className="grid gap-8" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-2" }}>
+          <div className="grid gap-8 grid-cols-1 md:grid-cols-2">
             <div>
               <span className="vsp-eyebrow">Mission</span>
               <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "24px", margin: "10px 0 16px", color: "#F3EDDF" }}>

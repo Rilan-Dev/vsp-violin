@@ -93,7 +93,7 @@ const titleStyle: CSSProperties = {
 
 const titleOnGoldStyle: CSSProperties = {
   ...titleStyle,
-  color: "#1B1233",
+  color: "#F3EDDF", // cream — the "gold" card background is dark violet with a gold tint, not bright gold
 };
 
 const meaningStyle: CSSProperties = {
@@ -107,7 +107,7 @@ const meaningStyle: CSSProperties = {
 
 const meaningOnGoldStyle: CSSProperties = {
   ...meaningStyle,
-  color: "rgba(27, 18, 51, 0.78)",
+  color: "rgba(243, 237, 223, 0.82)", // slightly brighter on the gold-tinted card
 };
 
 const hairlineStyle: CSSProperties = {
@@ -128,7 +128,7 @@ const awardedByStyle: CSSProperties = {
 
 const awardedByOnGoldStyle: CSSProperties = {
   ...awardedByStyle,
-  color: "rgba(27, 18, 51, 0.72)",
+  color: "rgba(224, 188, 106, 0.82)", // gold tint for the awarding body on the gold card
 };
 
 const yearStyle: CSSProperties = {

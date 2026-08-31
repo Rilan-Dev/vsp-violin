@@ -247,6 +247,31 @@
   border-color: #E0BC6A;
 }
 
+/* ===== Mega-menu grid (horizontal on desktop, 2-col on mobile) ===== */
+.vsp-mega-menu {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+@media (min-width: 768px) {
+  .vsp-mega-menu {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 28px;
+  }
+  /* Hide the "More" column on desktop — the main nav already has these links */
+  .vsp-mega-more {
+    display: flex;
+  }
+}
+@media (max-width: 767px) {
+  /* On mobile, the mega-menu is part of the Sheet drawer so this class
+     is rarely used, but if it does show, stack as 2 columns max */
+  .vsp-mega-menu {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
 /* ===== Premium texture: film grain overlay ===== */
 /* A subtle noise overlay that sits on top of the hero only — adds the
    "shot on film" texture that separates $5K-$10K sites from generic AI output.

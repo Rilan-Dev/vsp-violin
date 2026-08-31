@@ -51,11 +51,7 @@ export function Stage() {
 
         {/* Three record cards */}
         <div
-          className="grid gap-4 mt-12"
-          style={{
-            gridTemplateColumns:
-              "repeat(1, minmax(0,1fr)) md:repeat(3, minmax(0,1fr))",
-          }}
+          className="grid gap-4 mt-12 grid-cols-1 md:grid-cols-3"
         >
           {/* AIR */}
           <article className="vsp-card-neutral" style={{ padding: "26px" }}>
@@ -92,7 +88,7 @@ export function Stage() {
             >
               {perf.radio.body}
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2" style={{ marginTop: "8px" }}>
               {perf.radio.stations.map((s) => (
                 <span
                   key={s}
@@ -103,6 +99,7 @@ export function Stage() {
                     padding: "5px 10px",
                     border: "1px solid rgba(224,188,106,0.34)",
                     color: "#E0BC6A",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {s}

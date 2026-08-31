@@ -915,3 +915,71 @@ Task: QA the build, add Studio analytics tab, add loading skeletons, update foot
 5. **Apple touch icon as PNG** — the SVG works for modern browsers but Apple devices prefer a 180×180 PNG apple-touch-icon.
 6. **Lesson progress tracker** — a "mark as practised" feature using localStorage would let students track their progress through the 22-lesson library. Not yet built.
 
+
+---
+Task ID: 24
+Agent: user-feedback-fixes
+Task: Fix 5 user-reported issues: horizontal mega-menu, AIR stations overlap, library card sizes, honours text color, nav links to separate pages.
+
+## Current project status assessment
+- Dev server healthy (port 3000). All 9 key routes 200.
+- `bun run lint` clean.
+- 5 user-reported issues identified and fixed.
+
+## Completed modifications + verification
+
+### Fix 1: Lessons dropdown mega-menu horizontal (was vertical)
+- **Root cause:** The mega-menu grid used `gridTemplateColumns: "repeat(2, ...) md:repeat(5, ...)"` in an **inline style**. Inline styles don't support Tailwind's `md:` responsive prefix — the entire string was treated as invalid CSS, so the grid always fell back to 2 columns.
+- **Fix:** Created a `.vsp-mega-menu` CSS class in `globals.css` with proper `@media (min-width: 768px)` media query that sets `grid-template-columns: repeat(5, minmax(0, 1fr))`. Applied the class to the mega-menu panel.
+- **Verified:** `getComputedStyle` shows 5 equal columns (220px each) on desktop. VLM confirmed: "5-column grid layout" with categories "arranged horizontally side-by-side."
+
+### Fix 2: All India Radio stations overlap
+- **Root cause:** Same inline-style responsive prefix issue — the 3-card grid used `gridTemplateColumns: "repeat(1, ...) md:repeat(3, ...)"` in an inline style, so cards always stacked in 1 column. The station chips also lacked `whiteSpace: "nowrap"` causing them to break mid-word.
+- **Fix:** Replaced the inline style with Tailwind class `grid-cols-1 md:grid-cols-3`. Added `marginTop: "8px"` and `whiteSpace: "nowrap"` to the station chips container.
+- Applied the same fix to the `/stage` dedicated page and the `/about` page.
+- **Verified:** VLM confirmed: "station names are clearly visible and do not overlap" with "clean and well-organized" layout.
+
+### Fix 3: Library preview cards different sizes
+- **Root cause:** The `<Link>` wrapper and `<article>` card didn't have `height: 100%`, so cards didn't stretch to fill their grid cell — shorter cards left empty space, making heights inconsistent.
+- **Fix:** Added `height: "100%"` to both the `<Link>` and `<article>` elements, plus `className="h-full"`. With `display: flex; flexDirection: column` already set, the card body now stretches to fill the grid cell.
+- **Verified:** VLM confirmed: "all cards appear to be the same height" with "consistent layout structure" and "equal spacing between cards."
+
+### Fix 4: Honours cards inconsistent text color
+- **Root cause:** The first (gold) card used `.vsp-card-gold` which has a **dark** gradient background (`rgba(224,188,106,0.13)` to `rgba(107,75,168,0.16)` — low-alpha gold/violet on the ink ground). But the "on gold" text styles used dark ink colors (`#1B1233` at 0.72-0.78 alpha) — nearly invisible on the dark background.
+- **Fix:** Changed all "on gold" text styles to use cream colors:
+  - `titleOnGoldStyle`: `#1B1233` → `#F3EDDF` (cream)
+  - `meaningOnGoldStyle`: `rgba(27,18,51,0.78)` → `rgba(243,237,223,0.82)` (brighter cream)
+  - `awardedByOnGoldStyle`: `rgba(27,18,51,0.72)` → `rgba(224,188,106,0.82)` (gold)
+- **Verified:** VLM confirmed: "text on all four cards is clearly readable" with "white for primary text, gray for secondary descriptions, and gold accents for organizational attributions."
+
+### Fix 5: Nav links to separate pages (not homepage sections)
+- **Root cause:** Desktop nav links pointed to homepage section anchors (`#library`, `#guru`, `#honours`, `#stage`) instead of the dedicated pages (`/library`, `/about`, `/honours`, `/stage`). The user wanted each nav item to go to its own screen.
+- **Fix:**
+  - Updated the `links` array to use `href` instead of `id`: `/library`, `/about`, `/honours`, `/stage`.
+  - Used `usePathname()` to detect the active page (instead of the IntersectionObserver section-spy, which only works for same-page scrolling).
+  - Updated the wordmark to link to `/` instead of `#top`.
+  - Updated the "Enrol" button to `/#enrol` (homepage section — no dedicated enrol page).
+  - Updated the mobile Sheet drawer links to point to dedicated pages.
+  - Updated the mega-menu "More" column to link to `/learn`, `/about`, `/honours`, `/stage`, `/testimonials`, `/#enrol`.
+  - Removed the section-spy IntersectionObserver (no longer needed since nav goes to separate pages).
+- **Verified:** DOM confirms nav links: Library → `/library`, The Guru → `/about`, Honours → `/honours`, Stage → `/stage`, wordmark → `/`.
+
+### Bonus: Fixed 20+ broken responsive grids across the codebase
+- Found and fixed 20+ instances of the same broken pattern (`gridTemplateColumns: "repeat(N, ...) md:repeat(M, ...)"` in inline styles) across:
+  - `lesson-page.tsx` (6 grids: details table, notation/practice panels, video grid, three-stage guidance, related lessons, prev/next nav)
+  - `studio-dashboard.tsx` (9 grids: stat cards, lessons table, new lesson form, categories, analytics)
+  - `library-page.tsx` (2 grids: stat block, card grid)
+  - `about/page.tsx` (3 grids: qualifications, performance record, mission/vision)
+  - `honours/page.tsx` (1 grid: undated titles)
+  - `learn/page.tsx` (2 grids: strings, materials/fingering)
+  - `stage.tsx` + `stage/page.tsx` (3 grids: performance cards, gallery)
+- Each was converted from broken inline `gridTemplateColumns` with `md:`/`sm:`/`lg:` prefixes to proper Tailwind responsive classes (`grid-cols-N md:grid-cols-M`).
+
+## Unresolved issues / risks / next-phase priorities
+
+1. **Image optimization** — lesson title-card images are loaded from remote blogger URLs. A future task could download + optimize them via `next/image` with a remote loader, or migrate to local `/public/assets/title-cards/`.
+2. **Live Video seeding** — the 7 Live Video posts from the old Blogger site aren't in the structured data. Low priority.
+3. **Studio: lesson video/audio management** — the Studio can create lessons with notation URLs but not manage the per-video embeds or audio tracks.
+4. **Apple touch icon as PNG** — the SVG works for modern browsers but Apple devices prefer a 180×180 PNG apple-touch-icon.
+5. **Homepage section IDs** — the homepage sections still have `id="library"`, `id="guru"`, `id="honours"`, `id="stage"` etc. These are now only used for the `/#enrol` anchor and the skip-to-content link. The section-spy IntersectionObserver was removed since nav links now go to separate pages. If the user wants the homepage to remain a single-page experience with scroll-spy, the observer can be re-added — but the user explicitly asked for separate screens.
+

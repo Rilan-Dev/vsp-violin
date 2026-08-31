@@ -113,7 +113,7 @@ export default function HonoursPage() {
             <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "28px", margin: "10px 0 24px", color: "#F3EDDF" }}>
               Conferred over a lifetime of music.
             </h2>
-            <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) sm:grid-cols-2 lg:grid-cols-3" }}>
+            <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {undated.map((h) => (
                 <article key={h.title} className="vsp-card-neutral" style={{ padding: "20px 22px" }}>
                   <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "19px", color: "#E0BC6A", margin: 0 }}>
@@ -134,7 +134,7 @@ export default function HonoursPage() {
           <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "28px", margin: "10px 0 24px", color: "#F3EDDF" }}>
             Beyond the titles.
           </h2>
-          <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-3" }}>
+          <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr))" }}>
             {honours.accolades.map((a, i) => (
               <article key={i} className="vsp-card-neutral" style={{ padding: "24px" }}>
                 <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "#F3EDDF", margin: 0, lineHeight: 1.3 }}>

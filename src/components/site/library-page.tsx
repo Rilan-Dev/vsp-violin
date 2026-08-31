@@ -144,9 +144,9 @@ export function LibraryPage({ lessons, categories, stats, initialCategory = "all
 
         {/* Stat block */}
         <div
-          className="grid gap-px"
+          className="grid gap-px grid-cols-2 md:grid-cols-4"
           style={{
-            gridTemplateColumns: "repeat(2, minmax(0,1fr)) md:repeat(4, minmax(0,1fr))",
+            
             background: "rgba(224,188,106,0.2)",
             border: "1px solid rgba(224,188,106,0.26)",
             marginBottom: "40px",
@@ -324,7 +324,7 @@ export function LibraryPage({ lessons, categories, stats, initialCategory = "all
                     {groupLessons.length} lesson{groupLessons.length !== 1 ? "s" : ""}
                   </span>
                 </div>
-                <div className="grid" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) sm:grid-cols-2 lg:grid-cols-3", gap: "16px" }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ gap: "16px" }}>
                   {groupLessons.map((lesson, i) => (
                     <LibraryCard key={lesson.id} lesson={lesson} gold={i === 0 && group === "basics"} />
                   ))}

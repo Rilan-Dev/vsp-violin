@@ -199,7 +199,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
         </div>
 
         {/* Details table */}
-        <dl className="grid" style={{ gridTemplateColumns: "repeat(2, minmax(0,1fr)) md:repeat(4, minmax(0,1fr))", gap: "1px", marginTop: "36px", background: "rgba(224,188,106,0.2)", border: "1px solid rgba(224,188,106,0.26)" }}>
+        <dl className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "1px", marginTop: "36px", background: "rgba(224,188,106,0.2)", border: "1px solid rgba(224,188,106,0.26)" }}>
           {[
             { label: "Category", value: categoryName },
             { label: "Level", value: lesson.level != null ? `Level ${lesson.level}` : "—" },
@@ -224,7 +224,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
 
       {/* Notation panel + Practice track */}
       <section className="mx-auto" style={{ maxWidth: "1280px", padding: "0 32px 64px" }}>
-        <div className="grid" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) lg:grid-cols-[1.15fr_0.85fr]", gap: "24px" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr]" style={{ gap: "24px" }}>
           {/* Notation panel */}
           <article className="vsp-card-neutral" style={{ padding: "28px" }}>
             <div className="flex items-center justify-between flex-wrap gap-3" style={{ marginBottom: "20px", paddingBottom: "16px", borderBottom: "1px solid rgba(243,237,223,0.16)" }}>
@@ -427,7 +427,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
               </div>
             )}
           </div>
-          <div className="grid" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) sm:grid-cols-2 lg:grid-cols-4", gap: "14px" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: "14px" }}>
             {videoList.slice(0, 16).map((v, i) => {
               const isThrikaalam = v.label.toLowerCase().includes("thrikaalam");
               return (
@@ -464,7 +464,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
         <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "clamp(28px, 3.5vw, 40px)", margin: "10px 0 28px", color: "#F3EDDF" }}>
           Step by step → practise together → on your own.
         </h2>
-        <div className="grid" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-3", gap: "16px" }}>
+        <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: "16px" }}>
           {[
             { n: "1", title: "Step by step", body: "Watch the first-speed video. Read the notation. Sing or play along with Suka Pavalan — the goal is to learn the swara line, not to perform.", color: "#E0BC6A" },
             { n: "2", title: "Practise together", body: "Switch to the practice track at your sruthi and speed. Play along with the audio. Repeat the exercise until your fingers find the notes without looking.", color: "rgba(243,237,223,0.82)" },
@@ -532,7 +532,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
           <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "24px", margin: "10px 0 20px", color: "#F3EDDF" }}>
             More like this
           </h2>
-          <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) sm:grid-cols-2 lg:grid-cols-4" }}>
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((r) => (
               <Link
                 key={r.id}
@@ -572,7 +572,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
 
       {/* Prev / next nav */}
       <nav aria-label="Lesson navigation" className="mx-auto" style={{ maxWidth: "1280px", padding: "0 32px 64px" }}>
-        <div className="grid" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-2", gap: "14px" }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: "14px" }}>
           {prev ? (
             <Link href={`/lessons/${prev.id}`} className="group flex items-center gap-3 vsp-card-neutral transition-colors hover:border-gold" style={{ padding: "18px 22px" }}>
               <ArrowLeft size={20} aria-hidden style={{ color: "#E0BC6A" }} />

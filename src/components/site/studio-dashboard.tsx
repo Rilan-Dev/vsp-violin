@@ -330,7 +330,7 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
         {activeTab === "enquiries" ? (
           <>
             {/* Stats row */}
-            <div className="grid gap-4 mb-8" style={{ gridTemplateColumns: "repeat(2, minmax(0,1fr)) md:repeat(4, minmax(0,1fr))" }}>
+            <div className="grid gap-4 mb-8 grid-cols-2 md:grid-cols-4">
               <StatCard icon={<Mail size={18} />} label="Total" value={data.counts.total} color="#E0BC6A" />
               <StatCard icon={<Clock size={18} />} label="New" value={data.counts.new} color="#78DCAA" />
               <StatCard icon={<Check size={18} />} label="Replied" value={data.counts.replied} color="#C9AEF5" />
@@ -585,7 +585,7 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
         ) : activeTab === "lessons" ? (
           /* Lessons tab */
           <>
-            <div className="grid gap-4 mb-8" style={{ gridTemplateColumns: "repeat(2, minmax(0,1fr)) md:repeat(3, minmax(0,1fr))" }}>
+            <div className="grid gap-4 mb-8 grid-cols-2 md:grid-cols-4">
               <StatCard icon={<BookOpen size={18} />} label="Total lessons" value={data.lessons.length} color="#E0BC6A" />
               <StatCard icon={<BookOpen size={18} />} label="Categories" value={data.lessonsByCategory.length} color="#C9AEF5" />
               <StatCard icon={<BookOpen size={18} />} label="With notation" value={data.lessons.filter((l) => l.hasNotation).length} color="#78DCAA" />
@@ -1051,7 +1051,7 @@ function NewLessonButton({ categories, onCreated }: { categories: { slug: string
         </div>
       )}
 
-      <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-2", marginBottom: "14px" }}>
+      <div className="grid gap-3 grid-cols-1 md:grid-cols-2" style={{ marginBottom: "14px" }}>
         <label>
           <span style={labelStyle}>Title *</span>
           <input type="text" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="e.g. Sri Maha Ganapathim" style={inputStyle} autoFocus />
@@ -1317,7 +1317,7 @@ function CategoriesTab() {
       {showAddForm && (
         <div className="vsp-card-gold" style={{ padding: "24px", marginBottom: "24px" }}>
           <span className="vsp-eyebrow" style={{ display: "block", marginBottom: "14px" }}>New category</span>
-          <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-4", marginBottom: "14px" }}>
+          <div className="grid gap-3 grid-cols-1 md:grid-cols-2" style={{ marginBottom: "14px" }}>
             <label className="flex flex-col gap-1.5">
               <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)" }}>Slug</span>
               <input
@@ -1498,7 +1498,7 @@ function AnalyticsTab() {
       </div>
 
       {/* Key metrics */}
-      <div className="grid gap-4 mb-8" style={{ gridTemplateColumns: "repeat(2, minmax(0,1fr)) md:repeat(4, minmax(0,1fr))" }}>
+      <div className="grid gap-4 mb-8 grid-cols-2 md:grid-cols-4">
         <StatCard icon={<Inbox size={18} />} label="Total enquiries" value={data.total} color="#E0BC6A" />
         <StatCard icon={<Check size={18} />} label="Response rate" value={data.responseRate} color="#78DCAA" suffix="%" />
         <StatCard icon={<TrendingUp size={18} />} label="From lessons" value={data.fromLessonPage} color="#C9AEF5" />
@@ -1550,7 +1550,7 @@ function AnalyticsTab() {
       </section>
 
       {/* Intent + source breakdown */}
-      <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-2" }}>
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
         {/* Intent breakdown */}
         <section className="vsp-card-neutral" style={{ padding: "24px" }}>
           <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "#F3EDDF", margin: "0 0 16px" }}>
