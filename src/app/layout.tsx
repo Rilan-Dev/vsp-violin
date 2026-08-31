@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { LegalDialog } from "@/components/site/legal-dialog";
 import { BackToTop } from "@/components/site/back-to-top";
+import { KeyboardShortcuts } from "@/components/site/keyboard-shortcuts";
 
 const marcellus = Marcellus({
   variable: "--font-marcellus",
@@ -41,6 +42,11 @@ export const metadata: Metadata = {
     "sarali varisai",
   ],
   authors: [{ name: "Violin Suka Pavalan" }],
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
+  manifest: "/manifest.json",
   openGraph: {
     title: "Violin Suka Pavalan — Carnatic violin lessons & free notation",
     description:
@@ -70,6 +76,7 @@ export default function RootLayout({
         <Toaster />
         <LegalDialog />
         <BackToTop />
+        <KeyboardShortcuts />
       </body>
     </html>
   );

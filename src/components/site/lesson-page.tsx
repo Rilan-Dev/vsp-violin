@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Download, Play, Music, FileText, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Download, Play, Music, FileText, ChevronRight, Printer } from "lucide-react";
 import type { LessonDetail } from "@/lib/data";
 import { YouTubeFacade } from "@/components/site/youtube-facade";
 import { ShareButton } from "@/components/site/share-button";
@@ -175,6 +175,27 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
             </a>
           )}
           <ShareButton title={lesson.title} />
+          <button
+            type="button"
+            onClick={() => typeof window !== "undefined" && window.print()}
+            aria-label="Print this lesson"
+            className="flex items-center gap-2 transition-colors"
+            style={{
+              padding: "10px 16px",
+              border: "1px solid rgba(243,237,223,0.2)",
+              background: "transparent",
+              color: "rgba(243,237,223,0.82)",
+              fontFamily: "var(--font-geist-mono), monospace",
+              fontSize: "11px",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              cursor: "pointer",
+              borderRadius: 0,
+            }}
+          >
+            <Printer size={14} aria-hidden />
+            Print
+          </button>
         </div>
 
         {/* Details table */}

@@ -403,3 +403,89 @@
     transform: none !important;
   }
 }
+
+/* ===== Print stylesheet for lesson pages ===== */
+/* Lets students print the notation + details cleanly on paper.
+   Hides nav, video embeds, CTAs; shows title, notation, details table. */
+@media print {
+  /* White background, black text */
+  body, html {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Hide non-essential UI */
+  nav,
+  footer,
+  .skip-link,
+  button[aria-label="Back to top"],
+  button[aria-label="Share this lesson"],
+  .vsp-cta-gold,
+  .vsp-card-gold,
+  iframe,
+  .youtube-facade,
+  [role="dialog"],
+  #lessons-menu {
+    display: none !important;
+  }
+
+  /* Lesson page: show title, notation, details table, guidance */
+  .swara-line {
+    color: #000000 !important;
+    font-size: 14pt !important;
+  }
+
+  /* Cards: remove backgrounds, use black borders */
+  .vsp-card-neutral,
+  .vsp-card-gold {
+    background: #ffffff !important;
+    border: 1px solid #000000 !important;
+    color: #000000 !important;
+  }
+
+  /* Headings: black on white */
+  h1, h2, h3, h4 {
+    color: #000000 !important;
+  }
+
+  /* Gold accents become black in print */
+  .vsp-eyebrow,
+  .vsp-gold-text,
+  [style*="color: #E0BC6A"],
+  [style*="color: rgb(224, 188, 106)"],
+  [style*="color:#E0BC6A"] {
+    color: #000000 !important;
+  }
+
+  /* Links: show URL after link text for print */
+  a[href^="/"]:after {
+    content: " (https://sukapavalan.com" attr(href) ")";
+    font-size: 9pt;
+    color: #666;
+  }
+  a[href^="http"]:after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #666;
+  }
+
+  /* Page breaks */
+  section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  h1, h2 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Font: use serif for print (more readable on paper) */
+  body {
+    font-family: Georgia, "Times New Roman", serif !important;
+  }
+
+  /* Remove fixed positioning for print */
+  [style*="position: fixed"] {
+    position: static !important;
+  }
+}

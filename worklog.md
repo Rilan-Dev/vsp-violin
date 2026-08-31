@@ -750,3 +750,64 @@ Task: QA the build, build Studio lesson creation form, add /learn dedicated page
 5. **Studio: lesson video/audio management** — the Studio can create lessons with notation URLs but not manage the per-video embeds or audio tracks. A future phase could add a "manage assets" sub-form.
 6. **Print stylesheet** — a `@media print` stylesheet for lesson pages would let students print the notation + details cleanly.
 
+
+---
+Task ID: 21
+Agent: cron-review-round-7 (webDevReview)
+Task: QA the build, add custom favicon + manifest, add print stylesheet + print button, add global keyboard shortcuts.
+
+## Current project status assessment
+- Dev server healthy (port 3000). All 13 routes 200 (`/`, `/library`, `/about`, `/honours`, `/stage`, `/learn`, `/lessons/[slug]`, `/studio`, `/feed.xml`, `/sitemap.xml`, `/robots.txt`, `/favicon.svg`, `/manifest.json`).
+- `bun run lint` clean.
+- agent-browser QA: homepage intact, no console errors.
+- No favicon or PWA manifest existed (was using Z.ai default logo.svg).
+
+## Completed modifications + verification
+
+### 1. Feature: Custom favicon + PWA manifest
+- Created `public/favicon.svg` — a violet-ground (#16102A) SVG with a gold (#E0BC6A) violin body outline (simplified: scroll, body, F-holes). 64×64 viewBox.
+- Copied to `src/app/icon.svg` for Next.js's automatic icon convention.
+- Created `public/manifest.json` — PWA manifest with name, short_name, description, start_url, standalone display, background/theme color (#16102A), icon, categories (education, music).
+- Updated `src/app/layout.tsx` metadata: added `icons` (icon + apple → `/favicon.svg`) and `manifest` (`/manifest.json`).
+- Verified: `curl /favicon.svg` → 200; `curl /manifest.json` → 200; DOM confirms `<link rel="icon" href="/favicon.svg">` and `<link rel="manifest">` present.
+
+### 2. Feature: Print stylesheet for lesson pages
+- Added `@media print` block to `src/app/globals.css` (~90 lines):
+  - White background, black text, serif font (Georgia) for print readability.
+  - Hides nav, footer, share/print buttons, CTAs, video iframes, YouTube facades, dialogs.
+  - Cards: white background with black borders.
+  - Gold accents (#E0BC6A) become black in print.
+  - Swara lines: 14pt black.
+  - Links: appends the URL after link text (e.g. "English notation (https://drive.google.com/…)") for print reference.
+  - Page breaks: `break-inside: avoid` on sections, `break-after: avoid` on headings.
+  - Removes fixed positioning.
+- Added a "Print" button to the lesson page header (next to Share) — calls `window.print()`. Uses the `Printer` lucide icon.
+- Verified: print button present on `/lessons/basic-02-sarali-varisai` alongside the share button and 2 download CTAs.
+
+### 3. Feature: Global keyboard shortcuts
+- Built `src/components/site/keyboard-shortcuts.tsx` — a global keyboard navigation system:
+  - **g h** → home (`/`)
+  - **g l** → library (`/library`)
+  - **g a** → about (`/about`)
+  - **g o** → honours (`/honours`)
+  - **g s** → stage (`/stage`)
+  - **g e** → learn (`/learn`)
+  - **/** → focus search (on library page — already existed)
+  - **?** → show shortcuts help dialog
+  - **Esc** → close dialogs / clear search
+- Uses a `useRef` for the "g" prefix state (so it persists across keydown events, unlike `useState` which would re-render and lose the pending state).
+- Small keyboard-icon button (36×36, bottom-left, desktop-only) as a visual hint.
+- Help dialog: gold-tinted card overlay listing all 9 shortcuts with styled `<kbd>` elements. Click backdrop or Esc to close.
+- Ignores key events when typing in inputs/textareas/selects/contenteditable.
+- Mounted globally in `src/app/layout.tsx`.
+- **Verified:** pressed "?" → help dialog opened with 9 shortcuts. Pressed "g l" → navigated from `/` to `/library`. VLM confirmed: "modal overlay titled KEYBOARD SHORTCUTS listing navigation commands."
+
+## Unresolved issues / next-phase priorities
+
+1. **Image optimization** — lesson title-card images are loaded from remote blogger URLs. A future task could download + optimize them via `next/image` with a remote loader, or migrate to local `/public/assets/title-cards/`.
+2. **Live Video seeding** — the 7 Live Video posts from the old Blogger site aren't in the structured data. Low priority.
+3. **Mobile deep-testing at 375px** — all responsive CSS is in place, but a true device-emulation pass would catch any remaining edge cases.
+4. **Studio: lesson video/audio management** — the Studio can create lessons with notation URLs but not manage the per-video embeds or audio tracks. A future phase could add a "manage assets" sub-form.
+5. **Apple touch icon as PNG** — the SVG works for modern browsers but Apple devices prefer a PNG apple-touch-icon. A future task could generate a 180×180 PNG from the SVG.
+6. **OG image** — the homepage and dedicated pages don't have a custom OG image (only lesson pages have titleCard OG images). A future task could generate a branded OG image (violet ground, gold wordmark, tagline) via `next/og` ImageResponse.
+
