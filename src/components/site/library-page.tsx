@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { Search, X, ArrowLeft } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { useReveal } from "@/components/site/use-reveal";
 import type { CategoryWithCount } from "@/lib/data";
 
@@ -103,25 +103,8 @@ export function LibraryPage({ lessons, categories, stats, initialCategory = "all
   };
 
   return (
-    <div style={{ background: "#16102A", minHeight: "100vh", color: "#F3EDDF", paddingTop: "80px" }}>
-      <div className="mx-auto" style={{ maxWidth: "1440px", padding: "40px 32px 0" }}>
-        {/* Back link */}
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 transition-colors hover:text-gold-hover"
-          style={{
-            fontFamily: "var(--font-geist-mono), monospace",
-            fontSize: "11px",
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "rgba(243,237,223,0.62)",
-            marginBottom: "24px",
-          }}
-        >
-          <ArrowLeft size={14} aria-hidden />
-          Back to homepage
-        </Link>
-
+    <div style={{ color: "#F3EDDF", paddingTop: "80px" }}>
+      <div className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1440px", paddingTop: "40px" }}>
         {/* Header */}
         <span className="vsp-eyebrow">The Library · free forever</span>
         <h1

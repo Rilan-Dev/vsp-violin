@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Radio, Music, MapPin, Calendar } from "lucide-react";
+import { ArrowRight, Radio, Music, MapPin, Calendar } from "lucide-react";
 import { getSiteContent } from "@/lib/data";
+import { PageShell } from "@/components/site/page-shell";
 
 export const metadata: Metadata = {
   title: "Stage — 5,000+ performances by Suka Pavalan",
@@ -20,25 +21,9 @@ export default function StagePage() {
   const perf = c.about.performance;
 
   return (
-    <div style={{ background: "#16102A", minHeight: "100vh", color: "#F3EDDF", paddingTop: "80px" }}>
-      <div className="mx-auto" style={{ maxWidth: "1200px", padding: "40px 32px 80px" }}>
-        {/* Back link */}
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 transition-colors hover:text-gold-hover"
-          style={{
-            fontFamily: "var(--font-geist-mono), monospace",
-            fontSize: "11px",
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "rgba(243,237,223,0.62)",
-            marginBottom: "32px",
-          }}
-        >
-          <ArrowLeft size={14} aria-hidden />
-          Back to homepage
-        </Link>
-
+    <PageShell>
+    <div style={{ color: "#F3EDDF", paddingTop: "80px" }}>
+      <div className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1200px", paddingTop: "40px", paddingBottom: "80px" }}>
         {/* Header */}
         <span className="vsp-eyebrow">Stage · the public record</span>
         <h1
@@ -215,5 +200,6 @@ export default function StagePage() {
         </div>
       </div>
     </div>
+    </PageShell>
   );
 }

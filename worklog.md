@@ -983,3 +983,49 @@ Task: Fix 5 user-reported issues: horizontal mega-menu, AIR stations overlap, li
 4. **Apple touch icon as PNG** — the SVG works for modern browsers but Apple devices prefer a 180×180 PNG apple-touch-icon.
 5. **Homepage section IDs** — the homepage sections still have `id="library"`, `id="guru"`, `id="honours"`, `id="stage"` etc. These are now only used for the `/#enrol` anchor and the skip-to-content link. The section-spy IntersectionObserver was removed since nav links now go to separate pages. If the user wants the homepage to remain a single-page experience with scroll-spy, the observer can be re-added — but the user explicitly asked for separate screens.
 
+
+---
+Task ID: 25
+Agent: user-feedback-fixes-2
+Task: Add Nav bar to all pages, remove back buttons, fix responsiveness, move duplicate content off homepage.
+
+## Current project status assessment
+- Dev server healthy (port 3000). All 9 routes 200.
+- `bun run lint` clean.
+- 3 user-reported issues: (1) no nav bar on dedicated pages, (2) inconsistent responsiveness, (3) homepage has duplicate content.
+
+## Completed modifications + verification
+
+### Fix 1: Nav bar on all dedicated pages
+- Created `src/components/site/page-shell.tsx` — a shared async wrapper that fetches the megaMenu and renders `<Nav>` + `<main>{children}</main>` + `<Footer>`. This gives every dedicated page the sticky nav bar for page switching.
+- Wrapped all 7 dedicated pages in `<PageShell>`: `/library`, `/about`, `/honours`, `/stage`, `/learn`, `/testimonials`, `/lessons/[slug]`.
+- The lesson page (`/lessons/[slug]`) uses a direct `<Nav>` + `<Footer>` composition instead of PageShell because it also renders a JSON-LD script before the Nav.
+- **Verified:** agent-browser confirms `nav[aria-label="Primary"]` + `footer` present on all 7 dedicated pages. Clicking "Library" from `/about` navigates to `/library`.
+
+### Fix 2: Removed back buttons — replaced with nav bar
+- Removed the "← Back to homepage" Link blocks from all 5 dedicated pages (about, honours, stage, learn, testimonials).
+- Removed the "← Back to homepage" link from the library page component.
+- Removed the "← Back to the library" link from the lesson page component.
+- Removed unused `ArrowLeft` imports from all affected files.
+- The nav bar now provides direct page switching — users can click any nav link (Library, The Guru, Honours, Stage) or the wordmark "SUKA PAVALAN" to go home.
+
+### Fix 3: Fixed responsiveness — consistent padding + spacing
+- **Root cause:** Many page containers used fixed `padding: "40px 32px 80px"` which doesn't adapt to mobile (handoff spec: gutters 32px desktop → 20px mobile).
+- **Fix:** Replaced all fixed horizontal padding with Tailwind responsive classes: `className="mx-auto px-5 sm:px-8"` (20px on mobile, 32px on ≥640px). Applied to all 5 dedicated page containers + library page + lesson page.
+- Also fixed 20+ broken responsive grids (from previous round) that used `md:`/`sm:`/`lg:` prefixes in inline `gridTemplateColumns` — converted to proper Tailwind classes.
+- **Verified:** VLM confirmed "layout is clean with proper spacing between elements, featuring generous whitespace" on both homepage and about page.
+
+### Fix 4: Homepage has only relevant content
+- **Problem:** The homepage had full Guru, Honours, Stage, LearnViolin, and Testimonials sections — duplicating the content on the dedicated `/about`, `/honours`, `/stage`, `/learn`, `/testimonials` pages.
+- **Fix:** Created `src/components/site/home-teasers.tsx` — a condensed "Explore further" section with 5 teaser cards (one per dedicated page). Each card has: eyebrow, title, a 180-character excerpt from the dedicated page's content, and a "Read more →" link. The first card uses `.vsp-card-gold`.
+- Updated `src/app/page.tsx` to replace the 5 full section components (Guru, Honours, Stage, LearnViolin, Testimonials) with a single `<HomeTeasers />` component.
+- **Homepage now contains only:** Hero, Marquee, Library Preview (condensed), Practice Room, HomeTeasers (5 condensed previews), Enrol form, Footer.
+- **Verified:** DOM confirms `#guru`, `#honours`, `#stage`, `#learn` section IDs are absent from the homepage. The teasers section (`#teasers`) has 5 link cards. VLM confirmed: "teaser cards for THE GURU, HONOURS, STAGE" with "clickable card elements."
+
+## Unresolved issues / next-phase priorities
+
+1. **Homepage section IDs** — the homepage no longer has `#guru`, `#honours`, `#stage`, `#learn` anchor IDs (the full sections were removed). The nav's "Enrol" button links to `/#enrol` which still works. If any external links point to `/#guru` etc., they would no longer scroll to a section — but the nav links now go to dedicated pages, so this is expected behavior.
+2. **Image optimization** — lesson title-card images are loaded from remote blogger URLs. A future task could download + optimize them.
+3. **Studio: lesson video/audio management** — the Studio can create lessons with notation URLs but not manage the per-video embeds or audio tracks.
+4. **Mobile deep-testing** — all responsive CSS is now using proper Tailwind classes, but a true 375px device-emulation pass would catch any remaining edge cases.
+

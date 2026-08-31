@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Quote } from "lucide-react";
+import { ArrowRight, Quote } from "lucide-react";
 import { getSiteContent } from "@/lib/data";
+import { PageShell } from "@/components/site/page-shell";
 
 export const metadata: Metadata = {
   title: "Testimonials — students and peers on Suka Pavalan",
@@ -19,25 +20,9 @@ export default function TestimonialsPage() {
   const testimonials = c.home.testimonials;
 
   return (
-    <div style={{ background: "#16102A", minHeight: "100vh", color: "#F3EDDF", paddingTop: "80px" }}>
-      <div className="mx-auto" style={{ maxWidth: "1100px", padding: "40px 32px 80px" }}>
-        {/* Back link */}
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 transition-colors hover:text-gold-hover"
-          style={{
-            fontFamily: "var(--font-geist-mono), monospace",
-            fontSize: "11px",
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "rgba(243,237,223,0.62)",
-            marginBottom: "32px",
-          }}
-        >
-          <ArrowLeft size={14} aria-hidden />
-          Back to homepage
-        </Link>
-
+    <PageShell>
+    <div style={{ color: "#F3EDDF", paddingTop: "80px" }}>
+      <div className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1100px", paddingTop: "40px", paddingBottom: "80px" }}>
         {/* Header */}
         <span className="vsp-eyebrow">Testimonials · from students and peers</span>
         <h1
@@ -147,5 +132,6 @@ export default function TestimonialsPage() {
         </div>
       </div>
     </div>
+    </PageShell>
   );
 }

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Award, Music2, GraduationCap, MapPin } from "lucide-react";
+import { ArrowRight, Award, Music2, GraduationCap, MapPin } from "lucide-react";
 import { getSiteContent } from "@/lib/data";
+import { PageShell } from "@/components/site/page-shell";
 
 export const metadata: Metadata = {
   title: "The Guru — Suka Pavalan, Carnatic violinist since 1990",
@@ -30,25 +31,9 @@ export default function AboutPage() {
   const about = c.about;
 
   return (
-    <div style={{ background: "#16102A", minHeight: "100vh", color: "#F3EDDF", paddingTop: "80px" }}>
-      <div className="mx-auto" style={{ maxWidth: "1100px", padding: "40px 32px 80px" }}>
-        {/* Back link */}
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 transition-colors hover:text-gold-hover"
-          style={{
-            fontFamily: "var(--font-geist-mono), monospace",
-            fontSize: "11px",
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "rgba(243,237,223,0.62)",
-            marginBottom: "32px",
-          }}
-        >
-          <ArrowLeft size={14} aria-hidden />
-          Back to homepage
-        </Link>
-
+    <PageShell>
+    <div style={{ color: "#F3EDDF", paddingTop: "80px" }}>
+      <div className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1100px", paddingTop: "40px", paddingBottom: "80px" }}>
         {/* Header */}
         <div className="grid gap-10 lg:grid-cols-[1fr_0.8fr]" style={{ alignItems: "start", marginBottom: "64px" }}>
           <div>
@@ -150,7 +135,7 @@ export default function AboutPage() {
           <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "28px", margin: "0 0 24px", color: "#F3EDDF" }}>
             The teachers who shaped this music.
           </h2>
-          <ol className="flex flex-col" style={{ listStyle: "none", padding: 0, margin: 0, gap: "0" }}>
+          <ol className="flex flex-col" style={{ listStyle: "none", padding: 0, margin: 0, gap: "0px" }}>
             {LINEAGE.map((teacher, i) => (
               <li
                 key={teacher.name}
@@ -342,5 +327,6 @@ export default function AboutPage() {
         </div>
       </div>
     </div>
+    </PageShell>
   );
 }

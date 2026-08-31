@@ -75,7 +75,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
   return (
     <div style={{ background: "#16102A", minHeight: "100vh", color: "#F3EDDF", paddingTop: "80px" }}>
       {/* Breadcrumb */}
-      <div className="mx-auto" style={{ maxWidth: "1280px", padding: "24px 32px 0" }}>
+      <div className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1280px", paddingTop: "24px" }}>
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 flex-wrap" style={{ fontSize: "12px" }}>
           <Link href="/#library" className="transition-colors hover:text-gold-hover" style={{ color: "rgba(243,237,223,0.62)", fontFamily: "var(--font-geist-mono), monospace", letterSpacing: "0.08em", textTransform: "uppercase" }}>
             Lessons
@@ -92,7 +92,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
       </div>
 
       {/* Header */}
-      <header className="mx-auto" style={{ maxWidth: "1280px", padding: "32px 32px 40px" }}>
+      <header className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1280px", paddingTop: "32px", paddingBottom: "40px" }}>
         <div className="flex items-center gap-3 flex-wrap" style={{ marginBottom: "18px" }}>
           {lesson.level != null && (
             <span style={{
@@ -223,7 +223,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
       </header>
 
       {/* Notation panel + Practice track */}
-      <section className="mx-auto" style={{ maxWidth: "1280px", padding: "0 32px 64px" }}>
+      <section className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1280px", paddingBottom: "64px" }}>
         <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr]" style={{ gap: "24px" }}>
           {/* Notation panel */}
           <article className="vsp-card-neutral" style={{ padding: "28px" }}>
@@ -388,7 +388,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
 
       {/* Video grid */}
       {videoList.length > 0 && (
-        <section className="mx-auto" style={{ maxWidth: "1280px", padding: "0 32px 64px" }}>
+        <section className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1280px", paddingBottom: "64px" }}>
           <div className="flex items-baseline justify-between flex-wrap gap-3" style={{ marginBottom: "20px" }}>
             <div className="flex items-center gap-3">
               <Play size={18} aria-hidden style={{ color: "#E0BC6A" }} />
@@ -459,7 +459,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
       )}
 
       {/* Three-stage guidance */}
-      <section className="mx-auto" style={{ maxWidth: "1280px", padding: "0 32px 64px" }}>
+      <section className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1280px", paddingBottom: "64px" }}>
         <span className="vsp-eyebrow">Three-stage guidance</span>
         <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "clamp(28px, 3.5vw, 40px)", margin: "10px 0 28px", color: "#F3EDDF" }}>
           Step by step → practise together → on your own.
@@ -487,7 +487,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
 
       {/* Sibling lessons (within category) */}
       {siblings.length > 1 && (
-        <section className="mx-auto" style={{ maxWidth: "1280px", padding: "0 32px 64px" }}>
+        <section className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1280px", paddingBottom: "64px" }}>
           <span className="vsp-eyebrow">In this category · {siblings.length} lessons</span>
           <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "24px", margin: "10px 0 20px", color: "#F3EDDF" }}>
             Continue in {categoryName}
@@ -527,7 +527,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
 
       {/* Related lessons (same raga or category) */}
       {related.length > 0 && (
-        <section className="mx-auto" style={{ maxWidth: "1280px", padding: "0 32px 64px" }}>
+        <section className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1280px", paddingBottom: "64px" }}>
           <span className="vsp-eyebrow">Related · same {lesson.raga ? "raga" : "category"}</span>
           <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "24px", margin: "10px 0 20px", color: "#F3EDDF" }}>
             More like this
@@ -571,7 +571,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
       )}
 
       {/* Prev / next nav */}
-      <nav aria-label="Lesson navigation" className="mx-auto" style={{ maxWidth: "1280px", padding: "0 32px 64px" }}>
+      <nav aria-label="Lesson navigation" className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1280px", paddingBottom: "64px" }}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: "14px" }}>
           {prev ? (
             <Link href={`/lessons/${prev.id}`} className="group flex items-center gap-3 vsp-card-neutral transition-colors hover:border-gold" style={{ padding: "18px 22px" }}>
@@ -613,13 +613,6 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
           )}
         </div>
       </nav>
-
-      {/* Back to library */}
-      <div className="mx-auto" style={{ maxWidth: "1280px", padding: "0 32px 80px" }}>
-        <Link href="/#library" className="transition-colors hover:text-gold-hover" style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)" }}>
-          ← Back to the library
-        </Link>
-      </div>
     </div>
   );
 }

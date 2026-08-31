@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getLessons, getCategoriesWithCounts, getLibraryStats } from "@/lib/data";
 import { LibraryPage } from "@/components/site/library-page";
+import { PageShell } from "@/components/site/page-shell";
 
 export const metadata: Metadata = {
   title: "Library — 22 free Carnatic violin notation lessons",
@@ -26,20 +27,22 @@ export default async function LibraryRoute({
   ]);
 
   return (
-    <LibraryPage
-      lessons={lessons.map((l) => ({
-        ...l,
-        assets: {
-          hasEnglishNotation: Boolean(l.raga || l.titleTamil),
-          hasTamilNotation: Boolean(l.titleTamil),
-          hasAudio: true,
-          hasVideo: true,
-        },
-      }))}
-      categories={categories}
-      stats={stats}
-      initialCategory={params.category ?? "all"}
-      initialRaga={params.raga ?? "all"}
-    />
+    <PageShell>
+      <LibraryPage
+        lessons={lessons.map((l) => ({
+          ...l,
+          assets: {
+            hasEnglishNotation: Boolean(l.raga || l.titleTamil),
+            hasTamilNotation: Boolean(l.titleTamil),
+            hasAudio: true,
+            hasVideo: true,
+          },
+        }))}
+        categories={categories}
+        stats={stats}
+        initialCategory={params.category ?? "all"}
+        initialRaga={params.raga ?? "all"}
+      />
+    </PageShell>
   );
 }

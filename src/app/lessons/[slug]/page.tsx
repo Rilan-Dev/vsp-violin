@@ -2,8 +2,10 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { db } from "@/lib/db";
-import { getLessonById, getPrevNextLessons, getCategoriesWithCounts, getRelatedLessons } from "@/lib/data";
+import { getLessonById, getPrevNextLessons, getCategoriesWithCounts, getRelatedLessons, getMegaMenu } from "@/lib/data";
 import { LessonPage } from "@/components/site/lesson-page";
+import { Nav } from "@/components/site/nav";
+import { Footer } from "@/components/site/footer";
 
 export const dynamicParams = true;
 
@@ -58,6 +60,7 @@ export default async function LessonRoute({
   const categoryName = categories.find((c) => c.slug === lesson.category)?.name ?? lesson.category;
   const { prev, next, siblings, currentIndex } = await getPrevNextLessons(slug, lesson.category);
   const related = await getRelatedLessons(slug, lesson.raga, lesson.category);
+  const megaMenu = await getMegaMenu();
 
   // JSON-LD structured data — MusicRecording schema for rich search results.
   const jsonLd = {
@@ -92,15 +95,21 @@ export default async function LessonRoute({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <LessonPage
-        lesson={lesson}
-        categoryName={categoryName}
-        prev={prev}
-        next={next}
-        siblings={siblings}
-        currentIndex={currentIndex}
-        related={related}
-      />
+      <Nav megaMenu={megaMenu} />
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#16102A" }}>
+        <main style={{ flex: 1 }}>
+          <LessonPage
+            lesson={lesson}
+            categoryName={categoryName}
+            prev={prev}
+            next={next}
+            siblings={siblings}
+            currentIndex={currentIndex}
+            related={related}
+          />
+        </main>
+        <Footer />
+      </div>
     </>
   );
 }

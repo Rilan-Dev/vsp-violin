@@ -3,12 +3,8 @@ import { Hero } from "@/components/site/hero";
 import { Marquee } from "@/components/site/marquee";
 import { LibraryPreview } from "@/components/site/library-preview";
 import { PracticeRoom } from "@/components/site/practice-room";
-import { Guru } from "@/components/site/guru";
-import { Honours } from "@/components/site/honours";
-import { Testimonials } from "@/components/site/testimonials";
+import { HomeTeasers } from "@/components/site/home-teasers";
 import { Enrol } from "@/components/site/enrol";
-import { Stage } from "@/components/site/stage";
-import { LearnViolin } from "@/components/site/learn-violin";
 import { Footer } from "@/components/site/footer";
 import { Reveal } from "@/components/site/reveal";
 import {
@@ -19,8 +15,6 @@ import {
 } from "@/lib/data";
 
 export default async function Home() {
-  // Single round-trip: categories (with live counts), lessons, stats, mega-menu.
-  // All counts derive from the lesson collection — the client's category requirement.
   const [lessons, categories, stats, megaMenu] = await Promise.all([
     getLessons(),
     getCategoriesWithCounts(),
@@ -28,7 +22,6 @@ export default async function Home() {
     getMegaMenu(),
   ]);
 
-  // JSON-LD — WebSite + Person (the musician) for rich search results.
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -73,7 +66,7 @@ export default async function Home() {
       >
         <Nav megaMenu={megaMenu} />
 
-        <main style={{ flex: 1, paddingTop: 0 }}>
+        <main style={{ flex: 1 }}>
           <Hero />
           <Marquee />
 
@@ -97,24 +90,8 @@ export default async function Home() {
             <PracticeRoom />
           </Reveal>
 
-          <Reveal as="div" threshold={0.08}>
-            <Guru />
-          </Reveal>
-
           <Reveal as="div" threshold={0.06}>
-            <Honours />
-          </Reveal>
-
-          <Reveal as="div" threshold={0.08}>
-            <Stage />
-          </Reveal>
-
-          <Reveal as="div" threshold={0.06}>
-            <LearnViolin />
-          </Reveal>
-
-          <Reveal as="div" threshold={0.1}>
-            <Testimonials />
+            <HomeTeasers />
           </Reveal>
 
           <Reveal as="div" threshold={0.08}>
