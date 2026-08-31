@@ -58,14 +58,47 @@ export default async function LessonRoute({
   const categoryName = categories.find((c) => c.slug === lesson.category)?.name ?? lesson.category;
   const { prev, next, siblings, currentIndex } = await getPrevNextLessons(slug, lesson.category);
 
+  // JSON-LD structured data — MusicRecording schema for rich search results.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "MusicRecording",
+    name: lesson.title,
+    ...(lesson.titleTamil ? { alternateName: lesson.titleTamil } : {}),
+    byArtist: {
+      "@type": "MusicGroup",
+      name: "Violin Suka Pavalan",
+    },
+    inAlbum: {
+      "@type": "MusicAlbum",
+      name: "Carnatic Violin Lessons — Free Notation Library",
+    },
+    ...(lesson.raga ? { about: { "@type": "Thing", name: `Raga ${lesson.raga}` } } : {}),
+    ...(lesson.thala ? { tempo: lesson.thala } : {}),
+    ...(lesson.composer ? { composer: { "@type": "Person", name: lesson.composer } } : {}),
+    ...(lesson.titleCard ? { thumbnailUrl: lesson.titleCard } : {}),
+    url: `https://sukapavalan.com/lessons/${lesson.id}`,
+    isAccessibleForFree: true,
+    publisher: {
+      "@type": "Person",
+      name: "Suka Pavalan",
+      url: "https://sukapavalan.com",
+    },
+  };
+
   return (
-    <LessonPage
-      lesson={lesson}
-      categoryName={categoryName}
-      prev={prev}
-      next={next}
-      siblings={siblings}
-      currentIndex={currentIndex}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <LessonPage
+        lesson={lesson}
+        categoryName={categoryName}
+        prev={prev}
+        next={next}
+        siblings={siblings}
+        currentIndex={currentIndex}
+      />
+    </>
   );
 }

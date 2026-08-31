@@ -28,8 +28,38 @@ export default async function Home() {
     getMegaMenu(),
   ]);
 
+  // JSON-LD — WebSite + Person (the musician) for rich search results.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        name: "Violin Suka Pavalan",
+        url: "https://sukapavalan.com",
+        description: "Carnatic violin lessons & free notation library",
+      },
+      {
+        "@type": "Person",
+        name: "Suka Pavalan",
+        jobTitle: "Carnatic Violinist & Music Educator",
+        url: "https://sukapavalan.com",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Karaikal",
+          addressRegion: "Puducherry",
+          addressCountry: "IN",
+        },
+        knowsAbout: ["Carnatic violin", "Carnatic music", "Violin teaching"],
+      },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <a href="#library" className="skip-link">
         Skip to content
       </a>

@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Download, Play, Music, FileText, ChevronRight } from "lucide-react";
 import type { LessonDetail } from "@/lib/data";
+import { YouTubeFacade } from "@/components/site/youtube-facade";
 
 type Sibling = { id: string; title: string; titleTamil: string | null; category: string; level: number | null };
 
@@ -411,23 +412,9 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
                 >
                   <div style={{ position: "relative", aspectRatio: "16 / 9", background: "#251A42" }}>
                     {v.youtubeId ? (
-                      <iframe
-                        src={`https://www.youtube.com/embed/${v.youtubeId}`}
-                        title={v.label}
-                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        loading="lazy"
-                        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}
-                      />
+                      <YouTubeFacade youtubeId={v.youtubeId} title={v.label} />
                     ) : v.playlistId ? (
-                      <iframe
-                        src={`https://www.youtube.com/embed/videoseries?list=${v.playlistId}`}
-                        title={v.label}
-                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        loading="lazy"
-                        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}
-                      />
+                      <YouTubeFacade youtubeId="" playlistId={v.playlistId} title={v.label} />
                     ) : null}
                   </div>
                   <div style={{ padding: "12px 14px" }}>

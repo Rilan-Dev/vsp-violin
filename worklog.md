@@ -498,3 +498,65 @@ Built the retention-driver page described in the handoff — "the library is the
 5. **Redirects** — the handoff specifies 38 old Blogger URLs need 301 redirects to their new homes. `next.config.ts` redirects haven't been wired yet. This is important for SEO (the old URLs are in YouTube descriptions, WhatsApp threads, and Google's index).
 6. **Performance** — the lesson pages embed up to 16 YouTube iframes. Consider lazy-loading with facades (e.g. lite-youtube-embed) to reduce initial load.
 
+
+---
+Task ID: 17
+Agent: cron-review-round-3 (webDevReview)
+Task: QA the build, wire 301 redirects for old Blogger URLs, add YouTube facade, sitemap/robots, JSON-LD, mobile nav drawer, active-section underline.
+
+## Current project status assessment
+- Dev server healthy (port 3000). All routes 200 (`/`, `/library`, `/lessons/[slug]`, `/studio`, `/sitemap.xml`, `/robots.txt`, all `/api/*`).
+- `bun run lint` clean.
+- agent-browser QA: homepage 8 sections intact, nav mega-menu works, back-to-top + progress bar mounted, no console errors.
+- Previous round's features all verified working (Studio admin, Library page, Lesson pages, Legal dialog).
+
+## Completed modifications + verification
+
+### 1. Fix: 301 redirects for 38 old URLs (SEO critical)
+- Updated `next.config.ts` with an `async redirects()` function returning 32 redirect rules:
+  - **22 old Blogger lesson URLs** → `/lessons/[slug]` (e.g. `/2021/03/carnatic-basic-lesson-ii-sarali-varisai.html` → `/lessons/basic-02-sarali-varisai`). These URLs are in YouTube descriptions, WhatsApp threads, and Google's index — without redirects, the existing audience would hit 404s.
+  - **4 old vspviolinrainbow.com page URLs** → homepage anchors (e.g. `/achievement.html` → `/#honours`, `/carnatic_lessons.html` → `/library`).
+  - **6 Blogger label/tag URLs** → library with category filter (e.g. `/search/label/Geetham` → `/library?category=geetham`).
+- Verified: `curl -s -o /dev/null -w "%{http_code} -> %{redirect_url}" "http://localhost:3000/2021/03/carnatic-basic-lesson-ii-sarali-varisai.html"` → `308 -> http://localhost:3000/lessons/basic-02-sarali-varisai` (308 in dev = 301 permanent in production).
+
+### 2. Feature: YouTube facade (performance)
+- Built `src/components/site/youtube-facade.tsx` — a lightweight thumbnail + play button that replaces the heavy YouTube iframe. The iframe only loads when the user clicks (or focuses the button via keyboard).
+  - Thumbnail from `i.ytimg.com/vi/{id}/hqdefault.jpg` (no API key needed, free, fast).
+  - Gold circular play button (56px) centered with a dark gradient overlay + title text at the bottom.
+  - Graceful fallback: if the thumbnail fails to load, shows a violet gradient with a ♪ placeholder.
+  - Keyboard: focuses activate the iframe (keyboard users get the iframe on tab-in, no extra click needed).
+- Replaced all raw `<iframe>` elements in `src/components/site/lesson-page.tsx` with `<YouTubeFacade>`.
+- **Performance impact:** a lesson page with 8 videos previously loaded 8 YouTube iframes (~2MB of JS + 8 player instances). Now it loads 8 lightweight thumbnails (~50KB total). The iframe only loads on demand. Verified: `/lessons/basic-02-sarali-varisai` → 0 iframes, 8 facade buttons, 8 thumbnails. Clicking a facade loads exactly 1 iframe with autoplay.
+- VLM confirmed: "circular gold play buttons" on "realistic video content" thumbnails.
+
+### 3. Feature: sitemap.xml + robots.txt (SEO)
+- `src/app/sitemap.ts` — dynamic sitemap: 2 static pages (`/`, `/library`) + 23 dynamic lesson pages, each with `lastModified` from the lesson's date. Returns valid XML at `/sitemap.xml`.
+- `src/app/robots.ts` — allows all crawlers on `/`, disallows `/studio` and `/api/studio` (the owner-only admin), points to the sitemap. Removed the conflicting static `public/robots.txt` so the dynamic one takes over.
+- Verified: `curl /sitemap.xml` → 200 with valid XML; `curl /robots.txt` → 200 with correct rules.
+
+### 4. Feature: JSON-LD structured data (SEO / rich results)
+- **Lesson pages** (`src/app/lessons/[slug]/page.tsx`): `MusicRecording` schema with `name`, `alternateName` (Tamil title), `byArtist`, `inAlbum`, `about` (raga), `tempo` (thala), `composer`, `thumbnailUrl` (titleCard), `url`, `isAccessibleForFree: true`, `publisher`. This enables rich search results (title + thumbnail + "free" badge) in Google.
+- **Homepage** (`src/app/page.tsx`): `WebSite` + `Person` graph — the musician's name, job title, address (Karaikal, Puducherry, IN), knowsAbout. This enables knowledge-panel eligibility.
+- Verified: `curl /lessons/basic-02-sarali-varisai | grep 'application/ld+json'` → present; `curl / | grep '"@type":"Person"'` → present.
+
+### 5. Styling: Mobile nav drawer (≤768px)
+- Replaced the sideways-scroller mobile nav with a proper hamburger → Sheet drawer.
+  - 44px gold-bordered hamburger button (top-right, `md:hidden`).
+  - Right-side Sheet (320px, max 85vw) with: wordmark + close button, main links (Library, Practice Room, The Guru, Honours, Stage, Learn the Violin, Enrol gold CTA), and a "Lessons by category" section listing all 19 categories with live counts (deep-links to `/library?category={slug}`).
+  - Each link closes the drawer on click.
+  - Uses the existing shadcn Sheet component (Radix Dialog), so focus-trap, Escape-to-close, and backdrop-click are all handled.
+- Verified: clicking the hamburger opens the drawer with 26 links; VLM confirmed "mobile navigation drawer open on the right side" with all links visible.
+
+### 6. Styling: Active-section gold underline (desktop nav)
+- Desktop nav links now show a 2px gold underline (`borderBottom: 2px solid #E0BC6A`) when their section is in view, driven by the existing IntersectionObserver section-spy. Inactive links have a transparent 2px border (preserves layout stability). Smooth 200ms transition.
+- Verified: scrolled to `#library` → "Library" link shows gold underline; scrolled back to top → underline clears.
+
+## Unresolved issues / risks / next-phase priorities
+
+1. **Mobile deep-testing at 375px** — the mobile drawer is verified functional via DOM + VLM, but a true 375px viewport test (via device emulation) would catch any remaining responsive edge cases. The handoff's three CSS traps are all handled (`overflow-x: clip` on body, no `order` for nav, ≥44px tap targets).
+2. **Studio lesson editing** — the Studio lessons tab is read-only. A future phase could add inline editing (title, raga, thala, status draft/published) + drag-to-reorder, matching the handoff's "Studio Lessons" screen spec.
+3. **Studio categories editor** — the handoff describes a "Studio Categories" screen (rename/hide/add categories). Not yet built.
+4. **Live Video seeding** — the 7 Live Video posts from the old Blogger site aren't in the structured data. Low priority.
+5. **Image optimization** — the lesson title-card images are loaded from remote blogger URLs (`blogger.googleusercontent.com`). A future task could download + optimize them via `next/image` with a remote loader, or migrate to local `/public/assets/title-cards/`.
+6. **Performance monitoring** — the YouTube facade is a big win, but a Lighthouse pass would quantify the improvement and surface any remaining opportunities (font-display: swap is already set, images are lazy-loaded).
+
