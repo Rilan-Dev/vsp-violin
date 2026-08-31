@@ -701,3 +701,52 @@ Task: QA the build, build Studio categories editor, add /stage dedicated page, a
 4. **Studio lesson creation** — the Studio can now edit/delete lessons and categories, but not create new lessons. A "New lesson" form (matching the handoff's "Studio.dc.html — New notation" screen) would complete the CMS.
 5. **Learn the Violin dedicated page** — the `/learn` section is still a homepage anchor; a dedicated `/learn` page with the full violin-history/strings/materials/fingering content would round out the page set.
 
+
+---
+Task ID: 20
+Agent: cron-review-round-6 (webDevReview)
+Task: QA the build, build Studio lesson creation form, add /learn dedicated page, add related lessons section to lesson pages.
+
+## Current project status assessment
+- Dev server healthy (port 3000). All routes 200 (`/`, `/library`, `/about`, `/honours`, `/stage`, `/learn`, `/lessons/[slug]`, `/studio`, `/feed.xml`, `/sitemap.xml`, `/robots.txt`, all `/api/*`).
+- `bun run lint` clean.
+- agent-browser QA: homepage intact, all 8 sections present, no console errors.
+
+## Completed modifications + verification
+
+### 1. Feature: Studio lesson creation form
+- **API:** `POST /api/studio/lessons` — Zod-validated create (title, titleTamil, category, level, raga, thala, composer, notation URLs, status). Auto-generates a slug from the title + timestamp to avoid collisions. Returns 201 with the created lesson.
+- **NewLessonButton component:** A "New lesson" gold button on the lessons tab. Click opens an inline form (gold-tinted card) with 8 fields: Title*, Tamil title, Category*, Raga, Thala, Composer, English notation URL, Tamil notation URL. Status toggle (draft/published, defaults to draft). Create + Cancel buttons.
+- On create: POSTs to the API, appends the new lesson to the dashboard's lessons array (optimistic UI), closes the form.
+- **Verified:** opened the form → filled "Test New Lesson" with raga "TestRaga" → clicked "Create lesson" → DB confirmed: `{ id: "test-new-lesson-mtgirjx2", title: "Test New Lesson", raga: "TestRaga", status: "draft" }`. Cleaned up the test lesson.
+
+### 2. Feature: `/learn` dedicated page
+- A full educational page about the violin itself:
+  - Header: eyebrow, h1 "Learn the language of the violin." (language in gold), lead paragraph.
+  - "A short history" section: 3 paragraphs on the violin's 16th-century Cremona origins (Andrea Amati, Stradivari, Guarneri).
+  - Pull quote: Joshua Bell's "When you play a violin piece, you are a storyteller…" centered with gold ✦ ornaments.
+  - "Four strings. Four voices." section: 4 cards (G, D, A, E) with watermark letters, Marcellus gold titles, body descriptions.
+  - Materials + Fingering two-column section: 3 material cards (Gut/Steel/Synthetic with color swatches) + 5 finger codes (O, 1f, 2f, 3f, 4f) with gold-bordered square chips.
+  - CTA: "Ready to learn Carnatic violin?" + "Browse the library" gold button.
+- Updated footer "Learn the Violin" link → `/learn` (was `/#learn`).
+- Updated sitemap to include `/learn`.
+- Verified: `/learn` → 200, h1 present, history section, string cards, pull quote, fingering, CTA all present. VLM confirmed: "educational page about the violin" with "SHORT HISTORY" section.
+
+### 3. Feature: Related lessons section on lesson pages
+- **Data layer:** Added `getRelatedLessons(currentId, raga, category)` — returns up to 4 lessons: same raga first (excluding current), falls back to same category if fewer than 2 same-raga lessons.
+- **Lesson page:** Added "More like this" section before the prev/next nav, showing up to 4 related lesson cards (title card image, raga/category label, Marcellus title, Tamil title). Uses the `.vsp-lift` hover micro-interaction.
+- **Verified:** `/lessons/geetham-gananaatha` (raga: Mayamalavagowlai) → related section shows 2 cards: "Poongathave — Cine (Tamil)" and "Aadikkondar — Krithi" (both Mayamalavagowlai). The "Related · same raga" eyebrow correctly identifies the connection.
+
+### 4. Styling: Footer + sitemap updates
+- Footer "Learn the Violin" now links to `/learn` (was `/#learn`).
+- Sitemap includes `/learn` (priority 0.7, monthly).
+
+## Unresolved issues / next-phase priorities
+
+1. **Image optimization** — lesson title-card images are loaded from remote blogger URLs. A future task could download + optimize them via `next/image` with a remote loader, or migrate to local `/public/assets/title-cards/`.
+2. **Live Video seeding** — the 7 Live Video posts from the old Blogger site aren't in the structured data. Low priority.
+3. **Mobile deep-testing at 375px** — all responsive CSS is in place, but a true device-emulation pass would catch any remaining edge cases.
+4. **Dark/light theme toggle** — next-themes is installed but not wired. The site is currently dark-only (by design per the handoff). A light theme is optional.
+5. **Studio: lesson video/audio management** — the Studio can create lessons with notation URLs but not manage the per-video embeds or audio tracks. A future phase could add a "manage assets" sub-form.
+6. **Print stylesheet** — a `@media print` stylesheet for lesson pages would let students print the notation + details cleanly.
+

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { db } from "@/lib/db";
-import { getLessonById, getPrevNextLessons, getCategoriesWithCounts } from "@/lib/data";
+import { getLessonById, getPrevNextLessons, getCategoriesWithCounts, getRelatedLessons } from "@/lib/data";
 import { LessonPage } from "@/components/site/lesson-page";
 
 export const dynamicParams = true;
@@ -57,6 +57,7 @@ export default async function LessonRoute({
   const categories = await getCategoriesWithCounts();
   const categoryName = categories.find((c) => c.slug === lesson.category)?.name ?? lesson.category;
   const { prev, next, siblings, currentIndex } = await getPrevNextLessons(slug, lesson.category);
+  const related = await getRelatedLessons(slug, lesson.raga, lesson.category);
 
   // JSON-LD structured data — MusicRecording schema for rich search results.
   const jsonLd = {
@@ -98,6 +99,7 @@ export default async function LessonRoute({
         next={next}
         siblings={siblings}
         currentIndex={currentIndex}
+        related={related}
       />
     </>
   );

@@ -109,7 +109,7 @@ export function Footer() {
                 { href: "/about", label: "The Guru" },
                 { href: "/honours", label: "Honours" },
                 { href: "/stage", label: "Stage" },
-                { href: "/#learn", label: "Learn the Violin" },
+                { href: "/learn", label: "Learn the Violin" },
               ].map((l) => (
                 <a
                   key={l.href}

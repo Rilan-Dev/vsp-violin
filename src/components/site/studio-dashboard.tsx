@@ -570,12 +570,27 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
               <StatCard icon={<BookOpen size={18} />} label="With notation" value={data.lessons.filter((l) => l.hasNotation).length} color="#78DCAA" />
             </div>
 
-            {/* Edit hint */}
-            <div className="flex items-center gap-2 mb-4" style={{ fontSize: "12.5px", color: "rgba(243,237,223,0.5)" }}>
-              <PencilLine size={13} aria-hidden style={{ color: "#E0BC6A" }} />
-              <span style={{ fontFamily: "var(--font-geist-mono), monospace", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-                Click any field to edit · changes save instantly
-              </span>
+            {/* Edit hint + new lesson button */}
+            <div className="flex items-center justify-between gap-3 flex-wrap mb-4">
+              <div className="flex items-center gap-2" style={{ fontSize: "12.5px", color: "rgba(243,237,223,0.5)" }}>
+                <PencilLine size={13} aria-hidden style={{ color: "#E0BC6A" }} />
+                <span style={{ fontFamily: "var(--font-geist-mono), monospace", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+                  Click any field to edit · changes save instantly
+                </span>
+              </div>
+              <NewLessonButton categories={data.lessonsByCategory.map((c) => ({ slug: c.category, name: c.category.replace(/-/g, " ") }))} onCreated={(lesson) => {
+                setData((prev) => {
+                  if (!prev) return prev;
+                  const lessons = [...prev.lessons, { ...lesson, hasNotation: Boolean(lesson.raga || lesson.titleTamil), hasVideo: true }];
+                  const lessonsByCategory = Object.entries(
+                    lessons.reduce<Record<string, number>>((acc, l) => {
+                      acc[l.category] = (acc[l.category] ?? 0) + 1;
+                      return acc;
+                    }, {})
+                  ).map(([category, count]) => ({ category, count }));
+                  return { ...prev, lessons, lessonsByCategory };
+                });
+              }} />
             </div>
 
             {/* Lessons table */}
@@ -874,6 +889,246 @@ function EditableLessonRow({
         </div>
       </td>
     </tr>
+  );
+}
+
+type NewLessonData = {
+  id: string;
+  title: string;
+  titleTamil: string | null;
+  category: string;
+  level: number | null;
+  raga: string | null;
+  thala: string | null;
+  composer: string | null;
+  date: string;
+  titleCard: string | null;
+  status: string;
+};
+
+/**
+ * New lesson button + form — opens a modal-like card for creating a lesson.
+ * Per the handoff's Studio.dc.html spec: title, category, raga, thala, notation links, status.
+ */
+function NewLessonButton({ categories, onCreated }: { categories: { slug: string; name: string }[]; onCreated: (lesson: NewLessonData) => void }) {
+  const [open, setOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [form, setForm] = useState({
+    title: "",
+    titleTamil: "",
+    category: categories[0]?.slug ?? "",
+    raga: "",
+    thala: "",
+    composer: "",
+    notationEnglish: "",
+    notationTamil: "",
+    status: "draft" as "draft" | "published",
+  });
+
+  const submit = async () => {
+    setError(null);
+    if (!form.title.trim()) {
+      setError("Title is required");
+      return;
+    }
+    if (!form.category) {
+      setError("Category is required");
+      return;
+    }
+    setSaving(true);
+    try {
+      const res = await fetch("/api/studio/lessons", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: form.title.trim(),
+          titleTamil: form.titleTamil.trim() || null,
+          category: form.category,
+          raga: form.raga.trim() || null,
+          thala: form.thala.trim() || null,
+          composer: form.composer.trim() || null,
+          notationEnglish: form.notationEnglish.trim() || null,
+          notationTamil: form.notationTamil.trim() || null,
+          status: form.status,
+        }),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        onCreated(json.lesson);
+        setForm({ title: "", titleTamil: "", category: categories[0]?.slug ?? "", raga: "", thala: "", composer: "", notationEnglish: "", notationTamil: "", status: "draft" });
+        setOpen(false);
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error ?? "Failed to create lesson");
+      }
+    } catch {
+      setError("Network error");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (!open) {
+    return (
+      <button
+        onClick={() => setOpen(true)}
+        className="vsp-cta-gold flex items-center gap-2"
+        style={{
+          padding: "9px 16px",
+          background: "#E0BC6A",
+          color: "#1B1233",
+          fontFamily: "var(--font-marcellus), serif",
+          fontSize: "12.5px",
+          letterSpacing: "0.04em",
+          border: "none",
+          cursor: "pointer",
+          borderRadius: 0,
+        }}
+      >
+        <Plus size={14} aria-hidden />
+        New lesson
+      </button>
+    );
+  }
+
+  const inputStyle: React.CSSProperties = {
+    padding: "9px 12px",
+    background: "rgba(22,16,42,0.6)",
+    border: "1px solid rgba(243,237,223,0.2)",
+    color: "#F3EDDF",
+    fontFamily: "var(--font-instrument-sans)",
+    fontSize: "13px",
+    borderRadius: 0,
+    width: "100%",
+  };
+
+  const labelStyle: React.CSSProperties = {
+    fontFamily: "var(--font-geist-mono), monospace",
+    fontSize: "10px",
+    letterSpacing: "0.14em",
+    textTransform: "uppercase",
+    color: "rgba(243,237,223,0.62)",
+    marginBottom: "5px",
+    display: "block",
+  };
+
+  return (
+    <div className="vsp-card-gold" style={{ padding: "24px", marginTop: "12px", width: "100%" }}>
+      <div className="flex items-center justify-between mb-4">
+        <span className="vsp-eyebrow">New lesson</span>
+        <button onClick={() => { setOpen(false); setError(null); }} aria-label="Close form" style={{ background: "transparent", border: "none", color: "rgba(243,237,223,0.5)", cursor: "pointer", padding: "4px" }}>
+          <X size={16} />
+        </button>
+      </div>
+
+      {error && (
+        <div role="status" aria-live="polite" style={{ marginBottom: "14px", padding: "10px 14px", border: "1px solid #E08C50", background: "rgba(224,140,80,0.08)", color: "#F2C5A5", fontSize: "13px" }}>
+          {error}
+        </div>
+      )}
+
+      <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-2", marginBottom: "14px" }}>
+        <label>
+          <span style={labelStyle}>Title *</span>
+          <input type="text" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="e.g. Sri Maha Ganapathim" style={inputStyle} autoFocus />
+        </label>
+        <label>
+          <span style={labelStyle}>Tamil title</span>
+          <input type="text" value={form.titleTamil} onChange={(e) => setForm({ ...form, titleTamil: e.target.value })} placeholder="ஸ்ரீ மஹாகணபதிம்" lang="ta" style={inputStyle} />
+        </label>
+        <label>
+          <span style={labelStyle}>Category *</span>
+          <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} style={inputStyle}>
+            {categories.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}
+          </select>
+        </label>
+        <label>
+          <span style={labelStyle}>Raga</span>
+          <input type="text" value={form.raga} onChange={(e) => setForm({ ...form, raga: e.target.value })} placeholder="e.g. Nattai" style={inputStyle} />
+        </label>
+        <label>
+          <span style={labelStyle}>Thala</span>
+          <input type="text" value={form.thala} onChange={(e) => setForm({ ...form, thala: e.target.value })} placeholder="e.g. Aadhi" style={inputStyle} />
+        </label>
+        <label>
+          <span style={labelStyle}>Composer</span>
+          <input type="text" value={form.composer} onChange={(e) => setForm({ ...form, composer: e.target.value })} placeholder="e.g. Muthuswami Dikshitar" style={inputStyle} />
+        </label>
+        <label>
+          <span style={labelStyle}>English notation URL</span>
+          <input type="url" value={form.notationEnglish} onChange={(e) => setForm({ ...form, notationEnglish: e.target.value })} placeholder="https://drive.google.com/…" style={inputStyle} />
+        </label>
+        <label>
+          <span style={labelStyle}>Tamil notation URL</span>
+          <input type="url" value={form.notationTamil} onChange={(e) => setForm({ ...form, notationTamil: e.target.value })} placeholder="https://drive.google.com/…" style={inputStyle} />
+        </label>
+      </div>
+
+      <div className="flex items-center gap-3 mb-4">
+        <span style={labelStyle}>Status</span>
+        <div className="flex">
+          {(["draft", "published"] as const).map((s) => (
+            <button
+              key={s}
+              onClick={() => setForm({ ...form, status: s })}
+              aria-pressed={form.status === s}
+              style={{
+                padding: "7px 14px",
+                border: `1px solid ${form.status === s ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
+                background: form.status === s ? "#E0BC6A" : "transparent",
+                color: form.status === s ? "#1B1233" : "rgba(243,237,223,0.82)",
+                fontFamily: "var(--font-geist-mono), monospace",
+                fontSize: "11px",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                cursor: "pointer",
+                borderRadius: 0,
+              }}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <button
+          onClick={submit}
+          disabled={saving}
+          className="vsp-cta-gold"
+          style={{
+            padding: "11px 22px",
+            background: saving ? "rgba(224,188,106,0.45)" : "#E0BC6A",
+            color: "#1B1233",
+            fontFamily: "var(--font-marcellus), serif",
+            fontSize: "13px",
+            border: "none",
+            cursor: saving ? "wait" : "pointer",
+            borderRadius: 0,
+          }}
+        >
+          {saving ? "Creating…" : "Create lesson"}
+        </button>
+        <button
+          onClick={() => { setOpen(false); setError(null); }}
+          style={{
+            padding: "11px 18px",
+            background: "transparent",
+            border: "1px solid rgba(243,237,223,0.2)",
+            color: "rgba(243,237,223,0.82)",
+            fontFamily: "var(--font-geist-mono), monospace",
+            fontSize: "11px",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            cursor: "pointer",
+            borderRadius: 0,
+          }}
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
   );
 }
 

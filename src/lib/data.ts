@@ -163,6 +163,37 @@ export async function getPrevNextLessons(currentId: string, category: string) {
   };
 }
 
+/**
+ * Related lessons — same raga first, then same category, excluding the current lesson.
+ * Returns up to 4 lessons for the "related" section on the lesson page.
+ */
+export async function getRelatedLessons(currentId: string, raga: string | null, category: string) {
+  if (raga) {
+    const byRaga = await db.lesson.findMany({
+      where: { status: "published", raga, id: { not: currentId } },
+      orderBy: { date: "desc" },
+      take: 4,
+      select: { id: true, title: true, titleTamil: true, category: true, raga: true, titleCard: true },
+    });
+    if (byRaga.length >= 2) return byRaga;
+    // Fall back to filling with same-category lessons
+    const byCategory = await db.lesson.findMany({
+      where: { status: "published", category, id: { not: currentId, notIn: byRaga.map((l) => l.id) } },
+      orderBy: { date: "desc" },
+      take: 4 - byRaga.length,
+      select: { id: true, title: true, titleTamil: true, category: true, raga: true, titleCard: true },
+    });
+    return [...byRaga, ...byCategory];
+  }
+  // No raga — just same category
+  return db.lesson.findMany({
+    where: { status: "published", category, id: { not: currentId } },
+    orderBy: { date: "desc" },
+    take: 4,
+    select: { id: true, title: true, titleTamil: true, category: true, raga: true, titleCard: true },
+  });
+}
+
 export async function getLibraryStats() {
   const [lessonCount, categoryCount, lessonsWithRaga, lessonsWithNotation] = await Promise.all([
     db.lesson.count({ where: { status: "published" } }),

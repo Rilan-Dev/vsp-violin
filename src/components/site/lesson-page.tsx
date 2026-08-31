@@ -9,6 +9,8 @@ import { ShareButton } from "@/components/site/share-button";
 
 type Sibling = { id: string; title: string; titleTamil: string | null; category: string; level: number | null };
 
+type RelatedLesson = { id: string; title: string; titleTamil: string | null; category: string; raga: string | null; titleCard: string | null };
+
 type Props = {
   lesson: LessonDetail;
   categoryName: string;
@@ -16,12 +18,13 @@ type Props = {
   next: Sibling | null;
   siblings: Sibling[];
   currentIndex: number;
+  related?: RelatedLesson[];
 };
 
 const SRUTHIS = ["C-1", "D#-2.5", "F-4", "G#-5.5", "A#-6.5"] as const;
 const SPEEDS = ["1st", "2nd", "3rd", "Thrikaalam"] as const;
 
-export function LessonPage({ lesson, categoryName, prev, next, siblings, currentIndex }: Props) {
+export function LessonPage({ lesson, categoryName, prev, next, siblings, currentIndex, related = [] }: Props) {
   const [notationLang, setNotationLang] = useState<"en" | "ta">("en");
   const [voice, setVoice] = useState<"violin" | "vocal">("violin");
   const [sruthi, setSruthi] = useState<string>("D#-2.5");
@@ -497,6 +500,51 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
                 </Link>
               );
             })}
+          </div>
+        </section>
+      )}
+
+      {/* Related lessons (same raga or category) */}
+      {related.length > 0 && (
+        <section className="mx-auto" style={{ maxWidth: "1280px", padding: "0 32px 64px" }}>
+          <span className="vsp-eyebrow">Related · same {lesson.raga ? "raga" : "category"}</span>
+          <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "24px", margin: "10px 0 20px", color: "#F3EDDF" }}>
+            More like this
+          </h2>
+          <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) sm:grid-cols-2 lg:grid-cols-4" }}>
+            {related.map((r) => (
+              <Link
+                key={r.id}
+                href={`/lessons/${r.id}`}
+                className="vsp-lift block"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <article className="vsp-card-neutral" style={{ overflow: "hidden", height: "100%", display: "flex", flexDirection: "column" }}>
+                  <div style={{ position: "relative", aspectRatio: "16 / 9", background: "#251A42", overflow: "hidden" }}>
+                    {r.titleCard ? (
+                      <img src={r.titleCard} alt="" loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+                    ) : (
+                      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(155deg, rgba(107,75,168,0.2), rgba(36,26,66,0.6))" }}>
+                        <span style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "28px", color: "rgba(224,188,106,0.3)" }}>♪</span>
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ padding: "14px 16px", flex: 1, display: "flex", flexDirection: "column" }}>
+                    <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: "#E0BC6A" }}>
+                      {r.raga ?? r.category.replace(/-/g, " ")}
+                    </span>
+                    <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "15px", color: "#F3EDDF", margin: "6px 0 0", lineHeight: 1.3 }}>
+                      {r.title}
+                    </h3>
+                    {r.titleTamil && (
+                      <p lang="ta" style={{ fontSize: "12px", color: "rgba(243,237,223,0.62)", margin: "2px 0 0" }}>
+                        {r.titleTamil}
+                      </p>
+                    )}
+                  </div>
+                </article>
+              </Link>
+            ))}
           </div>
         </section>
       )}
