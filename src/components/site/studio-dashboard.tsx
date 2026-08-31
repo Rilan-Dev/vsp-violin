@@ -19,6 +19,7 @@ import {
   FolderTree,
   Plus,
   Tags,
+  BarChart3,
 } from "lucide-react";
 import type { LessonSummary } from "@/lib/data";
 
@@ -63,7 +64,7 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
   const [data, setData] = useState<StudioData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"enquiries" | "lessons" | "categories">("enquiries");
+  const [activeTab, setActiveTab] = useState<"enquiries" | "lessons" | "categories" | "analytics">("enquiries");
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
   const [filter, setFilter] = useState<"all" | "new" | "replied" | "archived">("all");
   const router = useRouter();
@@ -281,6 +282,26 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
             >
               <FolderTree size={13} aria-hidden />
               Categories
+            </button>
+            <button
+              onClick={() => setActiveTab("analytics")}
+              aria-pressed={activeTab === "analytics"}
+              className="flex items-center gap-2 transition-colors"
+              style={{
+                padding: "8px 14px",
+                border: `1px solid ${activeTab === "analytics" ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
+                background: activeTab === "analytics" ? "#E0BC6A" : "transparent",
+                color: activeTab === "analytics" ? "#1B1233" : "rgba(243,237,223,0.82)",
+                fontFamily: "var(--font-geist-mono), monospace",
+                fontSize: "11px",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                cursor: "pointer",
+                borderRadius: 0,
+              }}
+            >
+              <BarChart3 size={13} aria-hidden />
+              Analytics
             </button>
             <button
               onClick={logout}
@@ -637,15 +658,17 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
               </div>
             </div>
           </>
-        ) : (
+        ) : activeTab === "categories" ? (
           <CategoriesTab />
+        ) : (
+          <AnalyticsTab />
         )}
       </div>
     </div>
   );
 }
 
-function StatCard({ icon, label, value, color }: { icon: React.ReactNode; label: string; value: number; color: string }) {
+function StatCard({ icon, label, value, color, suffix }: { icon: React.ReactNode; label: string; value: number; color: string; suffix?: string }) {
   return (
     <div className="vsp-card-neutral" style={{ padding: "20px 22px" }}>
       <div className="flex items-center gap-2 mb-2" style={{ color }}>
@@ -655,7 +678,7 @@ function StatCard({ icon, label, value, color }: { icon: React.ReactNode; label:
         </span>
       </div>
       <p style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "36px", color, margin: 0, lineHeight: 1 }}>
-        {value}
+        {value}{suffix && <span style={{ fontSize: "20px", color: "rgba(243,237,223,0.5)" }}>{suffix}</span>}
       </p>
     </div>
   );
@@ -1432,6 +1455,196 @@ function CategoriesTab() {
           </section>
         );
       })}
+    </div>
+  );
+}
+
+type AnalyticsData = {
+  total: number;
+  weekly: { week: string; count: number; label: string }[];
+  intentBreakdown: { intent: string; label: string; count: number; color: string }[];
+  statusBreakdown: { new: number; replied: number; archived: number };
+  responseRate: number;
+  fromLessonPage: number;
+  fromOther: number;
+  recent: { id: string; intent: string; status: string; createdAt: string }[];
+};
+
+/** Analytics tab — enquiry trends, intent breakdown, response rate. */
+function AnalyticsTab() {
+  const [data, setData] = useState<AnalyticsData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/studio/analytics")
+      .then((r) => r.json())
+      .then((d) => setData(d))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading || !data) {
+    return <p style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "12px", color: "rgba(243,237,223,0.5)" }}>Loading analytics…</p>;
+  }
+
+  const maxWeekly = Math.max(...data.weekly.map((w) => w.count), 1);
+
+  return (
+    <div>
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <BarChart3 size={18} aria-hidden style={{ color: "#E0BC6A" }} />
+        <span className="vsp-eyebrow">Analytics · enquiry insights</span>
+      </div>
+
+      {/* Key metrics */}
+      <div className="grid gap-4 mb-8" style={{ gridTemplateColumns: "repeat(2, minmax(0,1fr)) md:repeat(4, minmax(0,1fr))" }}>
+        <StatCard icon={<Inbox size={18} />} label="Total enquiries" value={data.total} color="#E0BC6A" />
+        <StatCard icon={<Check size={18} />} label="Response rate" value={data.responseRate} color="#78DCAA" suffix="%" />
+        <StatCard icon={<TrendingUp size={18} />} label="From lessons" value={data.fromLessonPage} color="#C9AEF5" />
+        <StatCard icon={<Clock size={18} />} label="Pending" value={data.statusBreakdown.new} color="#E08C50" />
+      </div>
+
+      {/* Weekly enquiries chart (CSS bars) */}
+      <section className="vsp-card-neutral" style={{ padding: "28px", marginBottom: "24px" }}>
+        <div className="flex items-baseline justify-between mb-5">
+          <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "20px", color: "#F3EDDF", margin: 0 }}>
+            Enquiries · last 12 weeks
+          </h3>
+          <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", color: "rgba(243,237,223,0.5)" }}>
+            {data.weekly.reduce((a, w) => a + w.count, 0)} total
+          </span>
+        </div>
+        {/* Bar chart */}
+        <div className="flex items-end gap-1.5" style={{ height: "160px", paddingBottom: "28px", position: "relative" }}>
+          {/* Y-axis grid lines */}
+          {[0, 0.25, 0.5, 0.75, 1].map((pct) => (
+            <div key={pct} aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: `${28 + pct * 132}px`, height: "1px", background: "rgba(243,237,223,0.06)" }} />
+          ))}
+          {data.weekly.map((w) => {
+            const heightPct = (w.count / maxWeekly) * 100;
+            return (
+              <div key={w.week} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", position: "relative" }}>
+                <span style={{ fontSize: "11px", color: "#E0BC6A", fontFamily: "var(--font-geist-mono), monospace", opacity: w.count > 0 ? 1 : 0.3 }}>
+                  {w.count > 0 ? w.count : ""}
+                </span>
+                <div
+                  style={{
+                    width: "100%",
+                    height: `${heightPct}%`,
+                    minHeight: w.count > 0 ? "4px" : "2px",
+                    background: w.count > 0 ? "linear-gradient(180deg, #E0BC6A, rgba(224,188,106,0.4))" : "rgba(243,237,223,0.08)",
+                    borderRadius: 0,
+                    transition: "height 400ms cubic-bezier(0.16,1,0.3,1)",
+                    position: "relative",
+                  }}
+                  title={`${w.label}: ${w.count} enquiries`}
+                />
+                <span style={{ position: "absolute", bottom: "-22px", fontSize: "9px", color: "rgba(243,237,223,0.4)", fontFamily: "var(--font-geist-mono), monospace", whiteSpace: "nowrap" }}>
+                  {w.label.split(" ")[0]}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Intent + source breakdown */}
+      <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-2" }}>
+        {/* Intent breakdown */}
+        <section className="vsp-card-neutral" style={{ padding: "24px" }}>
+          <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "#F3EDDF", margin: "0 0 16px" }}>
+            By intent
+          </h3>
+          <div className="flex flex-col gap-3">
+            {data.intentBreakdown.map((item) => {
+              const pct = data.total > 0 ? Math.round((item.count / data.total) * 100) : 0;
+              return (
+                <div key={item.intent}>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span style={{ fontSize: "13.5px", color: "rgba(243,237,223,0.82)" }}>{item.label}</span>
+                    <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", color: item.color }}>
+                      {item.count} · {pct}%
+                    </span>
+                  </div>
+                  <div style={{ height: "6px", background: "rgba(243,237,223,0.08)" }}>
+                    <div style={{ height: "100%", width: `${pct}%`, background: item.color, transition: "width 400ms ease" }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Source breakdown */}
+        <section className="vsp-card-neutral" style={{ padding: "24px" }}>
+          <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "#F3EDDF", margin: "0 0 16px" }}>
+            By source
+          </h3>
+          <p style={{ fontSize: "13.5px", color: "rgba(243,237,223,0.72)", lineHeight: 1.6, marginBottom: "16px" }}>
+            The free library is the funnel working as designed.
+          </p>
+          <div className="flex items-center gap-4">
+            <div style={{ position: "relative", width: "100px", height: "100px" }}>
+              {/* Donut chart (CSS conic-gradient) */}
+              {data.total > 0 && (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: "50%",
+                    background: `conic-gradient(#E0BC6A 0% ${(data.fromLessonPage / data.total) * 360}deg, rgba(243,237,223,0.12) ${(data.fromLessonPage / data.total) * 360}deg 360deg)`,
+                    mask: "radial-gradient(transparent 28px, black 30px)",
+                    WebkitMask: "radial-gradient(transparent 28px, black 30px)",
+                  }}
+                />
+              )}
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <span style={{ width: "10px", height: "10px", background: "#E0BC6A" }} />
+                <span style={{ fontSize: "13px", color: "rgba(243,237,223,0.82)" }}>
+                  From lessons: <span style={{ color: "#E0BC6A", fontFamily: "var(--font-geist-mono), monospace" }}>{data.fromLessonPage}</span>
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span style={{ width: "10px", height: "10px", background: "rgba(243,237,223,0.12)" }} />
+                <span style={{ fontSize: "13px", color: "rgba(243,237,223,0.82)" }}>
+                  Other: <span style={{ color: "rgba(243,237,223,0.62)", fontFamily: "var(--font-geist-mono), monospace" }}>{data.fromOther}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* Recent activity */}
+      <section className="vsp-card-neutral" style={{ padding: "24px", marginTop: "24px" }}>
+        <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "#F3EDDF", margin: "0 0 16px" }}>
+          Recent activity
+        </h3>
+        {data.recent.length === 0 ? (
+          <p style={{ fontSize: "13.5px", color: "rgba(243,237,223,0.5)" }}>No enquiries yet.</p>
+        ) : (
+          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "10px" }}>
+            {data.recent.map((r) => (
+              <li key={r.id} className="flex items-center justify-between gap-3" style={{ padding: "8px 0", borderBottom: "1px solid rgba(243,237,223,0.08)" }}>
+                <span style={{ fontSize: "13px", color: "rgba(243,237,223,0.82)" }}>
+                  {r.intent === "lesson" ? "One-to-one Lessons" : r.intent === "booking" ? "Performance Booking" : "Collaboration"}
+                </span>
+                <div className="flex items-center gap-3">
+                  <span style={{ fontSize: "10px", color: r.status === "new" ? "#78DCAA" : r.status === "replied" ? "#C9AEF5" : "rgba(243,237,223,0.5)", fontFamily: "var(--font-geist-mono), monospace", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                    {r.status}
+                  </span>
+                  <span style={{ fontSize: "11px", color: "rgba(243,237,223,0.5)", fontFamily: "var(--font-geist-mono), monospace" }}>
+                    {new Date(r.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }

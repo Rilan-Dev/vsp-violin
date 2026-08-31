@@ -867,3 +867,51 @@ Task: QA the build, generate branded OG image via next/og, add /testimonials pag
 5. **Studio analytics** — a Studio stats tab showing enquiries over time, conversion rate, and source breakdown would give the owner insight. The source-breakdown card already exists; a time-series chart would be the next step.
 6. **Apple touch icon as PNG** — the SVG works for modern browsers but Apple devices prefer a 180×180 PNG apple-touch-icon.
 
+
+---
+Task ID: 23
+Agent: cron-review-round-9 (webDevReview)
+Task: QA the build, add Studio analytics tab, add loading skeletons, update footer with testimonials link.
+
+## Current project status assessment
+- Dev server healthy (port 3000). All 15 routes 200.
+- `bun run lint` clean.
+- agent-browser QA: homepage intact (8 sections, JSON-LD, favicon, OG image), no console errors.
+
+## Completed modifications + verification
+
+### 1. Feature: Studio analytics tab
+- **API:** `GET /api/studio/analytics` — returns:
+  - Total enquiries count.
+  - Weekly buckets: last 12 weeks, each with count + date label.
+  - Intent breakdown: 3 buckets (lesson/booking/collaboration) with count + color.
+  - Status breakdown: new/replied/archived counts.
+  - Response rate: replied / (total - archived) as a percentage.
+  - Source breakdown: from-lesson-page vs other (the "free library is the funnel" insight).
+  - Recent activity: last 5 enquiries with intent + status + date.
+- **AnalyticsTab component** (4th Studio tab, BarChart3 icon):
+  - **4 key metric stat cards:** Total enquiries, Response rate (with % suffix), From lessons, Pending. The StatCard component now accepts an optional `suffix` prop.
+  - **Weekly enquiries bar chart:** CSS-based bars (no chart library) with gold gradient fill, 4 Y-axis grid lines, x-axis week labels, count labels on top of bars. 12 bars showing the last 12 weeks.
+  - **Intent breakdown:** 3 horizontal progress bars (gold/violet-light/success) with label + count + percentage.
+  - **Source breakdown donut chart:** CSS conic-gradient donut showing from-lesson-page vs other, with a legend.
+  - **Recent activity:** last 5 enquiries with intent label + status badge + date.
+- **Verified:** clicked Analytics tab → all sections rendered (key metrics, bar chart, intent breakdown, source donut, recent activity). VLM confirmed: "bar chart showing weekly enquiries" with "June, July, August" data points.
+
+### 2. Feature: Loading skeletons (loading.tsx)
+- `src/app/lessons/[slug]/loading.tsx` — a violet-ground skeleton for lesson pages: breadcrumb, title, lead, CTAs, 8-cell details table, notation + practice track panels, 4-col video grid. Uses the violet/gold theme with subtle alpha placeholders.
+- `src/app/library/loading.tsx` — a skeleton for the library page: header, stat block, search bar, 9-card grid with image placeholders + title bars.
+- These show while the server component fetches from the DB, giving instant visual feedback instead of a blank screen.
+
+### 3. Styling: Footer + StatCard updates
+- Footer "Explore" column now includes "Testimonials" → `/testimonials` (6 links total).
+- `StatCard` component extended with optional `suffix` prop (used by the response-rate metric which shows "0%").
+
+## Unresolved issues / next-phase priorities
+
+1. **Image optimization** — lesson title-card images are loaded from remote blogger URLs. A future task could download + optimize them via `next/image` with a remote loader, or migrate to local `/public/assets/title-cards/`.
+2. **Live Video seeding** — the 7 Live Video posts from the old Blogger site aren't in the structured data. Low priority.
+3. **Mobile deep-testing at 375px** — all responsive CSS is in place, but a true device-emulation pass would catch any remaining edge cases.
+4. **Studio: lesson video/audio management** — the Studio can create lessons with notation URLs but not manage the per-video embeds or audio tracks.
+5. **Apple touch icon as PNG** — the SVG works for modern browsers but Apple devices prefer a 180×180 PNG apple-touch-icon.
+6. **Lesson progress tracker** — a "mark as practised" feature using localStorage would let students track their progress through the 22-lesson library. Not yet built.
+
