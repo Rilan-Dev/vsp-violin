@@ -127,7 +127,13 @@ export function LibraryPreview({
   const visibleCategories = categories
     .filter((c) => c.count > 0)
     .slice()
-    .sort((a, b) => a.order - b.order);
+    .sort((a, b) => b.count - a.count); // sort by count (most lessons first)
+
+  // On the homepage, only show the top 6 categories + "All" + "View all" link
+  // The full category list lives on the /library page
+  const MAX_CHIPS = 6;
+  const homepageCategories = visibleCategories.slice(0, MAX_CHIPS);
+  const showViewAllLink = visibleCategories.length > MAX_CHIPS;
 
   const filtered =
     activeSlug === ALL_SLUG
@@ -246,7 +252,7 @@ export function LibraryPreview({
             active={activeSlug === ALL_SLUG}
             onClick={() => setActiveSlug(ALL_SLUG)}
           />
-          {visibleCategories.map((cat) => (
+          {homepageCategories.map((cat) => (
             <Chip
               key={cat.slug}
               label={`${cat.name} ${cat.count}`}
@@ -254,6 +260,25 @@ export function LibraryPreview({
               onClick={() => setActiveSlug(cat.slug)}
             />
           ))}
+          {showViewAllLink && (
+            <a
+              href="/library"
+              className="transition-colors hover:text-gold-hover"
+              style={{
+                fontFamily: "var(--font-geist-mono), monospace",
+                fontSize: "10px",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "#E0BC6A",
+                padding: "7px 13px",
+                border: "1px solid rgba(224,188,106,0.34)",
+                whiteSpace: "nowrap",
+                textDecoration: "none",
+              }}
+            >
+              +{visibleCategories.length - MAX_CHIPS} more
+            </a>
+          )}
         </div>
       </div>
 

@@ -336,16 +336,15 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
             })}
           </div>
         ))}
-        {/* Fifth column: page links */}
-        <div className="flex flex-col gap-2.5 vsp-mega-more">
-          <span className="vsp-eyebrow">More</span>
+        {/* Fifth column: page links (hidden on mobile, uses hamburger drawer) */}
+        <div className="flex flex-col gap-2.5 vsp-mega-more hidden md:flex">
+          <span className="vsp-eyebrow">Pages</span>
           {[
             { href: "/learn", label: "Learn the Violin" },
             { href: "/about", label: "The Guru" },
             { href: "/honours", label: "Honours" },
             { href: "/stage", label: "Stage" },
             { href: "/testimonials", label: "Testimonials" },
-            { href: "/#enrol", label: "Enrol" },
           ].map((p) => (
             <a
               key={p.href}

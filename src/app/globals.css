@@ -247,28 +247,25 @@
   border-color: #E0BC6A;
 }
 
-/* ===== Mega-menu grid (horizontal on desktop, 2-col on mobile) ===== */
+/* ===== Mega-menu grid (horizontal on desktop, hidden on mobile) ===== */
 .vsp-mega-menu {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
 }
 @media (min-width: 768px) {
   .vsp-mega-menu {
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 28px;
   }
-  /* Hide the "More" column on desktop — the main nav already has these links */
   .vsp-mega-more {
     display: flex;
   }
 }
 @media (max-width: 767px) {
-  /* On mobile, the mega-menu is part of the Sheet drawer so this class
-     is rarely used, but if it does show, stack as 2 columns max */
+  /* On mobile, the mega-menu dropdown is hidden — use hamburger drawer */
   .vsp-mega-menu {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
+    display: none !important;
   }
 }
 
