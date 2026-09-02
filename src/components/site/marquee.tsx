@@ -11,6 +11,7 @@ const ITEMS: string[] = [
   "Students across USA, UK, Canada, Gulf, Australia",
 ];
 
+// Outer section: full-bleed background + borders (spans 100% width)
 const sectionStyle: CSSProperties = {
   borderTop: "1px solid rgba(224, 188, 106, 0.26)",
   borderBottom: "1px solid rgba(224, 188, 106, 0.26)",
@@ -21,6 +22,15 @@ const sectionStyle: CSSProperties = {
   contain: "layout style",
 };
 
+// Inner wrapper: same max-width + padding as all other sections
+const innerStyle: CSSProperties = {
+  maxWidth: "1440px",
+  margin: "0 auto",
+  padding: "0 32px",
+  overflow: "hidden",
+};
+
+// Track: the scrolling flex container (2x duplicated groups)
 const trackStyle: CSSProperties = {
   display: "flex",
   width: "max-content",
@@ -28,10 +38,11 @@ const trackStyle: CSSProperties = {
   willChange: "transform",
 };
 
+// Group: one copy of all items
 const groupStyle: CSSProperties = {
   display: "flex",
   alignItems: "center",
-  padding: "18px 32px",
+  padding: "18px 0",
   whiteSpace: "nowrap",
   flexShrink: 0,
 };
@@ -65,12 +76,14 @@ function MarqueeGroup() {
 export function Marquee() {
   return (
     <section style={sectionStyle} aria-label="Career highlights and credentials">
-      <div className="vsp-marquee-track" style={trackStyle}>
-        <div style={groupStyle} aria-hidden={false}>
-          <MarqueeGroup />
-        </div>
-        <div className="vsp-marquee-dup" style={groupStyle} aria-hidden={true}>
-          <MarqueeGroup />
+      <div style={innerStyle}>
+        <div className="vsp-marquee-track" style={trackStyle}>
+          <div style={groupStyle} aria-hidden={false}>
+            <MarqueeGroup />
+          </div>
+          <div className="vsp-marquee-dup" style={groupStyle} aria-hidden={true}>
+            <MarqueeGroup />
+          </div>
         </div>
       </div>
     </section>
