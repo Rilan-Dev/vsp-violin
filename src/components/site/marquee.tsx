@@ -1,19 +1,13 @@
-import type { CSSProperties } from "react";
+"use client";
 
-/**
- * Credibility Marquee — a full-bleed band of credentials that scrolls
- * horizontally on a 36s linear loop. The track is duplicated; the second
- * copy carries `vsp-marquee-dup` + `aria-hidden="true"` so the loop is
- * visually seamless and accessible. Reduced-motion CSS (in globals.css)
- * freezes the track, wraps it, and hides the duplicate automatically.
- */
+import type { CSSProperties } from "react";
 
 const ITEMS: string[] = [
   "All India Radio — Trichy, Puducherry, Karaikal",
   "Thyagaraja Aradhana since 1992",
   "Five TV channels",
-  "USA tours 2013–15, 2017–19",
-  "CCRT Cultural Talent Scholarship 1994–2000",
+  "USA tours 2013-15, 2017-19",
+  "CCRT Cultural Talent Scholarship 1994-2000",
   "37 years on stage",
   "5,000+ live performances",
   "Students across USA, UK, Canada, Gulf, Australia",
@@ -25,12 +19,15 @@ const sectionStyle: CSSProperties = {
   background: "rgba(37, 26, 66, 0.55)",
   overflow: "hidden",
   width: "100%",
+  position: "relative",
+  contain: "layout style",
 };
 
 const trackStyle: CSSProperties = {
   display: "flex",
   width: "max-content",
   alignItems: "center",
+  willChange: "transform",
 };
 
 const groupStyle: CSSProperties = {
@@ -38,6 +35,7 @@ const groupStyle: CSSProperties = {
   alignItems: "center",
   padding: "18px 0",
   whiteSpace: "nowrap",
+  flexShrink: 0,
 };
 
 const itemStyle: CSSProperties = {
@@ -57,11 +55,9 @@ const separatorStyle: CSSProperties = {
 
 function MarqueeGroup() {
   return ITEMS.map((text, i) => (
-    <span key={i} style={{ display: "inline-flex", alignItems: "center" }}>
+    <span key={i} style={{ display: "inline-flex", alignItems: "center", flexShrink: 0 }}>
       <span style={itemStyle}>{text}</span>
-      <span style={separatorStyle} aria-hidden="true">
-        ✦
-      </span>
+      <span style={separatorStyle} aria-hidden="true">{"\\u2726"}</span>
     </span>
   ));
 }
