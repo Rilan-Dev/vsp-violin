@@ -1,9 +1,9 @@
 import { db } from "@/lib/db";
 
-export const dynamic = "force-dynamic";
+// Statically generate the RSS feed at build time.
+// On Vercel, SQLite is only available at build time (not in serverless runtime).
+export const revalidate = 3600; // re-generate every hour (ISR)
 
-/** GET /feed.xml — RSS 2.0 feed of published lessons.
- * Lets diaspora parents subscribe to new lessons via RSS readers. */
 export async function GET() {
   const lessons = await db.lesson.findMany({
     where: { status: "published" },
@@ -36,7 +36,7 @@ export async function GET() {
     <title>Violin Suka Pavalan — Free Carnatic Violin Lessons</title>
     <link>${base}/library</link>
     <atom:link href="${base}/feed.xml" rel="self" type="application/rss+xml" />
-    <description>22 free Carnatic violin notation lessons — Tamil and English notation, violin and vocal video, practice tracks in five sruthis.</description>
+    <description>22 free Carnatic violin notation lessons — Tamil and English notation, violin and vocal video, and practice tracks in five sruthis.</description>
     <language>en</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
 ${items}

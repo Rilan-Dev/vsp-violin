@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export async function GET() {
   const lessons = await db.lesson.findMany({
@@ -34,7 +34,7 @@ export async function GET() {
     <title>Violin Suka Pavalan — Free Carnatic Violin Lessons</title>
     <link>${base}/library</link>
     <atom:link href="${base}/api/feed" rel="self" type="application/rss+xml" />
-    <description>22 free Carnatic violin notation lessons — Tamil and English notation, violin and vocal video, and practice tracks in five sruthis.</description>
+    <description>22 free Carnatic violin notation lessons.</description>
     <language>en</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
 ${items}
