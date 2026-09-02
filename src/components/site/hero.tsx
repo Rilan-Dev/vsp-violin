@@ -34,9 +34,9 @@ export function Hero() {
       aria-label="Hero — Violin Suka Pavalan"
       className="vsp-grain relative overflow-hidden"
       style={{
-        minHeight: "100vh",
-        paddingTop: "120px", // clears the fixed nav
-        paddingBottom: "64px",
+        minHeight: "auto",
+        paddingTop: "100px",
+        paddingBottom: "48px",
         display: "flex",
         alignItems: "center",
       }}
@@ -82,11 +82,11 @@ export function Hero() {
       {/* ===== Hero content ===== */}
       <div
         className="relative mx-auto w-full"
-        style={{ maxWidth: "1440px", padding: "0 32px", zIndex: 1 }}
+        style={{ maxWidth: "1440px", padding: "0 20px", zIndex: 1 }}
       >
         <div
           className="grid grid-cols-1 min-[720px]:grid-cols-[1fr_0.92fr]"
-          style={{ gap: "48px" }}
+          style={{ gap: "32px" }}
         >
           {/* ===== LEFT COLUMN ===== */}
           <div>
@@ -184,7 +184,7 @@ export function Hero() {
                 style={{ justifyContent: "space-between", gap: "20px" }}
               >
                 {STATS.map((s) => (
-                  <div key={s.label} style={{ minWidth: "118px" }}>
+                  <div key={s.label} style={{ minWidth: "80px" }}>
                     <div
                       className="text-[30px] leading-none lg:text-[44px]"
                       style={{
@@ -215,7 +215,7 @@ export function Hero() {
           {/* ===== RIGHT COLUMN — arch portrait ===== */}
           <div className="flex justify-center min-[720px]:justify-end">
             <div
-              className="vsp-rise relative w-full max-w-[380px] h-[460px] lg:max-w-[460px] lg:h-[600px]"
+              className="vsp-rise relative w-full max-w-[280px] h-[340px] sm:max-w-[380px] sm:h-[460px] lg:max-w-[460px] lg:h-[600px]"
               style={{ animationDelay: "440ms" }}
             >
               <div

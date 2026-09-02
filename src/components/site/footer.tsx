@@ -17,7 +17,7 @@ export function Footer() {
         className="mx-auto"
         style={{
           maxWidth: "1440px",
-          padding: "56px 32px 40px",
+          padding: "40px 20px 32px",
         }}
       >
         <div

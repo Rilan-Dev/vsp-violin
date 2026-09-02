@@ -387,7 +387,7 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
                 </p>
               </div>
             ) : (
-              <div className="grid gap-4" style={{ gridTemplateColumns: "1fr 1.4fr" }}>
+              <div className="grid gap-4 grid-cols-1 lg:grid-cols-[1fr_1.4fr]">
                 {/* Enquiry list */}
                 <div className="vsp-scroll flex flex-col gap-2" style={{ maxHeight: "70vh", overflowY: "auto", paddingRight: "8px" }}>
                   {filteredEnquiries.map((e) => {

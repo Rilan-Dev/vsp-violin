@@ -120,7 +120,7 @@ export function PracticeRoom() {
       ref={ref}
       style={{
         background: "linear-gradient(180deg, #1A1234 0%, #241A44 100%)",
-        padding: "96px 32px",
+        padding: "48px 20px",
         borderTop: "1px solid rgba(224,188,106,0.18)",
         borderBottom: "1px solid rgba(224,188,106,0.18)",
       }}
@@ -130,7 +130,7 @@ export function PracticeRoom() {
         style={{ maxWidth: "1440px", margin: "0 auto" }}
       >
         <div
-          className="grid grid-cols-1 min-[720px]:grid-cols-[1fr_0.92fr] gap-10 min-[720px]:gap-16"
+          className="grid grid-cols-1 min-[720px]:grid-cols-[1fr_0.92fr] gap-6 min-[720px]:gap-10 min-[1024px]:gap-16"
           style={{ alignItems: "center" }}
         >
           {/* ===================== LEFT COLUMN — the argument ===================== */}
@@ -140,7 +140,7 @@ export function PracticeRoom() {
             <h2
               style={{
                 fontFamily: "var(--font-marcellus), serif",
-                fontSize: "44px",
+                fontSize: "28px",
                 lineHeight: 1.1,
                 letterSpacing: "-0.01em",
                 color: "#F3EDDF",
@@ -153,7 +153,7 @@ export function PracticeRoom() {
 
             <p
               style={{
-                fontSize: "17px",
+                fontSize: "15px",
                 lineHeight: 1.7,
                 color: "rgba(243,237,223,0.82)",
                 maxWidth: "540px",
@@ -261,7 +261,7 @@ export function PracticeRoom() {
                 <div
                   style={{
                     fontFamily: "var(--font-marcellus), serif",
-                    fontSize: "32px",
+                    fontSize: "24px",
                     color: "#E0BC6A",
                     letterSpacing: "0.02em",
                     lineHeight: 1,

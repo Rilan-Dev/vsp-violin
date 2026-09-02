@@ -305,7 +305,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
             {/* Active sruthi readout */}
             <div style={{ marginBottom: "16px" }}>
               <span className="vsp-eyebrow">Active sruthi</span>
-              <p style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "32px", color: "#E0BC6A", marginTop: "4px" }}>
+              <p style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "24px", color: "#E0BC6A", marginTop: "4px" }}>
                 {sruthi.split("-")[0]} <span style={{ fontSize: "20px", color: "rgba(243,237,223,0.62)" }}>— {sruthi.split("-")[1]}</span>
               </p>
               <p style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)", marginTop: "4px" }}>
@@ -314,7 +314,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
             </div>
 
             {/* Sruthi buttons */}
-            <div role="group" aria-label="Sruthi" className="grid" style={{ gridTemplateColumns: "repeat(5, minmax(0,1fr))", gap: "6px", marginBottom: "14px" }}>
+            <div role="group" aria-label="Sruthi" className="grid grid-cols-3 sm:grid-cols-5" style={{ gap: "6px", marginBottom: "14px" }}>
               {SRUTHIS.map((s) => (
                 <button
                   key={s}
@@ -339,7 +339,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
             </div>
 
             {/* Speed buttons */}
-            <div role="group" aria-label="Speed" className="grid" style={{ gridTemplateColumns: "repeat(4, minmax(0,1fr))", gap: "6px", marginBottom: "20px" }}>
+            <div role="group" aria-label="Speed" className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "6px", marginBottom: "20px" }}>
               {SPEEDS.map((sp) => (
                 <button
                   key={sp}
