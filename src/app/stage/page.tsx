@@ -9,7 +9,8 @@ export const metadata: Metadata = {
   title: "Stage — 5,000+ performances by Suka Pavalan",
   description:
     "Five thousand live performances. All India Radio since 1992. Thyagaraja Aradhana every year. USA tours 2013-19. The public record of a 37-year Carnatic violin career.",
-  openGraph: {
+  alternates: { canonical: "/stage" },
+    openGraph: {
     title: "Stage — Violin Suka Pavalan",
     description: "5,000+ performances. AIR since 1992. USA tours.",
     type: "website",

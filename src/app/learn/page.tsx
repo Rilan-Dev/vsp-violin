@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   title: "Learn the Violin — the instrument, the strings, the technique",
   description:
     "A free introduction to the violin: its history, the four strings (G, D, A, E), string materials (gut, steel, synthetic), and finger placement. The starting point for Suka Pavalan's Carnatic violin lessons.",
-  openGraph: {
+  alternates: { canonical: "/learn" },
+    openGraph: {
     title: "Learn the Violin — Violin Suka Pavalan",
     description: "The instrument, the strings, the technique. A free introduction.",
     type: "article",

@@ -7,7 +7,8 @@ export const metadata: Metadata = {
   title: "Library — 22 free Carnatic violin notation lessons",
   description:
     "Every Carnatic violin lesson Suka Pavalan teaches, given away free. Tamil and English notation PDFs, violin and vocal video, and practice tracks in five sruthis. Browse by category, raga, or difficulty.",
-  openGraph: {
+  alternates: { canonical: "/library" },
+    openGraph: {
     title: "The Library — Violin Suka Pavalan",
     description: "22 free Carnatic violin notation lessons. Free forever.",
     type: "website",

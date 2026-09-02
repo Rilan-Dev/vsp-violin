@@ -32,6 +32,8 @@ export async function generateMetadata({
   return {
     title,
     description,
+    alternates: { canonical: `/lessons/${lesson.id}` },
+    keywords: [lesson.title, lesson.category.replace(/-/g, " "), ...(lesson.raga ? [lesson.raga] : []), ...(lesson.thala ? [lesson.thala] : []), "Carnatic violin lesson", "free notation", "Suka Pavalan"],
     openGraph: {
       title,
       description,

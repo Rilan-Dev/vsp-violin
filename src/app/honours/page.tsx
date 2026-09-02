@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   title: "Honours — 12 titles conferred on Suka Pavalan",
   description:
     "A journey adorned with prestigious titles — Violin Ratna, Vallalar, Violin Chakravarthy, and nine more honorifics awarded over a 37-year career. Each title is a testament to excellence and lasting impact.",
-  openGraph: {
+  alternates: { canonical: "/honours" },
+    openGraph: {
     title: "Honours — Violin Suka Pavalan",
     description: "12 honorific titles + 3 prestigious accolades across 37 years.",
     type: "website",

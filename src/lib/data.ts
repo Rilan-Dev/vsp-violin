@@ -185,7 +185,16 @@ export async function getRelatedLessons(currentId: string, raga: string | null, 
     });
     return [...byRaga, ...byCategory];
   }
-  // No raga — just same category
+  // No raga — check if this is a basic lesson, then look across all 5 basics
+  if (BASICS_SLUGS.includes(category)) {
+    return db.lesson.findMany({
+      where: { status: "published", category: { in: BASICS_SLUGS }, id: { not: currentId } },
+      orderBy: [{ level: "asc" }, { date: "desc" }],
+      take: 4,
+      select: { id: true, title: true, titleTamil: true, category: true, raga: true, titleCard: true },
+    });
+  }
+  // No raga, not basics — just same category
   return db.lesson.findMany({
     where: { status: "published", category, id: { not: currentId } },
     orderBy: { date: "desc" },

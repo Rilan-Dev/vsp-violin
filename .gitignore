@@ -52,3 +52,22 @@ prompt
 server.log
 # Skills directory
 /skills/db/
+
+# Skills directory (not part of the project)
+skills/
+
+# Dev server artifacts
+.zscripts/dev.log
+.zscripts/dev.pid
+
+# Database
+db/
+
+# Upload/extracted content (reference only)
+upload/
+download/
+tool-results/
+
+# Prisma seed data (large JSON files)
+prisma/lessons-seed.json
+prisma/site-content-seed.json

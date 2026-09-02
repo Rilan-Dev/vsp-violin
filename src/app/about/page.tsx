@@ -9,7 +9,8 @@ export const metadata: Metadata = {
   title: "The Guru — Suka Pavalan, Carnatic violinist since 1990",
   description:
     "A 37-year Carnatic violinist and teacher from Karaikal, Puducherry. Learn the lineage, the qualifications, the tours, and the mission of Suka Pavalan — violinist, music educator, and guru.",
-  openGraph: {
+  alternates: { canonical: "/about" },
+    openGraph: {
     title: "The Guru — Violin Suka Pavalan",
     description: "37 years on stage. A lineage kept in the hands.",
     type: "profile",

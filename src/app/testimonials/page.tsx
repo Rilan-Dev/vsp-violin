@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   title: "Testimonials — students and peers on Suka Pavalan",
   description:
     "Diaspora parents, adult self-learners, and fellow musicians — in their own words. Four testimonials from across the world on Suka Pavalan's teaching and artistry.",
-  openGraph: {
+  alternates: { canonical: "/testimonials" },
+    openGraph: {
     title: "Testimonials — Violin Suka Pavalan",
     description: "Students and peers, in their own words.",
     type: "website",

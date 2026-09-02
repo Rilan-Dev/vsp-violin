@@ -14,14 +14,10 @@ const EnquirySchema = z.object({
   message: z.string().min(1, "Message is required").max(4000),
 });
 
-export async function GET() {
-  const enquiries = await db.enquiry.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 50,
-  });
-  return NextResponse.json({ enquiries });
-}
-
+/**
+ * POST /api/enquiries — public route for the enrol form.
+ * No GET route — enquiries contain personal data, accessible only via /api/studio/enquiries.
+ */
 export async function POST(req: NextRequest) {
   let body: unknown;
   try {
