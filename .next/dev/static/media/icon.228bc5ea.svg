@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#16102A"/>
+  <!-- Violin scroll / music note motif in gold -->
+  <g fill="none" stroke="#E0BC6A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Violin body outline (simplified) -->
+    <path d="M32 12 C28 12, 26 16, 26 22 C26 28, 22 30, 22 38 C22 46, 27 52, 32 52 C37 52, 42 46, 42 38 C42 30, 38 28, 38 22 C38 16, 36 12, 32 12 Z"/>
+    <!-- F-holes -->
+    <path d="M28 34 C27 36, 27 40, 28 42" stroke-width="1.5"/>
+    <path d="M36 34 C37 36, 37 40, 36 42" stroke-width="1.5"/>
+    <!-- Scroll at top -->
+    <circle cx="32" cy="14" r="2" fill="#E0BC6A"/>
+  </g>
+</svg>
