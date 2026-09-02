@@ -605,3 +605,22 @@
   /* Add extra clearance */
   #top { padding-top: 85px !important; }
 }
+
+/* Hide scrollbar for mobile chip rail (clean horizontal scroll) */
+@media (max-width: 767px) {
+  .md\:hidden::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Mobile chip rail — horizontal scroll, no wrapping, hidden scrollbar */
+.vsp-chip-rail {
+  display: flex;
+}
+.vsp-chip-rail::-webkit-scrollbar {
+  display: none;
+}
+.vsp-chip-rail {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}

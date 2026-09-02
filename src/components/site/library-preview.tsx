@@ -129,11 +129,15 @@ export function LibraryPreview({
     .slice()
     .sort((a, b) => b.count - a.count); // sort by count (most lessons first)
 
-  // On the homepage, only show the top 6 categories + "All" + "View all" link
-  // The full category list lives on the /library page
-  const MAX_CHIPS = 6;
-  const homepageCategories = visibleCategories.slice(0, MAX_CHIPS);
-  const showViewAllLink = visibleCategories.length > MAX_CHIPS;
+  // On the homepage, show limited categories. Full list on /library page.
+  // Desktop: 6 chips + "All" + "+N more" link (wraps naturally)
+  // Mobile: horizontal scrollable rail (no wrapping, snap scroll)
+  const MAX_CHIPS_DESKTOP = 6;
+  const MAX_CHIPS_MOBILE = 4;
+  const homepageCategories = visibleCategories.slice(0, MAX_CHIPS_DESKTOP);
+  const mobileCategories = visibleCategories.slice(0, MAX_CHIPS_MOBILE);
+  const showViewAllLink = visibleCategories.length > MAX_CHIPS_DESKTOP;
+  const showMobileMore = visibleCategories.length > MAX_CHIPS_MOBILE;
 
   const filtered =
     activeSlug === ALL_SLUG
@@ -234,7 +238,58 @@ export function LibraryPreview({
 
       {/* ---- Filter chips ------------------------------------------ */}
       <div style={{ marginTop: 34, marginBottom: 26 }}>
-        <div className="flex flex-wrap items-center" style={{ gap: 7 }}>
+        {/* Mobile: horizontal scrollable chip rail (no wrapping) */}
+        <div
+          className="vsp-chip-rail md:hidden"
+          style={{
+            gap: "7px",
+            overflowX: "auto",
+            scrollSnapType: "x mandatory",
+            WebkitOverflowScrolling: "touch",
+            paddingBottom: "4px",
+            marginLeft: "-4px",
+            paddingLeft: "4px",
+            marginRight: "-4px",
+            paddingRight: "4px",
+          }}
+        >
+          <Chip
+            label={allLabel}
+            active={activeSlug === ALL_SLUG}
+            onClick={() => setActiveSlug(ALL_SLUG)}
+          />
+          {mobileCategories.map((cat) => (
+            <Chip
+              key={cat.slug}
+              label={`${cat.name} ${cat.count}`}
+              active={activeSlug === cat.slug}
+              onClick={() => setActiveSlug(cat.slug)}
+            />
+          ))}
+          {showMobileMore && (
+            <a
+              href="/library"
+              style={{
+                fontFamily: "var(--font-geist-mono), monospace",
+                fontSize: "10px",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "#E0BC6A",
+                padding: "7px 13px",
+                border: "1px solid rgba(224,188,106,0.34)",
+                whiteSpace: "nowrap",
+                textDecoration: "none",
+                scrollSnapAlign: "start",
+                flexShrink: 0,
+              }}
+            >
+              All categories
+            </a>
+          )}
+        </div>
+
+        {/* Desktop: wrapped chips with "+N more" link */}
+        <div className="hidden md:flex flex-wrap items-center" style={{ gap: 7 }}>
           <span
             className="font-mono"
             style={{
@@ -276,7 +331,7 @@ export function LibraryPreview({
                 textDecoration: "none",
               }}
             >
-              +{visibleCategories.length - MAX_CHIPS} more
+              +{visibleCategories.length - MAX_CHIPS_DESKTOP} more
             </a>
           )}
         </div>
@@ -370,6 +425,9 @@ function Chip({
         textTransform: "uppercase",
         cursor: "pointer",
         borderRadius: 0,
+        whiteSpace: "nowrap",
+        flexShrink: 0,
+        scrollSnapAlign: "start",
       }}
     >
       {label}
