@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useReducer } from "react";
+import { useCallback, useEffect, useReducer, useRef } from "react";
 import { useReveal } from "./use-reveal";
 
 /* ---------------------------------------------------------------------------
@@ -8,6 +8,11 @@ import { useReveal } from "./use-reveal";
  *
  * Five sruthis × three speeds × two voices = 15 tracks per lesson,
  * collapsed into one dial. Square, precise, gold-on-violet, mono numbers.
+ *
+ * The play button generates a real drone tone using the Web Audio API
+ * at the selected sruthi pitch. The speed controls the tempo of a
+ * rhythmic pulsing overlay. This gives genuine audio feedback —
+ * the student hears the actual pitch they selected.
  * ------------------------------------------------------------------------- */
 
 type Voice = "violin" | "vocal";
@@ -31,6 +36,28 @@ type Action =
 
 const SRUTHI_OPTIONS: Sruthi[] = ["C-1", "D#-2.5", "F-4", "G#-5.5", "A#-6.5"];
 
+// Map sruthi labels to actual frequencies (Hz) — the note + position
+// C-1 = C at kattai 1 (approx 261.63 Hz)
+// D#-2.5 = D# at kattai 2.5 (approx 311.13 Hz)
+// F-4 = F at kattai 4 (approx 349.23 Hz)
+// G#-5.5 = G# at kattai 5.5 (approx 415.30 Hz)
+// A#-6.5 = A# at kattai 6.5 (approx 466.16 Hz)
+const SRUTHI_FREQ: Record<Sruthi, number> = {
+  "C-1": 261.63,
+  "D#-2.5": 311.13,
+  "F-4": 349.23,
+  "G#-5.5": 415.3,
+  "A#-6.5": 466.16,
+};
+
+// Speed affects the pulse rate (beats per second)
+const SPEED_PULSE_MS: Record<Speed, number> = {
+  "1st": 1200,   // slow — 1 beat per 1.2s
+  "2nd": 600,    // medium — 1 beat per 0.6s
+  "3rd": 300,    // fast — 1 beat per 0.3s
+  thrikaalam: 150, // very fast — 1 beat per 0.15s
+};
+
 const SPEED_OPTIONS: { id: Speed; label: string }[] = [
   { id: "1st", label: "1st Speed" },
   { id: "2nd", label: "2nd Speed" },
@@ -49,7 +76,7 @@ const LEAD =
 
 const TOTAL_SECONDS = 30;
 const TICK_MS = 500;
-const TICK_STEP = 2.5; // 2.5% per 500ms → 100% in 20s of ticks, scaled to 30s clock
+const TICK_STEP = (TICK_MS / (TOTAL_SECONDS * 1000)) * 100;
 
 const initialState: State = {
   voice: "violin",
@@ -62,14 +89,12 @@ const initialState: State = {
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "SET_VOICE":
-      // Switching tracks resets the clock. Playback continues if it was running.
       return { ...state, voice: action.voice, progress: 0 };
     case "SET_SRUTHI":
       return { ...state, sruthi: action.sruthi, progress: 0 };
     case "SET_SPEED":
       return { ...state, speed: action.speed, progress: 0 };
     case "TOGGLE_PLAY":
-      // If we're at the end, restart from zero on play.
       if (state.progress >= 100) {
         return { ...state, playing: true, progress: 0 };
       }
@@ -77,7 +102,6 @@ function reducer(state: State, action: Action): State {
     case "TICK": {
       const next = state.progress + TICK_STEP;
       if (next >= 100) {
-        // Hold at the end and stop. The next play press restarts from 0.
         return { ...state, progress: 100, playing: false };
       }
       return { ...state, progress: next };
@@ -103,13 +127,124 @@ export function PracticeRoom() {
   const { ref, visible } = useReveal<HTMLElement>({ threshold: 0.12 });
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Tick the progress bar while playing. Cleared on pause, on completion,
-  // and on unmount.
+  // Web Audio API refs
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const oscRef = useRef<OscillatorNode | null>(null);
+  const gainRef = useRef<GainNode | null>(null);
+  const pulseIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // ---- Audio functions (declared before effects that use them) ----
+  const stopAudio = useCallback(() => {
+    if (pulseIntervalRef.current) {
+      clearInterval(pulseIntervalRef.current);
+      pulseIntervalRef.current = null;
+    }
+    if (gainRef.current && audioCtxRef.current) {
+      try {
+        gainRef.current.gain.linearRampToValueAtTime(0, audioCtxRef.current.currentTime + 0.15);
+      } catch { /* context closed */ }
+    }
+    if (oscRef.current) {
+      try {
+        oscRef.current.stop((audioCtxRef.current?.currentTime ?? 0) + 0.2);
+      } catch { /* already stopped */ }
+      oscRef.current = null;
+    }
+    gainRef.current = null;
+  }, []);
+
+  const restartPulse = useCallback(() => {
+    if (pulseIntervalRef.current) {
+      clearInterval(pulseIntervalRef.current);
+      pulseIntervalRef.current = null;
+    }
+    if (!gainRef.current || !audioCtxRef.current) return;
+    const pulseMs = SPEED_PULSE_MS[state.speed];
+    let pulseOn = true;
+    pulseIntervalRef.current = setInterval(() => {
+      if (!gainRef.current || !audioCtxRef.current) return;
+      const target = pulseOn ? 0.12 : 0.04;
+      gainRef.current.gain.linearRampToValueAtTime(target, audioCtxRef.current.currentTime + pulseMs / 2000);
+      pulseOn = !pulseOn;
+    }, pulseMs);
+  }, [state.speed]);
+
+  const startAudio = useCallback(() => {
+    try {
+      if (!audioCtxRef.current) {
+        audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      const ctx = audioCtxRef.current;
+      if (ctx.state === "suspended") ctx.resume();
+
+      const freq = SRUTHI_FREQ[state.sruthi];
+      const osc = ctx.createOscillator();
+      osc.type = state.voice === "violin" ? "sawtooth" : "sine";
+      osc.frequency.setValueAtTime(freq, ctx.currentTime);
+
+      if (state.voice === "violin") {
+        osc.detune.setValueAtTime(5, ctx.currentTime);
+      }
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.3);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+
+      oscRef.current = osc;
+      gainRef.current = gain;
+      restartPulse();
+    } catch (e) {
+      console.warn("Web Audio API not available:", e);
+    }
+  }, [state.sruthi, state.voice, restartPulse]);
+
+  // ---- Effects ----
+  // Tick the progress bar while playing
   useEffect(() => {
     if (!state.playing) return;
     const id = setInterval(() => dispatch({ type: "TICK" }), TICK_MS);
     return () => clearInterval(id);
   }, [state.playing]);
+
+  // Start/stop audio when play state changes
+  useEffect(() => {
+    if (state.playing) {
+      startAudio();
+    } else {
+      stopAudio();
+    }
+    return () => stopAudio();
+  }, [state.playing, startAudio, stopAudio]);
+
+  // Update frequency when sruthi changes (if playing)
+  useEffect(() => {
+    if (oscRef.current && state.playing) {
+      const freq = SRUTHI_FREQ[state.sruthi];
+      oscRef.current.frequency.setValueAtTime(freq, audioCtxRef.current?.currentTime ?? 0);
+    }
+  }, [state.sruthi]);
+
+  // Update pulse rate when speed changes (if playing)
+  useEffect(() => {
+    if (state.playing) {
+      restartPulse();
+    }
+  }, [state.speed, state.playing, restartPulse]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      stopAudio();
+      if (audioCtxRef.current) {
+        audioCtxRef.current.close();
+        audioCtxRef.current = null;
+      }
+    };
+  }, [stopAudio]);
 
   const activeSpeedLabel =
     SPEED_OPTIONS.find((s) => s.id === state.speed)?.label ?? "";
@@ -373,7 +508,7 @@ export function PracticeRoom() {
                 borderTop: "1px solid rgba(243,237,223,0.16)",
               }}
             >
-              {/* Now playing line — Geist Mono uppercase */}
+              {/* Now playing line */}
               <div
                 style={{
                   fontFamily: "var(--font-geist-mono), monospace",
@@ -399,6 +534,7 @@ export function PracticeRoom() {
                     display: "inline-block",
                     flexShrink: 0,
                     transition: "background 200ms ease",
+                    animation: state.playing ? "vsp-pulse-gold 1s ease-in-out infinite" : "none",
                   }}
                 />
                 <span>
