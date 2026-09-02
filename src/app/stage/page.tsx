@@ -23,7 +23,7 @@ export default function StagePage() {
 
   return (
     <PageShell>
-    <div style={{ color: "#F3EDDF", paddingTop: "80px" }}>
+    <div style={{ color: "#F3EDDF", paddingTop: "90px" }}>
       <div className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1200px", paddingTop: "40px", paddingBottom: "80px" }}>
         {/* Header */}
         <span className="vsp-eyebrow">Stage · the public record</span>

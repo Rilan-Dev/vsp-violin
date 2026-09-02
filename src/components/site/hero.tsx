@@ -35,7 +35,7 @@ export function Hero() {
       className="vsp-grain relative overflow-hidden"
       style={{
         minHeight: "auto",
-        paddingTop: "100px",
+        paddingTop: "90px",
         paddingBottom: "48px",
         display: "flex",
         alignItems: "center",

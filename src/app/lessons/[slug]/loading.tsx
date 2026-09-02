@@ -4,7 +4,7 @@
  */
 export default function LessonLoading() {
   return (
-    <div style={{ background: "#16102A", minHeight: "100vh", color: "#F3EDDF", paddingTop: "80px" }}>
+    <div style={{ background: "#16102A", minHeight: "100vh", color: "#F3EDDF", paddingTop: "90px" }}>
       <div className="mx-auto" style={{ maxWidth: "1280px", padding: "32px 32px 0" }}>
         {/* Breadcrumb skeleton */}
         <div style={{ height: "14px", width: "300px", marginBottom: "24px", background: "rgba(243,237,223,0.08)" }} />

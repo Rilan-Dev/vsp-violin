@@ -33,7 +33,7 @@ export default function AboutPage() {
 
   return (
     <PageShell>
-    <div style={{ color: "#F3EDDF", paddingTop: "80px" }}>
+    <div style={{ color: "#F3EDDF", paddingTop: "90px" }}>
       <div className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1100px", paddingTop: "40px", paddingBottom: "80px" }}>
         {/* Header */}
         <div className="grid gap-10 lg:grid-cols-[1fr_0.8fr]" style={{ alignItems: "start", marginBottom: "64px" }}>

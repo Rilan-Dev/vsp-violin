@@ -515,98 +515,96 @@
   }
 }
 
-/* ===== Mobile Responsive Utilities ===== */
-/* Reduce sizes on mobile (≤640px), scale up for tablet/desktop */
-/* These classes work alongside Tailwind's responsive utilities */
+/* ===== Mobile Responsive Utilities (properly scoped) ===== */
 
-/* --- Mobile font size overrides (≤640px) --- */
+/* --- Mobile (≤640px) --- */
 @media (max-width: 640px) {
-  /* Headings: reduce clamp-based sizes */
-  h1 { font-size: 28px !important; line-height: 1.12 !important; }
-  h2 { font-size: 22px !important; line-height: 1.15 !important; }
-  h3 { font-size: 18px !important; line-height: 1.2 !important; }
+  /* Content headings: reduce sizes */
+  h1 { font-size: 26px !important; line-height: 1.15 !important; }
+  h2 { font-size: 21px !important; line-height: 1.2 !important; }
+  h3 { font-size: 17px !important; line-height: 1.25 !important; }
 
-  /* Body text: keep readable but compact */
-  p { font-size: 14px !important; line-height: 1.6 !important; }
+  /* Content body paragraphs only (not nav/button/form text) */
+  .vsp-card-neutral p, .vsp-card-gold p, .vsp-card-neutral .swara-line, .vsp-card-gold .swara-line {
+    font-size: 13px !important; line-height: 1.55 !important;
+  }
 
-  /* Eyebrow labels: slightly smaller */
+  /* Eyebrow labels */
   .vsp-eyebrow { font-size: 9px !important; letter-spacing: 0.16em !important; }
 
   /* Marquee: smaller text */
   .vsp-marquee-track span { font-size: 10px !important; }
 
   /* Cards: reduce padding */
-  .vsp-card-neutral, .vsp-card-gold {
-    padding: 16px !important;
-  }
+  .vsp-card-neutral, .vsp-card-gold { padding: 14px !important; }
 
-  /* Section spacing: reduce vertical padding */
-  section { padding-top: 40px !important; padding-bottom: 40px !important; }
+  /* Specific section padding (NOT the hero — hero has its own paddingTop for nav clearance) */
+  #practice { padding: 40px 16px !important; }
+  #library { padding: 40px 16px !important; }
+  #enrol { padding: 40px 16px !important; }
+  #teasers { padding: 40px 16px !important; }
 
   /* Stat numbers: smaller */
-  [data-stat] { font-size: 24px !important; }
+  .text-\[30px\], .text-\[44px\] { font-size: 24px !important; }
+
+  /* Hero: ensure content clears the nav */
+  #top { padding-top: 90px !important; padding-bottom: 32px !important; }
+
+  /* Content page wrappers: ensure they clear the nav */
+  [style*="paddingTop: \"80px\""] { padding-top: 90px !important; }
 }
 
 /* --- Small mobile (≤380px) --- */
 @media (max-width: 380px) {
-  h1 { font-size: 24px !important; }
-  h2 { font-size: 20px !important; }
-  .vsp-eyebrow { font-size: 8.5px !important; }
+  h1 { font-size: 22px !important; }
+  h2 { font-size: 19px !important; }
+  .vsp-eyebrow { font-size: 8px !important; }
   .vsp-marquee-track span { font-size: 9px !important; }
+  .vsp-card-neutral, .vsp-card-gold { padding: 12px !important; }
+  #top { padding-top: 85px !important; }
 }
 
 /* --- Tablet (641px–1023px) --- */
 @media (min-width: 641px) and (max-width: 1023px) {
-  h1 { font-size: 36px !important; }
-  h2 { font-size: 26px !important; }
+  h1 { font-size: 34px !important; }
+  h2 { font-size: 25px !important; }
+  #practice h2 { font-size: 32px !important; }
+  #library h2 { font-size: 34px !important; }
+  #enrol h2 { font-size: 32px !important; }
+  #teasers h2 { font-size: 32px !important; }
+  .vsp-card-neutral, .vsp-card-gold { padding: 20px !important; }
 }
 
-/* --- Desktop (≥1024px): keep original sizes --- */
-/* No overrides needed — inline styles + Tailwind classes apply */
-
-/* ===== Desktop (≥1024px) — restore larger sizes for key components ===== */
+/* --- Desktop (≥1024px) — restore larger sizes --- */
 @media (min-width: 1024px) {
-  /* Practice Room */
   #practice h2 { font-size: 44px !important; }
   #practice p { font-size: 17px !important; }
-
-  /* Library preview h2 */
-  #library h2 { font-size: 48px !important; }
-
-  /* Enrol h2 */
-  #enrol h2 { font-size: 44px !important; }
-
-  /* Teasers h2 */
-  #teasers h2 { font-size: 44px !important; }
-
-  /* Section padding restore on desktop */
-  section { padding-top: 80px !important; padding-bottom: 80px !important; }
+  #library h2 { font-size: 44px !important; }
+  #enrol h2 { font-size: 40px !important; }
+  #teasers h2 { font-size: 40px !important; }
+  .vsp-card-neutral, .vsp-card-gold { padding: 24px !important; }
 }
 
-/* ===== Tablet (≥768px) — medium sizes ===== */
-@media (min-width: 768px) {
+/* --- Desktop (≥768px) — medium sizes --- */
+@media (min-width: 768px) and (max-width: 1023px) {
   #practice h2 { font-size: 36px !important; }
   #practice p { font-size: 16px !important; }
   #library h2 { font-size: 38px !important; }
   #enrol h2 { font-size: 36px !important; }
   #teasers h2 { font-size: 36px !important; }
-  section { padding-top: 64px !important; padding-bottom: 64px !important; }
-  .vsp-card-neutral, .vsp-card-gold { padding: 24px !important; }
 }
 
-/* ===== Card padding on mobile ===== */
-@media (max-width: 640px) {
-  .vsp-card-neutral, .vsp-card-gold {
-    padding: 16px !important;
+/* ===== Mobile nav: hide desktop mega-menu, use hamburger drawer ===== */
+@media (max-width: 767px) {
+  #lessons-menu {
+    display: none !important;
   }
-  /* Reduce section padding on mobile */
-  section { padding-top: 40px !important; padding-bottom: 40px !important; }
-  /* Practice room specific */
-  #practice { padding: 40px 16px !important; }
-  /* Library preview */
-  #library { padding: 40px 16px !important; }
-  /* Enrol */
-  #enrol { padding: 40px 16px !important; }
-  /* Teasers */
-  #teasers { padding: 40px 16px !important; }
+}
+
+/* ===== Ensure all content starts below the fixed nav ===== */
+/* Add a global padding-top to the first child of each page */
+@media (max-width: 640px) {
+  /* On mobile, the nav has two rows (logo + hamburger) so it's taller */
+  /* Add extra clearance */
+  #top { padding-top: 85px !important; }
 }

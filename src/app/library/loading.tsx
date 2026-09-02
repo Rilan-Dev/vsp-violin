@@ -4,7 +4,7 @@
  */
 export default function LibraryLoading() {
   return (
-    <div style={{ background: "#16102A", minHeight: "100vh", color: "#F3EDDF", paddingTop: "80px" }}>
+    <div style={{ background: "#16102A", minHeight: "100vh", color: "#F3EDDF", paddingTop: "90px" }}>
       <div className="mx-auto" style={{ maxWidth: "1440px", padding: "40px 32px 0" }}>
         {/* Header skeleton */}
         <div style={{ height: "14px", width: "180px", marginBottom: "16px", background: "rgba(224,188,106,0.2)" }} />

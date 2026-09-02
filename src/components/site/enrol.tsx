@@ -248,7 +248,7 @@ export function Enrol() {
       aria-label="Enrol — three ways to begin"
       className={`reveal ${visible ? "is-visible" : ""}`}
       style={{
-        paddingTop: "80px",
+        paddingTop: "90px",
         paddingBottom: "80px",
         background: "linear-gradient(180deg, #16102A 0%, #1A1234 100%)",
       }}

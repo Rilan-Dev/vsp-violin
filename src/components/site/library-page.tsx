@@ -103,7 +103,7 @@ export function LibraryPage({ lessons, categories, stats, initialCategory = "all
   };
 
   return (
-    <div style={{ color: "#F3EDDF", paddingTop: "80px" }}>
+    <div style={{ color: "#F3EDDF", paddingTop: "90px" }}>
       <div className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1440px", paddingTop: "40px" }}>
         {/* Header */}
         <span className="vsp-eyebrow">The Library · free forever</span>

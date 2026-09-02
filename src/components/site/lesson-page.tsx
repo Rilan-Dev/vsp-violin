@@ -73,7 +73,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
   });
 
   return (
-    <div style={{ background: "#16102A", minHeight: "100vh", color: "#F3EDDF", paddingTop: "80px" }}>
+    <div style={{ background: "#16102A", minHeight: "100vh", color: "#F3EDDF", paddingTop: "90px" }}>
       {/* Breadcrumb */}
       <div className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1280px", paddingTop: "24px" }}>
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 flex-wrap" style={{ fontSize: "12px" }}>
