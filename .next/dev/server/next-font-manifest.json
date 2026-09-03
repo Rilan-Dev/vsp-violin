@@ -1,5 +1,10 @@
 {
   "app": {
+    "[project]/src/app/learn/page": [
+      "static/media/ec2f4458eb06f74e-s.p.69e2a7a7.woff2",
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/797e433ab948586e-s.p.29207c2f.woff2"
+    ],
     "[project]/src/app/page": [
       "static/media/ec2f4458eb06f74e-s.p.69e2a7a7.woff2",
       "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",

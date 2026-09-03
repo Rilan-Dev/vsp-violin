@@ -213,6 +213,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/menu.js [app-client] (ecmascript) <export default as Menu>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/x.js [app-client] (ecmascript) <export default as X>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-down.js [app-client] (ecmascript) <export default as ChevronDown>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/sheet.tsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
@@ -225,10 +226,10 @@ function Nav({ megaMenu }) {
     _s();
     const [open, setOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [mobileOpen, setMobileOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [expandedGroup, setExpandedGroup] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const pathname = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"])();
     const navRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const closeTimer = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
-    // Escape closes; click outside closes.
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Nav.useEffect": ()=>{
             if (!open) return;
@@ -255,7 +256,6 @@ function Nav({ megaMenu }) {
         cancelClose();
         closeTimer.current = setTimeout(()=>setOpen(false), 120);
     };
-    // Desktop nav links — each points to a dedicated page.
     const links = [
         {
             href: "/library",
@@ -278,7 +278,6 @@ function Nav({ megaMenu }) {
             match: "/stage"
         }
     ];
-    // Check if a link is active (current path starts with the match).
     const isActive = (match)=>{
         if (match === "/library") return pathname === "/library" || pathname.startsWith("/lessons/");
         return pathname === match;
@@ -317,7 +316,7 @@ function Nav({ megaMenu }) {
                         children: "SUKA PAVALAN"
                     }, void 0, false, {
                         fileName: "[project]/src/components/site/nav.tsx",
-                        lineNumber: 96,
+                        lineNumber: 80,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -342,22 +341,23 @@ function Nav({ megaMenu }) {
                                 },
                                 children: [
                                     "Lessons",
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        style: {
-                                            fontSize: "9px",
-                                            color: "#E0BC6A"
-                                        },
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__["ChevronDown"], {
+                                        size: 12,
                                         "aria-hidden": true,
-                                        children: "▼"
+                                        style: {
+                                            color: "#E0BC6A",
+                                            transition: "transform 200ms ease",
+                                            transform: open ? "rotate(180deg)" : "none"
+                                        }
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/site/nav.tsx",
-                                        lineNumber: 127,
+                                        lineNumber: 111,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/site/nav.tsx",
-                                lineNumber: 112,
+                                lineNumber: 96,
                                 columnNumber: 11
                             }, this),
                             links.map((l)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -372,13 +372,13 @@ function Nav({ megaMenu }) {
                                     children: l.label
                                 }, l.href, false, {
                                     fileName: "[project]/src/components/site/nav.tsx",
-                                    lineNumber: 132,
+                                    lineNumber: 122,
                                     columnNumber: 13
                                 }, this))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/site/nav.tsx",
-                        lineNumber: 111,
+                        lineNumber: 95,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -395,7 +395,7 @@ function Nav({ megaMenu }) {
                         children: "Enrol"
                     }, void 0, false, {
                         fileName: "[project]/src/components/site/nav.tsx",
-                        lineNumber: 148,
+                        lineNumber: 138,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -424,17 +424,17 @@ function Nav({ megaMenu }) {
                                             "aria-hidden": true
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/site/nav.tsx",
-                                            lineNumber: 181,
+                                            lineNumber: 171,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/site/nav.tsx",
-                                        lineNumber: 167,
+                                        lineNumber: 157,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/site/nav.tsx",
-                                    lineNumber: 166,
+                                    lineNumber: 156,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SheetContent"], {
@@ -451,12 +451,12 @@ function Nav({ megaMenu }) {
                                                 children: "Navigation"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/site/nav.tsx",
-                                                lineNumber: 190,
+                                                lineNumber: 180,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/site/nav.tsx",
-                                            lineNumber: 189,
+                                            lineNumber: 179,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -482,7 +482,7 @@ function Nav({ megaMenu }) {
                                                             children: "SUKA PAVALAN"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/site/nav.tsx",
-                                                            lineNumber: 195,
+                                                            lineNumber: 185,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -500,18 +500,18 @@ function Nav({ megaMenu }) {
                                                                 size: 18
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/site/nav.tsx",
-                                                                lineNumber: 204,
+                                                                lineNumber: 194,
                                                                 columnNumber: 21
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/site/nav.tsx",
-                                                            lineNumber: 198,
+                                                            lineNumber: 188,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/site/nav.tsx",
-                                                    lineNumber: 194,
+                                                    lineNumber: 184,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
@@ -560,7 +560,7 @@ function Nav({ megaMenu }) {
                                                                 children: l.label
                                                             }, l.href, false, {
                                                                 fileName: "[project]/src/components/site/nav.tsx",
-                                                                lineNumber: 218,
+                                                                lineNumber: 208,
                                                                 columnNumber: 21
                                                             }, this)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -579,13 +579,13 @@ function Nav({ megaMenu }) {
                                                             children: "Enrol"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/site/nav.tsx",
-                                                            lineNumber: 234,
+                                                            lineNumber: 224,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/site/nav.tsx",
-                                                    lineNumber: 209,
+                                                    lineNumber: 199,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -604,90 +604,184 @@ function Nav({ megaMenu }) {
                                                             children: "Lessons by category"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/site/nav.tsx",
-                                                            lineNumber: 254,
+                                                            lineNumber: 244,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "flex flex-col",
                                                             style: {
-                                                                gap: "8px"
+                                                                gap: "0"
                                                             },
-                                                            children: megaMenu.flatMap((col)=>col.items).map((c)=>{
-                                                                const empty = c.count === 0;
-                                                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                                                    href: `/library?category=${c.slug}`,
-                                                                    onClick: ()=>setMobileOpen(false),
-                                                                    className: "transition-colors hover:text-gold-hover flex items-center justify-between",
+                                                            children: megaMenu.map((col)=>{
+                                                                const colKey = col.label || "Light Music";
+                                                                const isExpanded = expandedGroup === colKey;
+                                                                const totalLessons = col.items.reduce((sum, c)=>sum + c.count, 0);
+                                                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                     style: {
-                                                                        fontSize: "14px",
-                                                                        color: empty ? "rgba(243,237,223,0.5)" : "rgba(243,237,223,0.82)",
-                                                                        padding: "6px 0"
+                                                                        borderBottom: "1px solid rgba(243,237,223,0.08)"
                                                                     },
                                                                     children: [
-                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                            children: c.name
-                                                                        }, void 0, false, {
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                                            type: "button",
+                                                                            onClick: ()=>setExpandedGroup(isExpanded ? null : colKey),
+                                                                            className: "flex items-center justify-between w-full",
+                                                                            style: {
+                                                                                padding: "12px 0",
+                                                                                background: "transparent",
+                                                                                border: "none",
+                                                                                color: "#F3EDDF",
+                                                                                fontFamily: "var(--font-marcellus), serif",
+                                                                                fontSize: "16px",
+                                                                                cursor: "pointer",
+                                                                                textAlign: "left"
+                                                                            },
+                                                                            children: [
+                                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                                    children: colKey
+                                                                                }, void 0, false, {
+                                                                                    fileName: "[project]/src/components/site/nav.tsx",
+                                                                                    lineNumber: 269,
+                                                                                    columnNumber: 29
+                                                                                }, this),
+                                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                                    style: {
+                                                                                        display: "flex",
+                                                                                        alignItems: "center",
+                                                                                        gap: "8px"
+                                                                                    },
+                                                                                    children: [
+                                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                                            style: {
+                                                                                                fontFamily: "var(--font-geist-mono), monospace",
+                                                                                                fontSize: "11px",
+                                                                                                color: "rgba(224,188,106,0.6)"
+                                                                                            },
+                                                                                            children: totalLessons
+                                                                                        }, void 0, false, {
+                                                                                            fileName: "[project]/src/components/site/nav.tsx",
+                                                                                            lineNumber: 271,
+                                                                                            columnNumber: 31
+                                                                                        }, this),
+                                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__["ChevronDown"], {
+                                                                                            size: 14,
+                                                                                            "aria-hidden": true,
+                                                                                            style: {
+                                                                                                color: "#E0BC6A",
+                                                                                                transition: "transform 200ms ease",
+                                                                                                transform: isExpanded ? "rotate(180deg)" : "none"
+                                                                                            }
+                                                                                        }, void 0, false, {
+                                                                                            fileName: "[project]/src/components/site/nav.tsx",
+                                                                                            lineNumber: 274,
+                                                                                            columnNumber: 31
+                                                                                        }, this)
+                                                                                    ]
+                                                                                }, void 0, true, {
+                                                                                    fileName: "[project]/src/components/site/nav.tsx",
+                                                                                    lineNumber: 270,
+                                                                                    columnNumber: 29
+                                                                                }, this)
+                                                                            ]
+                                                                        }, void 0, true, {
                                                                             fileName: "[project]/src/components/site/nav.tsx",
-                                                                            lineNumber: 272,
+                                                                            lineNumber: 254,
                                                                             columnNumber: 27
                                                                         }, this),
-                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                        isExpanded && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                            className: "flex flex-col",
                                                                             style: {
-                                                                                fontFamily: "var(--font-geist-mono), monospace",
-                                                                                fontSize: "11px",
-                                                                                color: "rgba(224,188,106,0.6)"
+                                                                                paddingBottom: "10px",
+                                                                                paddingLeft: "12px",
+                                                                                gap: "6px"
                                                                             },
-                                                                            children: c.count
+                                                                            children: col.items.map((c)=>{
+                                                                                const empty = c.count === 0;
+                                                                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                                                    href: `/library?category=${c.slug}`,
+                                                                                    onClick: ()=>setMobileOpen(false),
+                                                                                    className: "flex items-center justify-between transition-colors hover:text-gold-hover",
+                                                                                    style: {
+                                                                                        fontSize: "14px",
+                                                                                        color: empty ? "rgba(243,237,223,0.5)" : "rgba(243,237,223,0.82)",
+                                                                                        padding: "5px 0"
+                                                                                    },
+                                                                                    children: [
+                                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                                            children: c.name
+                                                                                        }, void 0, false, {
+                                                                                            fileName: "[project]/src/components/site/nav.tsx",
+                                                                                            lineNumber: 301,
+                                                                                            columnNumber: 37
+                                                                                        }, this),
+                                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                                            style: {
+                                                                                                fontFamily: "var(--font-geist-mono), monospace",
+                                                                                                fontSize: "11px",
+                                                                                                color: "rgba(224,188,106,0.6)"
+                                                                                            },
+                                                                                            children: c.count
+                                                                                        }, void 0, false, {
+                                                                                            fileName: "[project]/src/components/site/nav.tsx",
+                                                                                            lineNumber: 302,
+                                                                                            columnNumber: 37
+                                                                                        }, this)
+                                                                                    ]
+                                                                                }, c.slug, true, {
+                                                                                    fileName: "[project]/src/components/site/nav.tsx",
+                                                                                    lineNumber: 290,
+                                                                                    columnNumber: 35
+                                                                                }, this);
+                                                                            })
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/site/nav.tsx",
-                                                                            lineNumber: 273,
-                                                                            columnNumber: 27
+                                                                            lineNumber: 286,
+                                                                            columnNumber: 29
                                                                         }, this)
                                                                     ]
-                                                                }, c.slug, true, {
+                                                                }, colKey, true, {
                                                                     fileName: "[project]/src/components/site/nav.tsx",
-                                                                    lineNumber: 261,
+                                                                    lineNumber: 253,
                                                                     columnNumber: 25
                                                                 }, this);
                                                             })
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/site/nav.tsx",
-                                                            lineNumber: 257,
+                                                            lineNumber: 247,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/site/nav.tsx",
-                                                    lineNumber: 253,
+                                                    lineNumber: 243,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/site/nav.tsx",
-                                            lineNumber: 192,
+                                            lineNumber: 182,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/site/nav.tsx",
-                                    lineNumber: 184,
+                                    lineNumber: 174,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/site/nav.tsx",
-                            lineNumber: 165,
+                            lineNumber: 155,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/site/nav.tsx",
-                        lineNumber: 164,
+                        lineNumber: 154,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/site/nav.tsx",
-                lineNumber: 92,
+                lineNumber: 76,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -708,65 +802,127 @@ function Nav({ megaMenu }) {
                     background: "rgba(22,16,42,0.96)"
                 },
                 children: [
-                    megaMenu.map((col)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex flex-col gap-2.5",
+                    megaMenu.map((col)=>{
+                        const colKey = col.label || "Light Music";
+                        const totalLessons = col.items.reduce((sum, c)=>sum + c.count, 0);
+                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "vsp-mega-group",
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: "vsp-eyebrow",
-                                    children: col.label
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                    href: `/library?category=${col.items[0]?.slug ?? ""}`,
+                                    className: "vsp-eyebrow vsp-mega-group-header",
+                                    style: {
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                        textDecoration: "none",
+                                        color: "#E0BC6A",
+                                        cursor: "pointer",
+                                        marginBottom: "12px"
+                                    },
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            children: colKey
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/site/nav.tsx",
+                                            lineNumber: 361,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            style: {
+                                                fontFamily: "var(--font-geist-mono), monospace",
+                                                fontSize: "10px",
+                                                color: "rgba(243,237,223,0.5)"
+                                            },
+                                            children: totalLessons
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/site/nav.tsx",
+                                            lineNumber: 362,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/components/site/nav.tsx",
+                                    lineNumber: 348,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex flex-col",
+                                    style: {
+                                        gap: "6px",
+                                        paddingLeft: "8px"
+                                    },
+                                    children: col.items.map((c)=>{
+                                        const empty = c.count === 0;
+                                        const opacity = empty ? 0.5 : 0.82;
+                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                            href: `/library?category=${c.slug}`,
+                                            "data-category": c.slug,
+                                            className: "transition-colors hover:text-gold-hover",
+                                            style: {
+                                                fontSize: "13px",
+                                                color: `rgba(243,237,223,${opacity})`,
+                                                paddingLeft: "12px",
+                                                position: "relative"
+                                            },
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    "aria-hidden": "true",
+                                                    style: {
+                                                        position: "absolute",
+                                                        left: "0",
+                                                        top: "50%",
+                                                        width: "6px",
+                                                        height: "1px",
+                                                        background: "rgba(224,188,106,0.3)"
+                                                    }
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/site/nav.tsx",
+                                                    lineNumber: 388,
+                                                    columnNumber: 23
+                                                }, this),
+                                                c.name,
+                                                " ",
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    style: {
+                                                        color: `rgba(243,237,223,${empty ? 0.4 : 0.5})`,
+                                                        fontFamily: "var(--font-geist-mono), monospace",
+                                                        fontSize: "10.5px"
+                                                    },
+                                                    children: c.count
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/site/nav.tsx",
+                                                    lineNumber: 400,
+                                                    columnNumber: 23
+                                                }, this)
+                                            ]
+                                        }, c.slug, true, {
+                                            fileName: "[project]/src/components/site/nav.tsx",
+                                            lineNumber: 376,
+                                            columnNumber: 21
+                                        }, this);
+                                    })
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/site/nav.tsx",
-                                    lineNumber: 309,
-                                    columnNumber: 13
-                                }, this),
-                                col.items.map((c)=>{
-                                    const empty = c.count === 0;
-                                    const opacity = empty ? 0.55 : 0.82;
-                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                        href: `/library?category=${c.slug}`,
-                                        "data-category": c.slug,
-                                        className: "transition-colors hover:text-gold-hover",
-                                        style: {
-                                            fontSize: "13.5px",
-                                            color: `rgba(243,237,223,${opacity})`
-                                        },
-                                        children: [
-                                            c.name,
-                                            " ",
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                style: {
-                                                    color: `rgba(243,237,223,${empty ? 0.5 : 0.55})`,
-                                                    fontFamily: "var(--font-geist-mono), monospace",
-                                                    fontSize: "11px"
-                                                },
-                                                children: c.count
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/components/site/nav.tsx",
-                                                lineNumber: 325,
-                                                columnNumber: 19
-                                            }, this)
-                                        ]
-                                    }, c.slug, true, {
-                                        fileName: "[project]/src/components/site/nav.tsx",
-                                        lineNumber: 314,
-                                        columnNumber: 17
-                                    }, this);
-                                })
+                                    lineNumber: 371,
+                                    columnNumber: 15
+                                }, this)
                             ]
-                        }, col.label, true, {
+                        }, colKey, true, {
                             fileName: "[project]/src/components/site/nav.tsx",
-                            lineNumber: 308,
-                            columnNumber: 11
-                        }, this)),
+                            lineNumber: 346,
+                            columnNumber: 13
+                        }, this);
+                    }),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex flex-col gap-2.5 vsp-mega-more hidden md:flex",
+                        className: "vsp-mega-group vsp-mega-more hidden md:flex flex-col gap-2.5",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 className: "vsp-eyebrow",
                                 children: "Pages"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/site/nav.tsx",
-                                lineNumber: 341,
+                                lineNumber: 418,
                                 columnNumber: 11
                             }, this),
                             [
@@ -794,35 +950,35 @@ function Nav({ megaMenu }) {
                                     href: p.href,
                                     className: "transition-colors hover:text-gold-hover",
                                     style: {
-                                        fontSize: "13.5px",
+                                        fontSize: "13px",
                                         color: "rgba(243,237,223,0.82)"
                                     },
                                     children: p.label
                                 }, p.href, false, {
                                     fileName: "[project]/src/components/site/nav.tsx",
-                                    lineNumber: 349,
+                                    lineNumber: 426,
                                     columnNumber: 13
                                 }, this))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/site/nav.tsx",
-                        lineNumber: 340,
+                        lineNumber: 417,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/site/nav.tsx",
-                lineNumber: 288,
+                lineNumber: 322,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/site/nav.tsx",
-        lineNumber: 77,
+        lineNumber: 61,
         columnNumber: 5
     }, this);
 }
-_s(Nav, "tXOH5Kijzygp7QxWhcFJcZjuXUI=", false, function() {
+_s(Nav, "eA9M2oGkVZDl54X9O37slKM0364=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"]
     ];

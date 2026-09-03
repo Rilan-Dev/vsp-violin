@@ -4422,12 +4422,6 @@
   }
 
   @media (min-width: 64rem) {
-    .lg\:grid-cols-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (min-width: 64rem) {
     .lg\:grid-cols-3 {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
@@ -5324,6 +5318,16 @@
   display: grid;
 }
 
+.vsp-mega-group {
+  border-left: 1px solid #e0bc6a1f;
+  padding-left: 12px;
+}
+
+.vsp-mega-group-header {
+  border-bottom: 1px solid #e0bc6a33;
+  padding-bottom: 4px;
+}
+
 @media (min-width: 768px) {
   .vsp-mega-menu {
     grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -5331,6 +5335,8 @@
   }
 
   .vsp-mega-more {
+    border-left: 1px solid #e0bc6a1f;
+    padding-left: 12px;
     display: flex;
   }
 }

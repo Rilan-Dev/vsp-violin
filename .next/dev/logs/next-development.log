@@ -1,9 +1,10 @@
-[00:00:01.324] Server  LOG     ✓ Ready in 1096ms
-[00:00:04.353] Server  LOG     ○ Compiling / ...
-[00:00:12.125] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:18.443] Server  WARN    ⚠ Cross origin request detected from preview-chat-3f82d1f2-5340-4113-91d7-9c4c652a5b33.space-z.ai to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+[00:00:01.169] Server  LOG     ✓ Ready in 923ms
+[00:00:04.183] Server  LOG     ○ Compiling / ...
+[00:00:27.403] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:54.978] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:09.580] Server  WARN    ⚠ Cross origin request detected from preview-chat-3f82d1f2-5340-4113-91d7-9c4c652a5b33.space-z.ai to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
 Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
-[00:00:18.644] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+[00:01:10.179] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
 
 - A server/client branch `if (typeof window !== 'undefined')`.
 - Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
@@ -36,8 +37,9 @@ It can also happen if the client has a browser extension installed which messes 
                         <html lang="en" suppressHydrationWarning={true}>
                           <body
                             className="marcellus_f435989f-module__Jacuwq__variable instrument_sans_d1ca5634-module__PT..."
--                           data-new-gr-c-s-check-loaded="14.1325.0"
+-                           data-new-gr-c-s-check-loaded="14.1326.0"
 -                           data-gr-ext-installed=""
                           >
                   ...
 
+[00:02:34.285] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

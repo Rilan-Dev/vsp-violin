@@ -247,11 +247,21 @@
   border-color: #E0BC6A;
 }
 
-/* ===== Mega-menu grid (horizontal on desktop, hidden on mobile) ===== */
+/* ===== Mega-menu: hierarchical groups (desktop 5-col, hidden on mobile) ===== */
 .vsp-mega-menu {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px;
+}
+.vsp-mega-group {
+  /* Each group has a header + indented sub-items */
+  border-left: 1px solid rgba(224, 188, 106, 0.12);
+  padding-left: 12px;
+}
+.vsp-mega-group-header {
+  /* Group header is gold eyebrow with count */
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(224, 188, 106, 0.2);
 }
 @media (min-width: 768px) {
   .vsp-mega-menu {
@@ -260,6 +270,8 @@
   }
   .vsp-mega-more {
     display: flex;
+    border-left: 1px solid rgba(224, 188, 106, 0.12);
+    padding-left: 12px;
   }
 }
 @media (max-width: 767px) {

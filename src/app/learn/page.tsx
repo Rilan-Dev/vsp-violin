@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Music2, BookOpen } from "lucide-react";
+import { ArrowRight, Music2 } from "lucide-react";
 import { getSiteContent } from "@/lib/data";
 import { PageShell } from "@/components/site/page-shell";
 
 export const metadata: Metadata = {
-  title: "Learn the Violin — the instrument, the strings, the technique",
+  title: "Learn the Violin — a Carnatic violin introduction",
   description:
-    "A free introduction to the violin: its history, the four strings (G, D, A, E), string materials (gut, steel, synthetic), and finger placement. The starting point for Suka Pavalan's Carnatic violin lessons.",
+    "A free introduction to the Carnatic violin: the four strings, finger placement, and how to begin. The starting point for Suka Pavalan's free notation library.",
   alternates: { canonical: "/learn" },
-    openGraph: {
+  openGraph: {
     title: "Learn the Violin — Violin Suka Pavalan",
-    description: "The instrument, the strings, the technique. A free introduction.",
+    description: "A free introduction to the Carnatic violin.",
     type: "article",
   },
 };
@@ -23,12 +23,6 @@ const STRING_WATERMARK: Record<string, string> = {
   "E String (E5)": "E",
 };
 
-const MATERIAL_SWATCH: Record<string, string> = {
-  "Gut Strings": "#A87344",
-  "Steel Strings": "#B8B8C0",
-  "Synthetic Strings": "#C9AE6A",
-};
-
 export default function LearnPage() {
   const c = getSiteContent();
   const lv = c.learnTheViolin;
@@ -38,11 +32,11 @@ export default function LearnPage() {
     <div style={{ color: "#F3EDDF", paddingTop: "90px" }}>
       <div className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1100px", paddingTop: "40px", paddingBottom: "80px" }}>
         {/* Header */}
-        <span className="vsp-eyebrow">Learn the Violin · the instrument</span>
+        <span className="vsp-eyebrow">Learn the Violin</span>
         <h1
           style={{
             fontFamily: "var(--font-marcellus), serif",
-            fontSize: "clamp(36px, 5vw, 54px)",
+            fontSize: "clamp(28px, 5vw, 48px)",
             lineHeight: 1.08,
             margin: "14px 0 20px",
             color: "#F3EDDF",
@@ -51,36 +45,22 @@ export default function LearnPage() {
         >
           Learn the <span style={{ color: "#E0BC6A" }}>language</span> of the violin.
         </h1>
-        <p style={{ fontSize: "17px", lineHeight: 1.68, color: "rgba(243,237,223,0.82)", maxWidth: "680px", marginBottom: "48px" }}>
-          {lv.intro}
+
+        {/* Short intro — kept brief, not overwhelming */}
+        <p style={{ fontSize: "16px", lineHeight: 1.68, color: "rgba(243,237,223,0.82)", maxWidth: "680px", marginBottom: "48px" }}>
+          The violin is a timeless instrument known for its rich, expressive sound. Mastering it requires
+          dedication, precision, and passion. Whether played solo or in an ensemble, it remains a symbol of
+          elegance and artistic excellence. Here is what you need to know to begin your Carnatic violin journey.
         </p>
 
-        {/* History */}
-        <section style={{ marginBottom: "64px" }}>
-          <div className="flex items-center gap-3 mb-5">
-            <BookOpen size={18} aria-hidden style={{ color: "#E0BC6A" }} />
-            <span className="vsp-eyebrow">A short history</span>
-          </div>
-          <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "28px", margin: "0 0 20px", color: "#F3EDDF" }}>
-            From 16th-century Cremona to Karaikal.
-          </h2>
-          <div className="flex flex-col gap-4" style={{ maxWidth: "680px" }}>
-            {lv.violinHistory.map((p, i) => (
-              <p key={i} style={{ fontSize: "16px", lineHeight: 1.68, color: "rgba(243,237,223,0.82)", textWrap: "pretty" }}>
-                {p}
-              </p>
-            ))}
-          </div>
-        </section>
-
-        {/* Pull quote */}
-        <figure style={{ margin: "0 auto 64px", maxWidth: "860px", textAlign: "center" }}>
+        {/* Pull quote — kept */}
+        <figure style={{ margin: "0 auto 48px", maxWidth: "860px", textAlign: "center" }}>
           <div aria-hidden="true" style={{ color: "#E0BC6A", fontSize: "18px", marginBottom: "18px" }}>✦</div>
           <blockquote
             style={{
               fontFamily: "var(--font-marcellus), serif",
               fontStyle: "italic",
-              fontSize: "clamp(20px, 2.6vw, 28px)",
+              fontSize: "clamp(18px, 2.4vw, 24px)",
               lineHeight: 1.4,
               color: "rgba(243,237,223,0.92)",
               margin: 0,
@@ -104,29 +84,29 @@ export default function LearnPage() {
           <div aria-hidden="true" style={{ color: "#E0BC6A", fontSize: "18px", marginTop: "18px" }}>✦</div>
         </figure>
 
-        {/* Violin strings */}
-        <section style={{ marginBottom: "64px" }}>
+        {/* Violin strings — kept (essential for beginners) */}
+        <section style={{ marginBottom: "48px" }}>
           <div className="flex items-center gap-3 mb-3">
             <Music2 size={18} aria-hidden style={{ color: "#E0BC6A" }} />
             <span className="vsp-eyebrow">{lv.strings.heading}</span>
           </div>
-          <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "28px", margin: "0 0 8px", color: "#F3EDDF" }}>
+          <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "22px", margin: "0 0 8px", color: "#F3EDDF" }}>
             Four strings. Four voices.
           </h2>
-          <p style={{ fontSize: "14.5px", color: "rgba(243,237,223,0.72)", margin: "0 0 24px" }}>
+          <p style={{ fontSize: "14.5px", color: "rgba(243,237,223,0.72)", margin: "0 0 20px" }}>
             {lv.strings.intro}
           </p>
-          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {lv.strings.items.map((s) => (
-              <article key={s.name} className="vsp-card-neutral" style={{ padding: "24px", position: "relative", overflow: "hidden", minHeight: "160px" }}>
+              <article key={s.name} className="vsp-card-neutral" style={{ padding: "18px", position: "relative", overflow: "hidden" }}>
                 <span
                   aria-hidden="true"
                   style={{
                     position: "absolute",
-                    top: "-16px",
-                    right: "-8px",
+                    top: "-12px",
+                    right: "-4px",
                     fontFamily: "var(--font-marcellus), serif",
-                    fontSize: "96px",
+                    fontSize: "64px",
                     lineHeight: 1,
                     color: "rgba(243,237,223,0.04)",
                     pointerEvents: "none",
@@ -134,10 +114,10 @@ export default function LearnPage() {
                 >
                   {STRING_WATERMARK[s.name] ?? ""}
                 </span>
-                <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "20px", color: "#E0BC6A", margin: 0, position: "relative" }}>
+                <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "#E0BC6A", margin: 0, position: "relative" }}>
                   {s.name}
                 </h3>
-                <p style={{ fontSize: "14px", lineHeight: 1.6, color: "rgba(243,237,223,0.72)", marginTop: "10px", position: "relative" }}>
+                <p style={{ fontSize: "13px", lineHeight: 1.55, color: "rgba(243,237,223,0.72)", marginTop: "8px", position: "relative" }}>
                   {s.body}
                 </p>
               </article>
@@ -145,112 +125,69 @@ export default function LearnPage() {
           </div>
         </section>
 
-        {/* Materials + Fingering */}
-        <section style={{ marginBottom: "64px" }}>
-          <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
-            {/* Materials */}
-            <div>
-              <div className="flex items-center gap-3 mb-3">
-                <Music2 size={16} aria-hidden style={{ color: "#E0BC6A" }} />
-                <span className="vsp-eyebrow">{lv.materials.heading}</span>
-              </div>
-              <p style={{ fontSize: "14.5px", lineHeight: 1.6, color: "rgba(243,237,223,0.72)", marginBottom: "20px" }}>
-                {lv.materials.intro}
-              </p>
-              <div className="flex flex-col gap-3">
-                {lv.materials.items.map((m) => (
-                  <article key={m.name} className="vsp-card-neutral" style={{ padding: "16px 18px", display: "flex", gap: "16px", alignItems: "flex-start" }}>
-                    <span
-                      aria-hidden="true"
-                      style={{
-                        flex: "0 0 28px",
-                        height: "28px",
-                        marginTop: "2px",
-                        background: MATERIAL_SWATCH[m.name] ?? "#E0BC6A",
-                        border: "1px solid rgba(243,237,223,0.2)",
-                      }}
-                    />
-                    <div>
-                      <h4 style={{ fontFamily: "var(--font-instrument-sans)", fontWeight: 600, fontSize: "15px", color: "#F3EDDF", margin: 0 }}>
-                        {m.name}
-                      </h4>
-                      <p style={{ fontSize: "13.5px", lineHeight: 1.55, color: "rgba(243,237,223,0.72)", marginTop: "4px" }}>
-                        {m.body}
-                      </p>
-                    </div>
-                  </article>
-                ))}
-              </div>
-              <p style={{ fontSize: "13px", lineHeight: 1.55, color: "rgba(243,237,223,0.62)", marginTop: "14px", fontStyle: "italic" }}>
-                {lv.materials.closing}
-              </p>
-            </div>
-
-            {/* Fingering */}
-            <div>
-              <div className="flex items-center gap-3 mb-3">
-                <Music2 size={16} aria-hidden style={{ color: "#E0BC6A" }} />
-                <span className="vsp-eyebrow">{lv.fingering.heading}</span>
-              </div>
-              <p style={{ fontSize: "14.5px", lineHeight: 1.6, color: "rgba(243,237,223,0.72)", marginBottom: "20px" }}>
-                {lv.fingering.intro}
-              </p>
-              <ol className="flex flex-col gap-3" style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                {lv.fingering.items.map((f) => (
-                  <li key={f.code} className="flex items-start gap-4">
-                    <span
-                      style={{
-                        flex: "0 0 56px",
-                        height: "56px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        border: "1px solid rgba(224,188,106,0.46)",
-                        fontFamily: "var(--font-geist-mono), monospace",
-                        fontSize: "14px",
-                        color: "#E0BC6A",
-                        letterSpacing: "0.04em",
-                      }}
-                    >
-                      {f.code.split(" – ")[0]}
-                    </span>
-                    <div style={{ paddingTop: "6px" }}>
-                      <p style={{ fontFamily: "var(--font-instrument-sans)", fontWeight: 500, fontSize: "14px", color: "#F3EDDF" }}>
-                        {f.code}
-                      </p>
-                      <p style={{ fontSize: "13.5px", lineHeight: 1.55, color: "rgba(243,237,223,0.72)", marginTop: "3px" }}>
-                        {f.body}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </div>
+        {/* Finger placement — kept (essential for beginners) */}
+        <section style={{ marginBottom: "48px" }}>
+          <div className="flex items-center gap-3 mb-3">
+            <Music2 size={16} aria-hidden style={{ color: "#E0BC6A" }} />
+            <span className="vsp-eyebrow">{lv.fingering.heading}</span>
           </div>
+          <p style={{ fontSize: "14.5px", lineHeight: 1.6, color: "rgba(243,237,223,0.72)", marginBottom: "16px" }}>
+            {lv.fingering.intro}
+          </p>
+          <ol className="flex flex-col gap-2.5" style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            {lv.fingering.items.map((f) => (
+              <li key={f.code} className="flex items-start gap-3">
+                <span
+                  style={{
+                    flex: "0 0 48px",
+                    height: "48px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    border: "1px solid rgba(224,188,106,0.46)",
+                    fontFamily: "var(--font-geist-mono), monospace",
+                    fontSize: "13px",
+                    color: "#E0BC6A",
+                    letterSpacing: "0.04em",
+                  }}
+                >
+                  {f.code.split(" – ")[0]}
+                </span>
+                <div style={{ paddingTop: "4px" }}>
+                  <p style={{ fontFamily: "var(--font-instrument-sans)", fontWeight: 500, fontSize: "13.5px", color: "#F3EDDF", margin: 0 }}>
+                    {f.code}
+                  </p>
+                  <p style={{ fontSize: "13px", lineHeight: 1.5, color: "rgba(243,237,223,0.72)", marginTop: "2px", margin: 0 }}>
+                    {f.body}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </section>
 
         {/* CTA */}
         <div style={{ textAlign: "center", paddingTop: "32px", borderTop: "1px solid rgba(224,188,106,0.2)" }}>
-          <p style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "24px", color: "#F3EDDF", marginBottom: "12px" }}>
+          <p style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "20px", color: "#F3EDDF", marginBottom: "12px" }}>
             Ready to learn Carnatic violin?
           </p>
-          <p style={{ fontSize: "15px", color: "rgba(243,237,223,0.72)", marginBottom: "24px", maxWidth: "480px", margin: "0 auto 24px" }}>
+          <p style={{ fontSize: "14px", color: "rgba(243,237,223,0.72)", marginBottom: "20px", maxWidth: "420px", margin: "0 auto 20px" }}>
             Start with the free notation library — 22 lessons from basic swaras to advanced krithis.
           </p>
           <Link
             href="/library"
             className="vsp-cta-gold inline-flex items-center gap-2"
             style={{
-              padding: "14px 28px",
+              padding: "12px 24px",
               background: "#E0BC6A",
               color: "#1B1233",
               fontFamily: "var(--font-marcellus), serif",
-              fontSize: "15px",
+              fontSize: "14px",
               letterSpacing: "0.04em",
             }}
           >
             Browse the library
-            <ArrowRight size={16} aria-hidden />
+            <ArrowRight size={15} aria-hidden />
           </Link>
         </div>
       </div>

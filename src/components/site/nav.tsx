@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -17,28 +17,14 @@ type MegaColumn = {
   items: CategoryWithCount[];
 };
 
-/**
- * Sticky nav with the Lessons mega-menu.
- *
- * Behaviour:
- *  - Lessons dropdown opens on hover (desktop), click (all)
- *  - closes on Escape, mouse leaving nav, focus leaving nav
- *  - closed state is visibility:hidden + aria-hidden so links leave tab order
- *  - aria-expanded / aria-controls on the trigger
- *  - current page link is full-opacity cream; others 0.72
- *  - empty categories render at 0.5/0.6 alpha but stay visible
- *
- * Nav links point to dedicated pages (/library, /about, /honours, /stage, /learn)
- * instead of homepage section anchors.
- */
 export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
   const [open, setOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
   const pathname = usePathname();
   const navRef = useRef<HTMLElement | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Escape closes; click outside closes.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -59,7 +45,6 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
     closeTimer.current = setTimeout(() => setOpen(false), 120);
   };
 
-  // Desktop nav links — each points to a dedicated page.
   const links: { href: string; label: string; match: string }[] = [
     { href: "/library", label: "Library", match: "/library" },
     { href: "/about", label: "The Guru", match: "/about" },
@@ -67,7 +52,6 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
     { href: "/stage", label: "Stage", match: "/stage" },
   ];
 
-  // Check if a link is active (current path starts with the match).
   const isActive = (match: string) => {
     if (match === "/library") return pathname === "/library" || pathname.startsWith("/lessons/");
     return pathname === match;
@@ -107,7 +91,7 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
           SUKA PAVALAN
         </a>
 
-        {/* Desktop + tablet links */}
+        {/* Desktop links */}
         <div className="hidden md:flex items-center gap-6 lg:gap-7 text-sm font-medium">
           <button
             type="button"
@@ -124,9 +108,15 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
             style={{ color: "#F3EDDF", fontSize: "14px", fontWeight: 500 }}
           >
             Lessons
-            <span style={{ fontSize: "9px", color: "#E0BC6A" }} aria-hidden>
-              ▼
-            </span>
+            <ChevronDown
+              size={12}
+              aria-hidden
+              style={{
+                color: "#E0BC6A",
+                transition: "transform 200ms ease",
+                transform: open ? "rotate(180deg)" : "none",
+              }}
+            />
           </button>
           {links.map((l) => (
             <a
@@ -160,7 +150,7 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
           Enrol
         </a>
 
-        {/* Mobile hamburger button (≤768px) */}
+        {/* Mobile hamburger */}
         <div className="md:hidden">
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
@@ -205,7 +195,7 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
                   </button>
                 </div>
 
-                {/* Main links — point to dedicated pages */}
+                {/* Main links */}
                 <nav className="flex flex-col" style={{ padding: "14px 22px", gap: "4px" }}>
                   {[
                     { href: "/library", label: "Library" },
@@ -249,31 +239,75 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
                   </a>
                 </nav>
 
-                {/* Categories */}
+                {/* Expandable category groups for mobile */}
                 <div style={{ padding: "8px 22px 24px", borderTop: "1px solid rgba(224,188,106,0.16)", marginTop: "12px" }}>
                   <span className="vsp-eyebrow" style={{ display: "block", margin: "14px 0 10px" }}>
                     Lessons by category
                   </span>
-                  <div className="flex flex-col" style={{ gap: "8px" }}>
-                    {megaMenu.flatMap((col) => col.items).map((c) => {
-                      const empty = c.count === 0;
+                  <div className="flex flex-col" style={{ gap: "0" }}>
+                    {megaMenu.map((col) => {
+                      const colKey = col.label || "Light Music";
+                      const isExpanded = expandedGroup === colKey;
+                      const totalLessons = col.items.reduce((sum, c) => sum + c.count, 0);
                       return (
-                        <a
-                          key={c.slug}
-                          href={`/library?category=${c.slug}`}
-                          onClick={() => setMobileOpen(false)}
-                          className="transition-colors hover:text-gold-hover flex items-center justify-between"
-                          style={{
-                            fontSize: "14px",
-                            color: empty ? "rgba(243,237,223,0.5)" : "rgba(243,237,223,0.82)",
-                            padding: "6px 0",
-                          }}
-                        >
-                          <span>{c.name}</span>
-                          <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", color: "rgba(224,188,106,0.6)" }}>
-                            {c.count}
-                          </span>
-                        </a>
+                        <div key={colKey} style={{ borderBottom: "1px solid rgba(243,237,223,0.08)" }}>
+                          <button
+                            type="button"
+                            onClick={() => setExpandedGroup(isExpanded ? null : colKey)}
+                            className="flex items-center justify-between w-full"
+                            style={{
+                              padding: "12px 0",
+                              background: "transparent",
+                              border: "none",
+                              color: "#F3EDDF",
+                              fontFamily: "var(--font-marcellus), serif",
+                              fontSize: "16px",
+                              cursor: "pointer",
+                              textAlign: "left",
+                            }}
+                          >
+                            <span>{colKey}</span>
+                            <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                              <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", color: "rgba(224,188,106,0.6)" }}>
+                                {totalLessons}
+                              </span>
+                              <ChevronDown
+                                size={14}
+                                aria-hidden
+                                style={{
+                                  color: "#E0BC6A",
+                                  transition: "transform 200ms ease",
+                                  transform: isExpanded ? "rotate(180deg)" : "none",
+                                }}
+                              />
+                            </span>
+                          </button>
+                          {isExpanded && (
+                            <div className="flex flex-col" style={{ paddingBottom: "10px", paddingLeft: "12px", gap: "6px" }}>
+                              {col.items.map((c) => {
+                                const empty = c.count === 0;
+                                return (
+                                  <a
+                                    key={c.slug}
+                                    href={`/library?category=${c.slug}`}
+                                    onClick={() => setMobileOpen(false)}
+                                    className="flex items-center justify-between transition-colors hover:text-gold-hover"
+                                    style={{
+                                      fontSize: "14px",
+                                      color: empty ? "rgba(243,237,223,0.5)" : "rgba(243,237,223,0.82)",
+                                      padding: "5px 0",
+                                    }}
+                                  >
+                                    <span>{c.name}</span>
+                                    <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", color: "rgba(224,188,106,0.6)" }}>
+                                      {c.count}
+                                    </span>
+                                  </a>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
                       );
                     })}
                   </div>
@@ -284,7 +318,7 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
         </div>
       </div>
 
-      {/* Mega-menu panel — horizontal grid on desktop (5 columns) */}
+      {/* Mega-menu panel — hierarchical groups with expandable sub-items */}
       <div
         id="lessons-menu"
         role="region"
@@ -304,40 +338,83 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
           background: "rgba(22,16,42,0.96)",
         }}
       >
-        {megaMenu.map((col) => (
-          <div key={col.label} className="flex flex-col gap-2.5">
-            <span className="vsp-eyebrow">{col.label}</span>
-            {col.items.map((c) => {
-              const empty = c.count === 0;
-              const opacity = empty ? 0.55 : 0.82;
-              return (
-                <a
-                  key={c.slug}
-                  href={`/library?category=${c.slug}`}
-                  data-category={c.slug}
-                  className="transition-colors hover:text-gold-hover"
-                  style={{
-                    fontSize: "13.5px",
-                    color: `rgba(243,237,223,${opacity})`,
-                  }}
-                >
-                  {c.name}{" "}
-                  <span
-                    style={{
-                      color: `rgba(243,237,223,${empty ? 0.5 : 0.55})`,
-                      fontFamily: "var(--font-geist-mono), monospace",
-                      fontSize: "11px",
-                    }}
-                  >
-                    {c.count}
-                  </span>
-                </a>
-              );
-            })}
-          </div>
-        ))}
-        {/* Fifth column: page links (hidden on mobile, uses hamburger drawer) */}
-        <div className="flex flex-col gap-2.5 vsp-mega-more hidden md:flex">
+        {/* Desktop: 4 hierarchical groups, each expandable on hover */}
+        {megaMenu.map((col) => {
+          const colKey = col.label || "Light Music";
+          const totalLessons = col.items.reduce((sum, c) => sum + c.count, 0);
+          return (
+            <div key={colKey} className="vsp-mega-group">
+              {/* Group header — clickable link to library filtered by group */}
+              <a
+                href={`/library?category=${col.items[0]?.slug ?? ""}`}
+                className="vsp-eyebrow vsp-mega-group-header"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  textDecoration: "none",
+                  color: "#E0BC6A",
+                  cursor: "pointer",
+                  marginBottom: "12px",
+                }}
+              >
+                <span>{colKey}</span>
+                <span style={{
+                  fontFamily: "var(--font-geist-mono), monospace",
+                  fontSize: "10px",
+                  color: "rgba(243,237,223,0.5)",
+                }}>
+                  {totalLessons}
+                </span>
+              </a>
+              {/* Sub-items — always visible in the dropdown, indented under the group */}
+              <div className="flex flex-col" style={{ gap: "6px", paddingLeft: "8px" }}>
+                {col.items.map((c) => {
+                  const empty = c.count === 0;
+                  const opacity = empty ? 0.5 : 0.82;
+                  return (
+                    <a
+                      key={c.slug}
+                      href={`/library?category=${c.slug}`}
+                      data-category={c.slug}
+                      className="transition-colors hover:text-gold-hover"
+                      style={{
+                        fontSize: "13px",
+                        color: `rgba(243,237,223,${opacity})`,
+                        paddingLeft: "12px",
+                        position: "relative",
+                      }}
+                    >
+                      <span
+                        aria-hidden="true"
+                        style={{
+                          position: "absolute",
+                          left: "0",
+                          top: "50%",
+                          width: "6px",
+                          height: "1px",
+                          background: "rgba(224,188,106,0.3)",
+                        }}
+                      />
+                      {c.name}{" "}
+                      <span
+                        style={{
+                          color: `rgba(243,237,223,${empty ? 0.4 : 0.5})`,
+                          fontFamily: "var(--font-geist-mono), monospace",
+                          fontSize: "10.5px",
+                        }}
+                      >
+                        {c.count}
+                      </span>
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+        {/* Pages column */}
+        <div className="vsp-mega-group vsp-mega-more hidden md:flex flex-col gap-2.5">
           <span className="vsp-eyebrow">Pages</span>
           {[
             { href: "/learn", label: "Learn the Violin" },
@@ -350,7 +427,7 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
               key={p.href}
               href={p.href}
               className="transition-colors hover:text-gold-hover"
-              style={{ fontSize: "13.5px", color: "rgba(243,237,223,0.82)" }}
+              style={{ fontSize: "13px", color: "rgba(243,237,223,0.82)" }}
             >
               {p.label}
             </a>
