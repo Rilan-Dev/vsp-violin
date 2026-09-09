@@ -1,4 +1,24 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
+  "/about/page": "app/about/page.js",
+  "/api/categories/route": "app/api/categories/route.js",
+  "/api/enquiries/route": "app/api/enquiries/route.js",
+  "/api/lessons/route": "app/api/lessons/route.js",
+  "/api/studio/analytics/route": "app/api/studio/analytics/route.js",
+  "/api/studio/categories/route": "app/api/studio/categories/route.js",
+  "/api/studio/enquiries/route": "app/api/studio/enquiries/route.js",
+  "/api/studio/login/route": "app/api/studio/login/route.js",
+  "/api/studio/logout/route": "app/api/studio/logout/route.js",
+  "/feed.xml/route": "app/feed.xml/route.js",
+  "/honours/page": "app/honours/page.js",
   "/learn/page": "app/learn/page.js",
-  "/page": "app/page.js"
+  "/lessons/[slug]/page": "app/lessons/[slug]/page.js",
+  "/library/page": "app/library/page.js",
+  "/opengraph-image/route": "app-edge-has-no-entrypoint",
+  "/page": "app/page.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/stage/page": "app/stage/page.js",
+  "/studio/page": "app/studio/page.js",
+  "/testimonials/page": "app/testimonials/page.js"
 }
