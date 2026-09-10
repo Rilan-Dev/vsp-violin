@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { supabaseServer } from "@/lib/supabase";
+import { restGetEnquiries } from "@/lib/supabase-data";
 
 async function isAuthorized(req: NextRequest): Promise<boolean> {
   // Check Supabase auth cookie
   const sbToken = req.cookies.get("sb-access-token")?.value;
   if (sbToken) {
     try {
-      const { supabaseServer } = await import("@/lib/supabase");
       const { data, error } = await supabaseServer.auth.getUser(sbToken);
       if (!error && data.user) return true;
     } catch {}
@@ -19,22 +20,45 @@ async function isAuthorized(req: NextRequest): Promise<boolean> {
   return cookie.includes(`studio_token=${STUDIO_TOKEN}`);
 }
 
-/** GET /api/studio/analytics — enquiry analytics for the Studio dashboard. */
+/**
+ * GET /api/studio/analytics — enquiry analytics for the Studio dashboard.
+ * Falls back to the Supabase REST API if Prisma can't connect.
+ */
 export async function GET(req: NextRequest) {
   if (!(await isAuthorized(req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const enquiries = await db.enquiry.findMany({
-    orderBy: { createdAt: "asc" },
-    select: { id: true, intent: true, status: true, createdAt: true, message: true },
-  });
+  // Fetch enquiries — try Prisma first, fall back to Supabase REST.
+  // Each enquiry's createdAt is a Date (Prisma) or ISO string (REST); we
+  // normalize to a Date below.
+  type EnquiryLite = { id: string; intent: string; status: string; createdAt: Date; message: string };
+  let enquiries: EnquiryLite[] = [];
+  try {
+    const rows = await db.enquiry.findMany({
+      orderBy: { createdAt: "asc" },
+      select: { id: true, intent: true, status: true, createdAt: true, message: true },
+    });
+    enquiries = rows as EnquiryLite[];
+  } catch (e) {
+    console.warn("[studio/analytics] Prisma failed, falling back to Supabase REST:", e);
+    try {
+      const restRows = await restGetEnquiries();
+      enquiries = restRows.map((r) => ({
+        id: r.id,
+        intent: r.intent,
+        status: r.status,
+        createdAt: new Date(r.createdAt),
+        message: r.message,
+      }));
+    } catch (restErr) {
+      console.error("[studio/analytics] Supabase REST also failed:", restErr);
+      enquiries = [];
+    }
+  }
 
   // Enquiries over the last 12 weeks (weekly buckets)
   const now = new Date();
-  const twelveWeeksAgo = new Date(now);
-  twelveWeeksAgo.setDate(now.getDate() - 84); // 12 weeks
-
   const weekly: { week: string; count: number; label: string }[] = [];
   for (let i = 11; i >= 0; i--) {
     const weekStart = new Date(now);
@@ -74,13 +98,17 @@ export async function GET(req: NextRequest) {
   // Source breakdown (lesson-page vs other)
   const fromLessonPage = enquiries.filter((e) => e.intent === "lesson" || e.message.toLowerCase().includes("lesson")).length;
 
-  // Recent activity (last 5)
-  const recent = enquiries.slice(-5).reverse().map((e) => ({
-    id: e.id,
-    intent: e.intent,
-    status: e.status,
-    createdAt: e.createdAt.toISOString(),
-  }));
+  // Recent activity (last 5) — sort by createdAt desc
+  const recent = enquiries
+    .slice()
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 5)
+    .map((e) => ({
+      id: e.id,
+      intent: e.intent,
+      status: e.status,
+      createdAt: new Date(e.createdAt).toISOString(),
+    }));
 
   return NextResponse.json({
     total: enquiries.length,

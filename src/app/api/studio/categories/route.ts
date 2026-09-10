@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { db } from "@/lib/db";
+import { supabaseServer } from "@/lib/supabase";
+import { restGetCategories, restGetLessons } from "@/lib/supabase-data";
 
 async function isAuthorized(req: NextRequest): Promise<boolean> {
   // Check Supabase auth cookie
   const sbToken = req.cookies.get("sb-access-token")?.value;
   if (sbToken) {
     try {
-      const { supabaseServer } = await import("@/lib/supabase");
       const { data, error } = await supabaseServer.auth.getUser(sbToken);
       if (!error && data.user) return true;
     } catch {}
@@ -19,13 +21,37 @@ async function isAuthorized(req: NextRequest): Promise<boolean> {
   return cookie.includes(`studio_token=${STUDIO_TOKEN}`);
 }
 
-/** GET /api/studio/categories — list all categories with lesson counts. */
+/**
+ * GET /api/studio/categories — list all categories with lesson counts.
+ * Falls back to the Supabase REST API if Prisma can't connect.
+ */
 export async function GET(req: NextRequest) {
   if (!(await isAuthorized(req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const categories = await db.category.findMany({ orderBy: [{ group: "asc" }, { order: "asc" }] });
-  const lessons = await db.lesson.findMany({ select: { category: true, status: true } });
+  let categories: Array<{ slug: string; name: string; group: string; order: number }> = [];
+  let lessons: Array<{ category: string; status: string }> = [];
+  try {
+    categories = await db.category.findMany({ orderBy: [{ group: "asc" }, { order: "asc" }] });
+    lessons = await db.lesson.findMany({ select: { category: true, status: true } });
+  } catch (e) {
+    console.warn("[studio/categories] Prisma failed, falling back to Supabase REST:", e);
+    try {
+      const [restCats, restLessons] = await Promise.all([
+        restGetCategories(),
+        restGetLessons(),
+      ]);
+      categories = restCats.map((c) => ({
+        slug: c.slug,
+        name: c.name,
+        group: c.group,
+        order: c.order,
+      }));
+      lessons = restLessons.map((l) => ({ category: l.category, status: l.status }));
+    } catch (restErr) {
+      console.error("[studio/categories] Supabase REST also failed:", restErr);
+    }
+  }
   const countMap = new Map<string, { total: number; published: number }>();
   for (const l of lessons) {
     const entry = countMap.get(l.category) ?? { total: 0, published: 0 };
@@ -40,8 +66,6 @@ export async function GET(req: NextRequest) {
   }));
   return NextResponse.json({ categories: result });
 }
-
-import { z } from "zod";
 
 const CreateSchema = z.object({
   slug: z.string().min(1).max(80).regex(/^[a-z0-9-]+$/, "Slug must be lowercase, hyphens only"),

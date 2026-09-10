@@ -19,6 +19,7 @@
 
 import siteContentJson from "@/lib/site-content.json";
 import { db } from "@/lib/db";
+import { restGetSiteContent } from "@/lib/supabase-data";
 import type { SiteContent } from "@/lib/site-content-only";
 
 /**
@@ -40,10 +41,13 @@ function setByPath(obj: unknown, path: string, value: unknown): void {
 
 /**
  * Read all SiteContent rows from the DB.
- * Falls back to an empty map on DB error (caller keeps JSON baseline).
+ * Falls back to the Supabase REST API if Prisma can't connect (the
+ * common production failure mode). Falls back to an empty map if both
+ * fail (caller keeps JSON baseline).
  */
 async function fetchContentMap(): Promise<Map<string, unknown>> {
   const map = new Map<string, unknown>();
+  // 1. Try Prisma
   try {
     const rows = await db.siteContent.findMany();
     for (const r of rows) {
@@ -54,8 +58,24 @@ async function fetchContentMap(): Promise<Map<string, unknown>> {
         map.set(r.key, r.value);
       }
     }
+    if (map.size > 0) return map;
   } catch (e) {
-    console.warn("[dynamic-content] DB fetch failed, using JSON-only:", e);
+    console.warn("[dynamic-content] Prisma failed, trying Supabase REST:", e);
+  }
+  // 2. Fall back to Supabase REST
+  if (map.size === 0) {
+    try {
+      const rows = await restGetSiteContent();
+      for (const r of rows) {
+        try {
+          map.set(r.key, JSON.parse(r.value));
+        } catch {
+          map.set(r.key, r.value);
+        }
+      }
+    } catch (restErr) {
+      console.warn("[dynamic-content] Supabase REST also failed, using JSON-only:", restErr);
+    }
   }
   return map;
 }

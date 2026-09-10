@@ -175,3 +175,67 @@ export async function restHealthCheck(): Promise<boolean> {
     return false;
   }
 }
+
+/* ----------------------------- Studio-only fetchers ----------------------------- */
+
+export type RestEnquiry = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  city: string | null;
+  intent: string;
+  instrument: string | null;
+  level: string | null;
+  whoFor: string | null;
+  message: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type RestMedia = {
+  id: string;
+  url: string;
+  altText: string;
+  category: string;
+  createdAt?: string;
+};
+
+export type RestSiteContent = {
+  key: string;
+  value: string;
+  updatedAt?: string;
+};
+
+/**
+ * Fetch all enquiries from Supabase REST. Used as a fallback when
+ * Prisma can't connect from the Vercel serverless function.
+ */
+export async function restGetEnquiries(): Promise<RestEnquiry[]> {
+  // Order by createdAt desc — PostgREST order syntax
+  return restGet<RestEnquiry>(
+    "Enquiry",
+    "select=id,name,email,phone,city,intent,instrument,level,whoFor,message,status,createdAt,updatedAt&order=createdAt.desc"
+  );
+}
+
+/**
+ * Fetch all media items from Supabase REST.
+ */
+export async function restGetMedia(): Promise<RestMedia[]> {
+  return restGet<RestMedia>(
+    "Media",
+    "select=id,url,altText,category,createdAt&order=createdAt.desc"
+  );
+}
+
+/**
+ * Fetch all SiteContent key/value rows from Supabase REST.
+ */
+export async function restGetSiteContent(): Promise<RestSiteContent[]> {
+  return restGet<RestSiteContent>(
+    "SiteContent",
+    "select=key,value,updatedAt&order=key.asc"
+  );
+}

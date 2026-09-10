@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { supabaseServer } from "@/lib/supabase";
+import { restGetAllLessonsForStudio } from "@/lib/supabase-data";
 
 async function isAuthorized(req: NextRequest): Promise<boolean> {
   // Check Supabase auth cookie
@@ -23,6 +24,9 @@ async function isAuthorized(req: NextRequest): Promise<boolean> {
 /**
  * GET /api/studio/lessons — list ALL lessons (including drafts) for the studio dashboard.
  * Returns lessons ordered by category + level + date.
+ * Falls back to the Supabase REST API if Prisma can't connect (the
+ * common production failure mode — Vercel serverless function can't
+ * reach Supabase Postgres via Prisma's connection pool).
  */
 export async function GET(req: NextRequest) {
   if (!(await isAuthorized(req))) {
@@ -34,11 +38,14 @@ export async function GET(req: NextRequest) {
     });
     return NextResponse.json({ lessons });
   } catch (e) {
-    console.error("GET /api/studio/lessons DB error:", e);
-    return NextResponse.json(
-      { error: "Failed to fetch lessons", lessons: [] },
-      { status: 200 } // return 200 with empty list so dashboard still renders
-    );
+    console.warn("[studio/lessons] Prisma failed, falling back to Supabase REST:", e);
+    try {
+      const lessons = await restGetAllLessonsForStudio();
+      return NextResponse.json({ lessons });
+    } catch (restErr) {
+      console.error("[studio/lessons] Supabase REST also failed:", restErr);
+      return NextResponse.json({ lessons: [] }, { status: 200 });
+    }
   }
 }
 

@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { supabaseServer } from "@/lib/supabase";
+import { restGetSiteContent } from "@/lib/supabase-data";
 
 async function isAuthorized(req: NextRequest): Promise<boolean> {
   // Check Supabase auth cookie
   const sbToken = req.cookies.get("sb-access-token")?.value;
   if (sbToken) {
     try {
-      const { supabaseServer } = await import("@/lib/supabase");
       const { data, error } = await supabaseServer.auth.getUser(sbToken);
       if (!error && data.user) return true;
     } catch {}
@@ -20,10 +21,24 @@ async function isAuthorized(req: NextRequest): Promise<boolean> {
   return cookie.includes(`studio_token=${STUDIO_TOKEN}`);
 }
 
-/** GET /api/studio/content — list all site content key/values */
+/**
+ * GET /api/studio/content — list all site content key/values.
+ * Falls back to the Supabase REST API if Prisma can't connect.
+ */
 export async function GET(req: NextRequest) {
   if (!(await isAuthorized(req))) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const items = await db.siteContent.findMany({ orderBy: { key: "asc" } });
+  let items: Array<{ key: string; value: string }> = [];
+  try {
+    items = await db.siteContent.findMany({ orderBy: { key: "asc" } });
+  } catch (e) {
+    console.warn("[studio/content] Prisma failed, falling back to Supabase REST:", e);
+    try {
+      items = await restGetSiteContent();
+    } catch (restErr) {
+      console.error("[studio/content] Supabase REST also failed:", restErr);
+      items = [];
+    }
+  }
   const content: Record<string, string> = {};
   for (const item of items) content[item.key] = item.value;
   return NextResponse.json({ content });

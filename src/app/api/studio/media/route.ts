@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { supabaseServer } from "@/lib/supabase";
+import { restGetMedia } from "@/lib/supabase-data";
 
 async function isAuthorized(req: NextRequest): Promise<boolean> {
   // Check Supabase auth cookie
   const sbToken = req.cookies.get("sb-access-token")?.value;
   if (sbToken) {
     try {
-      const { supabaseServer } = await import("@/lib/supabase");
       const { data, error } = await supabaseServer.auth.getUser(sbToken);
       if (!error && data.user) return true;
     } catch {}
@@ -20,14 +21,29 @@ async function isAuthorized(req: NextRequest): Promise<boolean> {
   return cookie.includes(`studio_token=${STUDIO_TOKEN}`);
 }
 
-/** GET /api/studio/media — list all media items */
+/**
+ * GET /api/studio/media — list all media items.
+ * Falls back to the Supabase REST API if Prisma can't connect.
+ */
 export async function GET(req: NextRequest) {
   if (!(await isAuthorized(req))) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const category = req.nextUrl.searchParams.get("category");
-  const media = await db.media.findMany({
-    where: category ? { category } : {},
-    orderBy: { createdAt: "desc" },
-  });
+  let media: Array<{ id: string; url: string; altText: string; category: string; createdAt?: string }> = [];
+  try {
+    media = await db.media.findMany({
+      where: category ? { category } : {},
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (e) {
+    console.warn("[studio/media] Prisma failed, falling back to Supabase REST:", e);
+    try {
+      const allMedia = await restGetMedia();
+      media = category ? allMedia.filter((m) => m.category === category) : allMedia;
+    } catch (restErr) {
+      console.error("[studio/media] Supabase REST also failed:", restErr);
+      media = [];
+    }
+  }
   return NextResponse.json({ media });
 }
 
