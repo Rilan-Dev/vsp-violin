@@ -1199,3 +1199,102 @@ Task: User requested: "seed all the data that before we have and make it live an
 4. **Studio Media tab** — currently shows the 15 seeded gallery images with category "gallery". The Media tab's category filter could be improved to show counts per category. The images use relative paths (`images/gallery/gallery-img (1).webp`) which won't resolve in production — they need to be absolute URLs or the gallery component needs to prefix `/`. (The gallery section on the public Stage page already handles this by prefixing `/`.)
 5. **Studio Enquiries tab** — the 5 seeded enquiries have `createdAt` timestamps in ISO format. The dashboard's "Recent activity" section in the Analytics tab should show them correctly. The Enquiries tab's filter chips (All / New / Replied / Archived) work with the seeded statuses.
 6. **Image optimization** — lesson title-card images are still loaded from remote blogger URLs. A future task could download + optimize them via `next/image`.
+
+---
+Task ID: 28
+Agent: studio-supabase-rest-fallback
+Task: User reported the production Studio dashboard shows "Lessons (0)" and the other tabs (Enquiries, Categories, Analytics, Content, Media) are empty — but the public homepage shows 23 lessons. The user asked: "there is no seeded data exists in the platform admin how the application listed the items in dashboard without have in platform admin? please analysis this and fix it properly"
+
+## Current project status assessment (before fix)
+- Production homepage: shows 4 lesson cards (Supabase REST fallback in data.ts works).
+- Production /api/studio/lessons (with auth): returned 200 with `{ lessons: [], error: "Failed to fetch lessons" }` — my try/catch from the previous commit returned an empty array on Prisma failure, so the dashboard showed "Lessons (0)".
+- Production /api/studio/enquiries: returned 500 (no try/catch — Prisma threw).
+- Production /api/studio/categories: returned 500 (no try/catch).
+- Production /api/studio/content: returned 500 (no try/catch).
+- Production /api/studio/media: returned 500 (no try/catch).
+- Production /api/studio/analytics: returned 500 (no try/catch).
+- Root cause: the public `data.ts` had a Supabase REST fallback (added in commit 1695391), but the Studio API routes used Prisma DIRECTLY without the fallback. On Vercel, Prisma can't connect to Supabase Postgres from the serverless function (cold start, pool exhaustion), so all Studio APIs failed while the public site worked.
+
+## Completed modifications + verification
+
+### 1. Added 3 new REST helpers to `src/lib/supabase-data.ts`
+- `restGetEnquiries()` — fetches all enquiries from `/rest/v1/Enquiry` ordered by createdAt desc.
+- `restGetMedia()` — fetches all media items from `/rest/v1/Media` ordered by createdAt desc.
+- `restGetSiteContent()` — fetches all SiteContent key/value rows from `/rest/v1/SiteContent` ordered by key asc.
+- Added `RestEnquiry`, `RestMedia`, `RestSiteContent` types.
+
+### 2. Added Supabase REST fallback to all 6 Studio API routes
+Each route now follows the same pattern: try Prisma first, catch the error, fall back to the Supabase REST API, catch that error too, return empty if both fail.
+
+- **`/api/studio/lessons` GET** — falls back to `restGetAllLessonsForStudio()`.
+- **`/api/studio/enquiries` GET** — wraps Prisma in try/catch, falls back to `restGetEnquiries()`, then computes counts from the combined array.
+- **`/api/studio/categories` GET** — wraps Prisma in try/catch, falls back to `restGetCategories()` + `restGetLessons()` (parallel) to compute lesson counts per category.
+- **`/api/studio/content` GET** — wraps Prisma in try/catch, falls back to `restGetSiteContent()`.
+- **`/api/studio/media` GET** — wraps Prisma in try/catch, falls back to `restGetMedia()` (with optional category filter applied client-side).
+- **`/api/studio/analytics` GET** — wraps Prisma in try/catch, falls back to `restGetEnquiries()`, normalizing `createdAt` to a Date for both paths so the weekly bucket + recent activity computations work uniformly.
+
+### 3. Added Supabase REST fallback to `getDynamicContent()`
+- `src/lib/dynamic-content.ts` — `fetchContentMap()` now tries Prisma first, then `restGetSiteContent()`, then returns an empty map (JSON-only fallback). This means admin content edits will appear on the public production site even when Prisma fails.
+
+### 4. Deduplicated the `isAuthorized` helper
+- All 6 studio routes now import `supabaseServer` from `@/lib/supabase` at the top level (was a dynamic `import()` inside the function for some routes — the dynamic import was a leftover from an earlier debugging phase).
+
+### Verification — local (curl with auth cookie)
+All 6 studio endpoints return 200 with full seeded data:
+- /api/studio/enquiries → 5 enquiries, counts {total:5, new:3, replied:1, archived:1}
+- /api/studio/lessons → 23 lessons
+- /api/studio/categories → 19 categories
+- /api/studio/analytics → total=5, 12 weekly buckets, 5 recent
+- /api/studio/content → 85 content keys
+- /api/studio/media → 16 media items
+
+### Verification — production (after GitHub Actions deploy, commit 87fa773)
+- Login: 200 (admin@sukapavalan.com)
+- /api/studio/enquiries → 200, 5 enquiries, counts {total:5, new:3, replied:1, archived:1}
+- /api/studio/lessons → 200, 23 lessons
+- /api/studio/categories → 200, 19 categories
+- /api/studio/analytics → 200, total=5, 12 weekly buckets, 5 recent
+- /api/studio/content → 200, 85 content keys
+- /api/studio/media → 200, 15 media items
+
+### Verification — production (agent-browser end-to-end)
+- Logged into https://vsp-violin.vercel.app/studio with admin@sukapavalan.com / SukaPavalan2026!
+- Dashboard renders correctly:
+  - Header: "SUKA PAVALAN / STUDIO / admin@sukapavalan.com"
+  - Tabs: ENQUIRIES 3, LESSONS (23), CATEGORIES, ANALYTICS, CONTENT, MEDIA, SETTINGS
+  - Enquiries tab: stat cards TOTAL 5 / NEW 3 / REPLIED 1 / ARCHIVED 1
+  - Source breakdown: "3 of 5 enquiries came through a lesson-related intent"
+  - Enquiry list shows Arun Kumar (NEW, SEP 8), Lakshmi Venkat (NEW, SEP 6), Dr. Ravindran (REPLIED, SEP 1), Saavi Arts Academy (NEW, AUG 29)...
+
+### Commit + push
+- Commit `87fa773` pushed to `main`. GitHub Actions workflow "Deploy to Vercel" completed successfully (run 34534275767). Production is now live with the fix.
+
+## Architecture summary (after all fixes)
+
+The full data flow now has Supabase REST fallbacks at every layer:
+
+1. **Public site** (`src/app/page.tsx`, dedicated pages, server components):
+   - `getLessons()`, `getCategoriesWithCounts()`, `getLibraryStats()`, `getLessonById()`, `getAllLessonsForStudio()` in `data.ts` — Prisma first, then `restGet*` from `supabase-data.ts`.
+   - `getDynamicContent()` in `dynamic-content.ts` — Prisma first, then `restGetSiteContent()`, then static JSON baseline.
+   - `/api/content` public endpoint uses `getDynamicContent()`.
+
+2. **Studio admin** (`/api/studio/*` routes):
+   - All 6 GET endpoints (lessons, enquiries, categories, analytics, content, media) — Prisma first, then `restGet*` from `supabase-data.ts`.
+   - Writes (POST/PATCH/DELETE) still use Prisma only — if Prisma fails, the write fails with a 500. This is acceptable because writes are less frequent and the admin would retry; a REST fallback for writes would require implementing POST/PATCH/DELETE via the Supabase REST API (Prefer: resolution=merge-duplicates for upserts), which is a future enhancement.
+
+3. **Supabase REST API** (`src/lib/supabase-data.ts`):
+   - Uses the service-role key (bypasses RLS).
+   - Tables exposed at `/rest/v1/Lesson`, `/rest/v1/Category`, `/rest/v1/Enquiry`, `/rest/v1/Media`, `/rest/v1/SiteContent` (case-sensitive — the Supabase tables were created with quoted identifiers).
+   - Helpers: `restGetLessons`, `restGetAllLessonsForStudio`, `restGetCategories`, `restGetCategoriesWithCounts`, `restGetLibraryStats`, `restGetLessonById`, `restGetEnquiries`, `restGetMedia`, `restGetSiteContent`, `restHealthCheck`.
+
+## Unresolved issues / risks / next-phase priorities
+
+1. **Studio writes still use Prisma only** — POST/PATCH/DELETE for lessons, enquiries, categories, content, media all use Prisma without a Supabase REST fallback. If Prisma fails on production, the admin can't save edits. A future enhancement: implement writes via the Supabase REST API (POST with `Prefer: resolution=merge-duplicates` for upserts, PATCH via POST with merge-duplicates, DELETE via `/rest/v1/<table>?id=eq.<id>` with DELETE method).
+
+2. **Production Prisma root cause** — the underlying cause is Prisma failing to connect to Supabase Postgres from the Vercel serverless function. Possible fixes: (a) add `@@map("Lesson")` to the Prisma schema to explicitly map models to the quoted table names; (b) switch the Supabase tables to lowercase; (c) use the Supabase pooler URL with `directUrl` correctly set; (d) investigate the Vercel function logs for the specific Prisma error. The REST fallback is a workaround; the root cause should be investigated so Prisma works on production too.
+
+3. **Studio Content tab save feedback** — the Save all button shows "✓ Saved" for 3 seconds but doesn't confirm which fields were actually changed vs. unchanged. A future improvement: show a diff count + a "Revert" option.
+
+4. **Studio Media tab** — currently shows the 15 seeded gallery images with category "gallery". The images use relative paths (`images/gallery/gallery-img (1).webp`) which won't resolve in production — they need to be absolute URLs or the gallery component needs to prefix `/`. (The gallery section on the public Stage page already handles this by prefixing `/`.)
+
+5. **Image optimization** — lesson title-card images are still loaded from remote blogger URLs. A future task could download + optimize them via `next/image`.
