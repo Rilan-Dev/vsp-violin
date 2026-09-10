@@ -20,6 +20,9 @@ import {
   Plus,
   Tags,
   BarChart3,
+  FileText,
+  Image as ImageIcon,
+  Settings,
 } from "lucide-react";
 import type { LessonSummary } from "@/lib/data";
 
@@ -64,7 +67,7 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
   const [data, setData] = useState<StudioData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"enquiries" | "lessons" | "categories" | "analytics">("enquiries");
+  const [activeTab, setActiveTab] = useState<"enquiries" | "lessons" | "categories" | "analytics" | "content" | "media" | "settings">("enquiries");
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
   const [filter, setFilter] = useState<"all" | "new" | "replied" | "archived">("all");
   const router = useRouter();
@@ -302,6 +305,66 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
             >
               <BarChart3 size={13} aria-hidden />
               Analytics
+            </button>
+            <button
+              onClick={() => setActiveTab("content")}
+              aria-pressed={activeTab === "content"}
+              className="flex items-center gap-2 transition-colors"
+              style={{
+                padding: "8px 14px",
+                border: `1px solid ${activeTab === "content" ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
+                background: activeTab === "content" ? "#E0BC6A" : "transparent",
+                color: activeTab === "content" ? "#1B1233" : "rgba(243,237,223,0.82)",
+                fontFamily: "var(--font-geist-mono), monospace",
+                fontSize: "11px",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                cursor: "pointer",
+                borderRadius: 0,
+              }}
+            >
+              <FileText size={13} aria-hidden />
+              Content
+            </button>
+            <button
+              onClick={() => setActiveTab("media")}
+              aria-pressed={activeTab === "media"}
+              className="flex items-center gap-2 transition-colors"
+              style={{
+                padding: "8px 14px",
+                border: `1px solid ${activeTab === "media" ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
+                background: activeTab === "media" ? "#E0BC6A" : "transparent",
+                color: activeTab === "media" ? "#1B1233" : "rgba(243,237,223,0.82)",
+                fontFamily: "var(--font-geist-mono), monospace",
+                fontSize: "11px",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                cursor: "pointer",
+                borderRadius: 0,
+              }}
+            >
+              <ImageIcon size={13} aria-hidden />
+              Media
+            </button>
+            <button
+              onClick={() => setActiveTab("settings")}
+              aria-pressed={activeTab === "settings"}
+              className="flex items-center gap-2 transition-colors"
+              style={{
+                padding: "8px 14px",
+                border: `1px solid ${activeTab === "settings" ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
+                background: activeTab === "settings" ? "#E0BC6A" : "transparent",
+                color: activeTab === "settings" ? "#1B1233" : "rgba(243,237,223,0.82)",
+                fontFamily: "var(--font-geist-mono), monospace",
+                fontSize: "11px",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                cursor: "pointer",
+                borderRadius: 0,
+              }}
+            >
+              <Settings size={13} aria-hidden />
+              Settings
             </button>
             <button
               onClick={logout}
@@ -660,8 +723,14 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
           </>
         ) : activeTab === "categories" ? (
           <CategoriesTab />
-        ) : (
+        ) : activeTab === "analytics" ? (
           <AnalyticsTab />
+        ) : activeTab === "content" ? (
+          <ContentTab />
+        ) : activeTab === "media" ? (
+          <MediaTab />
+        ) : (
+          <SettingsTab />
         )}
       </div>
     </div>
@@ -1645,6 +1714,235 @@ function AnalyticsTab() {
           </ul>
         )}
       </section>
+    </div>
+  );
+}
+
+// ===== Content Management Tab =====
+function ContentTab() {
+  const [content, setContent] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const editableFields = [
+    { key: "hero_eyebrow", label: "Hero Eyebrow", placeholder: "Karaikal, Puducherry · on stage since 1990", type: "text" },
+    { key: "hero_title", label: "Hero Title", placeholder: "Music, kept as worship", type: "text" },
+    { key: "hero_lead", label: "Hero Lead Paragraph", placeholder: "A 37-year Carnatic violinist...", type: "textarea" },
+    { key: "marquee_items", label: "Marquee Items (one per line)", placeholder: "All India Radio - Trichy, Puducherry, Karaikal\nThyagaraja Aradhana since 1992\n...", type: "textarea" },
+    { key: "about_role", label: "Guru Role", placeholder: "Suka Pavalan - Violinist, Music Educator, and Guru", type: "text" },
+    { key: "contact_email", label: "Contact Email", placeholder: "sukapavalan@gmail.com", type: "text" },
+    { key: "contact_phone", label: "Contact Phone", placeholder: "98656 44345", type: "text" },
+    { key: "contact_address", label: "Contact Address", placeholder: "58, Main St, Asiriyar Nagar, Karaikal, Puducherry 609602", type: "text" },
+    { key: "social_youtube", label: "YouTube URL", placeholder: "https://www.youtube.com/channel/...", type: "text" },
+    { key: "social_facebook", label: "Facebook URL", placeholder: "https://www.facebook.com/...", type: "text" },
+    { key: "social_instagram", label: "Instagram URL", placeholder: "https://www.instagram.com/...", type: "text" },
+  ];
+
+  useEffect(() => {
+    fetch("/api/studio/content").then(r => r.json()).then(d => {
+      setContent(d.content || {});
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, []);
+
+  const saveAll = async () => {
+    setSaving(true);
+    setSaved(false);
+    const items = Object.entries(content).map(([key, value]) => ({ key, value }));
+    await fetch("/api/studio/content", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items }),
+    });
+    setSaving(false);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 3000);
+  };
+
+  if (loading) return <p style={{ color: "rgba(243,237,223,0.5)", fontFamily: "var(--font-geist-mono), monospace", fontSize: "12px" }}>Loading content...</p>;
+
+  const inputStyle: React.CSSProperties = { padding: "9px 12px", background: "rgba(22,16,42,0.6)", border: "1px solid rgba(243,237,223,0.2)", color: "#F3EDDF", fontFamily: "var(--font-instrument-sans)", fontSize: "13px", borderRadius: 0, width: "100%" };
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+        <div>
+          <div className="flex items-center gap-3 mb-1">
+            <FileText size={18} aria-hidden style={{ color: "#E0BC6A" }} />
+            <span className="vsp-eyebrow">Content Management</span>
+          </div>
+          <p style={{ fontSize: "14px", color: "rgba(243,237,223,0.62)", margin: 0 }}>
+            Edit site text content — hero text, contact info, social links.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          {saved && <span style={{ color: "#78DCAA", fontSize: "12px" }}>Saved!</span>}
+          <button onClick={saveAll} disabled={saving} className="vsp-cta-gold"
+            style={{ padding: "9px 18px", background: saving ? "rgba(224,188,106,0.45)" : "#E0BC6A", color: "#1B1233", fontFamily: "var(--font-marcellus), serif", fontSize: "13px", border: "none", cursor: saving ? "wait" : "pointer", borderRadius: 0 }}>
+            {saving ? "Saving..." : "Save all"}
+          </button>
+        </div>
+      </div>
+      <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-2" }}>
+        {editableFields.map((field) => (
+          <label key={field.key} className="flex flex-col gap-1.5">
+            <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)" }}>{field.label}</span>
+            {field.type === "textarea" ? (
+              <textarea value={content[field.key] || ""} onChange={(e) => setContent({ ...content, [field.key]: e.target.value })} placeholder={field.placeholder}
+                style={{ ...inputStyle, minHeight: "80px", resize: "vertical", paddingTop: "10px", paddingBottom: "10px", lineHeight: "1.6" }} />
+            ) : (
+              <input type="text" value={content[field.key] || ""} onChange={(e) => setContent({ ...content, [field.key]: e.target.value })} placeholder={field.placeholder} style={inputStyle} />
+            )}
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ===== Media Management Tab =====
+function MediaTab() {
+  const [media, setMedia] = useState<{ id: string; url: string; altText: string; category: string }[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [newUrl, setNewUrl] = useState("");
+  const [newAlt, setNewAlt] = useState("");
+  const [newCat, setNewCat] = useState("portrait");
+
+  useEffect(() => {
+    fetch("/api/studio/media").then(r => r.json()).then(d => {
+      setMedia(d.media || []);
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, []);
+
+  const addMedia = async () => {
+    if (!newUrl.trim() || !newAlt.trim()) return;
+    const res = await fetch("/api/studio/media", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: newUrl.trim(), altText: newAlt.trim(), category: newCat }),
+    });
+    if (res.ok) {
+      const json = await res.json();
+      setMedia([json.media, ...media]);
+      setNewUrl(""); setNewAlt("");
+    }
+  };
+
+  const deleteMedia = async (id: string) => {
+    await fetch(`/api/studio/media/${id}`, { method: "DELETE" });
+    setMedia(media.filter(m => m.id !== id));
+  };
+
+  if (loading) return <p style={{ color: "rgba(243,237,223,0.5)", fontFamily: "var(--font-geist-mono), monospace", fontSize: "12px" }}>Loading media...</p>;
+
+  const inputStyle: React.CSSProperties = { padding: "9px 12px", background: "rgba(22,16,42,0.6)", border: "1px solid rgba(243,237,223,0.2)", color: "#F3EDDF", fontFamily: "var(--font-instrument-sans)", fontSize: "13px", borderRadius: 0, width: "100%" };
+  const catColors: Record<string, string> = { portrait: "#E0BC6A", "title-card": "#C9AEF5", gallery: "#78DCAA", honours: "#E08C50", misc: "rgba(243,237,223,0.5)" };
+
+  return (
+    <div>
+      <div className="flex items-center gap-3 mb-6">
+        <ImageIcon size={18} aria-hidden style={{ color: "#E0BC6A" }} />
+        <span className="vsp-eyebrow">Media Library</span>
+      </div>
+
+      {/* Add new media */}
+      <div className="vsp-card-gold" style={{ padding: "20px", marginBottom: "24px" }}>
+        <span className="vsp-eyebrow" style={{ display: "block", marginBottom: "12px" }}>Add image (URL)</span>
+        <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-4", marginBottom: "12px" }}>
+          <input type="url" value={newUrl} onChange={e => setNewUrl(e.target.value)} placeholder="https://..." style={inputStyle} />
+          <input type="text" value={newAlt} onChange={e => setNewAlt(e.target.value)} placeholder="Alt text" style={inputStyle} />
+          <select value={newCat} onChange={e => setNewCat(e.target.value)} style={inputStyle}>
+            <option value="portrait">Portrait</option>
+            <option value="title-card">Title Card</option>
+            <option value="gallery">Gallery</option>
+            <option value="honours">Honours</option>
+            <option value="misc">Misc</option>
+          </select>
+          <button onClick={addMedia} className="vsp-cta-gold"
+            style={{ padding: "9px 18px", background: "#E0BC6A", color: "#1B1233", fontFamily: "var(--font-marcellus), serif", fontSize: "13px", border: "none", cursor: "pointer", borderRadius: 0 }}>
+            Add image
+          </button>
+        </div>
+      </div>
+
+      {/* Media grid */}
+      {media.length === 0 ? (
+        <p style={{ color: "rgba(243,237,223,0.5)", fontSize: "14px", textAlign: "center", padding: "40px" }}>No images in the media library yet. Add one above.</p>
+      ) : (
+        <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(2, minmax(0,1fr)) sm:grid-cols-3 lg:grid-cols-4" }}>
+          {media.map(m => (
+            <div key={m.id} className="vsp-card-neutral" style={{ padding: "12px", display: "flex", flexDirection: "column", gap: "8px" }}>
+              <div style={{ aspectRatio: "4/3", background: "#251A42", overflow: "hidden" }}>
+                <img src={m.url} alt={m.altText} style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" />
+              </div>
+              <p style={{ fontSize: "12px", color: "#F3EDDF", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{m.altText}</p>
+              <div className="flex items-center justify-between">
+                <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase", color: catColors[m.category] || "#888" }}>{m.category}</span>
+                <button onClick={() => deleteMedia(m.id)} aria-label="Delete" style={{ background: "transparent", border: "none", color: "rgba(243,237,223,0.4)", cursor: "pointer", padding: "4px" }}>
+                  <Trash2 size={13} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ===== Settings Tab =====
+function SettingsTab() {
+  return (
+    <div>
+      <div className="flex items-center gap-3 mb-6">
+        <Settings size={18} aria-hidden style={{ color: "#E0BC6A" }} />
+        <span className="vsp-eyebrow">Site Settings</span>
+      </div>
+
+      <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-2" }}>
+        {/* Studio token info */}
+        <div className="vsp-card-neutral" style={{ padding: "20px" }}>
+          <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "#F3EDDF", margin: "0 0 12px" }}>Admin Authentication</h3>
+          <p style={{ fontSize: "13px", color: "rgba(243,237,223,0.72)", lineHeight: 1.6, margin: "0 0 8px" }}>
+            The Studio is protected by a shared-secret token. Set the <code style={{ color: "#E0BC6A" }}>STUDIO_TOKEN</code> environment variable to change it.
+          </p>
+          <p style={{ fontSize: "12px", color: "rgba(243,237,223,0.5)", fontFamily: "var(--font-geist-mono), monospace", margin: 0 }}>
+            Current token: vsp-studio-dev (dev default)
+          </p>
+        </div>
+
+        {/* Environment variables */}
+        <div className="vsp-card-neutral" style={{ padding: "20px" }}>
+          <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "#F3EDDF", margin: "0 0 12px" }}>Environment Variables</h3>
+          <div className="flex flex-col gap-2" style={{ fontSize: "12px" }}>
+            <div className="flex justify-between"><span style={{ color: "rgba(243,237,223,0.5)" }}>DATABASE_URL</span><span style={{ color: "#78DCAA" }}>set</span></div>
+            <div className="flex justify-between"><span style={{ color: "rgba(243,237,223,0.5)" }}>STUDIO_TOKEN</span><span style={{ color: "#78DCAA" }}>set</span></div>
+            <div className="flex justify-between"><span style={{ color: "rgba(243,237,223,0.5)" }}>NEXT_TELEMETRY_DISABLED</span><span style={{ color: "#78DCAA" }}>set</span></div>
+          </div>
+        </div>
+
+        {/* Database info */}
+        <div className="vsp-card-neutral" style={{ padding: "20px" }}>
+          <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "#F3EDDF", margin: "0 0 12px" }}>Database</h3>
+          <p style={{ fontSize: "13px", color: "rgba(243,237,223,0.72)", lineHeight: 1.6, margin: 0 }}>
+            SQLite database with Prisma ORM. Schema includes: Lesson, Category, Enquiry, SiteContent, Media models.
+            Run <code style={{ color: "#E0BC6A" }}>bun run db:push</code> to apply schema changes.
+          </p>
+        </div>
+
+        {/* Deployment info */}
+        <div className="vsp-card-neutral" style={{ padding: "20px" }}>
+          <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "#F3EDDF", margin: "0 0 12px" }}>Deployment</h3>
+          <p style={{ fontSize: "13px", color: "rgba(243,237,223,0.72)", lineHeight: 1.6, margin: "0 0 8px" }}>
+            Auto-deployed via GitHub Actions on push to <code style={{ color: "#E0BC6A" }}>main</code>.
+          </p>
+          <a href="https://vsp-violin.vercel.app" target="_blank" rel="noopener noreferrer" style={{ fontSize: "13px", color: "#E0BC6A" }}>
+            Production URL: vsp-violin.vercel.app →
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
