@@ -63,26 +63,61 @@ const INTENT_COLORS: Record<string, string> = {
   collaboration: "#78DCAA",
 };
 
-export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
+export function StudioDashboard({
+  lessons: initialLessons,
+  initialUser,
+}: {
+  lessons: LessonSummary[];
+  initialUser?: { id?: string; email?: string } | null;
+}) {
   const [data, setData] = useState<StudioData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"enquiries" | "lessons" | "categories" | "analytics" | "content" | "media" | "settings">("enquiries");
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
   const [filter, setFilter] = useState<"all" | "new" | "replied" | "archived">("all");
+  const [lessonCategoryFilter, setLessonCategoryFilter] = useState<string>("all");
+  const [lessonSearch, setLessonSearch] = useState<string>("");
   const router = useRouter();
 
   const fetchData = useCallback(async () => {
     try {
-      const res = await fetch("/api/studio/enquiries");
-      if (res.status === 401) {
+      // Fetch enquiries + lessons in parallel. Each call fails gracefully so
+      // a single broken API doesn't blank out the whole dashboard.
+      const [enqRes, lessonsRes] = await Promise.allSettled([
+        fetch("/api/studio/enquiries"),
+        fetch("/api/studio/lessons"),
+      ]);
+
+      // Handle 401 on either — session expired, force re-login.
+      if (
+        (enqRes.status === "fulfilled" && enqRes.value.status === 401) ||
+        (lessonsRes.status === "fulfilled" && lessonsRes.value.status === 401)
+      ) {
         window.location.reload();
         return;
       }
-      if (!res.ok) throw new Error("Failed to load");
-      const json = await res.json();
-      // Merge server-side lessons with enquiry data
-      const lessonRows: LessonRow[] = lessons.map((l) => ({
+
+      // Parse enquiries (fall back to empty if failed)
+      let enquiries: Enquiry[] = [];
+      let counts = { total: 0, new: 0, replied: 0, archived: 0 };
+      if (enqRes.status === "fulfilled" && enqRes.value.ok) {
+        const json = await enqRes.value.json().catch(() => ({ enquiries: [], counts }));
+        enquiries = json.enquiries ?? [];
+        counts = json.counts ?? counts;
+      }
+
+      // Parse lessons — prefer the API result; fall back to the
+      // server-passed `initialLessons` prop (used during SSR fallback).
+      let lessonSource: LessonSummary[] = initialLessons;
+      if (lessonsRes.status === "fulfilled" && lessonsRes.value.ok) {
+        const ljson = await lessonsRes.value.json().catch(() => ({ lessons: [] }));
+        if (Array.isArray(ljson.lessons) && ljson.lessons.length > 0) {
+          lessonSource = ljson.lessons;
+        }
+      }
+
+      const lessonRows: LessonRow[] = lessonSource.map((l) => ({
         ...l,
         hasNotation: Boolean(l.raga || l.titleTamil),
         hasVideo: true,
@@ -95,15 +130,15 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
       ).map(([category, count]) => ({ category, count }));
 
       setData({
-        enquiries: json.enquiries,
-        counts: json.counts,
+        enquiries,
+        counts,
         lessons: lessonRows,
         lessonsByCategory,
         sourceBreakdown: {
-          fromLessonPage: json.enquiries.filter((e: Enquiry) =>
+          fromLessonPage: enquiries.filter((e: Enquiry) =>
             e.message.toLowerCase().includes("lesson") || e.intent === "lesson"
           ).length,
-          fromOther: json.enquiries.filter(
+          fromOther: enquiries.filter(
             (e: Enquiry) => !e.message.toLowerCase().includes("lesson") && e.intent !== "lesson"
           ).length,
         },
@@ -113,7 +148,7 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
     } finally {
       setLoading(false);
     }
-  }, [lessons, router]);
+  }, [initialLessons, router]);
 
   useEffect(() => {
     fetchData();
@@ -171,20 +206,114 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
       : data.enquiries.filter((e) => e.status === filter)
     : [];
 
+  // Filter lessons by category + search query (Lessons tab)
+  const filteredLessons = data
+    ? data.lessons.filter((l) => {
+        if (lessonCategoryFilter !== "all" && l.category !== lessonCategoryFilter) return false;
+        if (lessonSearch.trim()) {
+          const q = lessonSearch.trim().toLowerCase();
+          const hay = [l.title, l.titleTamil ?? "", l.raga ?? "", l.thala ?? "", l.category]
+            .join(" ")
+            .toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      })
+    : [];
+
   if (loading) {
     return (
-      <div style={{ minHeight: "100vh", background: "#16102A", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <p style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "12px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(243,237,223,0.5)" }}>
-          Loading studio…
-        </p>
+      <div style={{ minHeight: "100vh", background: "#16102A", color: "#F3EDDF" }}>
+        <header
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 40,
+            background: "rgba(22,16,42,0.95)",
+            backdropFilter: "blur(22px)",
+            WebkitBackdropFilter: "blur(22px)",
+            borderBottom: "1px solid rgba(224,188,106,0.24)",
+          }}
+        >
+          <div className="flex items-center justify-between" style={{ padding: "14px 20px", gap: "16px" }}>
+            <div className="flex items-center gap-4">
+              <span style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "20px", letterSpacing: "0.06em", color: "#E0BC6A" }}>
+                SUKA PAVALAN
+              </span>
+              <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10.5px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(243,237,223,0.5)" }}>
+                Studio
+              </span>
+            </div>
+          </div>
+        </header>
+        <div style={{ maxWidth: "1440px", margin: "0 auto" }} className="px-5 py-6 md:px-8 md:py-8">
+          <div className="flex items-center gap-3 mb-8">
+            <div
+              style={{
+                width: 22,
+                height: 22,
+                border: "2px solid rgba(224,188,106,0.22)",
+                borderTopColor: "#E0BC6A",
+                borderRadius: "50%",
+                animation: "vsp-spin 800ms linear infinite",
+              }}
+              aria-hidden
+            />
+            <span
+              style={{
+                fontFamily: "var(--font-geist-mono), monospace",
+                fontSize: "11px",
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "rgba(243,237,223,0.62)",
+              }}
+            >
+              Loading studio…
+            </span>
+          </div>
+          <div className="grid gap-4 mb-8 grid-cols-2 md:grid-cols-4" aria-hidden>
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="vsp-card-neutral" style={{ padding: "20px 22px" }}>
+                <div style={{ height: 10, marginBottom: 8, background: "rgba(243,237,223,0.08)", width: "60%" }} />
+                <div style={{ height: 30, background: "rgba(243,237,223,0.12)", width: "40%" }} />
+              </div>
+            ))}
+          </div>
+          <div className="vsp-card-neutral" style={{ padding: "0", overflow: "hidden" }}>
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} style={{ padding: "18px 16px", borderBottom: "1px solid rgba(243,237,223,0.06)" }}>
+                <div style={{ height: 14, background: "rgba(243,237,223,0.08)", width: `${70 - i * 5}%` }} />
+              </div>
+            ))}
+          </div>
+          <style>{`@keyframes vsp-spin { to { transform: rotate(360deg); } }`}</style>
+        </div>
       </div>
     );
   }
 
   if (error || !data) {
     return (
-      <div style={{ minHeight: "100vh", background: "#16102A", display: "flex", alignItems: "center", justifyContent: "center", color: "#F2C5A5" }}>
-        Error: {error}
+      <div style={{ minHeight: "100vh", background: "#16102A", display: "flex", alignItems: "center", justifyContent: "center", padding: "32px" }}>
+        <div className="vsp-card-gold" style={{ maxWidth: "520px", width: "100%", padding: "32px" }}>
+          <span className="vsp-eyebrow" style={{ display: "block", marginBottom: 14, color: "#E08C50" }}>Studio · connection error</span>
+          <h1 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "24px", color: "#F3EDDF", margin: "0 0 14px" }}>
+            Couldn’t load the dashboard data.
+          </h1>
+          <p style={{ fontSize: "14px", color: "rgba(243,237,223,0.72)", lineHeight: 1.6, margin: "0 0 18px" }}>
+            The backend APIs didn’t respond. This usually means the database connection failed. Try reloading; if it persists, the database may need attention.
+          </p>
+          <pre style={{ padding: "12px 14px", background: "rgba(22,16,42,0.6)", border: "1px solid rgba(224,140,80,0.4)", color: "#F2C5A5", fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", overflowX: "auto", margin: "0 0 16px" }}>
+            {error ?? "Unknown error"}
+          </pre>
+          <button
+            onClick={() => window.location.reload()}
+            className="vsp-cta-gold"
+            style={{ padding: "11px 22px", background: "#E0BC6A", color: "#1B1233", fontFamily: "var(--font-marcellus), serif", fontSize: "13px", border: "none", cursor: "pointer", borderRadius: 0 }}
+          >
+            Reload
+          </button>
+        </div>
       </div>
     );
   }
@@ -203,7 +332,7 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
           borderBottom: "1px solid rgba(224,188,106,0.24)",
         }}
       >
-        <div className="flex items-center justify-between" style={{ padding: "14px 32px", gap: "24px" }}>
+        <div className="flex items-center justify-between" style={{ padding: "14px 20px", gap: "16px", flexWrap: "wrap" }}>
           <div className="flex items-center gap-4">
             <span style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "20px", letterSpacing: "0.06em", color: "#E0BC6A" }}>
               SUKA PAVALAN
@@ -211,8 +340,23 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
             <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10.5px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(243,237,223,0.5)" }}>
               Studio
             </span>
+            {initialUser?.email && (
+              <span
+                style={{
+                  fontFamily: "var(--font-geist-mono), monospace",
+                  fontSize: "10.5px",
+                  letterSpacing: "0.06em",
+                  color: "rgba(243,237,223,0.42)",
+                  paddingLeft: "12px",
+                  borderLeft: "1px solid rgba(243,237,223,0.12)",
+                }}
+                title="Signed in"
+              >
+                {initialUser.email}
+              </span>
+            )}
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 flex-wrap" style={{ justifyContent: "flex-end" }}>
             <button
               onClick={() => setActiveTab("enquiries")}
               aria-pressed={activeTab === "enquiries"}
@@ -390,7 +534,7 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
         </div>
       </header>
 
-      <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "32px" }}>
+      <div style={{ maxWidth: "1440px", margin: "0 auto" }} className="px-5 py-6 md:px-8 md:py-8">
         {activeTab === "enquiries" ? (
           <>
             {/* Stats row */}
@@ -653,6 +797,7 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
               <StatCard icon={<BookOpen size={18} />} label="Total lessons" value={data.lessons.length} color="#E0BC6A" />
               <StatCard icon={<BookOpen size={18} />} label="Categories" value={data.lessonsByCategory.length} color="#C9AEF5" />
               <StatCard icon={<BookOpen size={18} />} label="With notation" value={data.lessons.filter((l) => l.hasNotation).length} color="#78DCAA" />
+              <StatCard icon={<BookOpen size={18} />} label="Drafts" value={data.lessons.filter((l) => (l.status ?? "published") === "draft").length} color="#E08C50" />
             </div>
 
             {/* Edit hint + new lesson button */}
@@ -676,6 +821,110 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
                   return { ...prev, lessons, lessonsByCategory };
                 });
               }} />
+            </div>
+
+            {/* Category filter + search */}
+            <div className="flex items-center gap-3 flex-wrap mb-4">
+              <div className="flex items-center gap-2 flex-wrap" style={{ flex: "1 1 auto", minWidth: "260px" }}>
+                <span
+                  className="font-mono"
+                  style={{
+                    fontSize: "9.5px",
+                    letterSpacing: "0.16em",
+                    textTransform: "uppercase",
+                    color: "rgba(243,237,223,0.6)",
+                    paddingRight: 6,
+                  }}
+                >
+                  Filter
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setLessonCategoryFilter("all")}
+                  aria-pressed={lessonCategoryFilter === "all"}
+                  className="lib-chip font-mono"
+                  style={{
+                    padding: "6px 12px",
+                    border: `1px solid ${lessonCategoryFilter === "all" ? "rgba(224,188,106,0.6)" : "rgba(243,237,223,0.18)"}`,
+                    background: lessonCategoryFilter === "all" ? "rgba(224,188,106,0.1)" : "transparent",
+                    color: lessonCategoryFilter === "all" ? "#E0BC6A" : "rgba(243,237,223,0.72)",
+                    fontSize: "10.5px",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    cursor: "pointer",
+                    borderRadius: 0,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  All ({data.lessons.length})
+                </button>
+                {data.lessonsByCategory
+                  .slice()
+                  .sort((a, b) => b.count - a.count)
+                  .map((c) => {
+                    const active = lessonCategoryFilter === c.category;
+                    return (
+                      <button
+                        key={c.category}
+                        type="button"
+                        onClick={() => setLessonCategoryFilter(c.category)}
+                        aria-pressed={active}
+                        className="lib-chip font-mono"
+                        style={{
+                          padding: "6px 12px",
+                          border: `1px solid ${active ? "rgba(224,188,106,0.6)" : "rgba(243,237,223,0.18)"}`,
+                          background: active ? "rgba(224,188,106,0.1)" : "transparent",
+                          color: active ? "#E0BC6A" : "rgba(243,237,223,0.72)",
+                          fontSize: "10.5px",
+                          letterSpacing: "0.08em",
+                          textTransform: "uppercase",
+                          cursor: "pointer",
+                          borderRadius: 0,
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {c.category.replace(/-/g, " ")} ({c.count})
+                      </button>
+                    );
+                  })}
+              </div>
+              <div className="flex items-center gap-2" style={{ flex: "0 0 auto" }}>
+                <input
+                  type="search"
+                  value={lessonSearch}
+                  onChange={(e) => setLessonSearch(e.target.value)}
+                  placeholder="Search title, raga…"
+                  aria-label="Search lessons"
+                  style={{
+                    padding: "8px 12px",
+                    background: "rgba(22,16,42,0.6)",
+                    border: "1px solid rgba(243,237,223,0.18)",
+                    color: "#F3EDDF",
+                    fontFamily: "var(--font-instrument-sans)",
+                    fontSize: "12.5px",
+                    borderRadius: 0,
+                    minWidth: "200px",
+                    width: "100%",
+                  }}
+                />
+                {(lessonSearch || lessonCategoryFilter !== "all") && (
+                  <button
+                    type="button"
+                    onClick={() => { setLessonSearch(""); setLessonCategoryFilter("all"); }}
+                    aria-label="Clear filter"
+                    style={{
+                      background: "transparent",
+                      border: "1px solid rgba(243,237,223,0.2)",
+                      color: "rgba(243,237,223,0.62)",
+                      padding: "8px 10px",
+                      cursor: "pointer",
+                      borderRadius: 0,
+                    }}
+                  >
+                    <X size={14} aria-hidden />
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Lessons table */}
@@ -702,24 +951,51 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.lessons.map((l) => (
-                      <EditableLessonRow key={l.id} lesson={l} onUpdate={(updated) => {
-                        setData((prev) => {
-                          if (!prev) return prev;
-                          const lessons = prev.lessons.map((row) => row.id === l.id ? { ...row, ...updated } : row);
-                          return { ...prev, lessons };
-                        });
-                      }} onDelete={() => {
-                        setData((prev) => {
-                          if (!prev) return prev;
-                          const lessons = prev.lessons.filter((row) => row.id !== l.id);
-                          return { ...prev, lessons };
-                        });
-                      }} />
-                    ))}
+                    {filteredLessons.length === 0 ? (
+                      <tr>
+                        <td colSpan={7} style={{ padding: "48px", textAlign: "center" }}>
+                          <BookOpen size={28} aria-hidden style={{ color: "rgba(243,237,223,0.3)", margin: "0 auto 10px" }} />
+                          <p style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "rgba(243,237,223,0.62)", margin: "0 0 6px" }}>
+                            {data.lessons.length === 0
+                              ? "No lessons loaded yet."
+                              : lessonCategoryFilter !== "all"
+                                ? `No lessons in "${lessonCategoryFilter.replace(/-/g, " ")}" yet.`
+                                : "No lessons match your search."}
+                          </p>
+                          <p style={{ fontSize: "12px", color: "rgba(243,237,223,0.4)", fontFamily: "var(--font-geist-mono), monospace", margin: 0 }}>
+                            {data.lessons.length === 0
+                              ? "Add your first lesson with the “New lesson” button above."
+                              : "Try a different category or clear the search."}
+                          </p>
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredLessons.map((l) => (
+                        <EditableLessonRow key={l.id} lesson={l} onUpdate={(updated) => {
+                          setData((prev) => {
+                            if (!prev) return prev;
+                            const lessons = prev.lessons.map((row) => row.id === l.id ? { ...row, ...updated } : row);
+                            return { ...prev, lessons };
+                          });
+                        }} onDelete={() => {
+                          setData((prev) => {
+                            if (!prev) return prev;
+                            const lessons = prev.lessons.filter((row) => row.id !== l.id);
+                            return { ...prev, lessons };
+                          });
+                        }} />
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
+            </div>
+
+            {/* Result count */}
+            <div className="flex items-center justify-between mt-3" style={{ fontSize: "11.5px", color: "rgba(243,237,223,0.5)" }}>
+              <span style={{ fontFamily: "var(--font-geist-mono), monospace", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+                Showing {filteredLessons.length} of {data.lessons.length} lessons
+              </span>
             </div>
           </>
         ) : activeTab === "categories" ? (
@@ -1785,7 +2061,7 @@ function ContentTab() {
           </button>
         </div>
       </div>
-      <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-2" }}>
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
         {editableFields.map((field) => (
           <label key={field.key} className="flex flex-col gap-1.5">
             <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)" }}>{field.label}</span>
@@ -1851,7 +2127,7 @@ function MediaTab() {
       {/* Add new media */}
       <div className="vsp-card-gold" style={{ padding: "20px", marginBottom: "24px" }}>
         <span className="vsp-eyebrow" style={{ display: "block", marginBottom: "12px" }}>Add image (URL)</span>
-        <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-4", marginBottom: "12px" }}>
+        <div className="grid gap-3 grid-cols-1 md:grid-cols-4" style={{ marginBottom: "12px" }}>
           <input type="url" value={newUrl} onChange={e => setNewUrl(e.target.value)} placeholder="https://..." style={inputStyle} />
           <input type="text" value={newAlt} onChange={e => setNewAlt(e.target.value)} placeholder="Alt text" style={inputStyle} />
           <select value={newCat} onChange={e => setNewCat(e.target.value)} style={inputStyle}>
@@ -1872,7 +2148,7 @@ function MediaTab() {
       {media.length === 0 ? (
         <p style={{ color: "rgba(243,237,223,0.5)", fontSize: "14px", textAlign: "center", padding: "40px" }}>No images in the media library yet. Add one above.</p>
       ) : (
-        <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(2, minmax(0,1fr)) sm:grid-cols-3 lg:grid-cols-4" }}>
+        <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
           {media.map(m => (
             <div key={m.id} className="vsp-card-neutral" style={{ padding: "12px", display: "flex", flexDirection: "column", gap: "8px" }}>
               <div style={{ aspectRatio: "4/3", background: "#251A42", overflow: "hidden" }}>
@@ -1902,7 +2178,7 @@ function SettingsTab() {
         <span className="vsp-eyebrow">Site Settings</span>
       </div>
 
-      <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(1, minmax(0,1fr)) md:grid-cols-2" }}>
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
         {/* Studio token info */}
         <div className="vsp-card-neutral" style={{ padding: "20px" }}>
           <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "#F3EDDF", margin: "0 0 12px" }}>Admin Authentication</h3>

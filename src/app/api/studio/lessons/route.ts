@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { supabaseServer } from "@/lib/supabase";
 
 async function isAuthorized(req: NextRequest): Promise<boolean> {
   // Check Supabase auth cookie
   const sbToken = req.cookies.get("sb-access-token")?.value;
   if (sbToken) {
     try {
-      const { supabaseServer } = await import("@/lib/supabase");
       const { data, error } = await supabaseServer.auth.getUser(sbToken);
       if (!error && data.user) return true;
     } catch {}
@@ -18,6 +18,28 @@ async function isAuthorized(req: NextRequest): Promise<boolean> {
   if (auth?.startsWith("Bearer ") && auth.slice(7) === STUDIO_TOKEN) return true;
   const cookie = req.headers.get("cookie") ?? "";
   return cookie.includes(`studio_token=${STUDIO_TOKEN}`);
+}
+
+/**
+ * GET /api/studio/lessons — list ALL lessons (including drafts) for the studio dashboard.
+ * Returns lessons ordered by category + level + date.
+ */
+export async function GET(req: NextRequest) {
+  if (!(await isAuthorized(req))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  try {
+    const lessons = await db.lesson.findMany({
+      orderBy: [{ category: "asc" }, { level: "asc" }, { date: "desc" }],
+    });
+    return NextResponse.json({ lessons });
+  } catch (e) {
+    console.error("GET /api/studio/lessons DB error:", e);
+    return NextResponse.json(
+      { error: "Failed to fetch lessons", lessons: [] },
+      { status: 200 } // return 200 with empty list so dashboard still renders
+    );
+  }
 }
 
 const CreateSchema = z.object({

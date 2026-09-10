@@ -1,5 +1,12 @@
 import { db } from "@/lib/db";
 import siteContent from "@/lib/site-content.json";
+import {
+  restGetLessons,
+  restGetAllLessonsForStudio,
+  restGetCategoriesWithCounts,
+  restGetLibraryStats,
+  restGetLessonById,
+} from "@/lib/supabase-data";
 
 export type CategoryGroup = "basics" | "advanced" | "devotional" | "light" | "media";
 
@@ -46,44 +53,70 @@ export type SiteContent = typeof siteContent;
 /**
  * The category requirement (handoff §"The category requirement"):
  * every count is derived from the lesson collection, never hardcoded.
+ *
+ * Falls back to the Supabase REST API if the Prisma DB connection fails
+ * (e.g. cold serverless function, Postgres pool exhaustion).
  */
 export async function getCategoriesWithCounts(): Promise<CategoryWithCount[]> {
-  const categories = await db.category.findMany({ orderBy: [{ group: "asc" }, { order: "asc" }] });
-  const lessons = await db.lesson.findMany({ where: { status: "published" }, select: { category: true } });
+  try {
+    const categories = await db.category.findMany({ orderBy: [{ group: "asc" }, { order: "asc" }] });
+    const lessons = await db.lesson.findMany({ where: { status: "published" }, select: { category: true } });
 
-  const countMap = new Map<string, number>();
-  for (const l of lessons) {
-    countMap.set(l.category, (countMap.get(l.category) ?? 0) + 1);
+    const countMap = new Map<string, number>();
+    for (const l of lessons) {
+      countMap.set(l.category, (countMap.get(l.category) ?? 0) + 1);
+    }
+
+    return categories.map((c) => ({
+      slug: c.slug,
+      name: c.name,
+      group: c.group as CategoryGroup,
+      order: c.order,
+      count: countMap.get(c.slug) ?? 0,
+    }));
+  } catch (e) {
+    console.warn("[data] Prisma getCategoriesWithCounts failed, falling back to Supabase REST:", e);
+    return restGetCategoriesWithCounts();
   }
-
-  return categories.map((c) => ({
-    slug: c.slug,
-    name: c.name,
-    group: c.group as CategoryGroup,
-    order: c.order,
-    count: countMap.get(c.slug) ?? 0,
-  }));
 }
 
 export async function getLessons(categorySlug?: string): Promise<LessonSummary[]> {
-  const where = { status: "published" as const, ...(categorySlug ? { category: categorySlug } : {}) };
-  const lessons = await db.lesson.findMany({
-    where,
-    orderBy: [{ level: "asc" }, { date: "desc" }],
-  });
-  return lessons.map((l) => ({
-    id: l.id,
-    title: l.title,
-    titleTamil: l.titleTamil,
-    category: l.category,
-    level: l.level,
-    raga: l.raga,
-    thala: l.thala,
-    composer: l.composer,
-    date: l.date,
-    titleCard: l.titleCard,
-    status: l.status,
-  }));
+  try {
+    const where = { status: "published" as const, ...(categorySlug ? { category: categorySlug } : {}) };
+    const lessons = await db.lesson.findMany({
+      where,
+      orderBy: [{ level: "asc" }, { date: "desc" }],
+    });
+    return lessons.map((l) => ({
+      id: l.id,
+      title: l.title,
+      titleTamil: l.titleTamil,
+      category: l.category,
+      level: l.level,
+      raga: l.raga,
+      thala: l.thala,
+      composer: l.composer,
+      date: l.date,
+      titleCard: l.titleCard,
+      status: l.status,
+    }));
+  } catch (e) {
+    console.warn("[data] Prisma getLessons failed, falling back to Supabase REST:", e);
+    const rows = await restGetLessons(categorySlug);
+    return rows.map((l) => ({
+      id: l.id,
+      title: l.title,
+      titleTamil: l.titleTamil,
+      category: l.category,
+      level: l.level,
+      raga: l.raga,
+      thala: l.thala,
+      composer: l.composer,
+      date: l.date,
+      titleCard: l.titleCard,
+      status: l.status,
+    }));
+  }
 }
 
 /**
@@ -91,47 +124,91 @@ export async function getLessons(categorySlug?: string): Promise<LessonSummary[]
  * The public `getLessons` filters to published only.
  */
 export async function getAllLessonsForStudio(): Promise<LessonSummary[]> {
-  const lessons = await db.lesson.findMany({
-    orderBy: [{ category: "asc" }, { level: "asc" }, { date: "desc" }],
-  });
-  return lessons.map((l) => ({
-    id: l.id,
-    title: l.title,
-    titleTamil: l.titleTamil,
-    category: l.category,
-    level: l.level,
-    raga: l.raga,
-    thala: l.thala,
-    composer: l.composer,
-    date: l.date,
-    titleCard: l.titleCard,
-    status: l.status,
-  }));
+  try {
+    const lessons = await db.lesson.findMany({
+      orderBy: [{ category: "asc" }, { level: "asc" }, { date: "desc" }],
+    });
+    return lessons.map((l) => ({
+      id: l.id,
+      title: l.title,
+      titleTamil: l.titleTamil,
+      category: l.category,
+      level: l.level,
+      raga: l.raga,
+      thala: l.thala,
+      composer: l.composer,
+      date: l.date,
+      titleCard: l.titleCard,
+      status: l.status,
+    }));
+  } catch (e) {
+    console.warn("[data] Prisma getAllLessonsForStudio failed, falling back to Supabase REST:", e);
+    const rows = await restGetAllLessonsForStudio();
+    return rows.map((l) => ({
+      id: l.id,
+      title: l.title,
+      titleTamil: l.titleTamil,
+      category: l.category,
+      level: l.level,
+      raga: l.raga,
+      thala: l.thala,
+      composer: l.composer,
+      date: l.date,
+      titleCard: l.titleCard,
+      status: l.status,
+    }));
+  }
 }
 
 export async function getLessonById(id: string): Promise<LessonDetail | null> {
-  const l = await db.lesson.findUnique({ where: { id } });
-  if (!l) return null;
-  return {
-    id: l.id,
-    title: l.title,
-    titleTamil: l.titleTamil,
-    category: l.category,
-    level: l.level,
-    raga: l.raga,
-    thala: l.thala,
-    composer: l.composer,
-    date: l.date,
-    titleCard: l.titleCard,
-    notationTamil: l.notationTamil,
-    notationEnglish: l.notationEnglish,
-    violinVideo: l.violinVideo,
-    vocalVideo: l.vocalVideo,
-    sourceUrl: l.sourceUrl,
-    perVideoEmbeds: l.perVideoEmbeds ? (JSON.parse(l.perVideoEmbeds) as PerVideoEmbeds) : null,
-    audioLessons: l.audioLessons ? (JSON.parse(l.audioLessons) as AudioLesson[]) : null,
-    videoParts: l.videoParts ? (JSON.parse(l.videoParts) as VideoPart[]) : null,
-  };
+  try {
+    const l = await db.lesson.findUnique({ where: { id } });
+    if (!l) return null;
+    return {
+      id: l.id,
+      title: l.title,
+      titleTamil: l.titleTamil,
+      category: l.category,
+      level: l.level,
+      raga: l.raga,
+      thala: l.thala,
+      composer: l.composer,
+      date: l.date,
+      titleCard: l.titleCard,
+      notationTamil: l.notationTamil,
+      notationEnglish: l.notationEnglish,
+      violinVideo: l.violinVideo,
+      vocalVideo: l.vocalVideo,
+      sourceUrl: l.sourceUrl,
+      perVideoEmbeds: l.perVideoEmbeds ? (JSON.parse(l.perVideoEmbeds) as PerVideoEmbeds) : null,
+      audioLessons: l.audioLessons ? (JSON.parse(l.audioLessons) as AudioLesson[]) : null,
+      videoParts: l.videoParts ? (JSON.parse(l.videoParts) as VideoPart[]) : null,
+    };
+  } catch (e) {
+    console.warn("[data] Prisma getLessonById failed, falling back to Supabase REST:", e);
+    const row = await restGetLessonById(id);
+    if (!row) return null;
+    return {
+      id: row.id,
+      title: row.title,
+      titleTamil: row.titleTamil,
+      category: row.category,
+      level: row.level,
+      raga: row.raga,
+      thala: row.thala,
+      composer: row.composer,
+      date: row.date,
+      titleCard: row.titleCard,
+      notationTamil: row.notationTamil,
+      notationEnglish: row.notationEnglish,
+      violinVideo: row.violinVideo,
+      vocalVideo: row.vocalVideo,
+      sourceUrl: row.sourceUrl,
+      perVideoEmbeds: row.perVideoEmbeds ? (JSON.parse(row.perVideoEmbeds) as PerVideoEmbeds) : null,
+      audioLessons: row.audioLessons ? (JSON.parse(row.audioLessons) as AudioLesson[]) : null,
+      videoParts: row.videoParts ? (JSON.parse(row.videoParts) as VideoPart[]) : null,
+    };
+  }
 }
 
 /**
@@ -204,19 +281,24 @@ export async function getRelatedLessons(currentId: string, raga: string | null, 
 }
 
 export async function getLibraryStats() {
-  const [lessonCount, categoryCount, lessonsWithRaga, lessonsWithNotation] = await Promise.all([
-    db.lesson.count({ where: { status: "published" } }),
-    db.category.count(),
-    db.lesson.findMany({ where: { status: "published", raga: { not: null } }, select: { raga: true } }),
-    db.lesson.findMany({ where: { status: "published", notationTamil: { not: null } }, select: { id: true } }),
-  ]);
-  const ragaSet = new Set(lessonsWithRaga.map((l) => l.raga).filter(Boolean));
-  return {
-    lessons: lessonCount,
-    notationSheets: lessonsWithNotation.length * 2, // Tamil + English per lesson
-    categories: categoryCount,
-    ragas: ragaSet.size,
-  };
+  try {
+    const [lessonCount, categoryCount, lessonsWithRaga, lessonsWithNotation] = await Promise.all([
+      db.lesson.count({ where: { status: "published" } }),
+      db.category.count(),
+      db.lesson.findMany({ where: { status: "published", raga: { not: null } }, select: { raga: true } }),
+      db.lesson.findMany({ where: { status: "published", notationTamil: { not: null } }, select: { id: true } }),
+    ]);
+    const ragaSet = new Set(lessonsWithRaga.map((l) => l.raga).filter(Boolean));
+    return {
+      lessons: lessonCount,
+      notationSheets: lessonsWithNotation.length * 2, // Tamil + English per lesson
+      categories: categoryCount,
+      ragas: ragaSet.size,
+    };
+  } catch (e) {
+    console.warn("[data] Prisma getLibraryStats failed, falling back to Supabase REST:", e);
+    return restGetLibraryStats();
+  }
 }
 
 export function getSiteContent(): SiteContent {

@@ -354,9 +354,9 @@ export function LibraryPreview({
         </div>
       ) : (
         <div
-          className="font-mono"
+          className="vsp-card-neutral font-mono"
           style={{
-            padding: "48px 0",
+            padding: "56px 32px",
             textAlign: "center",
             color: "rgba(243, 237, 223, 0.5)",
             fontSize: 12,
@@ -365,7 +365,46 @@ export function LibraryPreview({
             border: "1px dashed rgba(243, 237, 223, 0.18)",
           }}
         >
-          No lessons in this category yet.
+          {lessons.length === 0 ? (
+            <>
+              <div style={{ marginBottom: 12, color: "rgba(224, 188, 106, 0.6)" }}>✦</div>
+              <div>The library is being restocked right now.</div>
+              <div style={{ marginTop: 6, fontSize: 10.5, color: "rgba(243, 237, 223, 0.36)" }}>
+                Please check back in a moment.
+              </div>
+            </>
+          ) : activeSlug === ALL_SLUG ? (
+            <>
+              <div style={{ marginBottom: 12, color: "rgba(224, 188, 106, 0.6)" }}>✦</div>
+              <div>No lessons loaded.</div>
+            </>
+          ) : (
+            <>
+              <div style={{ marginBottom: 12, color: "rgba(224, 188, 106, 0.6)" }}>✦</div>
+              <div>
+                No lessons in “{categoryName(activeSlug, categories)}” yet.
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveSlug(ALL_SLUG)}
+                style={{
+                  marginTop: 14,
+                  padding: "8px 14px",
+                  border: "1px solid rgba(224, 188, 106, 0.34)",
+                  background: "transparent",
+                  color: "#E0BC6A",
+                  fontFamily: "var(--font-geist-mono), monospace",
+                  fontSize: 10,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  cursor: "pointer",
+                  borderRadius: 0,
+                }}
+              >
+                View all lessons
+              </button>
+            </>
+          )}
         </div>
       )}
 
