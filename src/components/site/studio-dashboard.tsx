@@ -76,7 +76,7 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
     try {
       const res = await fetch("/api/studio/enquiries");
       if (res.status === 401) {
-        router.refresh();
+        window.location.reload();
         return;
       }
       if (!res.ok) throw new Error("Failed to load");
@@ -162,7 +162,7 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
   const logout = async () => {
     await fetch("/api/studio/auth", { method: "DELETE" });
     await fetch("/api/studio/logout", { method: "POST" }); // also clear old cookie
-    router.refresh();
+    window.location.reload();
   };
 
   const filteredEnquiries = data

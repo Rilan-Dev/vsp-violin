@@ -33,7 +33,7 @@ export function StudioLogin() {
         body: JSON.stringify({ email: email.trim(), password }),
       });
       if (res.ok) {
-        router.refresh();
+        window.location.reload();
         return;
       }
       const data = await res.json().catch(() => ({}));

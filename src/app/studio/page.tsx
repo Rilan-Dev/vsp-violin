@@ -1,41 +1,38 @@
-import { cookies } from "next/headers";
-import { createClient } from "@supabase/supabase-js";
+"use client";
+
+import { useEffect, useState } from "react";
 import { StudioLogin } from "@/components/site/studio-login";
 import { StudioDashboard } from "@/components/site/studio-dashboard";
 
-export const dynamic = "force-dynamic";
+export default function StudioPage() {
+  const [authed, setAuthed] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-export default async function StudioPage() {
-  const cookieStore = await cookies();
-  const sbToken = cookieStore.get("sb-access-token")?.value;
-  const staticToken = cookieStore.get("studio_token")?.value;
-  const STUDIO_TOKEN = process.env.STUDIO_TOKEN ?? "vsp-studio-dev";
+  useEffect(() => {
+    // Check if already authed via cookie
+    fetch("/api/studio/auth", { method: "GET" })
+      .then(r => {
+        if (r.ok) {
+          setAuthed(true);
+        }
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
-  let isAuthed = false;
-
-  // Check Supabase auth token
-  if (sbToken) {
-    try {
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-      if (supabaseUrl && serviceKey) {
-        const supabase = createClient(supabaseUrl, serviceKey, {
-          auth: { persistSession: false },
-        });
-        const { data, error } = await supabase.auth.getUser(sbToken);
-        if (!error && data.user) isAuthed = true;
-      }
-    } catch {}
+  if (loading) {
+    return (
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#16102A" }}>
+        <p style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "12px", color: "rgba(243,237,223,0.5)" }}>
+          Loading...
+        </p>
+      </div>
+    );
   }
 
-  // Fall back to static token (dev backwards-compat)
-  if (!isAuthed && staticToken === STUDIO_TOKEN) isAuthed = true;
-
-  if (!isAuthed) {
+  if (!authed) {
     return <StudioLogin />;
   }
 
-  // Pass empty lessons array — the dashboard will fetch data client-side
-  // This prevents server-side Prisma DB errors
   return <StudioDashboard lessons={[]} />;
 }
