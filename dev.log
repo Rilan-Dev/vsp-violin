@@ -4,21 +4,7 @@
 - Environments: .env
 
 ✓ Starting...
-✓ Ready in 961ms
- GET / 200 in 3.7s (compile: 3.0s, render: 688ms)
- GET /studio 200 in 220ms (compile: 149ms, render: 71ms)
- POST /api/studio/auth 200 in 860ms (compile: 125ms, render: 735ms)
- GET /api/studio/enquiries 200 in 779ms (compile: 179ms, render: 600ms)
- GET /api/studio/content 200 in 825ms (compile: 128ms, render: 697ms)
- GET /api/studio/analytics 200 in 803ms (compile: 208ms, render: 595ms)
- GET /api/studio/lessons 200 in 816ms (compile: 431ms, render: 385ms)
- GET /api/studio/media 200 in 821ms (compile: 298ms, render: 523ms)
- GET /api/studio/categories 200 in 827ms (compile: 271ms, render: 556ms)
- GET /studio 200 in 462ms (compile: 3ms, render: 459ms)
- GET /api/studio/auth 401 in 9ms (compile: 3ms, render: 5ms)
- POST /api/studio/auth 200 in 324ms (compile: 3ms, render: 320ms)
- GET /studio 200 in 53ms (compile: 7ms, render: 46ms)
- GET /api/studio/auth 200 in 230ms (compile: 5ms, render: 226ms)
- GET /api/studio/enquiries 200 in 190ms (compile: 4ms, render: 187ms)
- GET /api/studio/lessons 200 in 221ms (compile: 7ms, render: 214ms)
-n 221ms (compile: 7ms, render: 214ms)
+✓ Ready in 1003ms
+○ Compiling / ...
+ GET / 200 in 6.4s (compile: 5.3s, render: 1038ms)
+ 6.4s (compile: 5.3s, render: 1038ms)
