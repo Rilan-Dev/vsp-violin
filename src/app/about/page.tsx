@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Award, Music2, GraduationCap, MapPin } from "lucide-react";
-import { getSiteContent } from "@/lib/data";
+import { getDynamicContent } from "@/lib/dynamic-content";
 import { PageShell } from "@/components/site/page-shell";
 
 export const metadata: Metadata = {
@@ -29,8 +29,8 @@ const LINEAGE = [
   { name: "Shri S. Subramaniyan", detail: "Harmonium — Father" },
 ];
 
-export default function AboutPage() {
-  const c = getSiteContent();
+export default async function AboutPage() {
+  const c = await getDynamicContent();
   const about = c.about;
 
   return (

@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { getSiteContent } from "@/lib/site-content-only";
+import { getDynamicContent } from "@/lib/dynamic-content";
 
 /**
  * Testimonials — earned praise from students and peers.
@@ -198,8 +198,8 @@ function TestimonialCard({
 
 /* ---- Section ----------------------------------------------------- */
 
-export function Testimonials() {
-  const content = getSiteContent();
+export async function Testimonials() {
+  const content = await getDynamicContent();
   const all = content.home.testimonials as Testimonial[];
   // First 3 English testimonials -> three-card grid. The 4th (Tamil)
   // becomes the featured pull-quote below, breaking the grid.

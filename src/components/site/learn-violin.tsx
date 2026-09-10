@@ -1,4 +1,4 @@
-import { getSiteContent } from "@/lib/site-content-only";
+import { getDynamicContent } from "@/lib/dynamic-content";
 
 const STRING_WATERMARK: Record<string, string> = {
   "G String (G3)": "G",
@@ -17,8 +17,8 @@ const MATERIAL_SWATCH: Record<string, string> = {
  * Learn the Violin — the instrument itself, as educational content.
  * Per the handoff this is a content page; here it is a preview section.
  */
-export function LearnViolin() {
-  const c = getSiteContent();
+export async function LearnViolin() {
+  const c = await getDynamicContent();
   const lv = c.learnTheViolin;
 
   return (

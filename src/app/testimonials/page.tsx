@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Quote } from "lucide-react";
-import { getSiteContent } from "@/lib/data";
+import { getDynamicContent } from "@/lib/dynamic-content";
 import { PageShell } from "@/components/site/page-shell";
 
 export const metadata: Metadata = {
@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function TestimonialsPage() {
-  const c = getSiteContent();
+export default async function TestimonialsPage() {
+  const c = await getDynamicContent();
   const testimonials = c.home.testimonials;
 
   return (

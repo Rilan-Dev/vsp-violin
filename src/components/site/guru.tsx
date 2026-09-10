@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getSiteContent } from "@/lib/site-content-only";
+import { getDynamicContent } from "@/lib/dynamic-content";
 
 /**
  * Guru — Violin Suka Pavalan.
@@ -33,8 +33,8 @@ const LINEAGE: { name: string; detail: string }[] = [
   { name: "Shri S. Subramaniyan", detail: "Harmonium · Father" },
 ];
 
-export function Guru() {
-  const c = getSiteContent();
+export async function Guru() {
+  const c = await getDynamicContent();
   const about = c.about;
   const pullQuote = c.learnTheViolin.pullQuote;
   const bioParagraphs = about.body.slice(0, 3);

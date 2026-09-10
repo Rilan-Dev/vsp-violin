@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { getSiteContent } from "@/lib/site-content-only";
+import { getDynamicContent } from "@/lib/dynamic-content";
 
 /* ------------------------------------------------------------------ *
  * Honours
@@ -202,8 +202,8 @@ const ctaStyle: CSSProperties = {
   transition: "color 200ms ease, border-color 200ms ease",
 };
 
-export function Honours() {
-  const { achievements } = getSiteContent();
+export async function Honours() {
+  const { achievements } = await getDynamicContent();
   const { honorifics, accolades, accoladesHeading, honorificsIntro } = achievements;
 
   return (

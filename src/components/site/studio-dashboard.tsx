@@ -2001,19 +2001,131 @@ function ContentTab() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const editableFields = [
-    { key: "hero_eyebrow", label: "Hero Eyebrow", placeholder: "Karaikal, Puducherry · on stage since 1990", type: "text" },
-    { key: "hero_title", label: "Hero Title", placeholder: "Music, kept as worship", type: "text" },
-    { key: "hero_lead", label: "Hero Lead Paragraph", placeholder: "A 37-year Carnatic violinist...", type: "textarea" },
-    { key: "marquee_items", label: "Marquee Items (one per line)", placeholder: "All India Radio - Trichy, Puducherry, Karaikal\nThyagaraja Aradhana since 1992\n...", type: "textarea" },
-    { key: "about_role", label: "Guru Role", placeholder: "Suka Pavalan - Violinist, Music Educator, and Guru", type: "text" },
-    { key: "contact_email", label: "Contact Email", placeholder: "sukapavalan@gmail.com", type: "text" },
-    { key: "contact_phone", label: "Contact Phone", placeholder: "98656 44345", type: "text" },
-    { key: "contact_address", label: "Contact Address", placeholder: "58, Main St, Asiriyar Nagar, Karaikal, Puducherry 609602", type: "text" },
-    { key: "social_youtube", label: "YouTube URL", placeholder: "https://www.youtube.com/channel/...", type: "text" },
-    { key: "social_facebook", label: "Facebook URL", placeholder: "https://www.facebook.com/...", type: "text" },
-    { key: "social_instagram", label: "Instagram URL", placeholder: "https://www.instagram.com/...", type: "text" },
+  /**
+   * Field groups for the content editor. Each field is keyed by its
+   * dot-notation path in the SiteContent DB table. Values are stored in
+   * the DB as JSON strings (so strings stay strings, arrays stay
+   * arrays). The `type` controls how the editor input renders and how
+   * the value is encoded/decoded.
+   *  - "string": a single-line text input
+   *  - "text": a textarea (longer prose)
+   *  - "array": a textarea, one item per line
+   *  - "json": a textarea showing the raw JSON (for complex objects)
+   */
+  type FieldType = "string" | "text" | "array" | "json";
+  type FieldDef = { key: string; label: string; type: FieldType };
+  type Section = { name: string; icon: string; hint?: string; fields: FieldDef[] };
+
+  const SECTIONS: Section[] = [
+    {
+      name: "Brand",
+      icon: "✦",
+      hint: "Site-wide identity — name, tagline, credentials shown in the footer + hero.",
+      fields: [
+        { key: "brand.name", label: "Full name", type: "string" },
+        { key: "brand.shortName", label: "Short name (initials)", type: "string" },
+        { key: "brand.tagline", label: "Tagline", type: "string" },
+        { key: "brand.greeting", label: "Greeting", type: "string" },
+        { key: "brand.person", label: "Person name", type: "string" },
+        { key: "brand.credentials", label: "Credentials", type: "string" },
+        { key: "brand.copyright", label: "Copyright notice", type: "string" },
+      ],
+    },
+    {
+      name: "Contact",
+      icon: "✉",
+      hint: "Address, phone, email, social links, contact form labels.",
+      fields: [
+        { key: "contact.address", label: "Address", type: "string" },
+        { key: "contact.phone", label: "Phone", type: "string" },
+        { key: "contact.email", label: "Email", type: "string" },
+        { key: "contact.social.youtube", label: "YouTube URL", type: "string" },
+        { key: "contact.social.facebook", label: "Facebook URL", type: "string" },
+        { key: "contact.social.instagram", label: "Instagram URL", type: "string" },
+        { key: "contact.social.twitter", label: "Twitter URL", type: "string" },
+        { key: "contact.heroLine", label: "Hero line", type: "string" },
+        { key: "contact.formSuccess", label: "Form success message", type: "text" },
+        { key: "contact.formError", label: "Form error message", type: "text" },
+        { key: "contact.directionCta", label: "Direction CTA", type: "string" },
+      ],
+    },
+    {
+      name: "Home",
+      icon: "⌂",
+      hint: "Homepage hero lines, mission/vision, testimonials heading, contact heading.",
+      fields: [
+        { key: "home.heroLines", label: "Hero lines (one per line)", type: "array" },
+        { key: "home.testimonialsHeading", label: "Testimonials heading", type: "string" },
+        { key: "home.contactHeading", label: "Contact section heading", type: "string" },
+        { key: "home.introHeading", label: "Intro heading (one per line)", type: "array" },
+        { key: "home.introBody", label: "Intro body (one paragraph per line)", type: "array" },
+        { key: "home.mission", label: "Mission statements (one per line)", type: "array" },
+        { key: "home.vision", label: "Vision statements (one per line)", type: "array" },
+      ],
+    },
+    {
+      name: "About / Guru",
+      icon: "♪",
+      hint: "About page content — hero line, role, body paragraphs, tours, performance record.",
+      fields: [
+        { key: "about.heroLine", label: "Hero line", type: "string" },
+        { key: "about.role", label: "Role", type: "string" },
+        { key: "about.body", label: "Body paragraphs (one per line)", type: "array" },
+        { key: "about.tours.label", label: "Tours label", type: "string" },
+        { key: "about.tours.country", label: "Tours country", type: "string" },
+        { key: "about.tours.body", label: "Tours body", type: "text" },
+        { key: "about.performance.heading", label: "Performance heading", type: "string" },
+        { key: "about.performance.body", label: "Performance body", type: "text" },
+        { key: "about.performance.radio.since", label: "Radio since", type: "string" },
+        { key: "about.performance.radio.body", label: "Radio body", type: "text" },
+        { key: "about.performance.radio.stations", label: "Radio stations (one per line)", type: "array" },
+        { key: "about.performance.closing", label: "Performance closing", type: "text" },
+      ],
+    },
+    {
+      name: "Achievements / Honours",
+      icon: "★",
+      hint: "Honours page text content. Honorifics + accolades lists are JSON-editable below.",
+      fields: [
+        { key: "achievements.heroLine", label: "Hero line", type: "string" },
+        { key: "achievements.honorificsIntro", label: "Honorifics intro", type: "text" },
+        { key: "achievements.accoladesHeading", label: "Accolades heading", type: "string" },
+      ],
+    },
+    {
+      name: "Learn the Violin",
+      icon: "♩",
+      hint: "Learn-the-violin page intro + strings/materials/fingering section text.",
+      fields: [
+        { key: "learnTheViolin.intro", label: "Intro", type: "text" },
+        { key: "learnTheViolin.pullQuote.text", label: "Pull quote text", type: "text" },
+        { key: "learnTheViolin.pullQuote.author", label: "Pull quote author", type: "string" },
+        { key: "learnTheViolin.strings.heading", label: "Strings heading", type: "string" },
+        { key: "learnTheViolin.strings.intro", label: "Strings intro", type: "text" },
+        { key: "learnTheViolin.materials.heading", label: "Materials heading", type: "string" },
+        { key: "learnTheViolin.materials.intro", label: "Materials intro", type: "text" },
+        { key: "learnTheViolin.materials.closing", label: "Materials closing", type: "text" },
+        { key: "learnTheViolin.fingering.heading", label: "Fingering heading", type: "string" },
+        { key: "learnTheViolin.fingering.intro", label: "Fingering intro", type: "text" },
+      ],
+    },
+    {
+      name: "Advanced (JSON)",
+      icon: "{ }",
+      hint: "Complex nested objects (testimonials, honorifics list, accolades, strings items). Edit as raw JSON.",
+      fields: [
+        { key: "home.testimonials", label: "Home testimonials", type: "json" },
+        { key: "achievements.honorifics", label: "Achievements honorifics list", type: "json" },
+        { key: "achievements.accolades", label: "Achievements accolades list", type: "json" },
+        { key: "learnTheViolin.strings.items", label: "Violin strings items", type: "json" },
+        { key: "learnTheViolin.materials.items", label: "Violin materials items", type: "json" },
+        { key: "learnTheViolin.fingering.items", label: "Violin fingering items", type: "json" },
+        { key: "learnTheViolin.violinHistory", label: "Violin history paragraphs", type: "json" },
+        { key: "gallery.images", label: "Gallery image URLs", type: "json" },
+      ],
+    },
   ];
 
   useEffect(() => {
@@ -2041,39 +2153,147 @@ function ContentTab() {
 
   const inputStyle: React.CSSProperties = { padding: "9px 12px", background: "rgba(22,16,42,0.6)", border: "1px solid rgba(243,237,223,0.2)", color: "#F3EDDF", fontFamily: "var(--font-instrument-sans)", fontSize: "13px", borderRadius: 0, width: "100%" };
 
+  // Decode a DB-stored JSON-string value for display in the editor.
+  // - "string": parse the JSON string, return the raw string
+  // - "text": parse the JSON string, return the raw string
+  // - "array": parse the JSON array, join with newlines
+  // - "json": return the raw JSON string (pretty-printed)
+  const decode = (raw: string | undefined, type: FieldType): string => {
+    if (raw == null || raw === "") return "";
+    try {
+      const parsed = JSON.parse(raw);
+      if (type === "array" && Array.isArray(parsed)) {
+        return parsed.join("\n");
+      }
+      if (type === "json") {
+        return JSON.stringify(parsed, null, 2);
+      }
+      // string / text
+      return typeof parsed === "string" ? parsed : String(parsed);
+    } catch {
+      return raw;
+    }
+  };
+
+  // Encode a display value back into the JSON-string DB format.
+  // - "string"/"text": wrap in JSON string
+  // - "array": split by newlines, filter empties, JSON.stringify the array
+  // - "json": parse the input (to validate), then store as-is
+  const encode = (display: string, type: FieldType): string => {
+    if (type === "array") {
+      const arr = display.split("\n").map((s) => s).filter((s) => s.trim() !== "");
+      return JSON.stringify(arr);
+    }
+    if (type === "json") {
+      // Validate JSON before saving — if invalid, save as a plain string
+      try {
+        JSON.parse(display);
+        return display;
+      } catch {
+        return JSON.stringify(display);
+      }
+    }
+    // string / text
+    return JSON.stringify(display);
+  };
+
+  const setField = (key: string, display: string, type: FieldType) => {
+    const encoded = encode(display, type);
+    setContent((prev) => ({ ...prev, [key]: encoded }));
+  };
+
+  const filteredSections = SECTIONS.map((section) => ({
+    ...section,
+    fields: section.fields.filter(
+      (f) =>
+        !searchQuery.trim() ||
+        f.key.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        f.label.toLowerCase().includes(searchQuery.toLowerCase())
+    ),
+  })).filter((section) => section.fields.length > 0);
+
+  const totalFields = SECTIONS.reduce((n, s) => n + s.fields.length, 0);
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
         <div>
           <div className="flex items-center gap-3 mb-1">
             <FileText size={18} aria-hidden style={{ color: "#E0BC6A" }} />
-            <span className="vsp-eyebrow">Content Management</span>
+            <span className="vsp-eyebrow">Content Management · {totalFields} fields</span>
           </div>
           <p style={{ fontSize: "14px", color: "rgba(243,237,223,0.62)", margin: 0 }}>
-            Edit site text content — hero text, contact info, social links.
+            Edit site text — hero, contact, social, about, achievements. Changes go live on the public site after Save.
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          {saved && <span style={{ color: "#78DCAA", fontSize: "12px" }}>Saved!</span>}
+        <div className="flex items-center gap-2 flex-wrap">
+          <input
+            type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Filter fields…"
+            aria-label="Filter content fields"
+            style={{ padding: "7px 12px", background: "rgba(22,16,42,0.6)", border: "1px solid rgba(243,237,223,0.18)", color: "#F3EDDF", fontFamily: "var(--font-instrument-sans)", fontSize: "12.5px", borderRadius: 0, minWidth: "160px" }}
+          />
+          {saved && <span style={{ color: "#78DCAA", fontSize: "12px", fontFamily: "var(--font-geist-mono), monospace", letterSpacing: "0.06em", textTransform: "uppercase" }}>✓ Saved</span>}
           <button onClick={saveAll} disabled={saving} className="vsp-cta-gold"
             style={{ padding: "9px 18px", background: saving ? "rgba(224,188,106,0.45)" : "#E0BC6A", color: "#1B1233", fontFamily: "var(--font-marcellus), serif", fontSize: "13px", border: "none", cursor: saving ? "wait" : "pointer", borderRadius: 0 }}>
             {saving ? "Saving..." : "Save all"}
           </button>
         </div>
       </div>
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-        {editableFields.map((field) => (
-          <label key={field.key} className="flex flex-col gap-1.5">
-            <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)" }}>{field.label}</span>
-            {field.type === "textarea" ? (
-              <textarea value={content[field.key] || ""} onChange={(e) => setContent({ ...content, [field.key]: e.target.value })} placeholder={field.placeholder}
-                style={{ ...inputStyle, minHeight: "80px", resize: "vertical", paddingTop: "10px", paddingBottom: "10px", lineHeight: "1.6" }} />
-            ) : (
-              <input type="text" value={content[field.key] || ""} onChange={(e) => setContent({ ...content, [field.key]: e.target.value })} placeholder={field.placeholder} style={inputStyle} />
-            )}
-          </label>
-        ))}
-      </div>
+
+      {filteredSections.map((section) => (
+        <section key={section.name} className="vsp-card-neutral" style={{ padding: "20px 22px", marginBottom: "20px" }}>
+          <div className="flex items-baseline justify-between mb-4 flex-wrap gap-2" style={{ paddingBottom: "10px", borderBottom: "1px solid rgba(224,188,106,0.18)" }}>
+            <div className="flex items-baseline gap-3">
+              <span style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "16px", color: "#E0BC6A", lineHeight: 1 }}>{section.icon}</span>
+              <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "17px", color: "#F3EDDF", margin: 0 }}>
+                {section.name}
+              </h3>
+              <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(243,237,223,0.5)" }}>
+                {section.fields.length} field{section.fields.length !== 1 ? "s" : ""}
+              </span>
+            </div>
+          </div>
+          {section.hint && (
+            <p style={{ fontSize: "12.5px", color: "rgba(243,237,223,0.55)", lineHeight: 1.5, margin: "0 0 14px" }}>
+              {section.hint}
+            </p>
+          )}
+          <div className="grid gap-3 grid-cols-1 md:grid-cols-2">
+            {section.fields.map((field) => {
+              const display = decode(content[field.key], field.type);
+              const isWide = field.type === "text" || field.type === "array" || field.type === "json";
+              return (
+                <label key={field.key} className={`flex flex-col gap-1.5 ${isWide ? "md:col-span-2" : ""}`}>
+                  <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "9.5px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)" }}>
+                    {field.label} <span style={{ color: "rgba(243,237,223,0.36)" }}>· {field.key}</span>
+                  </span>
+                  {field.type === "string" ? (
+                    <input type="text" value={display} onChange={(e) => setField(field.key, e.target.value, field.type)} style={inputStyle} />
+                  ) : (
+                    <textarea
+                      value={display}
+                      onChange={(e) => setField(field.key, e.target.value, field.type)}
+                      style={{
+                        ...inputStyle,
+                        minHeight: field.type === "json" ? "180px" : "80px",
+                        resize: "vertical",
+                        paddingTop: "10px",
+                        paddingBottom: "10px",
+                        lineHeight: "1.55",
+                        fontFamily: field.type === "json" ? "var(--font-geist-mono), monospace" : "var(--font-instrument-sans)",
+                        fontSize: field.type === "json" ? "11.5px" : "13px",
+                      }}
+                    />
+                  )}
+                </label>
+              );
+            })}
+          </div>
+        </section>
+      ))}
     </div>
   );
 }

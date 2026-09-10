@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Award } from "lucide-react";
-import { getSiteContent } from "@/lib/data";
+import { getDynamicContent } from "@/lib/dynamic-content";
 import { PageShell } from "@/components/site/page-shell";
 
 export const metadata: Metadata = {
@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HonoursPage() {
-  const c = getSiteContent();
+export default async function HonoursPage() {
+  const c = await getDynamicContent();
   const honours = c.achievements;
 
   const dated = honours.honorifics.filter((h) => h.year).sort((a, b) => (b.year! - a.year!));

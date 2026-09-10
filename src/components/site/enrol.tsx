@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, useState, type CSSProperties, type FormEvent } from "react";
-import { getSiteContent } from "@/lib/site-content-only";
+import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from "react";
+import siteContentStatic from "@/lib/site-content.json";
+import type { SiteContent } from "@/lib/site-content-only";
 import { useReveal } from "@/components/site/use-reveal";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -118,7 +119,26 @@ function renderHeadingWithGoldToday(text: string) {
 }
 
 export function Enrol() {
-  const c = getSiteContent();
+  // Fetch dynamic content (admin-editable via Studio) from /api/content on
+  // mount; fall back to the static JSON baseline on first paint or fetch
+  // failure. This keeps the client-side form self-contained while still
+  // letting the admin edit `contact.formSuccess`, `contact.formError`,
+  // and `home.contactHeading` through the Studio Content tab.
+  const [c, setC] = useState<SiteContent>(siteContentStatic as SiteContent);
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/content")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data: SiteContent | null) => {
+        if (!cancelled && data) setC(data);
+      })
+      .catch(() => {
+        // keep static fallback
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   const { ref: sectionRef, visible } = useReveal<HTMLElement>({
     threshold: 0.1,
   });

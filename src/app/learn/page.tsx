@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Music2 } from "lucide-react";
-import { getSiteContent } from "@/lib/data";
+import { getDynamicContent } from "@/lib/dynamic-content";
 import { PageShell } from "@/components/site/page-shell";
 
 export const metadata: Metadata = {
@@ -25,8 +25,8 @@ const STRING_WATERMARK: Record<string, string> = {
   "E String (E5)": "E",
 };
 
-export default function LearnPage() {
-  const c = getSiteContent();
+export default async function LearnPage() {
+  const c = await getDynamicContent();
   const lv = c.learnTheViolin;
 
   return (

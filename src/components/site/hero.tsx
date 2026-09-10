@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getSiteContent } from "@/lib/site-content-only";
+import { getDynamicContent } from "@/lib/dynamic-content";
 
 /**
  * Hero — Violin Suka Pavalan.
@@ -25,8 +25,8 @@ const STATS = [
   { num: "1992", label: "First AIR broadcast" },
 ];
 
-export function Hero() {
-  const { brand } = getSiteContent();
+export async function Hero() {
+  const { brand } = await getDynamicContent();
 
   return (
     <section

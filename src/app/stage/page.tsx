@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Radio, Music, MapPin, Calendar } from "lucide-react";
-import { getSiteContent } from "@/lib/data";
+import { getDynamicContent } from "@/lib/dynamic-content";
 import { PageShell } from "@/components/site/page-shell";
 
 export const metadata: Metadata = {
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function StagePage() {
-  const c = getSiteContent();
+export default async function StagePage() {
+  const c = await getDynamicContent();
   const perf = c.about.performance;
 
   return (

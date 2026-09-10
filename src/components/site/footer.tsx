@@ -1,7 +1,7 @@
-import { getSiteContent } from "@/lib/site-content-only";
+import { getDynamicContent } from "@/lib/dynamic-content";
 
-export function Footer() {
-  const c = getSiteContent();
+export async function Footer() {
+  const c = await getDynamicContent();
   const contact = c.contact;
   const year = new Date().getFullYear();
 

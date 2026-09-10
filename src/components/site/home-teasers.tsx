@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { getSiteContent } from "@/lib/site-content-only";
+import { getDynamicContent } from "@/lib/dynamic-content";
 
 /**
  * Condensed teaser sections for the homepage.
@@ -10,8 +10,8 @@ import { getSiteContent } from "@/lib/site-content-only";
  * content lives on their dedicated pages — these teasers are short
  * previews with a "Read more →" link.
  */
-export function HomeTeasers() {
-  const c = getSiteContent();
+export async function HomeTeasers() {
+  const c = await getDynamicContent();
   const about = c.about;
   const achievements = c.achievements;
 

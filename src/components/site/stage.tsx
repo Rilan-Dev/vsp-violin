@@ -1,13 +1,13 @@
 import Image from "next/image";
-import { getSiteContent } from "@/lib/site-content-only";
+import { getDynamicContent } from "@/lib/dynamic-content";
 
 /**
  * Stage section — performance record and gallery.
  * Per the handoff: "10 performance videos, the radio/TV/tours record,
  * and a gallery with placeholder cards."
  */
-export function Stage() {
-  const c = getSiteContent();
+export async function Stage() {
+  const c = await getDynamicContent();
   const perf = c.about.performance;
 
   return (
