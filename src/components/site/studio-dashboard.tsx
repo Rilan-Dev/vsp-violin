@@ -160,7 +160,8 @@ export function StudioDashboard({ lessons }: { lessons: LessonSummary[] }) {
   };
 
   const logout = async () => {
-    await fetch("/api/studio/logout", { method: "POST" });
+    await fetch("/api/studio/auth", { method: "DELETE" });
+    await fetch("/api/studio/logout", { method: "POST" }); // also clear old cookie
     router.refresh();
   };
 

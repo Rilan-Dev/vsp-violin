@@ -24,20 +24,30 @@ jobs:
         run: bun run lint
         continue-on-error: true
 
-      - name: Setup environment
+      - name: Setup Supabase schema for Prisma
         run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
-          echo "STUDIO_TOKEN=${{ secrets.STUDIO_TOKEN }}" >> .env
-          echo "NEXT_TELEMETRY_DISABLED=1" >> .env
+          # Use PostgreSQL schema for production
+          cat > prisma/schema.prisma << 'PRISMA_PG'
+          generator client {
+            provider = "prisma-client-js"
+          }
+          datasource db {
+            provider  = "postgresql"
+            url       = env("DATABASE_URL")
+            directUrl = env("DIRECT_URL")
+          }
+          PRISMA_PG
+          # Append the models from the sqlite schema (they're the same)
+          tail -n +15 prisma/schema.prisma.bak >> prisma/schema.prisma || true
+        env:
+          DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
+          DIRECT_URL: ${{ secrets.SUPABASE_DIRECT_URL }}
 
       - name: Generate Prisma client
         run: bun run db:generate
-
-      - name: Push database schema
-        run: bun run db:push
-
-      - name: Seed database
-        run: bun run prisma/seed.ts || true
+        env:
+          DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
+          DIRECT_URL: ${{ secrets.SUPABASE_DIRECT_URL }}
 
       - name: Install Vercel CLI
         run: bun add -g vercel@latest
@@ -53,7 +63,11 @@ jobs:
         env:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
+          DIRECT_URL: ${{ secrets.SUPABASE_DIRECT_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           STUDIO_TOKEN: ${{ secrets.STUDIO_TOKEN }}
 
       - name: Deploy to Vercel
@@ -61,8 +75,3 @@ jobs:
         env:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-
-      - name: Get deployment URL
-        run: |
-          echo "Deployment URL will be available in the Vercel dashboard"
-          echo "Project: https://vercel.com/dashboard/projects/vsp-violin"

@@ -2,42 +2,42 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Lock, ArrowRight } from "lucide-react";
+import { Lock, Mail, ArrowRight } from "lucide-react";
 
 /**
- * Studio login gate — a single token field.
+ * Studio login — professional authentication using Supabase Auth.
+ * Admin users sign in with email + password.
+ * To create an admin user, use the Supabase dashboard or the admin API.
  *
- * The Studio is owner-only, never linked from the public site. Access is via
- * a shared secret (STUDIO_TOKEN env var, defaults to "vsp-studio-dev" in
- * development). On success, a cookie is set and the page reloads to show
- * the dashboard.
+ * Default admin: admin@sukapavalan.com / SukaPavalan2026!
  */
 export function StudioLogin() {
-  const [token, setToken] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!token.trim()) {
-      setError("Enter the studio token.");
+    if (!email.trim() || !password.trim()) {
+      setError("Enter your email and password.");
       return;
     }
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/studio/login", {
+      const res = await fetch("/api/studio/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: token.trim() }),
+        body: JSON.stringify({ email: email.trim(), password }),
       });
       if (res.ok) {
         router.refresh();
         return;
       }
       const data = await res.json().catch(() => ({}));
-      setError(data.error ?? "Invalid token.");
+      setError(data.error ?? "Invalid credentials.");
     } catch {
       setError("Network error. Try again.");
     } finally {
@@ -62,7 +62,7 @@ export function StudioLogin() {
       >
         <div className="flex items-center gap-3" style={{ marginBottom: "24px" }}>
           <Lock size={22} aria-hidden style={{ color: "#E0BC6A" }} />
-          <span className="vsp-eyebrow">Studio · owner only</span>
+          <span className="vsp-eyebrow">Studio · admin access</span>
         </div>
         <h1
           style={{
@@ -83,8 +83,8 @@ export function StudioLogin() {
             margin: "12px 0 28px",
           }}
         >
-          The private dashboard for managing enquiries and lessons. Not linked
-          from the public site.
+          The private dashboard for managing enquiries, lessons, categories,
+          content, and media. Sign in with your admin credentials.
         </p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <label className="flex flex-col gap-2">
@@ -97,25 +97,62 @@ export function StudioLogin() {
                 color: "rgba(243,237,223,0.62)",
               }}
             >
-              Studio token
+              Email
             </span>
-            <input
-              type="password"
-              value={token}
-              onChange={(e) => setToken(e.target.value)}
-              placeholder="Enter the shared token"
-              autoFocus
-              aria-label="Studio token"
+            <div className="flex items-center gap-2">
+              <Mail size={15} aria-hidden style={{ color: "#E0BC6A", flexShrink: 0 }} />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="admin@sukapavalan.com"
+                autoFocus
+                required
+                style={{
+                  flex: 1,
+                  padding: "12px 16px",
+                  background: "rgba(22,16,42,0.6)",
+                  border: "1px solid rgba(243,237,223,0.2)",
+                  color: "#F3EDDF",
+                  fontFamily: "var(--font-instrument-sans)",
+                  fontSize: "14.5px",
+                  borderRadius: 0,
+                }}
+              />
+            </div>
+          </label>
+          <label className="flex flex-col gap-2">
+            <span
               style={{
-                padding: "12px 16px",
-                background: "rgba(22,16,42,0.6)",
-                border: "1px solid rgba(243,237,223,0.2)",
-                color: "#F3EDDF",
-                fontFamily: "var(--font-instrument-sans)",
-                fontSize: "14.5px",
-                borderRadius: 0,
+                fontFamily: "var(--font-geist-mono), monospace",
+                fontSize: "10.5px",
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "rgba(243,237,223,0.62)",
               }}
-            />
+            >
+              Password
+            </span>
+            <div className="flex items-center gap-2">
+              <Lock size={15} aria-hidden style={{ color: "#E0BC6A", flexShrink: 0 }} />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+                style={{
+                  flex: 1,
+                  padding: "12px 16px",
+                  background: "rgba(22,16,42,0.6)",
+                  border: "1px solid rgba(243,237,223,0.2)",
+                  color: "#F3EDDF",
+                  fontFamily: "var(--font-instrument-sans)",
+                  fontSize: "14.5px",
+                  borderRadius: 0,
+                }}
+              />
+            </div>
           </label>
           {error && (
             <p
@@ -148,7 +185,7 @@ export function StudioLogin() {
               borderRadius: 0,
             }}
           >
-            {loading ? "Entering…" : "Enter Studio"}
+            {loading ? "Signing in…" : "Sign in"}
             {!loading && <ArrowRight size={16} aria-hidden />}
           </button>
         </form>
@@ -161,7 +198,7 @@ export function StudioLogin() {
             letterSpacing: "0.04em",
           }}
         >
-          Dev token: vsp-studio-dev
+          Admin: admin@sukapavalan.com
         </p>
       </div>
     </div>

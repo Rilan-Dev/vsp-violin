@@ -4,28 +4,15 @@
 - Environments: .env
 
 ✓ Starting...
-Attention: Next.js now collects completely anonymous telemetry regarding usage.
-This information is used to shape Next.js' roadmap and prioritize features.
-You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-https://nextjs.org/telemetry
-
-✓ Ready in 1250ms
+✓ Ready in 1180ms
 ○ Compiling / ...
- GET / 200 in 2.7s (compile: 1963ms, render: 719ms)
- GET / 200 in 90ms (compile: 3ms, render: 87ms)
- GET / 200 in 5.7s (compile: 4.6s, render: 1144ms)
+ GET / 200 in 2.2s (compile: 1746ms, render: 499ms)
+ GET / 200 in 106ms (compile: 3ms, render: 103ms)
+ GET / 200 in 165ms (compile: 7ms, render: 158ms)
+ GET /studio 200 in 2.4s (compile: 1794ms, render: 596ms)
+ GET / 200 in 458ms (compile: 13ms, render: 445ms)
+ POST /api/studio/auth 200 in 2.1s (compile: 1025ms, render: 1075ms)
+ GET /studio 200 in 553ms (compile: 8ms, render: 545ms)
+ GET /api/studio/enquiries 200 in 878ms (compile: 356ms, render: 522ms)
 ⚠ Cross origin request detected from preview-chat-3f82d1f2-5340-4113-91d7-9c4c652a5b33.space-z.ai to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
 Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
- GET / 200 in 95ms (compile: 3ms, render: 91ms)
- GET /studio 200 in 1442ms (compile: 1275ms, render: 166ms)
- POST /api/studio/login 200 in 1346ms (compile: 1329ms, render: 18ms)
- GET /studio 200 in 71ms (compile: 4ms, render: 67ms)
- GET /api/studio/enquiries 200 in 177ms (compile: 169ms, render: 8ms)
- GET /api/studio/content 200 in 198ms (compile: 189ms, render: 9ms)
- GET /api/studio/media 200 in 225ms (compile: 216ms, render: 9ms)
- GET /api/studio/media 200 in 18ms (compile: 3ms, render: 15ms)
- POST /api/studio/media 201 in 14ms (compile: 5ms, render: 9ms)
- GET / 200 in 190ms (compile: 5ms, render: 186ms)
- GET / 200 in 146ms (compile: 4ms, render: 142ms)
- GET / 200 in 136ms (compile: 6ms, render: 129ms)
- GET / 200 in 129ms (compile: 3ms, render: 126ms)
