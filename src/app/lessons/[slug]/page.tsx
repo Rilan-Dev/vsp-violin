@@ -1,21 +1,12 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { db } from "@/lib/db";
 import { getLessonById, getPrevNextLessons, getCategoriesWithCounts, getRelatedLessons, getMegaMenu } from "@/lib/data";
 import { LessonPage } from "@/components/site/lesson-page";
 import { Nav } from "@/components/site/nav";
 import { Footer } from "@/components/site/footer";
 
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  const lessons = await db.lesson.findMany({
-    where: { status: "published" },
-    select: { id: true },
-  });
-  return lessons.map((l) => ({ slug: l.id }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -55,14 +46,29 @@ export default async function LessonRoute({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const lesson = await getLessonById(slug);
+  let lesson;
+  try {
+    lesson = await getLessonById(slug);
+  } catch {
+    notFound();
+  }
   if (!lesson) notFound();
 
-  const categories = await getCategoriesWithCounts();
-  const categoryName = categories.find((c) => c.slug === lesson.category)?.name ?? lesson.category;
-  const { prev, next, siblings, currentIndex } = await getPrevNextLessons(slug, lesson.category);
-  const related = await getRelatedLessons(slug, lesson.raga, lesson.category);
-  const megaMenu = await getMegaMenu();
+  let categoryName = lesson.category;
+  let prev = null, next = null, siblings: Awaited<ReturnType<typeof getPrevNextLessons>>["siblings"] = [], currentIndex = -1;
+  let related: Awaited<ReturnType<typeof getRelatedLessons>> = [];
+  let megaMenu: Awaited<ReturnType<typeof getMegaMenu>> = [];
+
+  try {
+    const categories = await getCategoriesWithCounts();
+    categoryName = categories.find((c) => c.slug === lesson.category)?.name ?? lesson.category;
+    const nav = await getPrevNextLessons(slug, lesson.category);
+    prev = nav.prev; next = nav.next; siblings = nav.siblings; currentIndex = nav.currentIndex;
+    related = await getRelatedLessons(slug, lesson.raga, lesson.category);
+    megaMenu = await getMegaMenu();
+  } catch {
+    // DB partially unavailable — page will work without nav/enhanced data
+  }
 
   // JSON-LD structured data — MusicRecording schema for rich search results.
   const jsonLd = {

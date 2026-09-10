@@ -1,0 +1,19 @@
+{
+  "name": "Violin Suka Pavalan — Carnatic violin lessons",
+  "short_name": "Suka Pavalan",
+  "description": "37 years on stage. 22 free Carnatic violin notation lessons. One-to-one online and in-person teaching from Karaikal, Puducherry.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#16102A",
+  "theme_color": "#16102A",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "music"]
+}

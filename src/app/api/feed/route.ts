@@ -1,50 +1,28 @@
-import { db } from "@/lib/db";
+import { NextResponse } from "next/server";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const lessons = await db.lesson.findMany({
-    where: { status: "published" },
-    orderBy: { date: "desc" },
-    take: 50,
-    select: { id: true, title: true, titleTamil: true, category: true, raga: true, thala: true, date: true },
-  });
+  try {
+    const { db } = await import("@/lib/db");
+    const lessons = await db.lesson.findMany({
+      where: { status: "published" },
+      orderBy: { date: "desc" },
+      take: 50,
+      select: { id: true, title: true, titleTamil: true, category: true, raga: true, thala: true, date: true },
+    });
 
-  const base = "https://sukapavalan.com";
-  const items = lessons.map((l) => {
-    const url = `${base}/lessons/${l.id}`;
-    const description = [
-      l.titleTamil ? `Tamil: ${l.titleTamil}` : null,
-      l.category ? `Category: ${l.category.replace(/-/g, " ")}` : null,
-      l.raga ? `Raga: ${l.raga}` : null,
-      l.thala ? `Thala: ${l.thala}` : null,
-    ].filter(Boolean).join(" · ");
-    return `    <item>
-      <title><![CDATA[${l.title}]]></title>
-      <link>${url}</link>
-      <guid isPermaLink="true">${url}</guid>
-      <description><![CDATA[${description}]]></description>
-      <pubDate>${new Date(l.date).toUTCString()}</pubDate>
-    </item>`;
-  }).join("\n");
+    const base = "https://sukapavalan.com";
+    const items = lessons.map((l) => {
+      const url = `${base}/lessons/${l.id}`;
+      const description = [l.titleTamil ? `Tamil: ${l.titleTamil}` : null, l.category ? `Category: ${l.category.replace(/-/g, " ")}` : null, l.raga ? `Raga: ${l.raga}` : null].filter(Boolean).join(" · ");
+      return `    <item>\n      <title><![CDATA[${l.title}]]></title>\n      <link>${url}</link>\n      <guid isPermaLink="true">${url}</guid>\n      <description><![CDATA[${description}]]></description>\n      <pubDate>${new Date(l.date).toUTCString()}</pubDate>\n    </item>`;
+    }).join("\n");
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Violin Suka Pavalan — Free Carnatic Violin Lessons</title>
-    <link>${base}/library</link>
-    <atom:link href="${base}/api/feed" rel="self" type="application/rss+xml" />
-    <description>22 free Carnatic violin notation lessons.</description>
-    <language>en</language>
-    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-${items}
-  </channel>
-</rss>`;
-
-  return new Response(xml, {
-    headers: {
-      "Content-Type": "application/rss+xml; charset=utf-8",
-      "Cache-Control": "s-maxage=3600, stale-while-revalidate",
-    },
-  });
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>Violin Suka Pavalan</title><link>${base}/library</link><description>22 free lessons</description><language>en</language><lastBuildDate>${new Date().toUTCString()}</lastBuildDate>\n${items}\n  </channel></rss>`;
+    return new NextResponse(xml, { headers: { "Content-Type": "application/rss+xml; charset=utf-8", "Cache-Control": "s-maxage=3600, stale-while-revalidate" } });
+  } catch {
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>Violin Suka Pavalan</title><link>https://sukapavalan.com/library</link><description>Loading...</description></channel></rss>`;
+    return new NextResponse(xml, { headers: { "Content-Type": "application/rss+xml; charset=utf-8" } });
+  }
 }

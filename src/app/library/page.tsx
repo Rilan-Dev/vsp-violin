@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import type { Metadata } from "next";
 import { getLessons, getCategoriesWithCounts, getLibraryStats } from "@/lib/data";
 import { LibraryPage } from "@/components/site/library-page";
@@ -20,12 +22,20 @@ export default async function LibraryRoute({
 }: {
   searchParams: Promise<{ category?: string; raga?: string }>;
 }) {
-  const [lessons, categories, stats, params] = await Promise.all([
-    getLessons(),
-    getCategoriesWithCounts(),
-    getLibraryStats(),
-    searchParams,
-  ]);
+  const params = await searchParams;
+  let lessons: Awaited<ReturnType<typeof getLessons>> = [];
+  let categories: Awaited<ReturnType<typeof getCategoriesWithCounts>> = [];
+  let stats = { lessons: 23, notationSheets: 46, categories: 19, ragas: 10 };
+
+  try {
+    [lessons, categories, stats] = await Promise.all([
+      getLessons(),
+      getCategoriesWithCounts(),
+      getLibraryStats(),
+    ]);
+  } catch {
+    // DB unavailable
+  }
 
   return (
     <PageShell>

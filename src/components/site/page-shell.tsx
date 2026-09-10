@@ -11,7 +11,12 @@ import { getMegaMenu } from "@/lib/data";
  * because it passes the megaMenu as a prop from the server component.
  */
 export async function PageShell({ children }: { children: ReactNode }) {
-  const megaMenu = await getMegaMenu();
+  let megaMenu: Awaited<ReturnType<typeof getMegaMenu>> = [];
+  try {
+    megaMenu = await getMegaMenu();
+  } catch {
+    // DB unavailable — nav will show without category counts
+  }
   return (
     <>
       <Nav megaMenu={megaMenu} />

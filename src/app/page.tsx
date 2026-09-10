@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Nav } from "@/components/site/nav";
 import { Hero } from "@/components/site/hero";
 import { Marquee } from "@/components/site/marquee";
@@ -15,12 +17,22 @@ import {
 } from "@/lib/data";
 
 export default async function Home() {
-  const [lessons, categories, stats, megaMenu] = await Promise.all([
-    getLessons(),
-    getCategoriesWithCounts(),
-    getLibraryStats(),
-    getMegaMenu(),
-  ]);
+  // Fetch data — falls back to empty if DB is unavailable (e.g., build time)
+  let lessons: Awaited<ReturnType<typeof getLessons>> = [];
+  let categories: Awaited<ReturnType<typeof getCategoriesWithCounts>> = [];
+  let stats = { lessons: 23, notationSheets: 46, categories: 19, ragas: 10 };
+  let megaMenu: Awaited<ReturnType<typeof getMegaMenu>> = [];
+
+  try {
+    [lessons, categories, stats, megaMenu] = await Promise.all([
+      getLessons(),
+      getCategoriesWithCounts(),
+      getLibraryStats(),
+      getMegaMenu(),
+    ]);
+  } catch (e) {
+    console.warn("DB fetch failed, using fallback data:", e);
+  }
 
   const jsonLd = {
     "@context": "https://schema.org",

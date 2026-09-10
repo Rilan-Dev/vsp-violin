@@ -34,6 +34,11 @@ export default async function StudioPage() {
     return <StudioLogin />;
   }
 
-  const lessons = await getAllLessonsForStudio();
+  let lessons: Awaited<ReturnType<typeof getAllLessonsForStudio>> = [];
+  try {
+    lessons = await getAllLessonsForStudio();
+  } catch {
+    // DB unavailable
+  }
   return <StudioDashboard lessons={lessons} />;
 }
