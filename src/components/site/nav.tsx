@@ -10,7 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import type { CategoryWithCount } from "@/lib/data";
+import type { CategoryWithCount } from "@/lib/site-content-only";
 
 type MegaColumn = {
   label: string;

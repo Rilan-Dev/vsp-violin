@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Search, X } from "lucide-react";
 import { useReveal } from "@/components/site/use-reveal";
-import type { CategoryWithCount } from "@/lib/data";
+import type { CategoryWithCount } from "@/lib/site-content-only";
 
 type LibraryLesson = {
   id: string;

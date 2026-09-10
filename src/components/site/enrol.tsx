@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, type CSSProperties, type FormEvent } from "react";
-import { getSiteContent } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content-only";
 import { useReveal } from "@/components/site/use-reveal";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";

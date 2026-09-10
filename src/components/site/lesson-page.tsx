@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Download, Play, Music, FileText, ChevronRight, Printer } from "lucide-react";
-import type { LessonDetail } from "@/lib/data";
+import type { LessonDetail } from "@/lib/site-content-only";
 import { YouTubeFacade } from "@/components/site/youtube-facade";
 import { ShareButton } from "@/components/site/share-button";
 

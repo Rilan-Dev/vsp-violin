@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { getSiteContent } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content-only";
 
 /**
  * Condensed teaser sections for the homepage.

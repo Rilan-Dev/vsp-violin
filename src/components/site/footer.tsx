@@ -1,4 +1,4 @@
-import { getSiteContent } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content-only";
 
 export function Footer() {
   const c = getSiteContent();

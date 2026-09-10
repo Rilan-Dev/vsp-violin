@@ -1,6 +1,0 @@
-User-Agent: *
-Allow: /
-Disallow: /studio
-Disallow: /api/studio
-
-Sitemap: https://sukapavalan.com/sitemap.xml

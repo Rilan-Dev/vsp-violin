@@ -50,3 +50,13 @@ Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allow
  GET / 200 in 68ms (compile: 3ms, render: 65ms)
  GET /api/studio/enquiries 200 in 762ms (compile: 3ms, render: 760ms)
  GET / 200 in 191ms (compile: 3ms, render: 187ms)
+ GET / 200 in 119ms (compile: 3ms, render: 116ms)
+✓ Compiled in 1130ms
+ GET / 200 in 172ms (compile: 78ms, render: 94ms)
+ GET / 200 in 63ms (compile: 7ms, render: 56ms)
+✓ Compiled in 1487ms
+⚠ Fast Refresh had to perform a full reload when ./node_modules/next/dist/client/image-component.js changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET / 200 in 1089ms (compile: 940ms, render: 149ms)
+⚠ Fast Refresh had to perform a full reload when ./node_modules/next/dist/client/image-component.js changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET / 200 in 158ms (compile: 17ms, render: 141ms)
+ GET / 200 in 1055ms (compile: 6ms, render: 1048ms)

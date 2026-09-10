@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getSiteContent } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content-only";
 
 /**
  * Guru — Violin Suka Pavalan.

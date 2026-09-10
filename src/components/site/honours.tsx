@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { getSiteContent } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content-only";
 
 /* ------------------------------------------------------------------ *
  * Honours

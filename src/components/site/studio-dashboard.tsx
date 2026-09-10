@@ -24,7 +24,7 @@ import {
   Image as ImageIcon,
   Settings,
 } from "lucide-react";
-import type { LessonSummary } from "@/lib/data";
+import type { LessonSummary } from "@/lib/site-content-only";
 
 type Enquiry = {
   id: string;

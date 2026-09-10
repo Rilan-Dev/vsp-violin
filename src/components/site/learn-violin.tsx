@@ -1,4 +1,4 @@
-import { getSiteContent } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content-only";
 
 const STRING_WATERMARK: Record<string, string> = {
   "G String (G3)": "G",
