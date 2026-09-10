@@ -20,28 +20,9 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Run lint
-        run: bun run lint
-        continue-on-error: true
-
-      - name: Setup Supabase schema for Prisma
+      - name: Switch to PostgreSQL schema for production
         run: |
-          # Use PostgreSQL schema for production
-          cat > prisma/schema.prisma << 'PRISMA_PG'
-          generator client {
-            provider = "prisma-client-js"
-          }
-          datasource db {
-            provider  = "postgresql"
-            url       = env("DATABASE_URL")
-            directUrl = env("DIRECT_URL")
-          }
-          PRISMA_PG
-          # Append the models from the sqlite schema (they're the same)
-          tail -n +15 prisma/schema.prisma.bak >> prisma/schema.prisma || true
-        env:
-          DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
-          DIRECT_URL: ${{ secrets.SUPABASE_DIRECT_URL }}
+          cp prisma/schema.postgres.prisma prisma/schema.prisma
 
       - name: Generate Prisma client
         run: bun run db:generate

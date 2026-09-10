@@ -16,3 +16,10 @@
  GET /api/studio/enquiries 200 in 878ms (compile: 356ms, render: 522ms)
 ⚠ Cross origin request detected from preview-chat-3f82d1f2-5340-4113-91d7-9c4c652a5b33.space-z.ai to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
 Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ GET / 200 in 208ms (compile: 4ms, render: 204ms)
+ GET / 200 in 128ms (compile: 4ms, render: 125ms)
+ GET /studio 200 in 59ms (compile: 4ms, render: 55ms)
+ POST /api/studio/auth 200 in 861ms (compile: 3ms, render: 858ms)
+ GET /studio 200 in 27ms (compile: 3ms, render: 24ms)
+ POST /api/studio/auth 200 in 289ms (compile: 2ms, render: 287ms)
+ GET /studio 200 in 24ms (compile: 3ms, render: 22ms)
