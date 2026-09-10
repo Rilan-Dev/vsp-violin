@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
 import { StudioLogin } from "@/components/site/studio-login";
 import { StudioDashboard } from "@/components/site/studio-dashboard";
-import { getAllLessonsForStudio } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -17,13 +16,15 @@ export default async function StudioPage() {
   // Check Supabase auth token
   if (sbToken) {
     try {
-      const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-      );
-      const { data, error } = await supabase.auth.getUser(sbToken);
-      if (!error && data.user) isAuthed = true;
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+      if (supabaseUrl && serviceKey) {
+        const supabase = createClient(supabaseUrl, serviceKey, {
+          auth: { persistSession: false },
+        });
+        const { data, error } = await supabase.auth.getUser(sbToken);
+        if (!error && data.user) isAuthed = true;
+      }
     } catch {}
   }
 
@@ -34,11 +35,7 @@ export default async function StudioPage() {
     return <StudioLogin />;
   }
 
-  let lessons: Awaited<ReturnType<typeof getAllLessonsForStudio>> = [];
-  try {
-    lessons = await getAllLessonsForStudio();
-  } catch {
-    // DB unavailable
-  }
-  return <StudioDashboard lessons={lessons} />;
+  // Pass empty lessons array — the dashboard will fetch data client-side
+  // This prevents server-side Prisma DB errors
+  return <StudioDashboard lessons={[]} />;
 }

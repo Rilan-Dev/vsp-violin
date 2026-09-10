@@ -189,7 +189,7 @@ globalThis.__BUILD_MANIFEST.lowPriorityFiles = [
   ],
   "ignore": []
 }
-/**/;self.__RSC_SERVER_MANIFEST="{\n  \"node\": {},\n  \"edge\": {},\n  \"encryptionKey\": \"eYjauJIdoEAeHIgUS+fn17qGxOhfjotSjQctPDec9Jc=\"\n}"
+/**/;self.__RSC_SERVER_MANIFEST="{\n  \"node\": {},\n  \"edge\": {},\n  \"encryptionKey\": \"WiWzBaLPJmn6yNR0fF7E17hT1eFzoxsWEs3TIqfECCE=\"\n}"
 /**/;globalThis.__RSC_MANIFEST = globalThis.__RSC_MANIFEST || {};
 globalThis.__RSC_MANIFEST["/opengraph-image/route"] = {"moduleLoading":{"prefix":"","crossOrigin":null},"clientModules":{},"ssrModuleMapping":{},"edgeSSRModuleMapping":{},"rscModuleMapping":{},"edgeRscModuleMapping":{},"entryCSSFiles":{},"entryJSFiles":{}}
 

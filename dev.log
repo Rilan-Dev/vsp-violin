@@ -30,3 +30,23 @@ Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allow
 ✓ Compiled in 990ms
  GET /studio 200 in 234ms (compile: 141ms, render: 93ms)
  GET /studio 200 in 24ms (compile: 3ms, render: 21ms)
+✓ Compiled in 1203ms
+ GET / 200 in 512ms (compile: 94ms, render: 419ms)
+ GET /studi 404 in 1241ms (compile: 1005ms, render: 236ms)
+ GET / 200 in 135ms (compile: 5ms, render: 130ms)
+ GET /library 200 in 1140ms (compile: 830ms, render: 310ms)
+ GET /studio 200 in 422ms (compile: 138ms, render: 285ms)
+ POST /api/studio/auth 200 in 825ms (compile: 4ms, render: 822ms)
+ GET /studio 200 in 513ms (compile: 3ms, render: 510ms)
+ GET /api/studio/enquiries 200 in 580ms (compile: 45ms, render: 535ms)
+ PATCH /api/studio/lessons/bakthi-lingashtagam 200 in 1588ms (compile: 1363ms, render: 226ms)
+ PATCH /api/studio/lessons/bakthi-lingashtagam 200 in 226ms (compile: 33ms, render: 193ms)
+ GET /api/studio/categories 200 in 420ms (compile: 236ms, render: 184ms)
+ GET /api/studio/analytics 200 in 376ms (compile: 147ms, render: 230ms)
+ GET /api/studio/content 200 in 414ms (compile: 181ms, render: 233ms)
+ GET /api/studio/media 200 in 412ms (compile: 192ms, render: 220ms)
+✓ Compiled in 817ms
+ GET /studio 200 in 206ms (compile: 95ms, render: 111ms)
+ GET / 200 in 68ms (compile: 3ms, render: 65ms)
+ GET /api/studio/enquiries 200 in 762ms (compile: 3ms, render: 760ms)
+ GET / 200 in 191ms (compile: 3ms, render: 187ms)
