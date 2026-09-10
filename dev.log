@@ -25,3 +25,5 @@ Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allow
  GET /api/studio/media 200 in 225ms (compile: 216ms, render: 9ms)
  GET /api/studio/media 200 in 18ms (compile: 3ms, render: 15ms)
  POST /api/studio/media 201 in 14ms (compile: 5ms, render: 9ms)
+ GET / 200 in 190ms (compile: 5ms, render: 186ms)
+ GET / 200 in 146ms (compile: 4ms, render: 142ms)
