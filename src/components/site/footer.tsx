@@ -84,10 +84,31 @@ export async function Footer() {
                 {contact.email}
               </a>
               <a
-                href={`tel:${contact.phone.replace(/\s/g, "")}`}
+                href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`}
                 style={{ fontSize: "14px", color: "rgba(243,237,223,0.82)" }}
               >
                 {contact.phone}
+              </a>
+              {/* WhatsApp is how most enquiries in this market actually
+                  arrive, and it works for the diaspora audience the site
+                  targets. wa.me needs the number digits-only, no plus. */}
+              <a
+                href={`https://wa.me/${contact.phone.replace(/\D/g, "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontSize: "14px",
+                  color: "rgba(243,237,223,0.82)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  minHeight: "24px",
+                }}
+              >
+                <span aria-hidden style={{ color: "#78DCAA", fontSize: "12px" }}>
+                  ●
+                </span>
+                Message on WhatsApp
               </a>
               <p
                 style={{

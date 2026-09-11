@@ -191,14 +191,16 @@ export function Enrol() {
       );
       return;
     }
-    if (!email.trim() || !EMAIL_RE.test(email.trim())) {
-      setSubmitError("A valid email is required so I can reply.");
+    // Either an email or a phone number is enough to reply. Many students
+    // here reach out by WhatsApp and have no email they check.
+    if (!email.trim() && !phone.trim()) {
+      setSubmitError(
+        "Please leave an email address or a phone number so I can reply.",
+      );
       return;
     }
-    if (!message.trim()) {
-      setSubmitError(
-        "A short message helps me understand what you're looking for.",
-      );
+    if (email.trim() && !EMAIL_RE.test(email.trim())) {
+      setSubmitError("That email address doesn't look right — could you check it?");
       return;
     }
 
@@ -585,17 +587,12 @@ export function Enrol() {
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="enrol-email" style={labelStyle}>
-                  Email{" "}
-                  <span aria-hidden style={{ color: "#E0BC6A" }}>
-                    *
-                  </span>
+                  Email
                 </Label>
                 <Input
                   id="enrol-email"
                   type="email"
                   autoComplete="email"
-                  required
-                  aria-required="true"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="rounded-none"
@@ -611,12 +608,14 @@ export function Enrol() {
             >
               <div className="flex flex-col gap-2">
                 <Label htmlFor="enrol-phone" style={labelStyle}>
-                  Phone (optional)
+                  Phone / WhatsApp
                 </Label>
                 <Input
                   id="enrol-phone"
                   type="tel"
+                  inputMode="tel"
                   autoComplete="tel"
+                  placeholder="+91 98765 43210"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   className="rounded-none"
@@ -714,15 +713,10 @@ export function Enrol() {
             {/* Message */}
             <div className="flex flex-col gap-2">
               <Label htmlFor="enrol-message" style={labelStyle}>
-                Message{" "}
-                <span aria-hidden style={{ color: "#E0BC6A" }}>
-                  *
-                </span>
+                Message (optional)
               </Label>
               <Textarea
                 id="enrol-message"
-                required
-                aria-required="true"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Tell me a little about the student, your goals, and your timezone."
@@ -798,6 +792,92 @@ export function Enrol() {
               >
                 {INTENT_FOOTERS[intent]}
               </p>
+            </div>
+
+            {/* ---- WhatsApp: the no-form path ------------------------------
+                A contact form is friction, and most enquiries in this market
+                arrive over WhatsApp anyway. Offering it beside the submit
+                button captures the visitors who would otherwise close the tab
+                rather than fill in eight fields — and it reaches the phone
+                Suka Pavalan already carries. */}
+            <div
+              style={{
+                marginTop: "26px",
+                paddingTop: "22px",
+                borderTop: "1px solid rgba(243,237,223,0.12)",
+              }}
+            >
+              <div className="flex items-center gap-4 flex-wrap">
+                <a
+                  href={`https://wa.me/${(c.contact.phone ?? "").replace(/\D/g, "")}?text=${encodeURIComponent(
+                    intent === "booking"
+                      ? "Hello, I would like to enquire about booking a performance."
+                      : intent === "collaboration"
+                        ? "Hello, I would like to discuss a collaboration."
+                        : "Hello, I would like to ask about violin lessons."
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-[10px] transition-all duration-200 hover:-translate-y-px"
+                  style={{
+                    fontFamily: "var(--font-marcellus), serif",
+                    fontSize: "15px",
+                    letterSpacing: "0.02em",
+                    padding: "13px 24px",
+                    minHeight: 44,
+                    background: "transparent",
+                    color: "#F3EDDF",
+                    border: "1px solid rgba(120,220,170,0.55)",
+                    borderRadius: 0,
+                  }}
+                >
+                  <span aria-hidden style={{ color: "#78DCAA", fontSize: "13px" }}>●</span>
+                  Prefer WhatsApp? Message directly
+                </a>
+                <a
+                  href={`tel:${(c.contact.phone ?? "").replace(/[^\d+]/g, "")}`}
+                  className="inline-flex items-center transition-colors"
+                  style={{
+                    fontFamily: "var(--font-geist-mono), monospace",
+                    fontSize: "11px",
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    color: "rgba(243,237,223,0.6)",
+                    minHeight: 44,
+                    display: "inline-flex",
+                    alignItems: "center",
+                  }}
+                >
+                  or call {c.contact.phone}
+                </a>
+              </div>
+
+              {/* Reassurance: say what happens after they press send. */}
+              <ol
+                className="flex flex-wrap items-center gap-x-3 gap-y-2"
+                style={{
+                  margin: "20px 0 0",
+                  padding: 0,
+                  listStyle: "none",
+                  fontFamily: "var(--font-geist-mono), monospace",
+                  fontSize: "10.5px",
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: "rgba(243,237,223,0.52)",
+                }}
+              >
+                {[
+                  "You write",
+                  "Suka Pavalan replies personally",
+                  "A free trial lesson",
+                  "You decide",
+                ].map((step, i) => (
+                  <li key={step} className="flex items-center gap-3">
+                    {i > 0 && <span aria-hidden style={{ color: "rgba(224,188,106,0.5)" }}>→</span>}
+                    <span>{step}</span>
+                  </li>
+                ))}
+              </ol>
             </div>
           </form>
         </div>
