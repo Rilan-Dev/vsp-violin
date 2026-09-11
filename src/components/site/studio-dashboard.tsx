@@ -971,7 +971,7 @@ export function StudioDashboard({
                       </tr>
                     ) : (
                       filteredLessons.map((l) => (
-                        <EditableLessonRow key={l.id} lesson={l} onUpdate={(updated) => {
+                        <EditableLessonRow key={l.id} lesson={l} categories={data.lessonsByCategory.map((c) => ({ slug: c.category, name: c.category.replace(/-/g, " ") }))} onUpdate={(updated) => {
                           setData((prev) => {
                             if (!prev) return prev;
                             const lessons = prev.lessons.map((row) => row.id === l.id ? { ...row, ...updated } : row);
@@ -1264,15 +1264,265 @@ function StatCard({ icon, label, value, color, suffix }: { icon: React.ReactNode
  * Click a field to edit; Enter or blur to save (PATCH); Escape to cancel.
  * Status is a toggle button (draft/published).
  */
+/**
+ * LessonEditor — the full edit form for one lesson.
+ *
+ * Inline click-to-edit only ever exposed title, raga, thala and level, and the
+ * API only accepted seven of the fifteen fields a lesson can be created with.
+ * So category, date, both notation PDFs, both videos, the cover image and the
+ * source link were set once and then permanently frozen — a mistyped notation
+ * link meant deleting the lesson and entering it all again.
+ *
+ * Fields are grouped by what they mean to a teacher rather than by column
+ * order, and the two groups that are rarely touched start collapsed so the
+ * form opens short (progressive disclosure).
+ */
+function LessonEditor({
+  lesson,
+  categories,
+  onClose,
+  onSaved,
+}: {
+  lesson: LessonRow;
+  categories: { slug: string; name: string }[];
+  onClose: () => void;
+  onSaved: (updated: Partial<LessonRow>) => void;
+}) {
+  type Draft = {
+    title: string; titleTamil: string; category: string; level: string;
+    raga: string; thala: string; composer: string; date: string;
+    notationTamil: string; notationEnglish: string;
+    violinVideo: string; vocalVideo: string; titleCard: string; sourceUrl: string;
+    status: string;
+  };
+
+  const initial: Draft = {
+    title: lesson.title ?? "",
+    titleTamil: lesson.titleTamil ?? "",
+    category: lesson.category ?? "",
+    level: lesson.level != null ? String(lesson.level) : "",
+    raga: lesson.raga ?? "",
+    thala: lesson.thala ?? "",
+    composer: lesson.composer ?? "",
+    date: lesson.date ?? "",
+    notationTamil: lesson.notationTamil ?? "",
+    notationEnglish: lesson.notationEnglish ?? "",
+    violinVideo: lesson.violinVideo ?? "",
+    vocalVideo: lesson.vocalVideo ?? "",
+    titleCard: lesson.titleCard ?? "",
+    sourceUrl: lesson.sourceUrl ?? "",
+    status: lesson.status ?? "published",
+  };
+
+  const [draft, setDraft] = useState<Draft>(initial);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showLinks, setShowLinks] = useState(false);
+  const [showExtras, setShowExtras] = useState(false);
+
+  const set = (k: keyof Draft) => (v: string) => { setDraft((d) => ({ ...d, [k]: v })); setError(null); };
+  const dirty = (Object.keys(initial) as (keyof Draft)[]).some((k) => draft[k] !== initial[k]);
+
+  const close = () => {
+    if (dirty && !window.confirm("You have unsaved changes. Close without saving?")) return;
+    onClose();
+  };
+
+  const save = async () => {
+    if (!draft.title.trim()) { setError("A lesson needs a title."); return; }
+    if (!draft.category.trim()) { setError("Choose which group this lesson belongs to."); return; }
+    setSaving(true);
+    setError(null);
+
+    // Send only what actually changed.
+    const body: Record<string, unknown> = {};
+    (Object.keys(initial) as (keyof Draft)[]).forEach((k) => {
+      if (draft[k] === initial[k]) return;
+      if (k === "level") body.level = draft.level === "" ? null : Number(draft.level);
+      else body[k] = draft[k];
+    });
+
+    try {
+      const res = await fetch(`/api/studio/lessons/${lesson.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const json = await res.json().catch(() => null);
+      if (!res.ok) {
+        const issues = json?.issues?.fieldErrors as Record<string, string[]> | undefined;
+        const first = issues && Object.values(issues).flat()[0];
+        setError(first ?? json?.error ?? "That could not be saved. Please check the fields and try again.");
+        return;
+      }
+      onSaved({
+        ...(json?.lesson ?? {}),
+        title: draft.title,
+        titleTamil: draft.titleTamil || null,
+        category: draft.category,
+        level: draft.level === "" ? null : Number(draft.level),
+        raga: draft.raga || null,
+        thala: draft.thala || null,
+        composer: draft.composer || null,
+        status: draft.status,
+      } as Partial<LessonRow>);
+    } catch {
+      setError("Could not reach the server. Check your connection and try again.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const label: React.CSSProperties = {
+    display: "block", fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px",
+    letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(243,237,223,0.6)", marginBottom: 6,
+  };
+  const input: React.CSSProperties = {
+    width: "100%", padding: "11px 12px", minHeight: 44, background: "rgba(22,16,42,0.6)",
+    border: "1px solid rgba(243,237,223,0.2)", color: "#F3EDDF",
+    fontFamily: "var(--font-instrument-sans), sans-serif", fontSize: "14px", borderRadius: 0,
+  };
+  const groupHeader: React.CSSProperties = {
+    display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%",
+    padding: "13px 0", background: "transparent", border: "none",
+    borderTop: "1px solid rgba(243,237,223,0.12)", color: "#E0BC6A",
+    fontFamily: "var(--font-marcellus), serif", fontSize: "16px", cursor: "pointer", borderRadius: 0,
+  };
+
+  const Field = ({ k, title, hint, type = "text", placeholder }: {
+    k: keyof Draft; title: string; hint?: string; type?: string; placeholder?: string;
+  }) => (
+    <label style={{ display: "block" }}>
+      <span style={label}>{title}</span>
+      <input
+        type={type}
+        value={draft[k]}
+        onChange={(e) => set(k)(e.target.value)}
+        placeholder={placeholder}
+        style={input}
+      />
+      {hint && <span style={{ display: "block", marginTop: 5, fontSize: "12px", color: "rgba(243,237,223,0.5)", lineHeight: 1.5 }}>{hint}</span>}
+    </label>
+  );
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Edit ${lesson.title}`}
+      onClick={(e) => { if (e.target === e.currentTarget) close(); }}
+      style={{
+        position: "fixed", inset: 0, zIndex: 60, background: "rgba(11,8,22,0.72)",
+        backdropFilter: "blur(3px)", display: "flex", alignItems: "flex-start",
+        justifyContent: "center", padding: "24px 16px", overflowY: "auto",
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: "100%", maxWidth: 760, background: "#1A1234",
+          border: "1px solid rgba(224,188,106,0.3)", padding: "26px 24px 22px", textAlign: "left",
+        }}
+      >
+        <div className="flex items-start justify-between gap-4" style={{ marginBottom: 18 }}>
+          <div>
+            <span className="vsp-eyebrow" style={{ display: "block", marginBottom: 6 }}>Edit lesson</span>
+            <h2 style={{ margin: 0, fontFamily: "var(--font-marcellus), serif", fontSize: "23px", color: "#F3EDDF", lineHeight: 1.2 }}>
+              {initial.title}
+            </h2>
+          </div>
+          <button onClick={close} aria-label="Close without saving"
+            style={{ background: "transparent", border: "1px solid rgba(243,237,223,0.2)", color: "rgba(243,237,223,0.7)", cursor: "pointer", padding: 0, minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 0 }}>
+            <X size={16} aria-hidden />
+          </button>
+        </div>
+
+        {/* ---- Always open: the things that change most ---- */}
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2" style={{ marginBottom: 18 }}>
+          <Field k="title" title="Lesson name" />
+          <Field k="titleTamil" title="Lesson name in Tamil" placeholder="ஸரளி வரிசை" />
+          <label style={{ display: "block" }}>
+            <span style={label}>Which group it belongs to</span>
+            <select value={draft.category} onChange={(e) => set("category")(e.target.value)} style={input}>
+              {!categories.some((c) => c.slug === draft.category) && draft.category && (
+                <option value={draft.category}>{draft.category.replace(/-/g, " ")}</option>
+              )}
+              {categories.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}
+            </select>
+          </label>
+          <Field k="level" title="Level" type="number" hint="1 is the easiest. Leave empty if it does not belong to a level." />
+          <Field k="raga" title="Raga" />
+          <Field k="thala" title="Thala" />
+          <Field k="composer" title="Composer" />
+          <label style={{ display: "block" }}>
+            <span style={label}>Who can see it</span>
+            <select value={draft.status} onChange={(e) => set("status")(e.target.value)} style={input}>
+              <option value="published">Published — visitors can see it</option>
+              <option value="draft">Draft — only you can see it</option>
+            </select>
+          </label>
+        </div>
+
+        {/* ---- Collapsed: notation and video links ---- */}
+        <button onClick={() => setShowLinks((v) => !v)} style={groupHeader} aria-expanded={showLinks}>
+          <span>Notation sheets and videos</span>
+          <span aria-hidden style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px" }}>{showLinks ? "−" : "+"}</span>
+        </button>
+        {showLinks && (
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2" style={{ padding: "6px 0 18px" }}>
+            <Field k="notationEnglish" title="Notation PDF (English)" type="url" placeholder="https://…" hint="The link students download. Leave empty if there isn't one." />
+            <Field k="notationTamil" title="Notation PDF (Tamil)" type="url" placeholder="https://…" />
+            <Field k="violinVideo" title="Violin video" type="url" placeholder="https://youtube.com/…" />
+            <Field k="vocalVideo" title="Vocal video" type="url" placeholder="https://youtube.com/…" />
+          </div>
+        )}
+
+        {/* ---- Collapsed: rarely touched ---- */}
+        <button onClick={() => setShowExtras((v) => !v)} style={groupHeader} aria-expanded={showExtras}>
+          <span>Cover picture and date</span>
+          <span aria-hidden style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px" }}>{showExtras ? "−" : "+"}</span>
+        </button>
+        {showExtras && (
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2" style={{ padding: "6px 0 18px" }}>
+            <Field k="titleCard" title="Cover picture" type="url" placeholder="https://…" hint="The picture shown on the lesson card in the library." />
+            <Field k="date" title="Date published" placeholder="2021-03-19" hint="Shown on the lesson page." />
+            <Field k="sourceUrl" title="Original page it came from" type="url" placeholder="https://…" hint="Only used for your own reference." />
+          </div>
+        )}
+
+        {error && (
+          <p role="alert" style={{ margin: "14px 0 0", padding: "11px 14px", border: "1px solid rgba(224,140,80,0.5)", background: "rgba(224,140,80,0.08)", color: "#F2C5A5", fontSize: "13.5px", lineHeight: 1.55 }}>
+            {error}
+          </p>
+        )}
+
+        <div className="flex items-center gap-3 flex-wrap" style={{ marginTop: 20, paddingTop: 18, borderTop: "1px solid rgba(243,237,223,0.12)" }}>
+          <button onClick={save} disabled={saving || !dirty}
+            style={{ padding: "13px 26px", minHeight: 44, background: saving || !dirty ? "rgba(224,188,106,0.35)" : "#E0BC6A", color: "#1B1233", border: "none", fontFamily: "var(--font-marcellus), serif", fontSize: "15px", cursor: saving || !dirty ? "default" : "pointer", borderRadius: 0 }}>
+            {saving ? "Saving…" : dirty ? "Save changes" : "No changes yet"}
+          </button>
+          <button onClick={close}
+            style={{ padding: "13px 20px", minHeight: 44, background: "transparent", border: "1px solid rgba(243,237,223,0.2)", color: "rgba(243,237,223,0.7)", fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", letterSpacing: "0.12em", textTransform: "uppercase", cursor: "pointer", borderRadius: 0 }}>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function EditableLessonRow({
   lesson,
+  categories,
   onUpdate,
   onDelete,
 }: {
   lesson: LessonRow;
+  categories: { slug: string; name: string }[];
   onUpdate: (updated: Partial<LessonRow>) => void;
   onDelete: () => void;
 }) {
+  const [editorOpen, setEditorOpen] = useState(false);
   const [editingField, setEditingField] = useState<string | null>(null);
   const [draft, setDraft] = useState<string>("");
   const [saving, setSaving] = useState(false);
@@ -1460,6 +1710,40 @@ function EditableLessonRow({
       </td>
       <td style={tdStyle}>
         <div className="flex items-center gap-2">
+          {/* Inline editing only ever reached a handful of fields. This opens
+              every field the lesson actually has. */}
+          <button
+            onClick={() => setEditorOpen(true)}
+            aria-label={`Edit ${lesson.title}`}
+            title="Edit this lesson"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              padding: "7px 12px",
+              minHeight: 36,
+              background: "transparent",
+              border: "1px solid rgba(224,188,106,0.45)",
+              color: "#E0BC6A",
+              fontFamily: "var(--font-geist-mono), monospace",
+              fontSize: "10px",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              cursor: "pointer",
+              borderRadius: 0,
+            }}
+          >
+            <PencilLine size={12} aria-hidden />
+            Edit
+          </button>
+          {editorOpen && (
+            <LessonEditor
+              lesson={lesson}
+              categories={categories}
+              onClose={() => setEditorOpen(false)}
+              onSaved={(updated) => { onUpdate(updated); setEditorOpen(false); }}
+            />
+          )}
           <a
             href={`/lessons/${lesson.id}`}
             target="_blank"
@@ -2244,49 +2528,58 @@ function ContentTab() {
    *  - "json": a textarea showing the raw JSON (for complex objects)
    */
   type FieldType = "string" | "text" | "array" | "json";
-  type FieldDef = { key: string; label: string; type: FieldType };
-  type Section = { name: string; icon: string; hint?: string; fields: FieldDef[] };
+  // `where` says, in the owner's words, the exact spot this text occupies.
+  // Without it a key like `home.heroLines` requires the owner to imagine the
+  // page and guess — which is what made this panel unusable.
+  type FieldDef = { key: string; label: string; type: FieldType; where?: string };
+  // `page` is the public URL this section controls. Naming the page — and
+  // linking to it — is what turns an abstract key like `home.heroLines` into
+  // "the big line at the top of my homepage".
+  type Section = { name: string; icon: string; hint?: string; page?: { href: string; label: string }; fields: FieldDef[] };
 
   const SECTIONS: Section[] = [
     {
       name: "My name & tagline",
       icon: "✦",
+      page: { href: "/", label: "the homepage" },
       hint: "How your name and titles appear across every page, including the footer.",
       fields: [
-        { key: "brand.name", label: "Full name", type: "string" },
-        { key: "brand.shortName", label: "Short name (initials)", type: "string" },
-        { key: "brand.tagline", label: "Tagline", type: "string" },
+        { key: "brand.name", label: "Full name", type: "string", where: "Your full name, in the footer and page titles" },
+        { key: "brand.shortName", label: "Short name (initials)", type: "string", where: "The initials shown in the top-left corner of every page" },
+        { key: "brand.tagline", label: "Tagline", type: "string", where: "The short line under your name in the footer" },
         { key: "brand.greeting", label: "Greeting", type: "string" },
         { key: "brand.person", label: "Person name", type: "string" },
-        { key: "brand.credentials", label: "Credentials", type: "string" },
+        { key: "brand.credentials", label: "Credentials", type: "string", where: "The letters after your name on the homepage portrait" },
         { key: "brand.copyright", label: "Copyright notice", type: "string" },
       ],
     },
     {
       name: "How people reach me",
       icon: "✉",
+      page: { href: "/#enrol", label: "the enquiry section" },
       hint: "Your address, phone, email and social links — shown in the footer and enquiry form.",
       fields: [
-        { key: "contact.address", label: "Address", type: "string" },
-        { key: "contact.phone", label: "Phone", type: "string" },
-        { key: "contact.email", label: "Email", type: "string" },
+        { key: "contact.address", label: "Address", type: "string", where: "Your address block in the footer" },
+        { key: "contact.phone", label: "Phone", type: "string", where: "The phone number in the footer and the WhatsApp button" },
+        { key: "contact.email", label: "Email", type: "string", where: "The email address in the footer and on the enquiry form" },
         { key: "contact.social.youtube", label: "YouTube URL", type: "string" },
         { key: "contact.social.facebook", label: "Facebook URL", type: "string" },
         { key: "contact.social.instagram", label: "Instagram URL", type: "string" },
         { key: "contact.social.twitter", label: "Twitter URL", type: "string" },
         { key: "contact.heroLine", label: "Hero line", type: "string" },
-        { key: "contact.formSuccess", label: "Form success message", type: "text" },
-        { key: "contact.formError", label: "Form error message", type: "text" },
+        { key: "contact.formSuccess", label: "Form success message", type: "text", where: "The thank-you message after someone sends an enquiry" },
+        { key: "contact.formError", label: "Form error message", type: "text", where: "The message shown if an enquiry fails to send" },
         { key: "contact.directionCta", label: "Direction CTA", type: "string" },
       ],
     },
     {
       name: "Homepage",
       icon: "⌂",
+      page: { href: "/", label: "the homepage" },
       hint: "The big opening lines visitors read first, plus the headings further down the page.",
       fields: [
-        { key: "home.heroLines", label: "Hero lines (one per line)", type: "array" },
-        { key: "home.testimonialsHeading", label: "Testimonials heading", type: "string" },
+        { key: "home.heroLines", label: "Hero lines (one per line)", type: "array", where: "The large opening words at the very top of the homepage" },
+        { key: "home.testimonialsHeading", label: "Testimonials heading", type: "string", where: "The heading above the student quotes" },
         { key: "home.contactHeading", label: "Contact section heading", type: "string" },
         { key: "home.introHeading", label: "Intro heading (one per line)", type: "array" },
         { key: "home.introBody", label: "Intro body (one paragraph per line)", type: "array" },
@@ -2297,6 +2590,7 @@ function ContentTab() {
     {
       name: "About me page",
       icon: "♪",
+      page: { href: "/about", label: "the About page" },
       hint: "Your story, your teaching, your tours and your performance record.",
       fields: [
         { key: "about.heroLine", label: "Hero line", type: "string" },
@@ -2316,6 +2610,7 @@ function ContentTab() {
     {
       name: "Honours page",
       icon: "★",
+      page: { href: "/honours", label: "the Honours page" },
       hint: "The wording on your honours page. The list of titles itself is in Advanced, at the bottom.",
       fields: [
         { key: "achievements.heroLine", label: "Hero line", type: "string" },
@@ -2326,6 +2621,7 @@ function ContentTab() {
     {
       name: "Learn the violin page",
       icon: "♩",
+      page: { href: "/learn", label: "the Learn page" },
       hint: "The teaching page — its introduction and the strings, materials and fingering sections.",
       fields: [
         { key: "learnTheViolin.intro", label: "Intro", type: "text" },
@@ -2345,14 +2641,14 @@ function ContentTab() {
       icon: "{ }",
       hint: "Lists such as testimonials and honours. These use a strict format — change only the words between the quote marks, and leave every bracket and comma exactly where it is. If something breaks, reload without saving.",
       fields: [
-        { key: "home.testimonials", label: "Testimonials shown on the homepage", type: "json" },
-        { key: "achievements.honorifics", label: "List of honorific titles", type: "json" },
-        { key: "achievements.accolades", label: "List of awards and accolades", type: "json" },
+        { key: "home.testimonials", label: "Testimonials shown on the homepage", type: "json", where: "The student quotes themselves" },
+        { key: "achievements.honorifics", label: "List of honorific titles", type: "json", where: "The list of titles on your Honours page" },
+        { key: "achievements.accolades", label: "List of awards and accolades", type: "json", where: "The list of awards on your Honours page" },
         { key: "learnTheViolin.strings.items", label: "Violin strings items", type: "json" },
         { key: "learnTheViolin.materials.items", label: "Violin materials items", type: "json" },
         { key: "learnTheViolin.fingering.items", label: "Violin fingering items", type: "json" },
         { key: "learnTheViolin.violinHistory", label: "Violin history paragraphs", type: "json" },
-        { key: "gallery.images", label: "Gallery photos", type: "json" },
+        { key: "gallery.images", label: "Gallery photos", type: "json", where: "The photographs in the gallery on the Stage page" },
       ],
     },
   ];
@@ -2431,6 +2727,13 @@ function ContentTab() {
     setContent((prev) => ({ ...prev, [key]: encoded }));
   };
 
+  const FieldWhere = ({ where }: { where?: string }) =>
+    where ? (
+      <span style={{ display: "block", marginTop: 5, fontSize: "12px", lineHeight: 1.5, color: "rgba(243,237,223,0.5)" }}>
+        {where}
+      </span>
+    ) : null;
+
   const filteredSections = SECTIONS.map((section) => ({
     ...section,
     fields: section.fields.filter(
@@ -2485,6 +2788,22 @@ function ContentTab() {
               </span>
             </div>
           </div>
+          {section.page && (
+            <a
+              href={section.page.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 7,
+                marginTop: 10, minHeight: 36,
+                fontFamily: "var(--font-geist-mono), monospace", fontSize: "10.5px",
+                letterSpacing: "0.13em", textTransform: "uppercase", color: "#E0BC6A",
+              }}
+            >
+              <ExternalLink size={12} aria-hidden />
+              Look at {section.page.label}
+            </a>
+          )}
           {section.hint && (
             <p style={{ fontSize: "12.5px", color: "rgba(243,237,223,0.55)", lineHeight: 1.5, margin: "0 0 14px" }}>
               {section.hint}
@@ -2497,7 +2816,7 @@ function ContentTab() {
               return (
                 <label key={field.key} className={`flex flex-col gap-1.5 ${isWide ? "md:col-span-2" : ""}`}>
                   <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "9.5px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)" }}>
-                    {field.label} <span style={{ color: "rgba(243,237,223,0.36)" }}>· {field.key}</span>
+                    {field.label}
                   </span>
                   {field.type === "string" ? (
                     <input type="text" value={display} onChange={(e) => setField(field.key, e.target.value, field.type)} style={inputStyle} />
@@ -2517,6 +2836,7 @@ function ContentTab() {
                       }}
                     />
                   )}
+                  <FieldWhere where={field.where} />
                 </label>
               );
             })}
@@ -2528,12 +2848,28 @@ function ContentTab() {
 }
 
 // ===== Media Management Tab =====
+/**
+ * Photos.
+ *
+ * Two things made this unusable. Adding a photo required pasting a URL that
+ * had to be hosted somewhere first — the owner has pictures on a phone, not
+ * URLs — so nothing could realistically be added. And the seeded rows point
+ * at relative paths like "images/gallery/gallery-img (1).webp" for files that
+ * were never added to the repository, so every thumbnail silently rendered
+ * broken with no explanation.
+ *
+ * Now: upload straight from the device, and a photo that cannot load says so
+ * and offers to remove itself instead of showing a broken frame.
+ */
 function MediaTab() {
   const [media, setMedia] = useState<{ id: string; url: string; altText: string; category: string }[]>([]);
   const [loading, setLoading] = useState(true);
-  const [newUrl, setNewUrl] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [newAlt, setNewAlt] = useState("");
-  const [newCat, setNewCat] = useState("portrait");
+  const [newCat, setNewCat] = useState("gallery");
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [broken, setBroken] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     fetch("/api/studio/media").then(r => r.json()).then(d => {
@@ -2542,17 +2878,38 @@ function MediaTab() {
     }).catch(() => setLoading(false));
   }, []);
 
-  const addMedia = async () => {
-    if (!newUrl.trim() || !newAlt.trim()) return;
-    const res = await fetch("/api/studio/media", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url: newUrl.trim(), altText: newAlt.trim(), category: newCat }),
-    });
-    if (res.ok) {
-      const json = await res.json();
-      setMedia([json.media, ...media]);
-      setNewUrl(""); setNewAlt("");
+  /**
+   * Legacy rows stored bare relative paths. Without a leading slash the
+   * browser resolves them against /studio, so they 404 from the admin even
+   * where the file exists. Absolute URLs pass through untouched.
+   */
+  const resolveUrl = (url: string) =>
+    /^(https?:)?\/\//.test(url) || url.startsWith("/") ? url : `/${url}`;
+
+  const upload = async () => {
+    setUploadError(null);
+    if (!file) { setUploadError("Choose a photo from your device first."); return; }
+    if (!newAlt.trim()) { setUploadError("Add a short description so the photo works for screen readers."); return; }
+
+    setUploading(true);
+    try {
+      const body = new FormData();
+      body.append("file", file);
+      body.append("altText", newAlt.trim());
+      body.append("category", newCat);
+      const res = await fetch("/api/studio/media/upload", { method: "POST", body });
+      const json = await res.json().catch(() => null);
+      if (res.ok && json?.media) {
+        setMedia([json.media, ...media]);
+        setFile(null);
+        setNewAlt("");
+      } else {
+        setUploadError(json?.error ?? "The photo could not be uploaded. Please try again.");
+      }
+    } catch {
+      setUploadError("The photo could not be uploaded. Please check your connection and try again.");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -2561,57 +2918,141 @@ function MediaTab() {
     setMedia(media.filter(m => m.id !== id));
   };
 
-  if (loading) return <p style={{ color: "rgba(243,237,223,0.5)", fontFamily: "var(--font-geist-mono), monospace", fontSize: "12px" }}>Loading media...</p>;
+  if (loading) return <p style={{ color: "rgba(243,237,223,0.5)", fontFamily: "var(--font-geist-mono), monospace", fontSize: "12px" }}>Loading your photos…</p>;
 
-  const inputStyle: React.CSSProperties = { padding: "9px 12px", background: "rgba(22,16,42,0.6)", border: "1px solid rgba(243,237,223,0.2)", color: "#F3EDDF", fontFamily: "var(--font-instrument-sans)", fontSize: "13px", borderRadius: 0, width: "100%" };
-  const catColors: Record<string, string> = { portrait: "#E0BC6A", "title-card": "#C9AEF5", gallery: "#78DCAA", honours: "#E08C50", misc: "rgba(243,237,223,0.5)" };
+  const inputStyle: React.CSSProperties = { padding: "11px 12px", minHeight: 44, background: "rgba(22,16,42,0.6)", border: "1px solid rgba(243,237,223,0.2)", color: "#F3EDDF", fontFamily: "var(--font-instrument-sans)", fontSize: "14px", borderRadius: 0, width: "100%" };
+
+  // Plain words for where each kind of photo is used on the public site.
+  const PLACES: Record<string, { label: string; where: string; color: string }> = {
+    portrait: { label: "Portrait", where: "Shown beside your name on the homepage and About page", color: "#E0BC6A" },
+    "title-card": { label: "Lesson cover", where: "The picture on a lesson card in the library", color: "#C9AEF5" },
+    gallery: { label: "Gallery", where: "The photo gallery on the Stage page", color: "#78DCAA" },
+    honours: { label: "Honours", where: "Alongside your awards on the Honours page", color: "#E08C50" },
+    misc: { label: "Something else", where: "Not tied to a particular page", color: "rgba(243,237,223,0.6)" },
+  };
+  const brokenCount = Object.values(broken).filter(Boolean).length;
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-6">
-        <ImageIcon size={18} aria-hidden style={{ color: "#E0BC6A" }} />
-        <span className="vsp-eyebrow">Media Library</span>
-      </div>
+      {/* ---- Upload ---- */}
+      <div className="vsp-card-gold" style={{ padding: "22px", marginBottom: "24px" }}>
+        <span className="vsp-eyebrow" style={{ display: "block", marginBottom: "6px" }}>Add a photo</span>
+        <p style={{ margin: "0 0 16px", fontSize: "13.5px", lineHeight: 1.6, color: "rgba(243,237,223,0.72)" }}>
+          Choose a picture from this device — your phone&apos;s camera roll works. JPG, PNG, WebP or GIF, up to 8MB.
+        </p>
 
-      {/* Add new media */}
-      <div className="vsp-card-gold" style={{ padding: "20px", marginBottom: "24px" }}>
-        <span className="vsp-eyebrow" style={{ display: "block", marginBottom: "12px" }}>Add image (URL)</span>
-        <div className="grid gap-3 grid-cols-1 md:grid-cols-4" style={{ marginBottom: "12px" }}>
-          <input type="url" value={newUrl} onChange={e => setNewUrl(e.target.value)} placeholder="https://..." style={inputStyle} />
-          <input type="text" value={newAlt} onChange={e => setNewAlt(e.target.value)} placeholder="Alt text" style={inputStyle} />
-          <select value={newCat} onChange={e => setNewCat(e.target.value)} style={inputStyle}>
-            <option value="portrait">Portrait</option>
-            <option value="title-card">Title Card</option>
-            <option value="gallery">Gallery</option>
-            <option value="honours">Honours</option>
-            <option value="misc">Misc</option>
-          </select>
-          <button onClick={addMedia} className="vsp-cta-gold"
-            style={{ padding: "9px 18px", background: "#E0BC6A", color: "#1B1233", fontFamily: "var(--font-marcellus), serif", fontSize: "13px", border: "none", cursor: "pointer", borderRadius: 0 }}>
-            Add image
-          </button>
+        <div className="grid gap-3 grid-cols-1 md:grid-cols-3" style={{ marginBottom: "14px" }}>
+          <label style={{ display: "block" }}>
+            <span style={{ display: "block", fontFamily: "var(--font-geist-mono), monospace", fontSize: "10.5px", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)", marginBottom: 7 }}>
+              1. Choose the photo
+            </span>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/avif,image/gif"
+              onChange={(e) => { setFile(e.target.files?.[0] ?? null); setUploadError(null); }}
+              style={{ ...inputStyle, padding: "9px 12px", cursor: "pointer" }}
+            />
+          </label>
+
+          <label style={{ display: "block" }}>
+            <span style={{ display: "block", fontFamily: "var(--font-geist-mono), monospace", fontSize: "10.5px", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)", marginBottom: 7 }}>
+              2. Describe it in a few words
+            </span>
+            <input
+              type="text"
+              value={newAlt}
+              onChange={e => { setNewAlt(e.target.value); setUploadError(null); }}
+              placeholder="Suka Pavalan playing at the Thyagaraja Aradhana"
+              style={inputStyle}
+            />
+          </label>
+
+          <label style={{ display: "block" }}>
+            <span style={{ display: "block", fontFamily: "var(--font-geist-mono), monospace", fontSize: "10.5px", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)", marginBottom: 7 }}>
+              3. Where should it go?
+            </span>
+            <select value={newCat} onChange={e => setNewCat(e.target.value)} style={inputStyle}>
+              {Object.entries(PLACES).map(([key, v]) => (
+                <option key={key} value={key}>{v.label}</option>
+              ))}
+            </select>
+          </label>
         </div>
+
+        <p style={{ margin: "0 0 14px", fontSize: "12.5px", color: "rgba(243,237,223,0.55)", lineHeight: 1.55 }}>
+          {PLACES[newCat]?.where}
+        </p>
+
+        {uploadError && (
+          <p role="alert" style={{ margin: "0 0 14px", padding: "10px 13px", border: "1px solid rgba(224,140,80,0.5)", background: "rgba(224,140,80,0.08)", color: "#F2C5A5", fontSize: "13px", lineHeight: 1.55 }}>
+            {uploadError}
+          </p>
+        )}
+
+        <button
+          onClick={upload}
+          disabled={uploading}
+          style={{ padding: "13px 26px", minHeight: 44, background: uploading ? "rgba(224,188,106,0.45)" : "#E0BC6A", color: "#1B1233", fontFamily: "var(--font-marcellus), serif", fontSize: "15px", border: "none", cursor: uploading ? "default" : "pointer", borderRadius: 0 }}
+        >
+          {uploading ? "Uploading…" : "Add this photo"}
+        </button>
       </div>
 
-      {/* Media grid */}
+      {brokenCount > 0 && (
+        <p style={{ margin: "0 0 16px", padding: "12px 15px", border: "1px solid rgba(224,140,80,0.45)", background: "rgba(224,140,80,0.07)", color: "#F2C5A5", fontSize: "13.5px", lineHeight: 1.6 }}>
+          {brokenCount} {brokenCount === 1 ? "photo is" : "photos are"} missing — the picture file is no longer where it was
+          saved. They are marked below. Remove them and upload the picture again.
+        </p>
+      )}
+
+      {/* ---- The photos ---- */}
       {media.length === 0 ? (
-        <p style={{ color: "rgba(243,237,223,0.5)", fontSize: "14px", textAlign: "center", padding: "40px" }}>No images in the media library yet. Add one above.</p>
+        <div style={{ padding: "48px 24px", textAlign: "center", border: "1px dashed rgba(243,237,223,0.2)" }}>
+          <p style={{ margin: "0 0 6px", fontFamily: "var(--font-marcellus), serif", fontSize: "19px", color: "#F3EDDF" }}>
+            No photos yet.
+          </p>
+          <p style={{ margin: 0, fontSize: "13.5px", color: "rgba(243,237,223,0.6)" }}>
+            Add your first one using the box above.
+          </p>
+        </div>
       ) : (
         <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
-          {media.map(m => (
-            <div key={m.id} className="vsp-card-neutral" style={{ padding: "12px", display: "flex", flexDirection: "column", gap: "8px" }}>
-              <div style={{ aspectRatio: "4/3", background: "#251A42", overflow: "hidden" }}>
-                <img src={m.url} alt={m.altText} style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" />
+          {media.map(m => {
+            const place = PLACES[m.category] ?? PLACES.misc;
+            const isBroken = broken[m.id];
+            return (
+              <div key={m.id} className="vsp-card-neutral" style={{ padding: "12px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                <div style={{ aspectRatio: "4/3", background: "#251A42", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  {isBroken ? (
+                    <span style={{ padding: "0 10px", textAlign: "center", fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase", color: "#E08C50", lineHeight: 1.6 }}>
+                      Photo missing
+                    </span>
+                  ) : (
+                    <img
+                      src={resolveUrl(m.url)}
+                      alt={m.altText}
+                      onError={() => setBroken((b) => ({ ...b, [m.id]: true }))}
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      loading="lazy"
+                    />
+                  )}
+                </div>
+                <p style={{ fontSize: "12.5px", color: "#F3EDDF", margin: 0, lineHeight: 1.45 }}>{m.altText}</p>
+                <div className="flex items-center justify-between gap-2">
+                  <span title={place.where} style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase", color: place.color }}>
+                    {place.label}
+                  </span>
+                  <button
+                    onClick={() => deleteMedia(m.id)}
+                    aria-label={`Remove the photo described as ${m.altText}`}
+                    style={{ background: "transparent", border: "none", color: isBroken ? "#E08C50" : "rgba(243,237,223,0.45)", cursor: "pointer", padding: "10px", minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center" }}
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
               </div>
-              <p style={{ fontSize: "12px", color: "#F3EDDF", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{m.altText}</p>
-              <div className="flex items-center justify-between">
-                <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase", color: catColors[m.category] || "#888" }}>{m.category}</span>
-                <button onClick={() => deleteMedia(m.id)} aria-label="Delete" style={{ background: "transparent", border: "none", color: "rgba(243,237,223,0.4)", cursor: "pointer", padding: "4px" }}>
-                  <Trash2 size={13} />
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
