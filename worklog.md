@@ -1607,3 +1607,80 @@ Exercised against a running server rather than inspected:
 3. Key rotation and the DNS cutover from Task 29 remain outstanding and are
    still the two highest-value actions on the project.
 4. No pricing signal on the public site.
+
+---
+Task ID: 32
+Agent: launch-readiness
+Task: Launch prep for Monday 14 September. Client re-sent the branding/CTA/social/audio list (Tasks 30-31, already shipped in d13b860) and added two genuinely new items: messaging should lead with sheet music and education rather than streaming audio, and the build must be ready for the domain point-over from the Blogger site.
+
+## Audio: messaging and the second player
+
+The homepage Practice Room was already hidden. The per-lesson pages still
+streamed audio through their own "Practice track" panel — the copyright hold
+applies to the same audio, so hiding one player while the other kept streaming
+defeated the point. That panel is replaced by a notation-led panel ("Practise
+from the notation") carrying the download, what each lesson includes, and a
+Contact CTA, which keeps the two-column layout intact.
+
+Descriptive copy across the library, lesson pages and enrol section no longer
+advertises "practice tracks in five sruthis"; it leads with downloadable Tamil
+and English sheet music plus step-by-step video. The dead sruthi/speed state
+and the unused `Music` import went with the panel. `lesson.audioLessons` is
+untouched in the database and `practice-room.tsx` is intact.
+
+## Domain cutover: 16 old URLs would have 404'd
+
+The redirect table covered the 22 notation lessons. The **live Blogger sitemap
+advertises 38 URLs**, so 16 had no rule and would have returned 404 the moment
+DNS moved — losing both those visitors and the ranking the pages carry.
+
+Each was identified by fetching its title from the live old site rather than
+guessed from the slug: nine cine-song instrumentals → the cinema songs shelf,
+three biography posts → /about, two photo posts → /stage, the old contact page
+→ /#contact, and `/2023/08/blog-post_5.html`, whose title element only showed
+the site name, turned out to be "Ilayaraja Hits On Violin" (Live Audio) and now
+points at that lesson. 48 rules now cover all 38 URLs; verified 0 uncovered.
+
+## robots.txt was pointing Google at localhost
+
+Found by writing the preflight script rather than by reading code. Production
+was serving:
+
+    Sitemap: http://localhost:3000/sitemap.xml
+
+`robots.ts` was a **static** route, so `SITE_URL` was baked in during
+`vercel build`, where neither `NEXT_PUBLIC_SITE_URL` nor Vercel's own URL
+variables are present — leaving the localhost fallback. `sitemap.xml` is
+dynamic and resolved correctly at request time, which is why the two disagreed
+and why nobody noticed. Google could not discover the sitemap at all. robots.ts
+is now `force-dynamic`; the build confirms it moved from ○ to ƒ.
+
+## New tooling
+
+- `scripts/preflight-launch.ts <origin>` — verifies a live origin: every
+  redirect in next.config.ts resolves to a real page (following chains), the
+  canonical/og:url/sitemap/robots all name that origin, /studio is disallowed,
+  and the key pages return 200. Exits non-zero, so it can gate a deploy. This
+  is what caught the robots.txt defect.
+- `LAUNCH.md` — the ordered runbook, including why `www` is the primary domain
+  (every indexed URL is on the www host, so apex-primary would cost existing
+  traffic a second hop) and why `NEXT_PUBLIC_SITE_URL` must be set *before* DNS
+  propagates, plus rollback.
+
+## Verification
+
+- Preflight against production: caught the robots.txt failure; the 16 new
+  redirect failures are expected, since production has not been redeployed yet.
+- With `NEXT_PUBLIC_SITE_URL` set, robots.txt, canonical and every sitemap
+  entry agree on the host.
+- All 16 new redirects verified firing locally to the correct destinations.
+- lint 0 errors; tsc 8 errors matching baseline exactly; build passes with all
+  Supabase env vars unset.
+
+## Unresolved issues / risks / next-phase priorities
+
+1. **Key rotation is still outstanding** and is step one of the runbook.
+2. **The DNS cutover itself is a dashboard action** — LAUNCH.md has the order.
+3. The 15 seeded gallery photos still point at files that were never added;
+   they render "Photo missing" until someone uploads them.
+4. No pricing signal on the public site.

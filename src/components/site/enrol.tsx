@@ -52,7 +52,7 @@ const INTENT_FOOTERS: Record<Intent, string> = {
 const TRIAL_CHECKLIST = [
   "Free trial lesson, no obligation",
   "Tamil or English notation provided",
-  "Practice tracks in five sruthis",
+  "Sheet music to download and keep",
   "Online or in-person in Karaikal",
   "Children (6–16) and adults welcome",
 ];

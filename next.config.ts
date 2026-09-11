@@ -36,6 +36,39 @@ const nextConfig: NextConfig = {
       { source: "/2021/11/hamsadhvani-varanam-jalajaaksha.html", destination: "/lessons/varnam-jalajaaksha", permanent: true },
       { source: "/2023/08/blog-post_61.html", destination: "/lessons/varnam-mohanam", permanent: true },
 
+      // --- Remaining Blogger posts found in the old sitemap -------------
+      // The original table covered the 22 notation lessons. The live Blogger
+      // sitemap advertises 38 URLs, so these 16 had no rule and would have
+      // returned 404 the moment DNS moved — losing both the visitors and the
+      // ranking those pages carry. Mapped by what each page actually is,
+      // confirmed by fetching its title from the live old site.
+
+      // Cine-song instrumentals -> the cinema songs shelf of the library
+      { source: "/2021/03/butterfly-instrumental.html", destination: "/library?category=cine-songs", permanent: true },
+      { source: "/2021/03/en-jeevan-instrumental.html", destination: "/library?category=cine-songs", permanent: true },
+      { source: "/2021/03/kannamma-instrumental.html", destination: "/library?category=cine-songs", permanent: true },
+      { source: "/2021/03/mube-vaa-instrumental.html", destination: "/library?category=cine-songs", permanent: true },
+      { source: "/2021/03/nee-paathi-naan-paathi-instrumental.html", destination: "/library?category=cine-songs", permanent: true },
+      { source: "/2021/03/new-hit-songs-2018-2019-instrumental.html", destination: "/library?category=cine-songs", permanent: true },
+      { source: "/2021/03/old-songs-instrumental.html", destination: "/library?category=cine-songs", permanent: true },
+      { source: "/2021/03/pookkale-instrumental.html", destination: "/library?category=cine-songs", permanent: true },
+      { source: "/2021/03/singapenne-bigil-instrumental.html", destination: "/library?category=cine-songs", permanent: true },
+
+      // Biography and career story -> the About page
+      { source: "/2021/03/about-me-at-magazine.html", destination: "/about", permanent: true },
+      { source: "/2021/03/first-competition.html", destination: "/about", permanent: true },
+      { source: "/2021/03/first-day-of-my-musical-journey.html", destination: "/about", permanent: true },
+
+      // Photographs and appearances -> the Stage page, which carries the gallery
+      { source: "/2021/03/photos-01.html", destination: "/stage", permanent: true },
+      { source: "/2021/03/with-shri-s-janaki-amma.html", destination: "/stage", permanent: true },
+
+      // The old contact page -> the contact section
+      { source: "/2021/03/contact.html", destination: "/#contact", permanent: true },
+
+      // "Ilayaraja Hits On Violin" (Live Audio) -> its lesson on the new site
+      { source: "/2023/08/blog-post_5.html", destination: "/lessons/live-audio-ilayaraja", permanent: true },
+
       // --- Old vspviolinrainbow.com page URLs → homepage anchors ---
       { source: "/achievement.html", destination: "/#honours", permanent: true },
       { source: "/carnatic_lessons.html", destination: "/library", permanent: true },
