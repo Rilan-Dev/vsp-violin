@@ -73,7 +73,7 @@ export function StudioLogin() {
             color: "#F3EDDF",
           }}
         >
-          Suka Pavalan Studio
+          Violin Suka Pavalan Studio
         </h1>
         <p
           style={{

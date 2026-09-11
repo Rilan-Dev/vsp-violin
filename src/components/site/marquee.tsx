@@ -3,10 +3,10 @@ import type { CSSProperties } from "react";
 const ITEMS: string[] = [
   "All India Radio - Trichy, Puducherry, Karaikal",
   "Thyagaraja Aradhana since 1992",
-  "Five TV channels",
+  "TV channels around India",
   "USA tours 2013-15, 2017-19",
   "CCRT Cultural Talent Scholarship 1994-2000",
-  "37 years on stage",
+  "37+ years on stage",
   "5,000+ live performances",
   "Students across USA, UK, Canada, Gulf, Australia",
 ];

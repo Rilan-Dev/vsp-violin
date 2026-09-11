@@ -177,7 +177,7 @@ export function LibraryPreview({
             maxWidth: "22ch",
           }}
         >
-          {totalCount} lessons. One lineage.
+          Carnatic, Devotional, and Light Music Lessons.
         </h2>
         <p
           style={{
@@ -188,10 +188,10 @@ export function LibraryPreview({
             maxWidth: "62ch",
           }}
         >
-          Every Carnatic violin lesson Suka Pavalan teaches, given away free —
-          Tamil and English notation PDFs, violin and vocal video, and practice
-          tracks in five sruthis. The library is the funnel; one-to-one
-          teaching is the craft.
+          Every Carnatic violin lesson Violin Suka Pavalan teaches, given away free —
+          Tamil and English notation PDFs to download, with step-by-step violin
+          and vocal video. The library is the funnel; one-to-one teaching is
+          the craft.
         </p>
       </header>
 
@@ -427,7 +427,7 @@ export function LibraryPreview({
             transition: "color 200ms ease, border-color 200ms ease",
           }}
         >
-          Browse all {totalCount} lessons
+          Browse the full library
           <span aria-hidden style={{ transform: "translateY(-1px)" }}>
             →
           </span>

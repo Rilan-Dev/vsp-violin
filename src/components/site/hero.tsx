@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { getDynamicContent } from "@/lib/dynamic-content";
-import { getLibraryStats } from "@/lib/data";
 
 /**
  * Hero — Violin Suka Pavalan.
@@ -20,31 +19,19 @@ import { getLibraryStats } from "@/lib/data";
  */
 
 const STATS = [
-  { num: "37", label: "Years on stage" },
+  { num: "37+", label: "Years on stage" },
   { num: "5,000+", label: "Live performances" },
-  { num: "12", label: "Honorific titles" },
-  { num: "1992", label: "First AIR broadcast" },
+  { num: "12+", label: "Honorific titles" },
+  { num: "1990", label: "First Arangetram" },
 ];
 
 export async function Hero() {
-  // These counts were hardcoded as "22" while the library section rendered the
-  // live DB count ("23") on the same page — two different numbers for the same
-  // library, visible in one scroll. Both now come from the DB.
-  // `notationLessons` (lessons that actually ship notation) is the honest
-  // number for "notation lessons"; `lessons` counts everything published.
-  //
-  // If BOTH Prisma and the Supabase REST fallback are down, the copy drops the
-  // number rather than advertising "0 free lessons" — no figure reads better
-  // than a wrong one on the first line a visitor sees.
-  const [{ brand }, stats] = await Promise.all([
-    getDynamicContent(),
-    getLibraryStats().catch((e) => {
-      console.warn("[hero] library stats unavailable, rendering without counts:", e);
-      return null;
-    }),
-  ]);
-  const notationCount = stats?.notationLessons ?? stats?.lessons ?? null;
-  const lessonCount = stats?.lessons ?? null;
+  // The hero no longer quotes a lesson count. It previously hardcoded "22"
+  // while the library section a scroll below rendered the live count, and the
+  // library is now framed by what it covers — Carnatic, devotional and light
+  // music — rather than by how many items it holds. With no number to show,
+  // the stats query is gone too, which is one fewer database call per render.
+  const { brand } = await getDynamicContent();
 
   return (
     <section
@@ -141,9 +128,8 @@ export async function Hero() {
               }}
             >
               A 37-year Carnatic violinist and teacher in Karaikal.{" "}
-              {notationCount ? `${notationCount} free` : "Free"} notation
-              lessons online. One-to-one teaching, in person and across the
-              world.
+              Free Carnatic, devotional and light music lessons with notation,
+              online. One-to-one teaching, in person and across the world.
             </p>
 
             {/* CTAs */}
@@ -153,7 +139,7 @@ export async function Hero() {
             >
               {/* Primary — gold fill */}
               <a
-                href="#enrol"
+                href="#contact"
                 className="group inline-flex items-center gap-[10px] bg-[#E0BC6A] text-[#1B1233] hover:bg-[#F2D89A] hover:text-[#1B1233] hover:-translate-y-px transition-all duration-200"
                 style={{
                   fontFamily: "var(--font-marcellus), serif",
@@ -163,7 +149,7 @@ export async function Hero() {
                   borderRadius: 0,
                 }}
               >
-                Book a free trial
+                Contact Us
                 <span
                   aria-hidden
                   className="transition-transform duration-200 group-hover:translate-x-1"
@@ -185,9 +171,7 @@ export async function Hero() {
                   borderRadius: 0,
                 }}
               >
-                {lessonCount
-                  ? `Browse ${lessonCount} free lessons`
-                  : "Browse the free library"}
+                Browse the free lessons
               </a>
             </div>
 
@@ -249,7 +233,7 @@ export async function Hero() {
               >
                 <Image
                   src="/assets/portraits/portrait-standing.jpeg"
-                  alt="Suka Pavalan, Carnatic violinist, standing portrait"
+                  alt="Violin Suka Pavalan, Carnatic violinist, standing portrait"
                   fill
                   priority
                   sizes="(max-width: 1024px) 380px, 460px"

@@ -1532,3 +1532,218 @@ the section they belong to.
    Real quotes above the enquiry form would be the next conversion gain.
 4. Studio writes other than enquiries are still Prisma-only with no REST
    fallback.
+
+---
+Task ID: 31
+Agent: studio-editing-and-photos
+Task: Client feedback on the rebuilt Studio. (1) Existing lessons could not be fully edited — only status, name and raga. (2) "Words on my site" and "Photos" still required the owner to imagine which part of the site each entry controlled, and every photo was broken. Asked to apply goal-oriented onboarding UX.
+
+## 1. Lessons were editable in name only
+
+Root cause was in the API, not the UI. `POST /api/studio/lessons` accepted 15
+fields; `PATCH /api/studio/lessons/[id]` accepted 7. Anything set at creation —
+category, date, notationTamil, notationEnglish, violinVideo, vocalVideo,
+titleCard, sourceUrl — was frozen permanently. Correcting a mistyped notation
+link meant deleting the lesson and re-entering it.
+
+- UpdateSchema widened to every creatable field. URL fields take a URL or an
+  empty string (which clears them) and reject anything else with a message
+  saying what a valid value looks like.
+- `restGetAllLessonsForStudio` now selects `*` rather than `LESSON_SELECT`,
+  which omits notation/video/source. Under the REST fallback the editor would
+  otherwise show populated fields as empty — worse than not showing them,
+  because the owner would retype data that already existed.
+- New `LessonEditor`: full form, fields grouped by meaning, the two rarely
+  touched groups collapsed (progressive disclosure), unsaved-changes guard,
+  and only changed fields sent in the PATCH.
+
+## 2. Photos were broken, and unaddable
+
+Two independent faults:
+
+- **Unaddable.** Adding a photo required pasting a hosted URL. The owner has
+  pictures on a phone. There was no upload path at all, so the feature could
+  not be used as intended by its actual user.
+- **Broken.** The 15 seeded gallery rows point at `images/gallery/*.webp`;
+  `public/images/gallery/` does not exist in the repository, so the files were
+  never there. The paths are also relative with no leading slash, so from
+  `/studio` the browser resolves them to `/studio/images/...` and 404s. Both
+  failures rendered as silently broken thumbnails with no explanation.
+
+Fixes: new `POST /api/studio/media/upload` storing the file in Supabase Storage
+(bucket auto-created on first use, so a fresh project needs no dashboard
+visit), returning the public URL. Legacy relative paths normalised. A photo
+that fails to load now says "Photo missing" and offers removal, with a count at
+the top of the panel. Upload is three numbered steps, and the destination
+selector explains where each destination actually is on the site.
+
+## 3. Editing by location rather than by key
+
+Content sections now link to the page they control ("Look at the About page"),
+and 15 fields carry the spot they occupy — "The large opening words at the very
+top of the homepage" instead of `home.heroLines`. The dot-path key is no longer
+rendered; it was implementation detail sitting where a description belonged.
+
+## Verification
+
+Exercised against a running server rather than inspected:
+- Edited `category` on a real lesson (previously impossible) — succeeded;
+  multi-field save succeeded; an invalid URL was refused 422 with the readable
+  message. Original values restored afterwards and confirmed byte-for-byte.
+- Uploaded a PNG through the new endpoint — 201, bucket auto-created public,
+  file publicly reachable (200, image/png). A text file was refused 422 with
+  the plain-language message. Test row and object deleted afterwards; bucket
+  listing confirmed empty.
+- `bun run lint` 0 errors; `tsc` 8 errors matching the baseline exactly;
+  `next build` passes with all Supabase env vars unset (CI conditions).
+
+## Unresolved issues / risks / next-phase priorities
+
+1. **A `media` bucket now exists on the client's Supabase project**, created by
+   the upload endpoint during verification. It is public and currently empty.
+2. **The 15 seeded gallery rows still point at files that do not exist.** They
+   now show as "Photo missing" rather than failing silently, but the pictures
+   themselves need to be uploaded before the Stage gallery has content.
+3. Key rotation and the DNS cutover from Task 29 remain outstanding and are
+   still the two highest-value actions on the project.
+4. No pricing signal on the public site.
+
+---
+Task ID: 32
+Agent: launch-readiness
+Task: Launch prep for Monday 14 September. Client re-sent the branding/CTA/social/audio list (Tasks 30-31, already shipped in d13b860) and added two genuinely new items: messaging should lead with sheet music and education rather than streaming audio, and the build must be ready for the domain point-over from the Blogger site.
+
+## Audio: messaging and the second player
+
+The homepage Practice Room was already hidden. The per-lesson pages still
+streamed audio through their own "Practice track" panel — the copyright hold
+applies to the same audio, so hiding one player while the other kept streaming
+defeated the point. That panel is replaced by a notation-led panel ("Practise
+from the notation") carrying the download, what each lesson includes, and a
+Contact CTA, which keeps the two-column layout intact.
+
+Descriptive copy across the library, lesson pages and enrol section no longer
+advertises "practice tracks in five sruthis"; it leads with downloadable Tamil
+and English sheet music plus step-by-step video. The dead sruthi/speed state
+and the unused `Music` import went with the panel. `lesson.audioLessons` is
+untouched in the database and `practice-room.tsx` is intact.
+
+## Domain cutover: 16 old URLs would have 404'd
+
+The redirect table covered the 22 notation lessons. The **live Blogger sitemap
+advertises 38 URLs**, so 16 had no rule and would have returned 404 the moment
+DNS moved — losing both those visitors and the ranking the pages carry.
+
+Each was identified by fetching its title from the live old site rather than
+guessed from the slug: nine cine-song instrumentals → the cinema songs shelf,
+three biography posts → /about, two photo posts → /stage, the old contact page
+→ /#contact, and `/2023/08/blog-post_5.html`, whose title element only showed
+the site name, turned out to be "Ilayaraja Hits On Violin" (Live Audio) and now
+points at that lesson. 48 rules now cover all 38 URLs; verified 0 uncovered.
+
+## robots.txt was pointing Google at localhost
+
+Found by writing the preflight script rather than by reading code. Production
+was serving:
+
+    Sitemap: http://localhost:3000/sitemap.xml
+
+`robots.ts` was a **static** route, so `SITE_URL` was baked in during
+`vercel build`, where neither `NEXT_PUBLIC_SITE_URL` nor Vercel's own URL
+variables are present — leaving the localhost fallback. `sitemap.xml` is
+dynamic and resolved correctly at request time, which is why the two disagreed
+and why nobody noticed. Google could not discover the sitemap at all. robots.ts
+is now `force-dynamic`; the build confirms it moved from ○ to ƒ.
+
+## New tooling
+
+- `scripts/preflight-launch.ts <origin>` — verifies a live origin: every
+  redirect in next.config.ts resolves to a real page (following chains), the
+  canonical/og:url/sitemap/robots all name that origin, /studio is disallowed,
+  and the key pages return 200. Exits non-zero, so it can gate a deploy. This
+  is what caught the robots.txt defect.
+- `LAUNCH.md` — the ordered runbook, including why `www` is the primary domain
+  (every indexed URL is on the www host, so apex-primary would cost existing
+  traffic a second hop) and why `NEXT_PUBLIC_SITE_URL` must be set *before* DNS
+  propagates, plus rollback.
+
+## Verification
+
+- Preflight against production: caught the robots.txt failure; the 16 new
+  redirect failures are expected, since production has not been redeployed yet.
+- With `NEXT_PUBLIC_SITE_URL` set, robots.txt, canonical and every sitemap
+  entry agree on the host.
+- All 16 new redirects verified firing locally to the correct destinations.
+- lint 0 errors; tsc 8 errors matching baseline exactly; build passes with all
+  Supabase env vars unset.
+
+## Unresolved issues / risks / next-phase priorities
+
+1. **Key rotation is still outstanding** and is step one of the runbook.
+2. **The DNS cutover itself is a dashboard action** — LAUNCH.md has the order.
+3. The 15 seeded gallery photos still point at files that were never added;
+   they render "Photo missing" until someone uploads them.
+4. No pricing signal on the public site.
+
+---
+Task ID: 33
+Agent: social-avatar-sync
+Task: Client re-sent the Task 30-32 list and added three points: (1) use the real social-media profile picture and keep it synced if they change it, (2) "nav bar suka pavalan still not changed", (3) confirm the Practice Room is disabled.
+
+## The reported nav bug is a deployment gap, not a code defect
+
+Production renders a mix — 3 bare "SUKA PAVALAN" against 2 "VIOLIN SUKA
+PAVALAN". The rename commit (d13b860) is on the feature branch, not on `main`,
+so production is running pre-rename code. The two correct instances come from
+the SiteContent rows, which were updated directly in Task 30.
+
+That split is self-inflicted: updating the production database before the code
+that matches it shipped left the live site internally inconsistent. It resolves
+the moment the PR merges. Nav source on the branch is verified correct, and the
+rendered page shows zero bare occurrences.
+
+## Social profile picture sync
+
+Tested each platform before promising anything:
+
+- **Facebook — works, and is the primary source.** `graph.facebook.com/<page>/
+  picture` is Facebook's own endpoint, needs no token or app, and 302s to the
+  current CDN file. Changing the page picture changes the redirect target,
+  which is exactly the sync requested. Max useful size 652x652.
+- **YouTube — works as a fallback,** but only by reading the avatar URL out of
+  the channel page HTML, since the Data API needs a key. That is scraping and
+  will break when YouTube changes its markup, so it is second and failing is
+  tolerated.
+- **Instagram — not possible.** 403 without an authenticated Graph token tied
+  to a Business account.
+- **X — not possible.** Profile lookups need a paid API tier.
+
+`GET /api/avatar` resolves Facebook, then YouTube, then falls back to the
+shipped portrait, so any <img> pointing at it always renders. It proxies the
+bytes rather than redirecting, because the CDN URLs are signed and expire — a
+browser-cached redirect would start 403ing — and proxying also keeps everything
+on one origin instead of needing a CSP allowance for fbcdn. Cached six hours
+with stale-while-revalidate, so a page view costs nothing and a changed picture
+lands the same day.
+
+Placed in the footer brand block as a 52px circular avatar. Deliberately NOT
+used for the hero or Guru portraits: those are tall art-directed shots, and a
+652px square cannot fill them without wrecking the composition.
+
+Verified: /api/avatar returns a 652x652 JPEG byte-identical (sha256) to the
+live Facebook picture.
+
+## Verification
+
+lint 0 errors 0 warnings; tsc 8 errors matching baseline; build passes with all
+Supabase env vars unset. Rendered homepage confirms: no bare name anywhere,
+Practice Room hidden, avatar wired, brand icons, Contact CTA, all stat copy.
+
+## Unresolved issues / risks / next-phase priorities
+
+1. **PR #2 is unmerged, so none of this is live** — including the rename the
+   client is reporting as broken.
+2. Key rotation still outstanding; step one of LAUNCH.md.
+3. Instagram and X avatars cannot be synced without paid/authenticated API
+   access. If those are wanted, the Studio photo upload already accepts a
+   manual image.

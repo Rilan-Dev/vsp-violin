@@ -4,7 +4,7 @@ import { Nav } from "@/components/site/nav";
 import { Hero } from "@/components/site/hero";
 import { Marquee } from "@/components/site/marquee";
 import { LibraryPreview } from "@/components/site/library-preview";
-import { PracticeRoom } from "@/components/site/practice-room";
+// import { PracticeRoom } from "@/components/site/practice-room"; // re-enable with the section below
 import { HomeTeasers } from "@/components/site/home-teasers";
 import { Enrol } from "@/components/site/enrol";
 import { Footer } from "@/components/site/footer";
@@ -56,7 +56,7 @@ export default async function Home() {
       },
       {
         "@type": "Person",
-        name: "Suka Pavalan",
+        name: "Violin Suka Pavalan",
         jobTitle: "Carnatic Violinist & Music Educator",
         url: SITE_URL,
         address: {
@@ -109,9 +109,15 @@ export default async function Home() {
             />
           </Reveal>
 
+          {/* The Practice Room ("One dial. Fifteen tracks.") is hidden for now.
+              It is being redesigned to carry podcast and discussion content,
+              so it is commented out rather than deleted — the component and
+              its audio logic stay in src/components/site/practice-room.tsx
+              ready to be re-enabled by restoring this block.
           <Reveal as="div" threshold={0.1}>
             <PracticeRoom />
           </Reveal>
+          */}
 
           <Reveal as="div" threshold={0.06}>
             <HomeTeasers />

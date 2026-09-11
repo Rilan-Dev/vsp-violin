@@ -2,7 +2,7 @@
  * Enquiry notification.
  *
  * The site promises "a reply usually comes within two days", but nothing
- * told Suka Pavalan an enquiry had arrived — leads sat in the database until
+ * told Violin Suka Pavalan an enquiry had arrived — leads sat in the database until
  * someone happened to open /studio. This sends a plain email on each new
  * enquiry via the Resend HTTP API (no SDK, no extra dependency).
  *
@@ -57,7 +57,7 @@ export async function notifyNewEnquiry(enquiry: EnquiryLike): Promise<boolean> {
   const to = process.env.ENQUIRY_NOTIFY_TO;
   // Resend requires a verified sender domain; fall back to their shared
   // onboarding sender so this works before DNS verification is done.
-  const from = process.env.ENQUIRY_NOTIFY_FROM ?? "Suka Pavalan <onboarding@resend.dev>";
+  const from = process.env.ENQUIRY_NOTIFY_FROM ?? "Violin Suka Pavalan <onboarding@resend.dev>";
 
   if (!apiKey || !to) {
     console.warn(

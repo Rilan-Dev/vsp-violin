@@ -169,7 +169,7 @@ export async function Guru() {
             >
               <Image
                 src="/assets/portraits/portrait-playing.jpeg"
-                alt="Suka Pavalan performing on violin"
+                alt="Violin Suka Pavalan performing on violin"
                 fill
                 sizes="150px"
                 style={{

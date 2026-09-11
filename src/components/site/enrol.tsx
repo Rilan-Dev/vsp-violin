@@ -52,7 +52,7 @@ const INTENT_FOOTERS: Record<Intent, string> = {
 const TRIAL_CHECKLIST = [
   "Free trial lesson, no obligation",
   "Tamil or English notation provided",
-  "Practice tracks in five sruthis",
+  "Sheet music to download and keep",
   "Online or in-person in Karaikal",
   "Children (6–16) and adults welcome",
 ];
@@ -266,8 +266,8 @@ export function Enrol() {
   return (
     <section
       ref={sectionRef}
-      id="enrol"
-      aria-label="Enrol — three ways to begin"
+      id="contact"
+      aria-label="Contact — three ways to get in touch"
       className={`reveal ${visible ? "is-visible" : ""}`}
       style={{
         paddingTop: "90px",
@@ -302,8 +302,8 @@ export function Enrol() {
             }}
           >
             Whether you have a query, wish to learn, or want to book a
-            performance — I&apos;m here to listen. Every enquiry reaches Suka
-            Pavalan directly.
+            performance — I&apos;m here to listen. Every enquiry reaches
+            Violin Suka Pavalan directly.
           </p>
         </div>
 
@@ -379,7 +379,7 @@ export function Enrol() {
                 className="group inline-flex items-center gap-[10px] bg-[#E0BC6A] text-[#1B1233] hover:bg-[#F2D89A] transition-all duration-200"
                 style={{ ...intentButtonBase, fontSize: "14.5px", padding: "12px 22px" }}
               >
-                Start your trial
+                Contact Us
                 <span
                   aria-hidden
                   className="transition-transform duration-200 group-hover:translate-x-1"
@@ -545,14 +545,14 @@ export function Enrol() {
                 textAlign: "right",
               }}
             >
-              Every enquiry reaches Suka Pavalan directly. A reply usually comes
+              Every enquiry reaches Violin Suka Pavalan directly. A reply usually comes
               within two days.
             </p>
           </div>
 
           <form
             onSubmit={handleSubmit}
-            aria-label="Trial lesson enquiry"
+            aria-label="Contact enquiry form"
             noValidate
             style={{
               display: "flex",
@@ -799,7 +799,7 @@ export function Enrol() {
                 arrive over WhatsApp anyway. Offering it beside the submit
                 button captures the visitors who would otherwise close the tab
                 rather than fill in eight fields — and it reaches the phone
-                Suka Pavalan already carries. */}
+                Violin Suka Pavalan already carries. */}
             <div
               style={{
                 marginTop: "26px",
@@ -868,7 +868,7 @@ export function Enrol() {
               >
                 {[
                   "You write",
-                  "Suka Pavalan replies personally",
+                  "Violin Suka Pavalan replies personally",
                   "A free trial lesson",
                   "You decide",
                 ].map((step, i) => (

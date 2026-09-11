@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Download, Play, Music, FileText, ChevronRight, Printer } from "lucide-react";
+import { ArrowLeft, ArrowRight, Download, Play, FileText, ChevronRight, Printer } from "lucide-react";
 import type { LessonDetail } from "@/lib/site-content-only";
 import { YouTubeFacade } from "@/components/site/youtube-facade";
 import { ShareButton } from "@/components/site/share-button";
@@ -21,14 +21,10 @@ type Props = {
   related?: RelatedLesson[];
 };
 
-const SRUTHIS = ["C-1", "D#-2.5", "F-4", "G#-5.5", "A#-6.5"] as const;
-const SPEEDS = ["1st", "2nd", "3rd", "Thrikaalam"] as const;
 
 export function LessonPage({ lesson, categoryName, prev, next, siblings, currentIndex, related = [] }: Props) {
   const [notationLang, setNotationLang] = useState<"en" | "ta">("en");
   const [voice, setVoice] = useState<"violin" | "vocal">("violin");
-  const [sruthi, setSruthi] = useState<string>("D#-2.5");
-  const [speed, setSpeed] = useState<string>("1st");
 
   // Build a flat video list depending on what the lesson has.
   const videoList = useMemo(() => {
@@ -50,21 +46,6 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
     }
     return [];
   }, [lesson, voice]);
-
-  // Filter audio lessons by selected sruthi + speed.
-  const filteredAudio = useMemo(() => {
-    if (!lesson.audioLessons) return [];
-    const wantSruthi = sruthi.replace(/[-#]/g, (m) => (m === "#" ? "#" : "-"));
-    return lesson.audioLessons.filter((a) => {
-      const label = a.label.toLowerCase();
-      const sruthiMatch = label.includes(sruthi.toLowerCase().replace(/[-#]/g, "")) ||
-                          label.includes(wantSruthi.toLowerCase());
-      const speedMatch = label.includes(speed.toLowerCase());
-      // Some lessons (Krithi) have only sruthi + no speed — keep them if speed filter is "1st" (default).
-      const hasSpeed = SPEEDS.some((s) => label.includes(s.toLowerCase()));
-      return sruthiMatch && (!hasSpeed || speedMatch || speed === "1st");
-    });
-  }, [lesson.audioLessons, sruthi, speed]);
 
   const publishedDate = new Date(lesson.date).toLocaleDateString("en-US", {
     year: "numeric",
@@ -131,7 +112,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
 
         <p style={{ fontSize: "17px", lineHeight: 1.68, color: "rgba(243,237,223,0.82)", marginTop: "20px", maxWidth: "640px" }}>
           {lesson.composer ? `Composed by ${lesson.composer}. ` : ""}
-          A free Carnatic violin notation lesson from Suka Pavalan&apos;s library — Tamil and English notation, violin and vocal video, and practice audio across five sruthis and three speeds.
+          A free Carnatic violin notation lesson from Violin Suka Pavalan&apos;s library — Tamil and English sheet music to download, with step-by-step violin and vocal video.
         </p>
 
         {/* Download CTAs */}
@@ -252,7 +233,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
           </div>
           <div className="flex items-center gap-3 flex-wrap">
             <Link
-              href="/#enrol"
+              href="/#contact"
               className="inline-flex items-center gap-[10px] transition-all duration-200 hover:-translate-y-px"
               style={{
                 fontFamily: "var(--font-marcellus), serif",
@@ -264,14 +245,14 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
                 borderRadius: 0,
               }}
             >
-              Book a free trial
+              Contact Us
               <span aria-hidden>→</span>
             </Link>
           </div>
         </div>
       </aside>
 
-      {/* Notation panel + Practice track */}
+      {/* Notation panel + what you get */}
       <section className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1280px", paddingBottom: "64px" }}>
         <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr]" style={{ gap: "24px" }}>
           {/* Notation panel */}
@@ -311,126 +292,60 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
             <NotationPreview lang={notationLang} lesson={lesson} />
           </article>
 
-          {/* Practice track panel */}
-          <article className="vsp-card-gold" style={{ padding: "28px" }}>
+          {/* Practice-track audio player — hidden for this release.
+              The audio sits under a copyright hold, so no streaming audio
+              ships anywhere on the site: the homepage Practice Room and this
+              per-lesson player are disabled together. Leaving one live while
+              hiding the other would defeat the purpose of the hold.
+
+              Nothing is lost: lesson.audioLessons still holds every track in
+              the database, src/components/site/practice-room.tsx is intact,
+              and this panel's previous markup is in git history. Re-enabling
+              means restoring that markup here and the commented-out
+              <PracticeRoom /> block in src/app/page.tsx.
+
+              What replaces it below keeps the page's two-column layout intact
+              and points at what this release leads with: the notation. */}
+          <article className="vsp-card-neutral" style={{ padding: "28px" }}>
             <div className="flex items-center gap-3" style={{ marginBottom: "18px" }}>
-              <Music size={18} aria-hidden style={{ color: "#E0BC6A" }} />
+              <FileText size={18} aria-hidden style={{ color: "#E0BC6A" }} />
               <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "22px", margin: 0, color: "#F3EDDF" }}>
-                Practice track
+                Practise from the notation
               </h2>
             </div>
-            <p style={{ fontSize: "13.5px", lineHeight: 1.55, color: "rgba(243,237,223,0.72)", marginBottom: "20px" }}>
-              {lesson.audioLessons
-                ? `${lesson.audioLessons.length} practice tracks across five sruthis and three speeds. Pick your sruthi and speed.`
-                : "This lesson does not ship with practice audio yet. Use the notation above and the videos below."}
+            <p style={{ fontSize: "14px", lineHeight: 1.65, color: "rgba(243,237,223,0.76)", marginBottom: "20px" }}>
+              Download the sheet music above in Tamil or English, then follow the
+              video lessons below at your own pace. Every sheet is free to keep
+              and free to print.
             </p>
-
-            {/* Voice toggle */}
-            <div role="group" aria-label="Voice" className="flex mb-4">
-              {(["violin", "vocal"] as const).map((v) => (
-                <button
-                  key={v}
-                  type="button"
-                  onClick={() => setVoice(v)}
-                  aria-pressed={voice === v}
-                  className="transition-colors flex-1"
-                  style={{
-                    padding: "10px 14px",
-                    border: `1px solid ${voice === v ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
-                    background: voice === v ? "#E0BC6A" : "transparent",
-                    color: voice === v ? "#1B1233" : "rgba(243,237,223,0.82)",
-                    fontFamily: "var(--font-geist-mono), monospace",
-                    fontSize: "11px",
-                    letterSpacing: "0.14em",
-                    textTransform: "uppercase",
-                    cursor: "pointer",
-                  }}
-                >
-                  {v}
-                </button>
+            <ul style={{ listStyle: "none", margin: "0 0 22px", padding: 0, display: "flex", flexDirection: "column", gap: "10px" }}>
+              {[
+                "Tamil and English notation, free to download",
+                "Step-by-step violin and vocal video for every lesson",
+                "Taught one-to-one, online or in Karaikal",
+              ].map((line) => (
+                <li key={line} className="flex items-start gap-3" style={{ fontSize: "14px", lineHeight: 1.55, color: "rgba(243,237,223,0.82)" }}>
+                  <span aria-hidden style={{ color: "#E0BC6A", lineHeight: 1.4 }}>✦</span>
+                  {line}
+                </li>
               ))}
-            </div>
-
-            {/* Active sruthi readout */}
-            <div style={{ marginBottom: "16px" }}>
-              <span className="vsp-eyebrow">Active sruthi</span>
-              <p style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "24px", color: "#E0BC6A", marginTop: "4px" }}>
-                {sruthi.split("-")[0]} <span style={{ fontSize: "20px", color: "rgba(243,237,223,0.62)" }}>— {sruthi.split("-")[1]}</span>
-              </p>
-              <p style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(243,237,223,0.62)", marginTop: "4px" }}>
-                {speed} speed
-              </p>
-            </div>
-
-            {/* Sruthi buttons */}
-            <div role="group" aria-label="Sruthi" className="grid grid-cols-3 sm:grid-cols-5" style={{ gap: "6px", marginBottom: "14px" }}>
-              {SRUTHIS.map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => setSruthi(s)}
-                  aria-pressed={sruthi === s}
-                  className="transition-colors"
-                  style={{
-                    padding: "9px 4px",
-                    border: `1px solid ${sruthi === s ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
-                    background: sruthi === s ? "#E0BC6A" : "transparent",
-                    color: sruthi === s ? "#1B1233" : "rgba(243,237,223,0.82)",
-                    fontFamily: "var(--font-geist-mono), monospace",
-                    fontSize: "11px",
-                    letterSpacing: "0.04em",
-                    cursor: "pointer",
-                  }}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-
-            {/* Speed buttons */}
-            <div role="group" aria-label="Speed" className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "6px", marginBottom: "20px" }}>
-              {SPEEDS.map((sp) => (
-                <button
-                  key={sp}
-                  type="button"
-                  onClick={() => setSpeed(sp)}
-                  aria-pressed={speed === sp}
-                  className="transition-colors"
-                  style={{
-                    padding: "9px 4px",
-                    border: `1px solid ${speed === sp ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
-                    background: speed === sp ? "#E0BC6A" : "transparent",
-                    color: speed === sp ? "#1B1233" : "rgba(243,237,223,0.82)",
-                    fontFamily: "var(--font-geist-mono), monospace",
-                    fontSize: "10px",
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    cursor: "pointer",
-                  }}
-                >
-                  {sp}
-                </button>
-              ))}
-            </div>
-
-            {/* Matching audio tracks */}
-            {lesson.audioLessons && filteredAudio.length > 0 && (
-              <div style={{ borderTop: "1px solid rgba(224,188,106,0.26)", paddingTop: "14px" }}>
-                <span className="vsp-eyebrow" style={{ display: "block", marginBottom: "8px" }}>
-                  Matching tracks · {filteredAudio.length}
-                </span>
-                <ul className="vsp-scroll" style={{ listStyle: "none", padding: 0, margin: 0, maxHeight: "180px", overflowY: "auto" }}>
-                  {filteredAudio.slice(0, 6).map((a, i) => (
-                    <li key={i} style={{ padding: "8px 0", borderBottom: "1px solid rgba(243,237,223,0.1)" }}>
-                      <a href={a.audio} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 transition-colors hover:text-gold-hover" style={{ fontSize: "12.5px", color: "rgba(243,237,223,0.82)" }}>
-                        <Play size={11} aria-hidden style={{ color: "#E0BC6A" }} />
-                        {a.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            </ul>
+            <Link
+              href="/#contact"
+              className="inline-flex items-center gap-[10px] transition-all duration-200 hover:-translate-y-px"
+              style={{
+                fontFamily: "var(--font-marcellus), serif",
+                fontSize: "15px",
+                padding: "13px 24px",
+                minHeight: 44,
+                background: "#E0BC6A",
+                color: "#1B1233",
+                borderRadius: 0,
+              }}
+            >
+              Contact Us
+              <span aria-hidden>→</span>
+            </Link>
           </article>
         </div>
       </section>
@@ -515,8 +430,8 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: "16px" }}>
           {[
-            { n: "1", title: "Step by step", body: "Watch the first-speed video. Read the notation. Sing or play along with Suka Pavalan — the goal is to learn the swara line, not to perform.", color: "#E0BC6A" },
-            { n: "2", title: "Practise together", body: "Switch to the practice track at your sruthi and speed. Play along with the audio. Repeat the exercise until your fingers find the notes without looking.", color: "rgba(243,237,223,0.82)" },
+            { n: "1", title: "Step by step", body: "Watch the first-speed video. Read the notation. Sing or play along with Violin Suka Pavalan — the goal is to learn the swara line, not to perform.", color: "#E0BC6A" },
+            { n: "2", title: "Practise together", body: "Work through the notation a phrase at a time, following the video. Repeat each exercise until your fingers find the notes without looking.", color: "rgba(243,237,223,0.82)" },
             { n: "3", title: "On your own", body: "Set the metronome. Play from the notation alone, without the video or audio track. Record yourself and listen back. This is where the lesson becomes yours.", color: "rgba(243,237,223,0.82)" },
           ].map((stage) => (
             <article key={stage.n} className="vsp-card-neutral" style={{ padding: "26px" }}>
@@ -648,7 +563,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
               <ArrowRight size={20} aria-hidden style={{ color: "#E0BC6A" }} />
             </Link>
           ) : (
-            <Link href="/#enrol" className="group flex items-center justify-end gap-3 vsp-card-gold transition-colors" style={{ padding: "18px 22px" }}>
+            <Link href="/#contact" className="group flex items-center justify-end gap-3 vsp-card-gold transition-colors" style={{ padding: "18px 22px" }}>
               <div style={{ textAlign: "right" }}>
                 <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(243,237,223,0.5)" }}>
                   End of category

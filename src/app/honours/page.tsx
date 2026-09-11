@@ -7,7 +7,7 @@ import { getDynamicContent } from "@/lib/dynamic-content";
 import { PageShell } from "@/components/site/page-shell";
 
 export const metadata: Metadata = {
-  title: "Honours — 12 titles conferred on Suka Pavalan",
+  title: "Honours — 12 titles conferred on Violin Suka Pavalan",
   description:
     "A journey adorned with prestigious titles — Violin Ratna, Vallalar, Violin Chakravarthy, and nine more honorifics awarded over a 37-year career. Each title is a testament to excellence and lasting impact.",
   alternates: { canonical: "/honours" },
@@ -138,7 +138,7 @@ export default async function HonoursPage() {
             Learn from a recognised lineage.
           </p>
           <Link
-            href="/#enrol"
+            href="/#contact"
             className="vsp-cta-gold inline-flex items-center gap-2"
             style={{
               padding: "14px 28px",
@@ -149,7 +149,7 @@ export default async function HonoursPage() {
               letterSpacing: "0.04em",
             }}
           >
-            Book a free trial
+            Contact Us
             <ArrowRight size={16} aria-hidden />
           </Link>
         </div>

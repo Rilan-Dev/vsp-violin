@@ -7,7 +7,7 @@ export const contentType = "image/png";
 
 /**
  * Branded OpenGraph image — violet ground (#16102A) with gold (#E0BC6A)
- * wordmark "SUKA PAVALAN", tagline, and a violin motif.
+ * wordmark "VIOLIN SUKA PAVALAN", tagline, and a violin motif.
  *
  * This is the default OG image for the homepage and any page without
  * its own image. Lesson pages override this with their titleCard.
@@ -61,7 +61,7 @@ export default function OpengraphImage() {
               lineHeight: 1,
             }}
           >
-            SUKA PAVALAN
+            VIOLIN SUKA PAVALAN
           </h1>
           <p
             style={{

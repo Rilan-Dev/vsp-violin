@@ -30,6 +30,13 @@ export type LessonSummary = {
   date: string;
   titleCard: string | null;
   status: string;
+  // Present on studio listings (which select every column) and optional on
+  // the public ones, so the Studio editor can read them without casting.
+  notationTamil?: string | null;
+  notationEnglish?: string | null;
+  violinVideo?: string | null;
+  vocalVideo?: string | null;
+  sourceUrl?: string | null;
 };
 
 export type LessonDetail = LessonSummary & {

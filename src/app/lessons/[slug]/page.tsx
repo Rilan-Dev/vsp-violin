@@ -25,7 +25,7 @@ export async function generateMetadata({
     title,
     description,
     alternates: { canonical: `/lessons/${lesson.id}` },
-    keywords: [lesson.title, lesson.category.replace(/-/g, " "), ...(lesson.raga ? [lesson.raga] : []), ...(lesson.thala ? [lesson.thala] : []), "Carnatic violin lesson", "free notation", "Suka Pavalan"],
+    keywords: [lesson.title, lesson.category.replace(/-/g, " "), ...(lesson.raga ? [lesson.raga] : []), ...(lesson.thala ? [lesson.thala] : []), "Carnatic violin lesson", "free notation", "Violin Suka Pavalan"],
     openGraph: {
       title,
       description,
@@ -93,7 +93,7 @@ export default async function LessonRoute({
     isAccessibleForFree: true,
     publisher: {
       "@type": "Person",
-      name: "Suka Pavalan",
+      name: "Violin Suka Pavalan",
       url: SITE_URL,
     },
   };

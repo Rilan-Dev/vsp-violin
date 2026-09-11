@@ -95,10 +95,18 @@ export async function restGetLessons(categorySlug?: string): Promise<RestLessonS
   return restGet<RestLessonSummary>("Lesson", `select=${LESSON_SELECT}&${filter}${order}`);
 }
 
+/**
+ * Studio listing — selects every column, not LESSON_SELECT.
+ *
+ * The Studio lesson editor edits notation links, video links and the source
+ * URL, none of which are in LESSON_SELECT. When Prisma falls back to REST
+ * those fields arrived undefined, so the editor would show them as empty for
+ * lessons that actually have them.
+ */
 export async function restGetAllLessonsForStudio(): Promise<RestLessonSummary[]> {
   return restGet<RestLessonSummary>(
     "Lesson",
-    `select=${LESSON_SELECT}&order=category.asc,level.asc,date.desc`
+    `select=*&order=category.asc,level.asc,date.desc`
   );
 }
 
