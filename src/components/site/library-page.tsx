@@ -122,7 +122,7 @@ export function LibraryPage({ lessons, categories, stats, initialCategory = "all
         </h1>
         <p style={{ fontSize: "17px", lineHeight: 1.68, color: "rgba(243,237,223,0.82)", maxWidth: "640px", marginBottom: "36px" }}>
           Every Carnatic violin lesson Violin Suka Pavalan teaches, given away free — Tamil and English notation PDFs,
-          violin and vocal video, and practice tracks in five sruthis. The library is the funnel; one-to-one teaching is the craft.
+          plus step-by-step violin and vocal video. The library is the funnel; one-to-one teaching is the craft.
         </p>
 
         {/* Stat block */}
