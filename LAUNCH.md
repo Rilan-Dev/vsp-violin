@@ -30,6 +30,16 @@ real domain.
 
       bun run scripts/preflight-launch.ts https://vsp-violin.vercel.app
 
+- [ ] Check that no database row is silently overriding launch copy:
+
+      bun run scripts/check-content-drift.ts --rest
+
+      SiteContent rows win over site-content.json, so editing the JSON does
+      nothing for a key that already has a row. This has caught three live
+      defects already — the brand rename, the phone number's missing +91, and
+      a stale "over 30 years" figure — none of which a build or typecheck can
+      see, because nothing is wrong in the code.
+
 ## Cutover
 
 Order matters. The site must know its own address *before* it answers on it.
