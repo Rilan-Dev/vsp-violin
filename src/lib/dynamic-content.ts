@@ -27,7 +27,6 @@ import type { SiteContent } from "@/lib/site-content-only";
  */
 function setByPath(obj: unknown, path: string, value: unknown): void {
   const parts = path.split(".");
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let cur: any = obj;
   for (let i = 0; i < parts.length - 1; i++) {
     const k = parts[i];

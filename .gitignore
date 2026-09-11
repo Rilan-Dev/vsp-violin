@@ -15,6 +15,9 @@ prisma/schema.sqlite.bak
 *.db
 *.db-journal
 
+# Local tooling history (remember plugin)
+.remember/
+
 # Dev artifacts
 dev.log
 server.log

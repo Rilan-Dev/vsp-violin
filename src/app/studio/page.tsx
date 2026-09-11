@@ -37,7 +37,6 @@ class DashboardErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, info: { componentStack: string }) {
-    // eslint-disable-next-line no-console
     console.error("StudioDashboard render error:", error, info);
   }
 
