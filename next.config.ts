@@ -43,7 +43,10 @@ const nextConfig: NextConfig = {
       { source: "/light_music_lessons.html", destination: "/library?category=cine-songs", permanent: true },
 
       // --- Blogger label/tag URLs → library ---
-      { source: "/search/label/Live%20Video", destination: "/library?category=live-video", permanent: true },
+      // "Live Video" has no published lessons yet, so this used to land on an
+      // empty filtered view. Send it to the full library until that category
+      // has content — inbound Blogger traffic should never hit a dead end.
+      { source: "/search/label/Live%20Video", destination: "/library", permanent: true },
       { source: "/search/label/Live%20Audio", destination: "/library?category=live-audio", permanent: true },
       { source: "/search/label/Geetham", destination: "/library?category=geetham", permanent: true },
       { source: "/search/label/Varnam", destination: "/library?category=varnam", permanent: true },

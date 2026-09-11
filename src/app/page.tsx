@@ -9,6 +9,7 @@ import { HomeTeasers } from "@/components/site/home-teasers";
 import { Enrol } from "@/components/site/enrol";
 import { Footer } from "@/components/site/footer";
 import { Reveal } from "@/components/site/reveal";
+import { SITE_URL } from "@/lib/seo";
 import {
   getCategoriesWithCounts,
   getLessons,
@@ -20,7 +21,17 @@ export default async function Home() {
   // Fetch data — falls back to empty if DB is unavailable (e.g., build time)
   let lessons: Awaited<ReturnType<typeof getLessons>> = [];
   let categories: Awaited<ReturnType<typeof getCategoriesWithCounts>> = [];
-  let stats = { lessons: 23, notationSheets: 46, categories: 19, ragas: 10 };
+  // Last-resort values for when BOTH Prisma and the Supabase REST fallback are
+  // unreachable. These drift from reality (they claimed 46 notation sheets
+  // against an actual 32), so keep them conservative: zeros render as an
+  // honest empty state rather than confidently wrong numbers.
+  let stats = {
+    lessons: 0,
+    notationLessons: 0,
+    notationSheets: 0,
+    categories: 0,
+    ragas: 0,
+  };
   let megaMenu: Awaited<ReturnType<typeof getMegaMenu>> = [];
 
   try {
@@ -40,14 +51,14 @@ export default async function Home() {
       {
         "@type": "WebSite",
         name: "Violin Suka Pavalan",
-        url: "https://sukapavalan.com",
+        url: SITE_URL,
         description: "Carnatic violin lessons & free notation library",
       },
       {
         "@type": "Person",
         name: "Suka Pavalan",
         jobTitle: "Carnatic Violinist & Music Educator",
-        url: "https://sukapavalan.com",
+        url: SITE_URL,
         address: {
           "@type": "PostalAddress",
           addressLocality: "Karaikal",

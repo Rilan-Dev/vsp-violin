@@ -5,6 +5,7 @@ import { getLessonById, getPrevNextLessons, getCategoriesWithCounts, getRelatedL
 import { LessonPage } from "@/components/site/lesson-page";
 import { Nav } from "@/components/site/nav";
 import { Footer } from "@/components/site/footer";
+import { SITE_URL } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -88,12 +89,12 @@ export default async function LessonRoute({
     ...(lesson.thala ? { tempo: lesson.thala } : {}),
     ...(lesson.composer ? { composer: { "@type": "Person", name: lesson.composer } } : {}),
     ...(lesson.titleCard ? { thumbnailUrl: lesson.titleCard } : {}),
-    url: `https://sukapavalan.com/lessons/${lesson.id}`,
+    url: `${SITE_URL}/lessons/${lesson.id}`,
     isAccessibleForFree: true,
     publisher: {
       "@type": "Person",
       name: "Suka Pavalan",
-      url: "https://sukapavalan.com",
+      url: SITE_URL,
     },
   };
 
