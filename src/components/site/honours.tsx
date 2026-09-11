@@ -5,7 +5,7 @@ import { getDynamicContent } from "@/lib/dynamic-content";
  * Honours
  *
  * A gallery of earned recognition — the honorific titles conferred on
- * Suka Pavalan over his career. The titles are rendered as a horizontal
+ * Violin Suka Pavalan over his career. The titles are rendered as a horizontal
  * scrolling rail of medal-like cards; the first card (Violin Ratna,
  * 2024) is gold to mark it as the most recent / prestigious. Gold is
  * otherwise reserved for the year numbers and a single CTA at the foot.

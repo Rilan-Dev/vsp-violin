@@ -7,9 +7,9 @@ import { getDynamicContent } from "@/lib/dynamic-content";
 import { PageShell } from "@/components/site/page-shell";
 
 export const metadata: Metadata = {
-  title: "Testimonials — students and peers on Suka Pavalan",
+  title: "Testimonials — students and peers on Violin Suka Pavalan",
   description:
-    "Diaspora parents, adult self-learners, and fellow musicians — in their own words. Four testimonials from across the world on Suka Pavalan's teaching and artistry.",
+    "Diaspora parents, adult self-learners, and fellow musicians — in their own words. Four testimonials from across the world on Violin Suka Pavalan's teaching and artistry.",
   alternates: { canonical: "/testimonials" },
     openGraph: {
     title: "Testimonials — Violin Suka Pavalan",
@@ -118,7 +118,7 @@ export default async function TestimonialsPage() {
             Join the students who found their guru.
           </p>
           <Link
-            href="/#enrol"
+            href="/#contact"
             className="vsp-cta-gold inline-flex items-center gap-2"
             style={{
               padding: "14px 28px",
@@ -129,7 +129,7 @@ export default async function TestimonialsPage() {
               letterSpacing: "0.04em",
             }}
           >
-            Book a free trial
+            Contact Us
             <ArrowRight size={16} aria-hidden />
           </Link>
         </div>

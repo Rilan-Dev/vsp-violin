@@ -273,7 +273,7 @@ export function StudioDashboard({
           <div className="flex items-center justify-between" style={{ padding: "14px 20px", gap: "16px" }}>
             <div className="flex items-center gap-4">
               <span style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "20px", letterSpacing: "0.06em", color: "#E0BC6A" }}>
-                SUKA PAVALAN
+                VIOLIN SUKA PAVALAN
               </span>
               <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10.5px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(243,237,223,0.5)" }}>
                 Studio
@@ -370,7 +370,7 @@ export function StudioDashboard({
         <div className="flex items-center justify-between" style={{ padding: "14px 20px", gap: "16px", flexWrap: "wrap" }}>
           <div className="flex items-center gap-4">
             <span style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "20px", letterSpacing: "0.06em", color: "#E0BC6A" }}>
-              SUKA PAVALAN
+              VIOLIN SUKA PAVALAN
             </span>
             <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10.5px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(243,237,223,0.5)" }}>
               Studio
@@ -696,7 +696,7 @@ export function StudioDashboard({
 
                       {/* Reply link */}
                       <a
-                        href={`mailto:${selectedEnquiry.email}?subject=Re: Your enquiry to Suka Pavalan&body=Dear ${selectedEnquiry.name},%0D%0A%0D%0AThank you for your enquiry.%0D%0A%0D%0A`}
+                        href={`mailto:${selectedEnquiry.email}?subject=Re: Your enquiry to Violin Suka Pavalan&body=Dear ${selectedEnquiry.name},%0D%0A%0D%0AThank you for your enquiry.%0D%0A%0D%0A`}
                         className="vsp-cta-gold flex items-center justify-center gap-2 mb-4"
                         style={{
                           padding: "12px 20px",
@@ -2962,7 +2962,7 @@ function MediaTab() {
               type="text"
               value={newAlt}
               onChange={e => { setNewAlt(e.target.value); setUploadError(null); }}
-              placeholder="Suka Pavalan playing at the Thyagaraja Aradhana"
+              placeholder="Violin Suka Pavalan playing at the Thyagaraja Aradhana"
               style={inputStyle}
             />
           </label>

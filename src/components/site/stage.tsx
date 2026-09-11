@@ -248,7 +248,7 @@ export async function Stage() {
             >
               <Image
                 src="/assets/portraits/portrait-seated.jpeg"
-                alt="Suka Pavalan seated with violin, stage portrait"
+                alt="Violin Suka Pavalan seated with violin, stage portrait"
                 fill
                 style={{ objectFit: "cover", objectPosition: "50% 30%" }}
                 sizes="320px"

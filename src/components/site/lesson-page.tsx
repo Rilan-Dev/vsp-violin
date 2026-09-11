@@ -131,7 +131,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
 
         <p style={{ fontSize: "17px", lineHeight: 1.68, color: "rgba(243,237,223,0.82)", marginTop: "20px", maxWidth: "640px" }}>
           {lesson.composer ? `Composed by ${lesson.composer}. ` : ""}
-          A free Carnatic violin notation lesson from Suka Pavalan&apos;s library — Tamil and English notation, violin and vocal video, and practice audio across five sruthis and three speeds.
+          A free Carnatic violin notation lesson from Violin Suka Pavalan&apos;s library — Tamil and English notation, violin and vocal video, and practice audio across five sruthis and three speeds.
         </p>
 
         {/* Download CTAs */}
@@ -252,7 +252,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
           </div>
           <div className="flex items-center gap-3 flex-wrap">
             <Link
-              href="/#enrol"
+              href="/#contact"
               className="inline-flex items-center gap-[10px] transition-all duration-200 hover:-translate-y-px"
               style={{
                 fontFamily: "var(--font-marcellus), serif",
@@ -264,7 +264,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
                 borderRadius: 0,
               }}
             >
-              Book a free trial
+              Contact Us
               <span aria-hidden>→</span>
             </Link>
           </div>
@@ -515,7 +515,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: "16px" }}>
           {[
-            { n: "1", title: "Step by step", body: "Watch the first-speed video. Read the notation. Sing or play along with Suka Pavalan — the goal is to learn the swara line, not to perform.", color: "#E0BC6A" },
+            { n: "1", title: "Step by step", body: "Watch the first-speed video. Read the notation. Sing or play along with Violin Suka Pavalan — the goal is to learn the swara line, not to perform.", color: "#E0BC6A" },
             { n: "2", title: "Practise together", body: "Switch to the practice track at your sruthi and speed. Play along with the audio. Repeat the exercise until your fingers find the notes without looking.", color: "rgba(243,237,223,0.82)" },
             { n: "3", title: "On your own", body: "Set the metronome. Play from the notation alone, without the video or audio track. Record yourself and listen back. This is where the lesson becomes yours.", color: "rgba(243,237,223,0.82)" },
           ].map((stage) => (
@@ -648,7 +648,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
               <ArrowRight size={20} aria-hidden style={{ color: "#E0BC6A" }} />
             </Link>
           ) : (
-            <Link href="/#enrol" className="group flex items-center justify-end gap-3 vsp-card-gold transition-colors" style={{ padding: "18px 22px" }}>
+            <Link href="/#contact" className="group flex items-center justify-end gap-3 vsp-card-gold transition-colors" style={{ padding: "18px 22px" }}>
               <div style={{ textAlign: "right" }}>
                 <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(243,237,223,0.5)" }}>
                   End of category

@@ -79,7 +79,7 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
       >
         <a
           href="/"
-          aria-label="Suka Pavalan — back to homepage"
+          aria-label="Violin Suka Pavalan — back to homepage"
           className="shrink-0"
           style={{
             fontFamily: "var(--font-marcellus), serif",
@@ -88,7 +88,7 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
             color: "#E0BC6A",
           }}
         >
-          SUKA PAVALAN
+          VIOLIN SUKA PAVALAN
         </a>
 
         {/* Desktop links */}
@@ -136,7 +136,7 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
         </div>
 
         <a
-          href="/#enrol"
+          href="/#contact"
           className="shrink-0"
           style={{
             padding: "10px 20px",
@@ -147,7 +147,7 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
             letterSpacing: "0.06em",
           }}
         >
-          Enrol
+          Contact
         </a>
 
         {/* Mobile hamburger */}
@@ -183,7 +183,7 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
                 {/* Wordmark + close */}
                 <div className="flex items-center justify-between" style={{ padding: "18px 22px", borderBottom: "1px solid rgba(224,188,106,0.24)" }}>
                   <span style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", letterSpacing: "0.06em", color: "#E0BC6A" }}>
-                    SUKA PAVALAN
+                    VIOLIN SUKA PAVALAN
                   </span>
                   <button
                     type="button"
@@ -222,7 +222,7 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
                     </a>
                   ))}
                   <a
-                    href="/#enrol"
+                    href="/#contact"
                     onClick={() => setMobileOpen(false)}
                     className="vsp-cta-gold flex items-center justify-center"
                     style={{
@@ -235,7 +235,7 @@ export function Nav({ megaMenu }: { megaMenu: MegaColumn[] }) {
                       letterSpacing: "0.04em",
                     }}
                   >
-                    Enrol
+                    Contact
                   </a>
                 </nav>
 

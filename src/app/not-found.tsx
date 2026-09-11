@@ -118,7 +118,7 @@ export default function NotFound() {
             color: "rgba(243,237,223,0.4)",
           }}
         >
-          ✦ Suka Pavalan · Carnatic violin · since 1990 ✦
+          ✦ Violin Suka Pavalan · Carnatic violin · since 1990 ✦
         </p>
       </div>
     </div>

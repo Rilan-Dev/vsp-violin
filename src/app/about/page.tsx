@@ -8,9 +8,9 @@ import { getDynamicContent } from "@/lib/dynamic-content";
 import { PageShell } from "@/components/site/page-shell";
 
 export const metadata: Metadata = {
-  title: "The Guru — Suka Pavalan, Carnatic violinist since 1990",
+  title: "The Guru — Violin Suka Pavalan, Carnatic violinist since 1990",
   description:
-    "A 37-year Carnatic violinist and teacher from Karaikal, Puducherry. Learn the lineage, the qualifications, the tours, and the mission of Suka Pavalan — violinist, music educator, and guru.",
+    "A 37-year Carnatic violinist and teacher from Karaikal, Puducherry. Learn the lineage, the qualifications, the tours, and the mission of Violin Suka Pavalan — violinist, music educator, and guru.",
   alternates: { canonical: "/about" },
     openGraph: {
     title: "The Guru — Violin Suka Pavalan",
@@ -89,7 +89,7 @@ export default async function AboutPage() {
             >
               <Image
                 src="/assets/portraits/portrait-playing.jpeg"
-                alt="Suka Pavalan performing on violin"
+                alt="Violin Suka Pavalan performing on violin"
                 fill
                 style={{ objectFit: "cover", objectPosition: "50% 25%" }}
                 sizes="380px"
@@ -104,7 +104,7 @@ export default async function AboutPage() {
               />
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "20px 24px" }}>
                 <p style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "22px", color: "#E0BC6A", margin: 0, letterSpacing: "0.04em" }}>
-                  SUKA PAVALAN
+                  VIOLIN SUKA PAVALAN
                 </p>
                 <p style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(243,237,223,0.72)", margin: "4px 0 0" }}>
                   {c.brand.credentials}
@@ -313,7 +313,7 @@ export default async function AboutPage() {
             Begin learning from the lineage.
           </p>
           <Link
-            href="/#enrol"
+            href="/#contact"
             className="vsp-cta-gold inline-flex items-center gap-2"
             style={{
               padding: "14px 28px",
@@ -324,7 +324,7 @@ export default async function AboutPage() {
               letterSpacing: "0.04em",
             }}
           >
-            Book a free trial
+            Contact Us
             <ArrowRight size={16} aria-hidden />
           </Link>
         </div>

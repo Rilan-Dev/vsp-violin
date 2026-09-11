@@ -8,7 +8,7 @@ import { PageShell } from "@/components/site/page-shell";
 export const metadata: Metadata = {
   title: "Library — free Carnatic violin notation lessons",
   description:
-    "Every Carnatic violin lesson Suka Pavalan teaches, given away free. Tamil and English notation PDFs, violin and vocal video, and practice tracks in five sruthis. Browse by category, raga, or difficulty.",
+    "Every Carnatic violin lesson Violin Suka Pavalan teaches, given away free. Tamil and English notation PDFs, violin and vocal video, and practice tracks in five sruthis. Browse by category, raga, or difficulty.",
   alternates: { canonical: "/library" },
     openGraph: {
     title: "The Library — Violin Suka Pavalan",

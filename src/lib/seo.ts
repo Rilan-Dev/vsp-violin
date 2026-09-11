@@ -38,7 +38,7 @@ export function createSEO({ title, description, path = "/", image, type = "websi
   const ogImage = image || `${SITE_URL}/opengraph-image`;
   return {
     title: fullTitle, description,
-    keywords: keywords ?? ["Carnatic violin", "violin lessons online", "free violin notation", "Suka Pavalan", "Carnatic music"],
+    keywords: keywords ?? ["Carnatic violin", "violin lessons online", "free violin notation", "Violin Suka Pavalan", "Carnatic music"],
     authors: [{ name: "Violin Suka Pavalan" }],
     alternates: { canonical: url },
     robots: noIndex ? { index: false, follow: false } : { index: true, follow: true },

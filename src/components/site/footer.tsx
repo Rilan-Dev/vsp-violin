@@ -1,4 +1,5 @@
 import { getDynamicContent } from "@/lib/dynamic-content";
+import { SocialLinks } from "@/components/site/social-links";
 
 export async function Footer() {
   const c = await getDynamicContent();
@@ -38,7 +39,7 @@ export async function Footer() {
                   color: "#E0BC6A",
                 }}
               >
-                SUKA PAVALAN
+                VIOLIN SUKA PAVALAN
               </span>
               <p
                 style={{
@@ -50,27 +51,8 @@ export async function Footer() {
               >
                 {c.brand.tagline} {c.contact.heroLine}
               </p>
-              <div className="flex items-center gap-3 mt-2">
-                {[
-                  { label: "YouTube", href: contact.social.youtube },
-                  { label: "Facebook", href: contact.social.facebook },
-                  { label: "Instagram", href: contact.social.instagram },
-                ].map((s) => (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="vsp-eyebrow transition-colors hover:text-gold-hover"
-                    style={{
-                      padding: "7px 12px",
-                      border: "1px solid rgba(224,188,106,0.34)",
-                      borderRadius: "0",
-                    }}
-                  >
-                    {s.label}
-                  </a>
-                ))}
+              <div className="flex items-center mt-2" style={{ marginLeft: -10 }}>
+                <SocialLinks social={contact.social} />
               </div>
             </div>
 
@@ -144,18 +126,18 @@ export async function Footer() {
               ))}
             </div>
 
-            {/* Enrol */}
+            {/* Contact */}
             <div className="flex flex-col gap-2.5">
-              <span className="vsp-eyebrow">Begin</span>
+              <span className="vsp-eyebrow">Contact</span>
               <a
-                href="#enrol"
+                href="#contact"
                 style={{
                   fontFamily: "var(--font-marcellus), serif",
                   fontSize: "18px",
                   color: "#E0BC6A",
                 }}
               >
-                Book a free trial →
+                Contact Us →
               </a>
               <p
                 style={{

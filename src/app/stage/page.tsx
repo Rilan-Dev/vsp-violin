@@ -8,7 +8,7 @@ import { getDynamicContent } from "@/lib/dynamic-content";
 import { PageShell } from "@/components/site/page-shell";
 
 export const metadata: Metadata = {
-  title: "Stage — 5,000+ performances by Suka Pavalan",
+  title: "Stage — 5,000+ performances by Violin Suka Pavalan",
   description:
     "Five thousand live performances. All India Radio since 1992. Thyagaraja Aradhana every year. USA tours 2013-19. The public record of a 37-year Carnatic violin career.",
   alternates: { canonical: "/stage" },
@@ -128,7 +128,7 @@ export default async function StagePage() {
             <figure style={{ position: "relative", height: "240px", border: "1px solid rgba(224,188,106,0.34)", gridColumn: "span 2", gridRow: "span 2" }}>
               <Image
                 src="/assets/portraits/portrait-seated.jpeg"
-                alt="Suka Pavalan seated with violin, stage portrait"
+                alt="Violin Suka Pavalan seated with violin, stage portrait"
                 fill
                 style={{ objectFit: "cover", objectPosition: "50% 30%" }}
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -186,7 +186,7 @@ export default async function StagePage() {
             Book a performance.
           </p>
           <Link
-            href="/#enrol"
+            href="/#contact"
             className="vsp-cta-gold inline-flex items-center gap-2"
             style={{
               padding: "14px 28px",

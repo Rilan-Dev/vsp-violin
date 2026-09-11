@@ -9,7 +9,7 @@ import { PageShell } from "@/components/site/page-shell";
 export const metadata: Metadata = {
   title: "Learn the Violin — a Carnatic violin introduction",
   description:
-    "A free introduction to the Carnatic violin: the four strings, finger placement, and how to begin. The starting point for Suka Pavalan's free notation library.",
+    "A free introduction to the Carnatic violin: the four strings, finger placement, and how to begin. The starting point for Violin Suka Pavalan's free notation library.",
   alternates: { canonical: "/learn" },
   openGraph: {
     title: "Learn the Violin — Violin Suka Pavalan",

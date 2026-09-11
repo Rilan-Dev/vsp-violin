@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   description:
     "37 years on stage. Free Carnatic violin notation lessons. One-to-one online and in-person teaching from Karaikal, Puducherry. Music, kept as worship.",
   keywords: [
-    "Carnatic violin", "violin lessons online", "free violin notation", "Suka Pavalan",
+    "Carnatic violin", "violin lessons online", "free violin notation", "Violin Suka Pavalan",
     "Carnatic music", "violin teacher Karaikal", "sruthi swara varisai", "sarali varisai",
     "geetham", "varnam", "krithi",
   ],
