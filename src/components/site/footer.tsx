@@ -31,16 +31,40 @@ export async function Footer() {
           <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
             {/* Brand + tagline */}
             <div className="flex flex-col gap-3">
-              <span
-                style={{
-                  fontFamily: "var(--font-marcellus), serif",
-                  fontSize: "24px",
-                  letterSpacing: "0.06em",
-                  color: "#E0BC6A",
-                }}
-              >
-                VIOLIN SUKA PAVALAN
-              </span>
+              <div className="flex items-center gap-4">
+                {/* The live social profile picture, served by /api/avatar.
+                    It follows whatever is currently set on Facebook, so
+                    changing it there changes it here within a few hours with
+                    nobody touching the site. A plain <img> on purpose: the
+                    source is a proxied route, not a known-dimension static
+                    asset, and the route always returns something — it falls
+                    back to the shipped portrait if social is unreachable. */}
+                <img
+                  src="/api/avatar"
+                  alt="Violin Suka Pavalan"
+                  width={52}
+                  height={52}
+                  loading="lazy"
+                  style={{
+                    width: 52,
+                    height: 52,
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                    border: "1px solid rgba(224,188,106,0.45)",
+                    flexShrink: 0,
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: "var(--font-marcellus), serif",
+                    fontSize: "24px",
+                    letterSpacing: "0.06em",
+                    color: "#E0BC6A",
+                  }}
+                >
+                  VIOLIN SUKA PAVALAN
+                </span>
+              </div>
               <p
                 style={{
                   fontSize: "15px",

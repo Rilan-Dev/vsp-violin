@@ -1684,3 +1684,66 @@ is now `force-dynamic`; the build confirms it moved from ○ to ƒ.
 3. The 15 seeded gallery photos still point at files that were never added;
    they render "Photo missing" until someone uploads them.
 4. No pricing signal on the public site.
+
+---
+Task ID: 33
+Agent: social-avatar-sync
+Task: Client re-sent the Task 30-32 list and added three points: (1) use the real social-media profile picture and keep it synced if they change it, (2) "nav bar suka pavalan still not changed", (3) confirm the Practice Room is disabled.
+
+## The reported nav bug is a deployment gap, not a code defect
+
+Production renders a mix — 3 bare "SUKA PAVALAN" against 2 "VIOLIN SUKA
+PAVALAN". The rename commit (d13b860) is on the feature branch, not on `main`,
+so production is running pre-rename code. The two correct instances come from
+the SiteContent rows, which were updated directly in Task 30.
+
+That split is self-inflicted: updating the production database before the code
+that matches it shipped left the live site internally inconsistent. It resolves
+the moment the PR merges. Nav source on the branch is verified correct, and the
+rendered page shows zero bare occurrences.
+
+## Social profile picture sync
+
+Tested each platform before promising anything:
+
+- **Facebook — works, and is the primary source.** `graph.facebook.com/<page>/
+  picture` is Facebook's own endpoint, needs no token or app, and 302s to the
+  current CDN file. Changing the page picture changes the redirect target,
+  which is exactly the sync requested. Max useful size 652x652.
+- **YouTube — works as a fallback,** but only by reading the avatar URL out of
+  the channel page HTML, since the Data API needs a key. That is scraping and
+  will break when YouTube changes its markup, so it is second and failing is
+  tolerated.
+- **Instagram — not possible.** 403 without an authenticated Graph token tied
+  to a Business account.
+- **X — not possible.** Profile lookups need a paid API tier.
+
+`GET /api/avatar` resolves Facebook, then YouTube, then falls back to the
+shipped portrait, so any <img> pointing at it always renders. It proxies the
+bytes rather than redirecting, because the CDN URLs are signed and expire — a
+browser-cached redirect would start 403ing — and proxying also keeps everything
+on one origin instead of needing a CSP allowance for fbcdn. Cached six hours
+with stale-while-revalidate, so a page view costs nothing and a changed picture
+lands the same day.
+
+Placed in the footer brand block as a 52px circular avatar. Deliberately NOT
+used for the hero or Guru portraits: those are tall art-directed shots, and a
+652px square cannot fill them without wrecking the composition.
+
+Verified: /api/avatar returns a 652x652 JPEG byte-identical (sha256) to the
+live Facebook picture.
+
+## Verification
+
+lint 0 errors 0 warnings; tsc 8 errors matching baseline; build passes with all
+Supabase env vars unset. Rendered homepage confirms: no bare name anywhere,
+Practice Room hidden, avatar wired, brand icons, Contact CTA, all stat copy.
+
+## Unresolved issues / risks / next-phase priorities
+
+1. **PR #2 is unmerged, so none of this is live** — including the rename the
+   client is reporting as broken.
+2. Key rotation still outstanding; step one of LAUNCH.md.
+3. Instagram and X avatars cannot be synced without paid/authenticated API
+   access. If those are wanted, the Studio photo upload already accepts a
+   manual image.
