@@ -1532,3 +1532,78 @@ the section they belong to.
    Real quotes above the enquiry form would be the next conversion gain.
 4. Studio writes other than enquiries are still Prisma-only with no REST
    fallback.
+
+---
+Task ID: 31
+Agent: studio-editing-and-photos
+Task: Client feedback on the rebuilt Studio. (1) Existing lessons could not be fully edited — only status, name and raga. (2) "Words on my site" and "Photos" still required the owner to imagine which part of the site each entry controlled, and every photo was broken. Asked to apply goal-oriented onboarding UX.
+
+## 1. Lessons were editable in name only
+
+Root cause was in the API, not the UI. `POST /api/studio/lessons` accepted 15
+fields; `PATCH /api/studio/lessons/[id]` accepted 7. Anything set at creation —
+category, date, notationTamil, notationEnglish, violinVideo, vocalVideo,
+titleCard, sourceUrl — was frozen permanently. Correcting a mistyped notation
+link meant deleting the lesson and re-entering it.
+
+- UpdateSchema widened to every creatable field. URL fields take a URL or an
+  empty string (which clears them) and reject anything else with a message
+  saying what a valid value looks like.
+- `restGetAllLessonsForStudio` now selects `*` rather than `LESSON_SELECT`,
+  which omits notation/video/source. Under the REST fallback the editor would
+  otherwise show populated fields as empty — worse than not showing them,
+  because the owner would retype data that already existed.
+- New `LessonEditor`: full form, fields grouped by meaning, the two rarely
+  touched groups collapsed (progressive disclosure), unsaved-changes guard,
+  and only changed fields sent in the PATCH.
+
+## 2. Photos were broken, and unaddable
+
+Two independent faults:
+
+- **Unaddable.** Adding a photo required pasting a hosted URL. The owner has
+  pictures on a phone. There was no upload path at all, so the feature could
+  not be used as intended by its actual user.
+- **Broken.** The 15 seeded gallery rows point at `images/gallery/*.webp`;
+  `public/images/gallery/` does not exist in the repository, so the files were
+  never there. The paths are also relative with no leading slash, so from
+  `/studio` the browser resolves them to `/studio/images/...` and 404s. Both
+  failures rendered as silently broken thumbnails with no explanation.
+
+Fixes: new `POST /api/studio/media/upload` storing the file in Supabase Storage
+(bucket auto-created on first use, so a fresh project needs no dashboard
+visit), returning the public URL. Legacy relative paths normalised. A photo
+that fails to load now says "Photo missing" and offers removal, with a count at
+the top of the panel. Upload is three numbered steps, and the destination
+selector explains where each destination actually is on the site.
+
+## 3. Editing by location rather than by key
+
+Content sections now link to the page they control ("Look at the About page"),
+and 15 fields carry the spot they occupy — "The large opening words at the very
+top of the homepage" instead of `home.heroLines`. The dot-path key is no longer
+rendered; it was implementation detail sitting where a description belonged.
+
+## Verification
+
+Exercised against a running server rather than inspected:
+- Edited `category` on a real lesson (previously impossible) — succeeded;
+  multi-field save succeeded; an invalid URL was refused 422 with the readable
+  message. Original values restored afterwards and confirmed byte-for-byte.
+- Uploaded a PNG through the new endpoint — 201, bucket auto-created public,
+  file publicly reachable (200, image/png). A text file was refused 422 with
+  the plain-language message. Test row and object deleted afterwards; bucket
+  listing confirmed empty.
+- `bun run lint` 0 errors; `tsc` 8 errors matching the baseline exactly;
+  `next build` passes with all Supabase env vars unset (CI conditions).
+
+## Unresolved issues / risks / next-phase priorities
+
+1. **A `media` bucket now exists on the client's Supabase project**, created by
+   the upload endpoint during verification. It is public and currently empty.
+2. **The 15 seeded gallery rows still point at files that do not exist.** They
+   now show as "Photo missing" rather than failing silently, but the pictures
+   themselves need to be uploaded before the Stage gallery has content.
+3. Key rotation and the DNS cutover from Task 29 remain outstanding and are
+   still the two highest-value actions on the project.
+4. No pricing signal on the public site.
