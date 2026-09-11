@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { safeEqual } from "@/lib/studio-auth";
 
-const STUDIO_TOKEN = process.env.STUDIO_TOKEN ?? "vsp-studio-dev";
+/**
+ * Legacy shared-secret login, kept for local dev and scripted access.
+ * No default: when STUDIO_TOKEN is unset (the production case) this route
+ * rejects every attempt, so the only way in is a real Supabase session via
+ * POST /api/studio/auth.
+ */
+const STUDIO_TOKEN = process.env.STUDIO_TOKEN || null;
 
 const LoginSchema = z.object({ token: z.string().min(1) });
 
@@ -19,7 +26,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Token required" }, { status: 422 });
   }
 
-  if (parsed.data.token !== STUDIO_TOKEN) {
+  if (!STUDIO_TOKEN) {
+    return NextResponse.json(
+      { error: "Token login is disabled. Sign in with your Studio account." },
+      { status: 401 }
+    );
+  }
+
+  if (!safeEqual(parsed.data.token, STUDIO_TOKEN)) {
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });
   }
 

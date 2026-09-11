@@ -1,7 +1,25 @@
-skills/
 node_modules/
 .next/
-.next/
 .vercel/
+skills/
+
+# Secrets — never commit. `.env` was tracked twice before (see c04b8a6);
+# it holds SUPABASE_SERVICE_ROLE_KEY, which bypasses RLS entirely.
+.env
+.env.*
+!.env.example
+
+# Local database + Prisma variants
+db/
 prisma/schema.sqlite.bak
-.vercel/
+*.db
+*.db-journal
+
+# Dev artifacts
+dev.log
+server.log
+tool-results/
+
+# TypeScript incremental build cache
+tsconfig.tsbuildinfo
+*.tsbuildinfo

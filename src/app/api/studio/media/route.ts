@@ -1,25 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { supabaseServer } from "@/lib/supabase";
 import { restGetMedia } from "@/lib/supabase-data";
-
-async function isAuthorized(req: NextRequest): Promise<boolean> {
-  // Check Supabase auth cookie
-  const sbToken = req.cookies.get("sb-access-token")?.value;
-  if (sbToken) {
-    try {
-      const { data, error } = await supabaseServer.auth.getUser(sbToken);
-      if (!error && data.user) return true;
-    } catch {}
-  }
-  // Fall back to static token (dev backwards-compat)
-  const STUDIO_TOKEN = process.env.STUDIO_TOKEN ?? "vsp-studio-dev";
-  const auth = req.headers.get("authorization");
-  if (auth?.startsWith("Bearer ") && auth.slice(7) === STUDIO_TOKEN) return true;
-  const cookie = req.headers.get("cookie") ?? "";
-  return cookie.includes(`studio_token=${STUDIO_TOKEN}`);
-}
+import { isAuthorized } from "@/lib/studio-auth";
 
 /**
  * GET /api/studio/media — list all media items.
