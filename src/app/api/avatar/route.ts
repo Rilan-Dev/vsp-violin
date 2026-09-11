@@ -34,8 +34,18 @@ const FACEBOOK_PAGE = "ViolinSukaPavalan";
 const YOUTUBE_CHANNEL = "UCwtXQIbtIvtGXEXnGU0pL7w";
 const FALLBACK = "/assets/portraits/portrait-standing.jpeg";
 
-const SIX_HOURS = 60 * 60 * 6;
-export const revalidate = SIX_HOURS;
+/**
+ * Resolved per request, cached at the CDN by the Cache-Control header below.
+ *
+ * Using `revalidate` instead would make this a statically prerendered route,
+ * and the fallback branch builds its redirect from `request.url` — at build
+ * time that is localhost, which would bake a localhost redirect into
+ * production. robots.txt shipped exactly that bug for weeks. Dynamic plus an
+ * explicit Cache-Control gets the same six-hour caching with none of the risk.
+ */
+export const dynamic = "force-dynamic";
+
+const SIX_HOURS = 21600; // 6 hours, in seconds
 
 /** Facebook's redirect target IS the current picture. Resolve without following. */
 async function fromFacebook(): Promise<string | null> {
