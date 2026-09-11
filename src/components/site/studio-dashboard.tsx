@@ -22,7 +22,11 @@ import {
   BarChart3,
   FileText,
   Image as ImageIcon,
-  Settings,
+  Home,
+  Globe,
+  MessageSquare,
+  Phone,
+  Sparkles,
 } from "lucide-react";
 import type { LessonSummary } from "@/lib/site-content-only";
 
@@ -57,6 +61,32 @@ const INTENT_LABELS: Record<string, string> = {
   collaboration: "Collaboration",
 };
 
+/**
+ * The Studio's top-level sections.
+ *
+ * This replaced seven flat tabs (Enquiries, Lessons, Categories, Analytics,
+ * Content, Media, Settings). The client is not technical, and those names
+ * mirrored database tables rather than anything they recognised: "Categories"
+ * and "Media" read as peers of "Lessons" when they only exist to support it,
+ * and "Settings" showed Prisma/Vercel internals they can do nothing with.
+ *
+ * Four sections now, each named for a job the owner actually has, ordered the
+ * way the business runs: see what needs doing, answer the people who wrote in,
+ * publish teaching material, then edit the public site.
+ */
+type StudioSection = "home" | "enquiries" | "lessons" | "website";
+
+const STUDIO_SECTIONS: ReadonlyArray<{
+  key: StudioSection;
+  label: string;
+  icon: React.ReactNode;
+}> = [
+  { key: "home", label: "Home", icon: <Home size={15} aria-hidden /> },
+  { key: "enquiries", label: "Enquiries", icon: <Inbox size={15} aria-hidden /> },
+  { key: "lessons", label: "Lessons", icon: <BookOpen size={15} aria-hidden /> },
+  { key: "website", label: "My Website", icon: <Globe size={15} aria-hidden /> },
+];
+
 const INTENT_COLORS: Record<string, string> = {
   lesson: "#E0BC6A",
   booking: "#C9AEF5",
@@ -73,7 +103,12 @@ export function StudioDashboard({
   const [data, setData] = useState<StudioData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"enquiries" | "lessons" | "categories" | "analytics" | "content" | "media" | "settings">("enquiries");
+  const [section, setSection] = useState<StudioSection>("home");
+  // Sub-panels inside a section, so Categories and Media no longer need
+  // top-level screens of their own.
+  const [lessonsPanel, setLessonsPanel] = useState<"lessons" | "categories">("lessons");
+  const [websitePanel, setWebsitePanel] = useState<"content" | "media">("content");
+  const [enquiriesPanel, setEnquiriesPanel] = useState<"list" | "insights">("list");
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
   const [filter, setFilter] = useState<"all" | "new" | "replied" | "archived">("all");
   const [lessonCategoryFilter, setLessonCategoryFilter] = useState<string>("all");
@@ -357,15 +392,16 @@ export function StudioDashboard({
             )}
           </div>
           <div className="flex items-center gap-2 flex-wrap" style={{ justifyContent: "flex-end" }}>
-            <button
-              onClick={() => setActiveTab("enquiries")}
-              aria-pressed={activeTab === "enquiries"}
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-2 transition-colors"
               style={{
                 padding: "8px 14px",
-                border: `1px solid ${activeTab === "enquiries" ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
-                background: activeTab === "enquiries" ? "#E0BC6A" : "transparent",
-                color: activeTab === "enquiries" ? "#1B1233" : "rgba(243,237,223,0.82)",
+                border: "1px solid rgba(224,188,106,0.4)",
+                background: "transparent",
+                color: "#E0BC6A",
                 fontFamily: "var(--font-geist-mono), monospace",
                 fontSize: "11px",
                 letterSpacing: "0.12em",
@@ -374,143 +410,9 @@ export function StudioDashboard({
                 borderRadius: 0,
               }}
             >
-              <Inbox size={13} aria-hidden />
-              Enquiries
-              {data.counts.new > 0 && (
-                <span
-                  style={{
-                    marginLeft: "4px",
-                    padding: "1px 7px",
-                    background: activeTab === "enquiries" ? "#1B1233" : "#E0BC6A",
-                    color: activeTab === "enquiries" ? "#E0BC6A" : "#1B1233",
-                    fontSize: "10px",
-                    fontWeight: 600,
-                  }}
-                >
-                  {data.counts.new}
-                </span>
-              )}
-            </button>
-            <button
-              onClick={() => setActiveTab("lessons")}
-              aria-pressed={activeTab === "lessons"}
-              className="flex items-center gap-2 transition-colors"
-              style={{
-                padding: "8px 14px",
-                border: `1px solid ${activeTab === "lessons" ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
-                background: activeTab === "lessons" ? "#E0BC6A" : "transparent",
-                color: activeTab === "lessons" ? "#1B1233" : "rgba(243,237,223,0.82)",
-                fontFamily: "var(--font-geist-mono), monospace",
-                fontSize: "11px",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                cursor: "pointer",
-                borderRadius: 0,
-              }}
-            >
-              <BookOpen size={13} aria-hidden />
-              Lessons ({data.lessons.length})
-            </button>
-            <button
-              onClick={() => setActiveTab("categories")}
-              aria-pressed={activeTab === "categories"}
-              className="flex items-center gap-2 transition-colors"
-              style={{
-                padding: "8px 14px",
-                border: `1px solid ${activeTab === "categories" ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
-                background: activeTab === "categories" ? "#E0BC6A" : "transparent",
-                color: activeTab === "categories" ? "#1B1233" : "rgba(243,237,223,0.82)",
-                fontFamily: "var(--font-geist-mono), monospace",
-                fontSize: "11px",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                cursor: "pointer",
-                borderRadius: 0,
-              }}
-            >
-              <FolderTree size={13} aria-hidden />
-              Categories
-            </button>
-            <button
-              onClick={() => setActiveTab("analytics")}
-              aria-pressed={activeTab === "analytics"}
-              className="flex items-center gap-2 transition-colors"
-              style={{
-                padding: "8px 14px",
-                border: `1px solid ${activeTab === "analytics" ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
-                background: activeTab === "analytics" ? "#E0BC6A" : "transparent",
-                color: activeTab === "analytics" ? "#1B1233" : "rgba(243,237,223,0.82)",
-                fontFamily: "var(--font-geist-mono), monospace",
-                fontSize: "11px",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                cursor: "pointer",
-                borderRadius: 0,
-              }}
-            >
-              <BarChart3 size={13} aria-hidden />
-              Analytics
-            </button>
-            <button
-              onClick={() => setActiveTab("content")}
-              aria-pressed={activeTab === "content"}
-              className="flex items-center gap-2 transition-colors"
-              style={{
-                padding: "8px 14px",
-                border: `1px solid ${activeTab === "content" ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
-                background: activeTab === "content" ? "#E0BC6A" : "transparent",
-                color: activeTab === "content" ? "#1B1233" : "rgba(243,237,223,0.82)",
-                fontFamily: "var(--font-geist-mono), monospace",
-                fontSize: "11px",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                cursor: "pointer",
-                borderRadius: 0,
-              }}
-            >
-              <FileText size={13} aria-hidden />
-              Content
-            </button>
-            <button
-              onClick={() => setActiveTab("media")}
-              aria-pressed={activeTab === "media"}
-              className="flex items-center gap-2 transition-colors"
-              style={{
-                padding: "8px 14px",
-                border: `1px solid ${activeTab === "media" ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
-                background: activeTab === "media" ? "#E0BC6A" : "transparent",
-                color: activeTab === "media" ? "#1B1233" : "rgba(243,237,223,0.82)",
-                fontFamily: "var(--font-geist-mono), monospace",
-                fontSize: "11px",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                cursor: "pointer",
-                borderRadius: 0,
-              }}
-            >
-              <ImageIcon size={13} aria-hidden />
-              Media
-            </button>
-            <button
-              onClick={() => setActiveTab("settings")}
-              aria-pressed={activeTab === "settings"}
-              className="flex items-center gap-2 transition-colors"
-              style={{
-                padding: "8px 14px",
-                border: `1px solid ${activeTab === "settings" ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
-                background: activeTab === "settings" ? "#E0BC6A" : "transparent",
-                color: activeTab === "settings" ? "#1B1233" : "rgba(243,237,223,0.82)",
-                fontFamily: "var(--font-geist-mono), monospace",
-                fontSize: "11px",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                cursor: "pointer",
-                borderRadius: 0,
-              }}
-            >
-              <Settings size={13} aria-hidden />
-              Settings
-            </button>
+              <ExternalLink size={13} aria-hidden />
+              View my site
+            </a>
             <button
               onClick={logout}
               className="flex items-center gap-2 transition-colors"
@@ -528,14 +430,99 @@ export function StudioDashboard({
               }}
             >
               <LogOut size={13} aria-hidden />
-              Exit
+              Sign out
             </button>
           </div>
         </div>
+
+        {/* ---- Primary navigation -------------------------------------
+            Four sections, named for what the owner is trying to DO, not
+            for the database tables behind them. Categories now live
+            inside Lessons (they only exist to group lessons) and Media
+            lives inside Website (it is what visitors see), which removes
+            two whole screens the client had to reason about. */}
+        <nav
+          aria-label="Studio sections"
+          className="flex items-stretch gap-1 overflow-x-auto"
+          style={{ padding: "0 20px", borderTop: "1px solid rgba(243,237,223,0.08)" }}
+        >
+          {STUDIO_SECTIONS.map((s) => {
+            const active = section === s.key;
+            const badge = s.key === "enquiries" ? data.counts.new : 0;
+            return (
+              <button
+                key={s.key}
+                onClick={() => setSection(s.key)}
+                aria-current={active ? "page" : undefined}
+                className="flex items-center gap-2 transition-colors whitespace-nowrap"
+                style={{
+                  padding: "14px 18px",
+                  minHeight: 48,
+                  border: "none",
+                  borderBottom: `2px solid ${active ? "#E0BC6A" : "transparent"}`,
+                  background: "transparent",
+                  color: active ? "#E0BC6A" : "rgba(243,237,223,0.68)",
+                  fontFamily: "var(--font-marcellus), serif",
+                  fontSize: "15px",
+                  letterSpacing: "0.02em",
+                  cursor: "pointer",
+                  borderRadius: 0,
+                }}
+              >
+                {s.icon}
+                {s.label}
+                {badge > 0 && (
+                  <span
+                    style={{
+                      minWidth: 20,
+                      height: 20,
+                      padding: "0 6px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      background: "#78DCAA",
+                      color: "#16102A",
+                      fontFamily: "var(--font-geist-mono), monospace",
+                      fontSize: "10.5px",
+                    }}
+                  >
+                    {badge}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </nav>
       </header>
 
       <div style={{ maxWidth: "1440px", margin: "0 auto" }} className="px-5 py-6 md:px-8 md:py-8">
-        {activeTab === "enquiries" ? (
+        {section === "home" ? (
+          <StudioHome
+            counts={data.counts}
+            enquiries={data.enquiries}
+            lessonCount={data.lessons.length}
+            draftCount={data.lessons.filter((l) => (l.status ?? "published") === "draft").length}
+            onGo={(target) => {
+              if (target === "enquiries") setSection("enquiries");
+              if (target === "lessons") { setSection("lessons"); setLessonsPanel("lessons"); }
+              if (target === "categories") { setSection("lessons"); setLessonsPanel("categories"); }
+              if (target === "content") { setSection("website"); setWebsitePanel("content"); }
+              if (target === "media") { setSection("website"); setWebsitePanel("media"); }
+            }}
+          />
+        ) : null}
+
+        {section === "enquiries" ? (
+          <>
+            <PanelSwitch
+              value={enquiriesPanel}
+              onChange={setEnquiriesPanel}
+              options={[
+                { key: "list", label: "The people who wrote in", icon: <Inbox size={13} aria-hidden /> },
+                { key: "insights", label: "Where they come from", icon: <BarChart3 size={13} aria-hidden /> },
+              ]}
+            />
+            {enquiriesPanel === "insights" ? <AnalyticsTab /> : (
           <>
             {/* Stats row */}
             <div className="grid gap-4 mb-8 grid-cols-2 md:grid-cols-4">
@@ -790,8 +777,21 @@ export function StudioDashboard({
               </div>
             )}
           </>
-        ) : activeTab === "lessons" ? (
-          /* Lessons tab */
+            )}
+          </>
+        ) : null}
+
+        {section === "lessons" ? (
+          <>
+            <PanelSwitch
+              value={lessonsPanel}
+              onChange={setLessonsPanel}
+              options={[
+                { key: "lessons", label: "My lessons", icon: <BookOpen size={13} aria-hidden /> },
+                { key: "categories", label: "How they're grouped", icon: <Tags size={13} aria-hidden />, hint: "Categories organise lessons in the library and the site menu" },
+              ]}
+            />
+            {lessonsPanel === "categories" ? <CategoriesTab /> : (
           <>
             <div className="grid gap-4 mb-8 grid-cols-2 md:grid-cols-4">
               <StatCard icon={<BookOpen size={18} />} label="Total lessons" value={data.lessons.length} color="#E0BC6A" />
@@ -998,18 +998,247 @@ export function StudioDashboard({
               </span>
             </div>
           </>
-        ) : activeTab === "categories" ? (
-          <CategoriesTab />
-        ) : activeTab === "analytics" ? (
-          <AnalyticsTab />
-        ) : activeTab === "content" ? (
-          <ContentTab />
-        ) : activeTab === "media" ? (
-          <MediaTab />
-        ) : (
-          <SettingsTab />
-        )}
+            )}
+          </>
+        ) : null}
+
+        {section === "website" ? (
+          <>
+            <PanelSwitch
+              value={websitePanel}
+              onChange={setWebsitePanel}
+              options={[
+                { key: "content", label: "Words on my site", icon: <FileText size={13} aria-hidden /> },
+                { key: "media", label: "Photos", icon: <ImageIcon size={13} aria-hidden /> },
+              ]}
+            />
+            {websitePanel === "content" ? <ContentTab /> : <MediaTab />}
+          </>
+        ) : null}
       </div>
+    </div>
+  );
+}
+
+/**
+ * A segmented control for switching sub-panels within a section.
+ * Two clicks became one screen: Categories and Media are reachable from
+ * inside the section they belong to instead of from the top-level nav.
+ */
+function PanelSwitch<T extends string>({
+  value,
+  onChange,
+  options,
+}: {
+  value: T;
+  onChange: (v: T) => void;
+  options: ReadonlyArray<{ key: T; label: string; icon?: React.ReactNode; hint?: string }>;
+}) {
+  return (
+    <div className="flex items-center gap-1 flex-wrap mb-6" role="tablist">
+      {options.map((o) => {
+        const active = o.key === value;
+        return (
+          <button
+            key={o.key}
+            role="tab"
+            aria-selected={active}
+            onClick={() => onChange(o.key)}
+            title={o.hint}
+            className="flex items-center gap-2 transition-colors"
+            style={{
+              padding: "9px 16px",
+              minHeight: 40,
+              border: `1px solid ${active ? "#E0BC6A" : "rgba(243,237,223,0.18)"}`,
+              background: active ? "rgba(224,188,106,0.12)" : "transparent",
+              color: active ? "#E0BC6A" : "rgba(243,237,223,0.7)",
+              fontFamily: "var(--font-geist-mono), monospace",
+              fontSize: "11px",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              cursor: "pointer",
+              borderRadius: 0,
+            }}
+          >
+            {o.icon}
+            {o.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
+ * StudioHome — the landing screen.
+ *
+ * The Studio previously opened straight onto a raw enquiry table, so the
+ * owner had to work out for themselves what needed doing. This answers that
+ * question directly: who is waiting for a reply, and the four things they
+ * actually come here to do, each one click away.
+ */
+function StudioHome({
+  counts,
+  enquiries,
+  lessonCount,
+  draftCount,
+  onGo,
+}: {
+  counts: { total: number; new: number; replied: number; archived: number };
+  enquiries: Enquiry[];
+  lessonCount: number;
+  draftCount: number;
+  onGo: (target: "enquiries" | "lessons" | "categories" | "content" | "media") => void;
+}) {
+  const waiting = enquiries.filter((e) => e.status === "new").slice(0, 3);
+
+  const actions: Array<{
+    label: string;
+    hint: string;
+    icon: React.ReactNode;
+    target: "enquiries" | "lessons" | "categories" | "content" | "media";
+  }> = [
+    { label: "Add a lesson", hint: "Put a new lesson in the library", icon: <Plus size={17} aria-hidden />, target: "lessons" },
+    { label: "Change my words", hint: "Edit the text on any page", icon: <FileText size={17} aria-hidden />, target: "content" },
+    { label: "Add a photo", hint: "Portraits, gallery and title cards", icon: <ImageIcon size={17} aria-hidden />, target: "media" },
+    { label: "Group my lessons", hint: "Rename or reorder categories", icon: <Tags size={17} aria-hidden />, target: "categories" },
+  ];
+
+  return (
+    <div>
+      {/* ---- What needs you today ---- */}
+      <div
+        className="vsp-card-gold"
+        style={{
+          padding: "26px 24px",
+          marginBottom: "28px",
+          borderColor: counts.new > 0 ? "rgba(120,220,170,0.5)" : undefined,
+        }}
+      >
+        <span className="vsp-eyebrow" style={{ display: "block", marginBottom: 12 }}>
+          {counts.new > 0 ? "Needs you today" : "You're all caught up"}
+        </span>
+        <h2
+          style={{
+            fontFamily: "var(--font-marcellus), serif",
+            fontSize: "clamp(22px, 3vw, 30px)",
+            lineHeight: 1.2,
+            color: "#F3EDDF",
+            margin: "0 0 8px",
+          }}
+        >
+          {counts.new > 0
+            ? `${counts.new} ${counts.new === 1 ? "person is" : "people are"} waiting to hear from you.`
+            : "No one is waiting for a reply."}
+        </h2>
+        <p style={{ fontSize: "14px", lineHeight: 1.6, color: "rgba(243,237,223,0.72)", margin: "0 0 18px", maxWidth: "60ch" }}>
+          {counts.new > 0
+            ? "Every enquiry below came from someone who found your website and asked to learn, book a performance, or work together."
+            : `You have replied to everyone who wrote in. ${counts.total} ${counts.total === 1 ? "enquiry has" : "enquiries have"} come through your website so far.`}
+        </p>
+
+        {waiting.length > 0 && (
+          <div className="flex flex-col gap-2" style={{ marginBottom: 18 }}>
+            {waiting.map((e) => (
+              <button
+                key={e.id}
+                onClick={() => onGo("enquiries")}
+                className="flex items-center gap-3 flex-wrap text-left transition-colors"
+                style={{
+                  padding: "12px 14px",
+                  minHeight: 48,
+                  background: "rgba(22,16,42,0.5)",
+                  border: "1px solid rgba(243,237,223,0.12)",
+                  color: "#F3EDDF",
+                  cursor: "pointer",
+                  borderRadius: 0,
+                  width: "100%",
+                }}
+              >
+                <span style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "16px" }}>{e.name}</span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-geist-mono), monospace",
+                    fontSize: "10px",
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    color: INTENT_COLORS[e.intent] ?? "#E0BC6A",
+                  }}
+                >
+                  {e.intent === "lesson" ? "Wants lessons" : e.intent === "booking" ? "Wants to book you" : "Wants to collaborate"}
+                </span>
+                <span style={{ marginLeft: "auto", fontSize: "12px", color: "rgba(243,237,223,0.5)" }}>
+                  {e.phone ? <Phone size={12} aria-hidden style={{ display: "inline", marginRight: 5 }} /> : null}
+                  {e.phone || e.email}
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
+
+        <button
+          onClick={() => onGo("enquiries")}
+          className="flex items-center gap-2"
+          style={{
+            padding: "12px 24px",
+            minHeight: 44,
+            background: "#E0BC6A",
+            color: "#1B1233",
+            border: "none",
+            fontFamily: "var(--font-marcellus), serif",
+            fontSize: "15px",
+            cursor: "pointer",
+            borderRadius: 0,
+          }}
+        >
+          <MessageSquare size={15} aria-hidden />
+          {counts.new > 0 ? "Open my enquiries" : "See all enquiries"}
+        </button>
+      </div>
+
+      {/* ---- Quick actions ---- */}
+      <span className="vsp-eyebrow" style={{ display: "block", marginBottom: 14 }}>
+        <Sparkles size={12} aria-hidden style={{ display: "inline", marginRight: 6 }} />
+        What would you like to do?
+      </span>
+      <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ marginBottom: 28 }}>
+        {actions.map((a) => (
+          <button
+            key={a.label}
+            onClick={() => onGo(a.target)}
+            className="flex flex-col items-start gap-2 text-left transition-colors"
+            style={{
+              padding: "20px 18px",
+              minHeight: 110,
+              background: "rgba(37,26,66,0.55)",
+              border: "1px solid rgba(243,237,223,0.14)",
+              color: "#F3EDDF",
+              cursor: "pointer",
+              borderRadius: 0,
+            }}
+          >
+            <span style={{ color: "#E0BC6A" }}>{a.icon}</span>
+            <span style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "17px" }}>{a.label}</span>
+            <span style={{ fontSize: "12.5px", lineHeight: 1.5, color: "rgba(243,237,223,0.6)" }}>{a.hint}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* ---- Plain-language status ---- */}
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
+        <StatCard icon={<Inbox size={18} />} label="Enquiries so far" value={counts.total} color="#E0BC6A" />
+        <StatCard icon={<Check size={18} />} label="Already replied" value={counts.replied} color="#78DCAA" />
+        <StatCard icon={<BookOpen size={18} />} label="Lessons published" value={lessonCount - draftCount} color="#C9AEF5" />
+        <StatCard icon={<PencilLine size={18} />} label="Drafts not yet live" value={draftCount} color="#E08C50" />
+      </div>
+
+      {draftCount > 0 && (
+        <p style={{ marginTop: 14, fontSize: "13px", color: "rgba(243,237,223,0.6)", lineHeight: 1.6 }}>
+          {draftCount} {draftCount === 1 ? "lesson is" : "lessons are"} still a draft — visitors cannot see{" "}
+          {draftCount === 1 ? "it" : "them"} yet. Open <strong style={{ color: "#E0BC6A" }}>Lessons</strong> and set{" "}
+          {draftCount === 1 ? "its" : "their"} status to Published when ready.
+        </p>
+      )}
     </div>
   );
 }
@@ -2020,9 +2249,9 @@ function ContentTab() {
 
   const SECTIONS: Section[] = [
     {
-      name: "Brand",
+      name: "My name & tagline",
       icon: "✦",
-      hint: "Site-wide identity — name, tagline, credentials shown in the footer + hero.",
+      hint: "How your name and titles appear across every page, including the footer.",
       fields: [
         { key: "brand.name", label: "Full name", type: "string" },
         { key: "brand.shortName", label: "Short name (initials)", type: "string" },
@@ -2034,9 +2263,9 @@ function ContentTab() {
       ],
     },
     {
-      name: "Contact",
+      name: "How people reach me",
       icon: "✉",
-      hint: "Address, phone, email, social links, contact form labels.",
+      hint: "Your address, phone, email and social links — shown in the footer and enquiry form.",
       fields: [
         { key: "contact.address", label: "Address", type: "string" },
         { key: "contact.phone", label: "Phone", type: "string" },
@@ -2052,9 +2281,9 @@ function ContentTab() {
       ],
     },
     {
-      name: "Home",
+      name: "Homepage",
       icon: "⌂",
-      hint: "Homepage hero lines, mission/vision, testimonials heading, contact heading.",
+      hint: "The big opening lines visitors read first, plus the headings further down the page.",
       fields: [
         { key: "home.heroLines", label: "Hero lines (one per line)", type: "array" },
         { key: "home.testimonialsHeading", label: "Testimonials heading", type: "string" },
@@ -2066,9 +2295,9 @@ function ContentTab() {
       ],
     },
     {
-      name: "About / Guru",
+      name: "About me page",
       icon: "♪",
-      hint: "About page content — hero line, role, body paragraphs, tours, performance record.",
+      hint: "Your story, your teaching, your tours and your performance record.",
       fields: [
         { key: "about.heroLine", label: "Hero line", type: "string" },
         { key: "about.role", label: "Role", type: "string" },
@@ -2085,9 +2314,9 @@ function ContentTab() {
       ],
     },
     {
-      name: "Achievements / Honours",
+      name: "Honours page",
       icon: "★",
-      hint: "Honours page text content. Honorifics + accolades lists are JSON-editable below.",
+      hint: "The wording on your honours page. The list of titles itself is in Advanced, at the bottom.",
       fields: [
         { key: "achievements.heroLine", label: "Hero line", type: "string" },
         { key: "achievements.honorificsIntro", label: "Honorifics intro", type: "text" },
@@ -2095,9 +2324,9 @@ function ContentTab() {
       ],
     },
     {
-      name: "Learn the Violin",
+      name: "Learn the violin page",
       icon: "♩",
-      hint: "Learn-the-violin page intro + strings/materials/fingering section text.",
+      hint: "The teaching page — its introduction and the strings, materials and fingering sections.",
       fields: [
         { key: "learnTheViolin.intro", label: "Intro", type: "text" },
         { key: "learnTheViolin.pullQuote.text", label: "Pull quote text", type: "text" },
@@ -2112,18 +2341,18 @@ function ContentTab() {
       ],
     },
     {
-      name: "Advanced (JSON)",
+      name: "Advanced — lists and quotes",
       icon: "{ }",
-      hint: "Complex nested objects (testimonials, honorifics list, accolades, strings items). Edit as raw JSON.",
+      hint: "Lists such as testimonials and honours. These use a strict format — change only the words between the quote marks, and leave every bracket and comma exactly where it is. If something breaks, reload without saving.",
       fields: [
-        { key: "home.testimonials", label: "Home testimonials", type: "json" },
-        { key: "achievements.honorifics", label: "Achievements honorifics list", type: "json" },
-        { key: "achievements.accolades", label: "Achievements accolades list", type: "json" },
+        { key: "home.testimonials", label: "Testimonials shown on the homepage", type: "json" },
+        { key: "achievements.honorifics", label: "List of honorific titles", type: "json" },
+        { key: "achievements.accolades", label: "List of awards and accolades", type: "json" },
         { key: "learnTheViolin.strings.items", label: "Violin strings items", type: "json" },
         { key: "learnTheViolin.materials.items", label: "Violin materials items", type: "json" },
         { key: "learnTheViolin.fingering.items", label: "Violin fingering items", type: "json" },
         { key: "learnTheViolin.violinHistory", label: "Violin history paragraphs", type: "json" },
-        { key: "gallery.images", label: "Gallery image URLs", type: "json" },
+        { key: "gallery.images", label: "Gallery photos", type: "json" },
       ],
     },
   ];
@@ -2385,61 +2614,6 @@ function MediaTab() {
           ))}
         </div>
       )}
-    </div>
-  );
-}
-
-// ===== Settings Tab =====
-function SettingsTab() {
-  return (
-    <div>
-      <div className="flex items-center gap-3 mb-6">
-        <Settings size={18} aria-hidden style={{ color: "#E0BC6A" }} />
-        <span className="vsp-eyebrow">Site Settings</span>
-      </div>
-
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-        {/* Studio token info */}
-        <div className="vsp-card-neutral" style={{ padding: "20px" }}>
-          <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "#F3EDDF", margin: "0 0 12px" }}>Admin Authentication</h3>
-          <p style={{ fontSize: "13px", color: "rgba(243,237,223,0.72)", lineHeight: 1.6, margin: "0 0 8px" }}>
-            The Studio is protected by a shared-secret token. Set the <code style={{ color: "#E0BC6A" }}>STUDIO_TOKEN</code> environment variable to change it.
-          </p>
-          <p style={{ fontSize: "12px", color: "rgba(243,237,223,0.5)", fontFamily: "var(--font-geist-mono), monospace", margin: 0 }}>
-            Current token: vsp-studio-dev (dev default)
-          </p>
-        </div>
-
-        {/* Environment variables */}
-        <div className="vsp-card-neutral" style={{ padding: "20px" }}>
-          <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "#F3EDDF", margin: "0 0 12px" }}>Environment Variables</h3>
-          <div className="flex flex-col gap-2" style={{ fontSize: "12px" }}>
-            <div className="flex justify-between"><span style={{ color: "rgba(243,237,223,0.5)" }}>DATABASE_URL</span><span style={{ color: "#78DCAA" }}>set</span></div>
-            <div className="flex justify-between"><span style={{ color: "rgba(243,237,223,0.5)" }}>STUDIO_TOKEN</span><span style={{ color: "#78DCAA" }}>set</span></div>
-            <div className="flex justify-between"><span style={{ color: "rgba(243,237,223,0.5)" }}>NEXT_TELEMETRY_DISABLED</span><span style={{ color: "#78DCAA" }}>set</span></div>
-          </div>
-        </div>
-
-        {/* Database info */}
-        <div className="vsp-card-neutral" style={{ padding: "20px" }}>
-          <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "#F3EDDF", margin: "0 0 12px" }}>Database</h3>
-          <p style={{ fontSize: "13px", color: "rgba(243,237,223,0.72)", lineHeight: 1.6, margin: 0 }}>
-            SQLite database with Prisma ORM. Schema includes: Lesson, Category, Enquiry, SiteContent, Media models.
-            Run <code style={{ color: "#E0BC6A" }}>bun run db:push</code> to apply schema changes.
-          </p>
-        </div>
-
-        {/* Deployment info */}
-        <div className="vsp-card-neutral" style={{ padding: "20px" }}>
-          <h3 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "18px", color: "#F3EDDF", margin: "0 0 12px" }}>Deployment</h3>
-          <p style={{ fontSize: "13px", color: "rgba(243,237,223,0.72)", lineHeight: 1.6, margin: "0 0 8px" }}>
-            Auto-deployed via GitHub Actions on push to <code style={{ color: "#E0BC6A" }}>main</code>.
-          </p>
-          <a href="https://vsp-violin.vercel.app" target="_blank" rel="noopener noreferrer" style={{ fontSize: "13px", color: "#E0BC6A" }}>
-            Production URL: vsp-violin.vercel.app →
-          </a>
-        </div>
-      </div>
     </div>
   );
 }
