@@ -6,6 +6,7 @@ import { LegalDialog } from "@/components/site/legal-dialog";
 import { BackToTop } from "@/components/site/back-to-top";
 import { KeyboardShortcuts } from "@/components/site/keyboard-shortcuts";
 import { CookieConsent } from "@/components/site/cookie-consent";
+import { SITE_URL } from "@/lib/seo";
 
 const marcellus = Marcellus({
   variable: "--font-marcellus",
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
     template: "%s — Violin Suka Pavalan",
   },
   description:
-    "37 years on stage. 22 free Carnatic violin notation lessons. One-to-one online and in-person teaching from Karaikal, Puducherry. Music, kept as worship.",
+    "37 years on stage. Free Carnatic violin notation lessons. One-to-one online and in-person teaching from Karaikal, Puducherry. Music, kept as worship.",
   keywords: [
     "Carnatic violin", "violin lessons online", "free violin notation", "Suka Pavalan",
     "Carnatic music", "violin teacher Karaikal", "sruthi swara varisai", "sarali varisai",
@@ -42,20 +43,20 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Violin Suka Pavalan" }],
   creator: "Violin Suka Pavalan",
-  metadataBase: new URL("https://sukapavalan.com"),
+  metadataBase: new URL(SITE_URL),
   icons: { icon: "/favicon.svg", apple: "/favicon.svg" },
   manifest: "/manifest.json",
   alternates: { canonical: "/", types: { "application/rss+xml": "/feed.xml" } },
   openGraph: {
     title: "Violin Suka Pavalan — Carnatic violin lessons & free notation",
-    description: "37 years on stage. 22 free Carnatic violin notation lessons. One-to-one online and in-person teaching from Karaikal, Puducherry.",
-    type: "website", locale: "en_US", siteName: "Violin Suka Pavalan", url: "https://sukapavalan.com",
+    description: "37 years on stage. Free Carnatic violin notation lessons. One-to-one online and in-person teaching from Karaikal, Puducherry.",
+    type: "website", locale: "en_US", siteName: "Violin Suka Pavalan", url: SITE_URL,
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Violin Suka Pavalan" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Violin Suka Pavalan — Carnatic violin lessons",
-    description: "37 years on stage. 22 free Carnatic violin notation lessons.",
+    description: "37 years on stage. Free Carnatic violin notation lessons.",
     images: ["/opengraph-image"],
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },

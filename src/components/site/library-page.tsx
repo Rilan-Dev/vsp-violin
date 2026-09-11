@@ -117,7 +117,7 @@ export function LibraryPage({ lessons, categories, stats, initialCategory = "all
             letterSpacing: "-0.01em",
           }}
         >
-          {stats.lessons} notation lessons.{" "}
+          {stats.lessons} lessons.{" "}
           <span style={{ color: "#E0BC6A" }}>One lineage.</span>
         </h1>
         <p style={{ fontSize: "17px", lineHeight: 1.68, color: "rgba(243,237,223,0.82)", maxWidth: "640px", marginBottom: "36px" }}>

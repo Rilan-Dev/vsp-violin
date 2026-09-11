@@ -618,21 +618,22 @@
   #top { padding-top: 85px !important; }
 }
 
-/* Hide scrollbar for mobile chip rail (clean horizontal scroll) */
+/* Mobile chip rail — horizontal scroll, no wrapping, hidden scrollbar.
+ *
+ * `display: flex` MUST stay inside this media query. Tailwind v4 emits its
+ * utilities into `@layer utilities`, and unlayered CSS beats any layered
+ * rule regardless of specificity or source order — so an unconditional
+ * `.vsp-chip-rail { display: flex }` silently defeated the `md:hidden` on
+ * the mobile rail, rendering it on desktop alongside the desktop rail
+ * (two duplicate category filter rows). Scoping to the mobile breakpoint
+ * keeps the behaviour and lets `md:hidden` win above 768px. */
 @media (max-width: 767px) {
-  .md\:hidden::-webkit-scrollbar {
+  .vsp-chip-rail {
+    display: flex;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .vsp-chip-rail::-webkit-scrollbar {
     display: none;
   }
-}
-
-/* Mobile chip rail — horizontal scroll, no wrapping, hidden scrollbar */
-.vsp-chip-rail {
-  display: flex;
-}
-.vsp-chip-rail::-webkit-scrollbar {
-  display: none;
-}
-.vsp-chip-rail {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
 }

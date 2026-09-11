@@ -129,7 +129,10 @@ export async function restGetCategoriesWithCounts() {
 
 export async function restGetLibraryStats() {
   const [allLessons, categories, lessonsWithRaga] = await Promise.all([
-    restGet<RestLessonSummary>("Lesson", "select=id,raga,notationTamil&status=eq.published"),
+    restGet<{ id: string; raga: string | null; notationTamil: string | null }>(
+      "Lesson",
+      "select=id,raga,notationTamil&status=eq.published"
+    ),
     restGetCategories(),
     restGet<{ raga: string }>("Lesson", "select=raga&status=eq.published&raga=not.is.null"),
   ]);
@@ -137,9 +140,14 @@ export async function restGetLibraryStats() {
   for (const l of lessonsWithRaga) {
     if (l.raga) ragaSet.add(l.raga);
   }
-  const lessonsWithNotation = allLessons.filter((l) => Boolean(l.raga || l.titleTamil));
+  // Must mirror the Prisma branch in data.ts exactly: a lesson counts as a
+  // notation lesson when it has Tamil notation. This previously tested
+  // `raga || titleTamil` — unrelated fields — so the REST fallback reported
+  // a different library size than Prisma for the same data.
+  const lessonsWithNotation = allLessons.filter((l) => Boolean(l.notationTamil));
   return {
     lessons: allLessons.length,
+    notationLessons: lessonsWithNotation.length,
     notationSheets: lessonsWithNotation.length * 2,
     categories: categories.length,
     ragas: ragaSet.size,
@@ -238,4 +246,47 @@ export async function restGetSiteContent(): Promise<RestSiteContent[]> {
     "SiteContent",
     "select=key,value,updatedAt&order=key.asc"
   );
+}
+
+/* ----------------------------- Writes ----------------------------- */
+
+/**
+ * POST a row via PostgREST. Used as the write fallback when Prisma can't
+ * reach Supabase Postgres — the same failure mode the read fallbacks above
+ * exist for. Returns the created row.
+ */
+async function restPost<T>(table: string, row: Record<string, unknown>): Promise<T> {
+  const res = await fetch(restUrl(table), {
+    method: "POST",
+    headers: { ...restHeaders(), Prefer: "return=representation" },
+    body: JSON.stringify(row),
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    throw new Error(
+      `Supabase REST POST ${table} ${res.status}: ${await res.text().catch(() => "")}`
+    );
+  }
+  const rows = (await res.json()) as T[];
+  return rows[0];
+}
+
+/**
+ * Create an Enquiry over the REST API.
+ *
+ * The enquiry form is the site's only conversion path, so it must not depend
+ * on Prisma succeeding. `id`, `createdAt` and `updatedAt` have no DB-side
+ * defaults in the Postgres schema (Prisma generates them client-side), so we
+ * supply them explicitly here.
+ */
+export async function restCreateEnquiry(
+  data: Omit<RestEnquiry, "id" | "createdAt" | "updatedAt">
+): Promise<RestEnquiry> {
+  const now = new Date().toISOString();
+  return restPost<RestEnquiry>("Enquiry", {
+    id: `enq-${now.replace(/\D/g, "").slice(0, 14)}-${Math.random().toString(36).slice(2, 10)}`,
+    ...data,
+    createdAt: now,
+    updatedAt: now,
+  });
 }

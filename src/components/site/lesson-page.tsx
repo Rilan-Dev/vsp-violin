@@ -202,25 +202,74 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
         <dl className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "1px", marginTop: "36px", background: "rgba(224,188,106,0.2)", border: "1px solid rgba(224,188,106,0.26)" }}>
           {[
             { label: "Category", value: categoryName },
-            { label: "Level", value: lesson.level != null ? `Level ${lesson.level}` : "—" },
-            { label: "Raga", value: lesson.raga ?? "—" },
-            { label: "Thala", value: lesson.thala ?? "—" },
-            { label: "Composer", value: lesson.composer ?? "—" },
-            { label: "Notation", value: lesson.notationTamil && lesson.notationEnglish ? "Tamil + English" : lesson.notationTamil ? "Tamil" : lesson.notationEnglish ? "English" : "—" },
+            { label: "Level", value: lesson.level != null ? `Level ${lesson.level}` : null },
+            { label: "Raga", value: lesson.raga },
+            { label: "Thala", value: lesson.thala },
+            { label: "Composer", value: lesson.composer },
+            { label: "Notation", value: lesson.notationTamil && lesson.notationEnglish ? "Tamil + English" : lesson.notationTamil ? "Tamil" : lesson.notationEnglish ? "English" : null },
             { label: "Videos", value: String(videoList.length || (lesson.violinVideo ? 1 : 0)) },
             { label: "Published", value: publishedDate },
-          ].map((row) => (
+          ].filter((row): row is { label: string; value: string } => Boolean(row.value)).map((row) => (
             <div key={row.label} style={{ background: "#16102A", padding: "16px 18px" }}>
               <dt style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(243,237,223,0.5)", marginBottom: "6px" }}>
                 {row.label}
               </dt>
-              <dd style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "16px", color: row.value === "—" ? "rgba(243,237,223,0.4)" : "#F3EDDF", margin: 0 }}>
+              <dd style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "16px", color: "#F3EDDF", margin: 0 }}>
                 {row.value}
               </dd>
             </div>
           ))}
         </dl>
       </header>
+
+      {/* ---- Warm-lead CTA ------------------------------------------------
+          Placed directly under the lesson header rather than at the foot of
+          the page: a visitor working through free notation is already
+          practising, and this is the moment to offer the teacher behind it.
+          Deliberately quiet — a hairline band, not a banner — so it does not
+          interrupt the lesson it sits above. */}
+      <aside
+        className="mx-auto px-5 sm:px-8"
+        style={{ maxWidth: "1280px", paddingBottom: "8px" }}
+      >
+        <div
+          className="flex items-center justify-between gap-5 flex-wrap"
+          style={{
+            padding: "20px 24px",
+            background: "rgba(37,26,66,0.55)",
+            border: "1px solid rgba(224,188,106,0.26)",
+          }}
+        >
+          <div style={{ maxWidth: "58ch" }}>
+            <span className="vsp-eyebrow" style={{ display: "block", marginBottom: 7 }}>
+              Learning this one?
+            </span>
+            <p style={{ margin: 0, fontSize: "15px", lineHeight: 1.6, color: "rgba(243,237,223,0.86)" }}>
+              The notation is free and always will be. If you would like it taught —
+              bowing, fingering, and the corrections only a teacher catches — the first
+              lesson is free.
+            </p>
+          </div>
+          <div className="flex items-center gap-3 flex-wrap">
+            <Link
+              href="/#enrol"
+              className="inline-flex items-center gap-[10px] transition-all duration-200 hover:-translate-y-px"
+              style={{
+                fontFamily: "var(--font-marcellus), serif",
+                fontSize: "15px",
+                padding: "13px 24px",
+                minHeight: 44,
+                background: "#E0BC6A",
+                color: "#1B1233",
+                borderRadius: 0,
+              }}
+            >
+              Book a free trial
+              <span aria-hidden>→</span>
+            </Link>
+          </div>
+        </div>
+      </aside>
 
       {/* Notation panel + Practice track */}
       <section className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1280px", paddingBottom: "64px" }}>
