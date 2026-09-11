@@ -58,6 +58,8 @@ export type LibraryCategory = {
 
 export type LibraryStats = {
   lessons: number;
+  /** Lessons that actually ship notation — see getLibraryStats in data.ts. */
+  notationLessons?: number;
   notationSheets: number;
   categories: number;
   ragas: number;
@@ -175,7 +177,7 @@ export function LibraryPreview({
             maxWidth: "22ch",
           }}
         >
-          {totalCount} notation lessons. One lineage.
+          {totalCount} lessons. One lineage.
         </h2>
         <p
           style={{
@@ -654,8 +656,10 @@ function LessonCard({
                   display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  minWidth: 26,
-                  height: 22,
+                  // 24x24 is the WCAG 2.2 AA minimum target size. These were
+                  // 26x22 (and 19x22 for the glyph badges), below the floor.
+                  minWidth: 28,
+                  height: 24,
                   padding: "0 7px",
                   fontSize: "10px",
                   letterSpacing: "0.06em",

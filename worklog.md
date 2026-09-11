@@ -448,7 +448,7 @@ Task: QA the build, build Studio admin dashboard, build dedicated Library page, 
 Built the owner-only CMS described in the handoff as "behind a login at a separate address, never linked from the public site."
 
 **Auth layer:**
-- `POST /api/studio/login` — validates a shared-secret token (`STUDIO_TOKEN` env var, defaults to `vsp-studio-dev` in dev), sets an httpOnly + sameSite=strict cookie (7-day expiry).
+- `POST /api/studio/login` — validates a shared-secret token (`STUDIO_TOKEN` env var, defaults to `<redacted>` in dev), sets an httpOnly + sameSite=strict cookie (7-day expiry).
 - `POST /api/studio/logout` — clears the cookie.
 - `GET /api/studio/enquiries` — bearer-token OR cookie auth; returns all enquiries (newest first, cap 200) + status counts.
 - `PATCH /api/studio/enquiries/[id]` — updates enquiry status (new/replied/archived).
@@ -1040,7 +1040,7 @@ Task: Fix two user-reported issues: (1) Studio portal showing only the minimal "
 - Production (https://vsp-violin.vercel.app) homepage was showing "No lessons in this category yet." because Prisma couldn't connect to Supabase Postgres from the Vercel serverless function (cold start / pool exhaustion), and the homepage's try/catch fell back to `lessons: []` while keeping the hardcoded `stats = { lessons: 23, ... }` fallback — so the chip said "All 23" but the grid was empty.
 - Verified via Supabase REST API: `Lesson` and `Category` tables (capitalized names, created with quoted identifiers) DO contain the data — 23 lessons, 19 categories. The issue was Prisma's transport, not the data.
 - Local dev DB (SQLite at `file:/home/z/my-project/db/custom.db`) has 23 lessons + 19 categories and works fine via Prisma.
-- All 7 studio API endpoints (`/api/studio/enquiries|lessons|categories|analytics|content|media`) and `/api/studio/auth` return 200 with the auth cookie set by `POST /api/studio/auth` with admin@sukapavalan.com / SukaPavalan2026!.
+- All 7 studio API endpoints (`/api/studio/enquiries|lessons|categories|analytics|content|media`) and `/api/studio/auth` return 200 with the auth cookie set by `POST /api/studio/auth` with admin@sukapavalan.com / <redacted — see password manager>.
 
 ## Completed modifications + verification
 
@@ -1094,13 +1094,13 @@ Task: Fix two user-reported issues: (1) Studio portal showing only the minimal "
 - **Local dev (curl)**:
   - `GET /` → 200, 255KB, 8 lesson cards rendered (no "No lessons" empty state).
   - `GET /studio` → 200, 43KB, "Checking session…" loading state.
-  - `POST /api/studio/auth` with admin@sukapavalan.com / SukaPavalan2026! → 200, returns user + session token, sets `sb-access-token` httpOnly cookie.
+  - `POST /api/studio/auth` with admin@sukapavalan.com / <redacted — see password manager> → 200, returns user + session token, sets `sb-access-token` httpOnly cookie.
   - `GET /api/studio/auth` with cookie → 200, `{ authenticated: true, user: { id, email } }`.
   - `GET /api/studio/{enquiries,lessons,categories,analytics,content,media}` with cookie → all return 200.
   - `GET /api/studio/lessons` (no auth) → 401.
 - **agent-browser end-to-end**:
   - Opened `/studio` → rendered the professional `StudioLogin` form with "STUDIO · ADMIN ACCESS" eyebrow, "Suka Pavalan Studio" h1, Lock + Mail icons, email + password fields, "Sign in" button, "Admin: admin@sukapavalan.com" hint, cookie consent banner.
-  - Filled `admin@sukapavalan.com` / `SukaPavalan2026!`, clicked Sign in → page reloaded to the full Studio Dashboard.
+  - Filled `admin@sukapavalan.com` / `<redacted — see password manager>`, clicked Sign in → page reloaded to the full Studio Dashboard.
   - Snapshot confirmed: studio banner with "SUKA PAVALAN / STUDIO / admin@sukapavalan.com", all 7 tab buttons (ENQUIRIES, LESSONS (23), CATEGORIES, ANALYTICS, CONTENT, MEDIA, SETTINGS) + EXIT, stat cards (TOTAL/NEW/REPLIED/ARCHIVED), source breakdown, filter chips, "No enquiries yet." empty state (local DB has 0 enquiries).
   - The "LESSONS (23)" tab label confirms 23 lessons are loaded from the API — the "No lessons in this category yet" issue is fixed.
 
@@ -1112,7 +1112,7 @@ Task: Fix two user-reported issues: (1) Studio portal showing only the minimal "
 1. **Production Prisma connection** — the underlying cause of the original "No lessons" issue was Prisma failing to connect to Supabase Postgres from the Vercel function. The REST fallback is a workaround; the root cause (e.g., pool exhaustion, schema cache mismatch with capitalized table names) should be investigated. Possible fixes: add `@@map("Lesson")` to the Prisma schema to explicitly map the model to the quoted table name; or switch the Supabase tables to lowercase; or use the Supabase pooler URL with `directUrl` correctly set.
 2. **Agent-browser + dev server memory pressure** — the sandbox has 3.9GB RAM and Turbopack uses ~1GB+; running agent-browser's chrome alongside the dev server sometimes triggers the OOM killer on `next-server`. Not a code issue, but it makes full end-to-end QA flaky. The preview panel the user sees runs the dev server in a separate process that doesn't compete with chrome.
 3. **ESLint is broken in this environment** (`SyntaxError: Unexpected token '.'` from eslint config) — not blocking since `next.config.ts` has `typescript.ignoreBuildErrors: true` and the dev server compiles clean.
-4. **Studio Settings tab** — still shows hardcoded env var info ("Current token: vsp-studio-dev (dev default)") and "DATABASE_URL: set" (always says set). A future phase could fetch real env status from a new API endpoint. Low priority.
+4. **Studio Settings tab** — still shows hardcoded env var info ("Current token: <redacted> (dev default)") and "DATABASE_URL: set" (always says set). A future phase could fetch real env status from a new API endpoint. Low priority.
 5. **Enquiries seeding** — local DB has 0 enquiries, so the Enquiries tab and Analytics tab show empty states. The Categories, Lessons, Content, Media tabs all work with real data. Could seed a few test enquiries for a richer dashboard demo.
 6. **Image optimization** — lesson title-card images are still loaded from remote blogger URLs. A future task could download + optimize them via `next/image` with a remote loader, or migrate to local `/public/assets/title-cards/`.
 
@@ -1258,7 +1258,7 @@ All 6 studio endpoints return 200 with full seeded data:
 - /api/studio/media → 200, 15 media items
 
 ### Verification — production (agent-browser end-to-end)
-- Logged into https://vsp-violin.vercel.app/studio with admin@sukapavalan.com / SukaPavalan2026!
+- Logged into https://vsp-violin.vercel.app/studio with admin@sukapavalan.com / <redacted — see password manager>
 - Dashboard renders correctly:
   - Header: "SUKA PAVALAN / STUDIO / admin@sukapavalan.com"
   - Tabs: ENQUIRIES 3, LESSONS (23), CATEGORIES, ANALYTICS, CONTENT, MEDIA, SETTINGS
@@ -1298,3 +1298,237 @@ The full data flow now has Supabase REST fallbacks at every layer:
 4. **Studio Media tab** — currently shows the 15 seeded gallery images with category "gallery". The images use relative paths (`images/gallery/gallery-img (1).webp`) which won't resolve in production — they need to be absolute URLs or the gallery component needs to prefix `/`. (The gallery section on the public Stage page already handles this by prefixing `/`.)
 
 5. **Image optimization** — lesson title-card images are still loaded from remote blogger URLs. A future task could download + optimize them via `next/image`.
+
+---
+Task ID: 29
+Agent: security-and-conversion-audit
+Task: User asked for a full review — "mistakes and logical issues and business way of issues and customer attractions and customer attention user experience via UI/UX skills to improve the Design and functionality issues" — then asked to implement the improvements. Audit ran against the live production deployment (vsp-violin.vercel.app) with a headless browser plus source review.
+
+## Findings, in severity order
+
+### Critical — secrets exposed in a public repository
+- `Rilan-Dev/vsp-violin` is a PUBLIC GitHub repo, and `.env` was tracked in it
+  (`git cat-file -e origin/main:.env` confirmed). It carries
+  `SUPABASE_SERVICE_ROLE_KEY`, which bypasses RLS entirely, plus `DATABASE_URL`
+  and `STUDIO_TOKEN`.
+- Commit `e9308f7 "security: remove .env and database from tracking"` had already
+  fixed this once; `c04b8a6` re-added it, because `.env` was never listed in
+  `.gitignore`. Untracking without fixing `.gitignore` guarantees recurrence.
+- `db/custom.db`, `dev.log` and `tool-results/` were tracked too. The committed
+  SQLite file holds only seed rows (`@example.com`, `seed-eq-*`), not real
+  student data.
+- `worklog.md` — itself public — contained the live Studio admin email and
+  password in plaintext at three places.
+
+### Critical — hardcoded admin token live on production
+- `process.env.STUDIO_TOKEN ?? "vsp-studio-dev"` appeared in 11 committed files.
+  `STUDIO_TOKEN` is not set on Vercel, so the fallback was active. Verified:
+  `curl .../api/studio/enquiries -H "Authorization: Bearer vsp-studio-dev"` →
+  200 with the full enquiry list. The same token also authorises every studio
+  POST/PATCH/DELETE route. Only a read was performed; nothing was modified.
+- The Settings tab additionally printed the token on screen and reported every
+  environment variable as "set" regardless of its real state.
+
+### Critical — the site is not actually launched
+- `sukapavalan.com` / `www.sukapavalan.com` still resolve to Google Blogger
+  (`ghs.googlehosted.com`, title "Violin Master SukaPavalan"); the old lesson
+  URLs still return 200 there.
+- Meanwhile this build hardcoded `https://sukapavalan.com` as `metadataBase`,
+  `og:url`, every `sitemap.xml` entry and the `robots.txt` sitemap line — so
+  every page told Google "the canonical version of this page is at a URL
+  serving different, older content", inviting deduplication of the new pages.
+- Consequence: the 22-entry redirect table in `next.config.ts` is dormant. It
+  only exists on the Vercel domain, which has no inbound links. All 22 lesson
+  redirect targets do resolve 200 — the mapping is correct, it just never fires.
+
+### High — leads could be lost silently
+- `POST /api/enquiries` had no try/catch and no REST fallback: the only
+  conversion path on the site was also the only write path without the
+  dual-transport protection the rest of the codebase uses.
+- Nothing notified anyone of a new enquiry. No email, no webhook. Leads sat in
+  the table until someone opened /studio, against a promise of "a reply usually
+  comes within two days".
+- `tel:` link was `tel:9865644345` with no country code — undialable for the
+  USA/UK/Canada/Gulf/Australia diaspora the marquee explicitly targets. No
+  WhatsApp channel anywhere, in a market where that is the default.
+- The form required email and a free-text message; phone was optional.
+
+### Medium — content and UI defects
+- Hero hardcoded "22 free notation lessons" while the library section rendered
+  the live DB count "23" — contradictory numbers one scroll apart. Neither was
+  right: 23 lessons are published, 16 carry notation.
+- Duplicate category filter rails on the homepage. Root cause: Tailwind v4 emits
+  utilities into `@layer utilities`, and UNLAYERED CSS beats any layered rule
+  regardless of specificity — so `.vsp-chip-rail { display: flex }` at
+  globals.css:629 silently defeated the `md:hidden` on the mobile-only rail.
+- `restGetLibraryStats` computed "lessons with notation" from `raga || titleTamil`
+  while the Prisma branch used `notationTamil`, so the two transports reported
+  different library sizes for identical data.
+- 5 of 19 nav categories (Thillana, Thevaram, English Songs, Other Languages,
+  Live Video) have no lessons and rendered "No lessons match your filters."
+  `/search/label/Live%20Video` redirected straight into one of them.
+- Teaser cards truncated mid-word ("especia…", "good vi…", "beyond wor…").
+- "over 30 years of experience" against "37 years on stage" elsewhere.
+- Lesson-card asset badges measured 27x22 / 19x22 px, below the WCAG 2.2 AA
+  24x24 minimum target size.
+- Homepage fallback stats claimed 46 notation sheets against an actual 32.
+
+## Completed modifications
+
+### Security
+- `.gitignore` rewritten: `.env`, `.env.*`, `db/`, `*.db`, logs, `tool-results/`.
+  Added `.env.example` documenting every variable without values.
+- `git rm --cached` on `.env`, `db/custom.db`, `dev.log`, `tool-results/`.
+- `src/lib/studio-auth.ts` rewritten as the single source of truth: no default
+  token (missing `STUDIO_TOKEN` now disables static-token auth rather than
+  enabling a known one), constant-time comparison via `timingSafeEqual`, and a
+  parsed cookie read instead of a substring match on the raw Cookie header.
+- All 10 `/api/studio/*` routes now import that helper; the inlined copies are
+  gone. `login/route.ts` fails closed and uses the same constant-time compare.
+- Studio Settings tab no longer prints the token, and no longer claims env vars
+  are set when it cannot know.
+- `worklog.md` credentials redacted.
+- NOTE: git history still contains the old values — rotation is the real fix.
+
+### Launch / SEO
+- `src/lib/seo.ts` resolves the canonical origin from `NEXT_PUBLIC_SITE_URL`,
+  falling back to Vercel's injected `VERCEL_PROJECT_PRODUCTION_URL` / `VERCEL_URL`,
+  then localhost. All nine hardcoded `https://sukapavalan.com` origins across
+  layout, robots, sitemap, page, both feeds and the lesson page now read from it.
+- `/search/label/Live%20Video` repointed to `/library` until that category has
+  content.
+
+### Conversion
+- `POST /api/enquiries`: Prisma → Supabase REST (`restCreateEnquiry`, new
+  `restPost` helper) → 503 carrying a direct email and WhatsApp number. A lead
+  can no longer vanish into an unhandled exception.
+- `src/lib/notify.ts`: emails each new enquiry via the Resend HTTP API, with
+  `reply_to` set to the enquirer. Optional by configuration — if
+  `RESEND_API_KEY`/`ENQUIRY_NOTIFY_TO` are unset it logs and skips, and it can
+  never fail the enquiry, which is already saved before it runs.
+- Form now accepts email OR phone rather than requiring email; message is
+  optional; phone relabelled "Phone / WhatsApp" with an E.164 placeholder.
+- Footer: `+91` added to the phone number (content JSON + seed), `tel:` sanitiser
+  widened to keep the `+`, and a WhatsApp link added.
+
+### Content / UI
+- Hero counts come from `getLibraryStats()`, and degrade to number-free copy if
+  both transports are down rather than advertising "0 free lessons".
+- `notationLessons` added to both stats implementations; the REST field bug fixed
+  so both transports agree.
+- All remaining hardcoded 22/23 counts removed from layout metadata, library
+  metadata and both RSS feeds.
+- `.vsp-chip-rail` scoped inside `@media (max-width: 767px)` so `md:hidden` wins.
+- `getMegaMenu()` filters to `count > 0`, removing the five dead-end categories.
+- `excerpt()` helper truncates teasers at a word boundary.
+- "over 30 years" → "over 37 years". Badge targets raised to 28x24.
+- Homepage fallback stats zeroed so an outage renders an empty state rather than
+  confidently wrong numbers.
+
+## Unresolved issues / risks / next-phase priorities
+
+1. **Key rotation is outstanding and is the actual remediation.** The Supabase
+   service-role key, the Studio password and `STUDIO_TOKEN` must be assumed
+   compromised — they are in the public git history, which untracking does not
+   remove. Rotate in the Supabase and Vercel dashboards.
+2. **DNS cutover is outstanding.** Until `sukapavalan.com` points at Vercel the
+   rebuild is invisible to its audience. Set `NEXT_PUBLIC_SITE_URL` to the Vercel
+   origin until the cutover, then to the real domain — not before, or the
+   canonical problem simply returns.
+3. **Studio writes are still Prisma-only.** Reads all have REST fallbacks and the
+   enquiry write now does; the studio POST/PATCH/DELETE routes do not.
+4. **No pricing signal anywhere.** "Book a free trial" with no fee indication is
+   a known drop-off. A range or "fees shared on enquiry" would help.
+5. **Homepage TTFB ~2.0s** cache-busted (`/library` 0.39s). Everything is
+   `force-dynamic`; when Prisma fails each request pays its timeout before the
+   REST fallback runs.
+6. **Root-cause Prisma on Vercel** remains uninvestigated — the fallbacks are a
+   workaround, not a fix.
+
+---
+Task ID: 30
+Agent: studio-ux-and-conversion
+Task: Client-driven follow-up. The freelance client who owns this site is non-technical. Three asks: (1) remove the environment/technical details from the Studio settings page, (2) the Studio's seven screens do not map to the business — Lessons, Categories, Content and Media read as four peer screens for what feels like "the same thing", so the client cannot find anything and edits take too long, (3) make the public site work harder at attracting visitors and generating leads.
+
+## 1. Settings page removed entirely
+
+`SettingsTab` was 56 lines of pure implementation detail — Prisma, SQLite, the
+`bun run db:push` command, GitHub Actions, Vercel env vars, `STUDIO_TOKEN`.
+None of it is actionable by the site's owner and all of it invites worry. The
+tab is gone; sign-out lives in the header where it was already duplicated.
+Verified no Prisma/Vercel/Supabase/env wording remains in any Studio surface.
+
+## 2. Studio information architecture: 7 screens → 4
+
+The old tabs were named after database tables. `Categories` and `Media` sat as
+peers of `Lessons` and `Content` when they only exist to support them, and
+`Analytics` analysed enquiries but lived nowhere near them.
+
+| New section | Absorbs | Rationale |
+|---|---|---|
+| **Home** (new) | — | Answers "what needs me today" before anything is clicked |
+| **Enquiries** | Enquiries + Analytics | The leads, and where they come from |
+| **Lessons** | Lessons + Categories | Categories only group lessons |
+| **My Website** | Content + Media | Everything a visitor reads or sees |
+
+- `STUDIO_SECTIONS` replaces seven copy-pasted `<button>` blocks (175 lines) with
+  a data-driven nav row, moved out of the cramped header into its own strip
+  with a live "new enquiries" badge.
+- `PanelSwitch` is a shared segmented control for sub-panels, labelled in the
+  owner's language: "My lessons" / "How they're grouped", "Words on my site" /
+  "Photos", "The people who wrote in" / "Where they come from".
+- `StudioHome` is the new landing screen: how many people are waiting, the
+  three most recent unanswered enquiries (name, what they want, and their phone
+  or email) each opening the inbox in one click, four quick actions, and four
+  plain-language numbers. Drafts get an explicit nudge explaining that visitors
+  cannot see them yet.
+- Content editor sections renamed from data shapes to pages: "Brand" → "My name
+  & tagline", "Contact" → "How people reach me", "Home" → "Homepage",
+  "About / Guru" → "About me page", "Advanced (JSON)" → "Advanced — lists and
+  quotes", whose hint now explains in plain words to change only the text
+  between quote marks and reload without saving if something breaks.
+
+Net effect: the client lands on a screen that tells them what to do, and the
+two screens they could never place (Categories, Media) are now one click inside
+the section they belong to.
+
+## 3. Public site — attraction and lead capture
+
+- **Lesson pages now carry the offer.** Someone reading free notation is the
+  warmest visitor on the site, and the only invitation to learn sat below eight
+  embedded videos. A quiet hairline band now sits directly under the lesson
+  header: the notation is free and always will be, and the first lesson is free
+  if they want it taught. Styled as a band, not a banner — it must not interrupt
+  the lesson above it.
+- **WhatsApp as a no-form path.** Beside the submit button, with the message
+  pre-filled per intent (lessons / booking / collaboration), plus a tap-to-call
+  fallback. A form is friction and most enquiries in this market arrive over
+  WhatsApp; this captures the visitors who would otherwise close the tab.
+- **"What happens next" strip** under the form — You write → Suka Pavalan
+  replies personally → A free trial lesson → You decide. Removes the main
+  hesitation before sending an enquiry to a stranger.
+- **Empty metadata cells dropped** on lesson pages. Basics lessons rendered
+  "Raga —", "Thala —", "Composer —"; three of eight cells looked like missing
+  data. Sarali Varisai now renders 5 populated cells instead of 8 with 3 blank.
+
+## Verification
+
+- `bunx next build` passes, all 33 routes.
+- `bunx tsc --noEmit`: 8 errors, byte-identical to the pre-existing baseline
+  captured from a clean worktree. Zero introduced.
+- `/studio` compiles and serves 200; lesson page renders the CTA and 5 metadata
+  cells; no technical wording remains in the Studio.
+- `bun run lint` still fails environment-wide (ESLint 9.39.2 under Node 22) on a
+  clean checkout too — unrelated to these changes.
+
+## Unresolved issues / risks / next-phase priorities
+
+1. **Key rotation and the DNS cutover remain outstanding** — see Task 29. These
+   are still the two highest-value actions on the project and neither is a code
+   change.
+2. **No pricing signal anywhere.** "Book a free trial" with no indication of
+   fees is a known drop-off point. Worth at least "fees discussed on enquiry".
+3. **Testimonials are still only a teaser card** linking away from the homepage.
+   Real quotes above the enquiry form would be the next conversion gain.
+4. Studio writes other than enquiries are still Prisma-only with no REST
+   fallback.

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { getDynamicContent } from "@/lib/dynamic-content";
+import { getLibraryStats } from "@/lib/data";
 
 /**
  * Hero — Violin Suka Pavalan.
@@ -26,7 +27,24 @@ const STATS = [
 ];
 
 export async function Hero() {
-  const { brand } = await getDynamicContent();
+  // These counts were hardcoded as "22" while the library section rendered the
+  // live DB count ("23") on the same page — two different numbers for the same
+  // library, visible in one scroll. Both now come from the DB.
+  // `notationLessons` (lessons that actually ship notation) is the honest
+  // number for "notation lessons"; `lessons` counts everything published.
+  //
+  // If BOTH Prisma and the Supabase REST fallback are down, the copy drops the
+  // number rather than advertising "0 free lessons" — no figure reads better
+  // than a wrong one on the first line a visitor sees.
+  const [{ brand }, stats] = await Promise.all([
+    getDynamicContent(),
+    getLibraryStats().catch((e) => {
+      console.warn("[hero] library stats unavailable, rendering without counts:", e);
+      return null;
+    }),
+  ]);
+  const notationCount = stats?.notationLessons ?? stats?.lessons ?? null;
+  const lessonCount = stats?.lessons ?? null;
 
   return (
     <section
@@ -122,9 +140,10 @@ export async function Hero() {
                 color: "rgba(243, 237, 223, 0.82)",
               }}
             >
-              A 37-year Carnatic violinist and teacher in Karaikal. 22 free
-              notation lessons online. One-to-one teaching, in person and
-              across the world.
+              A 37-year Carnatic violinist and teacher in Karaikal.{" "}
+              {notationCount ? `${notationCount} free` : "Free"} notation
+              lessons online. One-to-one teaching, in person and across the
+              world.
             </p>
 
             {/* CTAs */}
@@ -166,7 +185,9 @@ export async function Hero() {
                   borderRadius: 0,
                 }}
               >
-                Browse 22 free lessons
+                {lessonCount
+                  ? `Browse ${lessonCount} free lessons`
+                  : "Browse the free library"}
               </a>
             </div>
 

@@ -291,6 +291,10 @@ export async function getLibraryStats() {
     const ragaSet = new Set(lessonsWithRaga.map((l) => l.raga).filter(Boolean));
     return {
       lessons: lessonCount,
+      // Lessons that actually ship notation. Not every published lesson does
+      // (live recordings do not), so this is deliberately distinct from
+      // `lessons` — copy that says "N notation lessons" must use this one.
+      notationLessons: lessonsWithNotation.length,
       notationSheets: lessonsWithNotation.length * 2, // Tamil + English per lesson
       categories: categoryCount,
       ragas: ragaSet.size,
@@ -311,7 +315,13 @@ export function getSiteContent(): SiteContent {
  * library filters, library groupings, and breadcrumbs.
  */
 export async function getMegaMenu() {
-  const cats = await getCategoriesWithCounts();
+  const all = await getCategoriesWithCounts();
+  // Only surface categories that actually have published lessons. Five of the
+  // nineteen (Thillana, Thevaram, English Songs, Other Languages, Live Video)
+  // are empty, and linking to them from the nav sent visitors — including
+  // traffic arriving on the /search/label/* redirects from the old Blogger
+  // site — to a "No lessons match your filters." dead end.
+  const cats = all.filter((c) => c.count > 0);
   const groups: Record<CategoryGroup, { label: string; items: CategoryWithCount[] }> = {
     basics: { label: "Carnatic — Basics", items: [] },
     advanced: { label: "Carnatic — Advanced", items: [] },

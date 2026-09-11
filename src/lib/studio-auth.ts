@@ -6,7 +6,7 @@ import { supabaseServer } from "@/lib/supabase";
  * Studio API authorisation — the single source of truth.
  *
  * Every `/api/studio/*` route must call this. Previously each route carried
- * its own inlined copy that fell back to a hardcoded `"vsp-studio-dev"` token
+ * its own inlined copy that fell back to a hardcoded default token
  * when `STUDIO_TOKEN` was unset. That default shipped in a public repo and
  * granted full admin access (read AND write) to any production deployment
  * that hadn't set the env var. There is now no default: a missing or empty

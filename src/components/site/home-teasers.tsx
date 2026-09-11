@@ -10,6 +10,21 @@ import { getDynamicContent } from "@/lib/dynamic-content";
  * content lives on their dedicated pages — these teasers are short
  * previews with a "Read more →" link.
  */
+/**
+ * Truncate at a word boundary. A plain `slice(0, n)` cut mid-word on every
+ * teaser card — "including Classical, …", "especia…", "good vi…" — which
+ * reads as broken text rather than a deliberate excerpt. Also trims any
+ * trailing punctuation so the ellipsis doesn't follow a stray comma.
+ */
+function excerpt(text: string, max: number): string {
+  const clean = text.trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max);
+  const lastSpace = cut.lastIndexOf(" ");
+  const base = lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut;
+  return base.replace(/[\s,;:.\u2014-]+$/, "") + "…";
+}
+
 export async function HomeTeasers() {
   const c = await getDynamicContent();
   const about = c.about;
@@ -20,35 +35,35 @@ export async function HomeTeasers() {
       href: "/about",
       eyebrow: "The Guru · since 1990",
       title: "A lineage kept in the hands.",
-      body: about.body[0].slice(0, 180) + "…",
+      body: excerpt(about.body[0], 180),
       cta: "Read the full story",
     },
     {
       href: "/honours",
       eyebrow: "Honours · 12 titles",
       title: "A journey adorned with prestigious titles.",
-      body: achievements.honorificsIntro.slice(0, 180) + "…",
+      body: excerpt(achievements.honorificsIntro, 180),
       cta: "View all honours",
     },
     {
       href: "/stage",
       eyebrow: "Stage · 5,000+ performances",
       title: "Five thousand performances. One instrument.",
-      body: about.performance.body.slice(0, 180) + "…",
+      body: excerpt(about.performance.body, 180),
       cta: "See the record",
     },
     {
       href: "/learn",
       eyebrow: "Learn the Violin",
       title: "Learn the language of the violin.",
-      body: c.learnTheViolin.intro.slice(0, 180) + "…",
+      body: excerpt(c.learnTheViolin.intro, 180),
       cta: "Start learning",
     },
     {
       href: "/testimonials",
       eyebrow: "Testimonials",
       title: "See what all the talk is about.",
-      body: c.home.testimonials[0].quote.slice(0, 160) + "…",
+      body: excerpt(c.home.testimonials[0].quote, 160),
       cta: "Read all testimonials",
     },
   ];
