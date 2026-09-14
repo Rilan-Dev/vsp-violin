@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { restGetSiteContent } from "@/lib/supabase-data";
+import { restGetSiteContent, restUpsert } from "@/lib/supabase-data";
 import { isAuthorized } from "@/lib/studio-auth";
 
 /**
@@ -40,11 +40,20 @@ export async function PUT(req: NextRequest) {
   const parsed = UpdateSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Invalid", issues: parsed.error.flatten() }, { status: 422 });
   const { key, value } = parsed.data;
-  await db.siteContent.upsert({
-    where: { key },
-    update: { value },
-    create: { key, value },
-  });
+  try {
+    await db.siteContent.upsert({ where: { key }, update: { value }, create: { key, value } });
+  } catch (prismaErr) {
+    console.warn("[studio/content] Prisma upsert failed, falling back to REST:", prismaErr);
+    try {
+      await restUpsert("SiteContent", { key, value, updatedAt: new Date().toISOString() });
+    } catch (restErr) {
+      console.error("[studio/content] REST upsert ALSO failed:", restErr);
+      return NextResponse.json(
+        { error: "That text could not be saved just now. Please try again in a moment." },
+        { status: 503 }
+      );
+    }
+  }
   return NextResponse.json({ ok: true, key, value });
 }
 
@@ -59,12 +68,38 @@ export async function POST(req: NextRequest) {
   try { body = await req.json(); } catch { return NextResponse.json({ error: "Invalid JSON" }, { status: 400 }); }
   const parsed = BatchSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Invalid", issues: parsed.error.flatten() }, { status: 422 });
+  const failed: string[] = [];
   for (const item of parsed.data.items) {
-    await db.siteContent.upsert({
-      where: { key: item.key },
-      update: { value: item.value },
-      create: { key: item.key, value: item.value },
-    });
+    try {
+      await db.siteContent.upsert({
+        where: { key: item.key },
+        update: { value: item.value },
+        create: { key: item.key, value: item.value },
+      });
+    } catch {
+      try {
+        await restUpsert("SiteContent", {
+          key: item.key,
+          value: item.value,
+          updatedAt: new Date().toISOString(),
+        });
+      } catch (restErr) {
+        console.error(`[studio/content] both transports failed for ${item.key}:`, restErr);
+        failed.push(item.key);
+      }
+    }
+  }
+  if (failed.length > 0) {
+    // Name what did not save. Reporting a blanket success here would let the
+    // owner close the tab believing an edit landed when it did not.
+    return NextResponse.json(
+      {
+        error: `${failed.length} of ${parsed.data.items.length} changes could not be saved. Please try again.`,
+        failedKeys: failed,
+        updated: parsed.data.items.length - failed.length,
+      },
+      { status: 503 }
+    );
   }
   return NextResponse.json({ ok: true, updated: parsed.data.items.length });
 }

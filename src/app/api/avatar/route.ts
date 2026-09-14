@@ -30,6 +30,14 @@ import { NextResponse } from "next/server";
  * short enough that a changed picture appears the same day.
  */
 
+/**
+ * The Page handle used for the *picture*, which is not the same as the profile
+ * the footer links to. The footer now points at facebook.com/sukapavalan, but
+ * graph.facebook.com/sukapavalan/picture returns 400 — the unauthenticated
+ * picture endpoint only serves Pages, and that handle is not one. Pointing
+ * this at the new handle would silently drop the site back to the static
+ * portrait and quietly end the sync, so it stays on the Page that works.
+ */
 const FACEBOOK_PAGE = "ViolinSukaPavalan";
 const YOUTUBE_CHANNEL = "UCwtXQIbtIvtGXEXnGU0pL7w";
 const FALLBACK = "/assets/portraits/portrait-standing.jpeg";

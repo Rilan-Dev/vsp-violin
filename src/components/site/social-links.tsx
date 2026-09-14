@@ -57,7 +57,7 @@ const BRAND: Record<
 
 export function SocialLinks({
   social,
-  size = 20,
+  size = 30,
 }: {
   social: Partial<Record<Social["key"], string>>;
   size?: number;
@@ -69,7 +69,7 @@ export function SocialLinks({
   if (items.length === 0) return null;
 
   return (
-    <ul className="flex items-center gap-1" style={{ listStyle: "none", margin: 0, padding: 0 }}>
+    <ul className="flex items-center gap-2 flex-wrap" style={{ listStyle: "none", margin: 0, padding: 0 }}>
       {/* Instagram's official mark is a gradient, defined once for all icons. */}
       <svg width="0" height="0" aria-hidden style={{ position: "absolute" }}>
         <defs>
@@ -98,9 +98,12 @@ export function SocialLinks({
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
-                width: 44,
-                height: 44,
-                opacity: 0.85,
+                // 56px box, well above the 44px minimum. The audience skews
+                // older and these are the only icon-only controls on the site,
+                // so they are deliberately larger than the rest of the UI.
+                width: 56,
+                height: 56,
+                opacity: 0.9,
                 borderRadius: 0,
               }}
             >

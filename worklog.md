@@ -1747,3 +1747,150 @@ Practice Room hidden, avatar wired, brand icons, Contact CTA, all stat copy.
 3. Instagram and X avatars cannot be synced without paid/authenticated API
    access. If those are wanted, the Studio photo upload already accepts a
    manual image.
+
+---
+Task ID: 34
+Agent: contact-path-verification
+Task: "make sure the contact and send enquiries is functionally working or not."
+
+## Result: the form works. Two contact defects found alongside it.
+
+Verified against the live deployment, not locally.
+
+**API path** — valid submission 201 in 1.7s; phone-only (no email) accepted,
+confirming the email-or-phone change is live; neither email nor phone correctly
+refused 422 with the readable message.
+
+**Browser path** — filled and submitted the real form on production through a
+headless browser. Success toast rendered ("Enquiry sent…") and the fields
+cleared, which only happens on the success branch.
+
+**Persistence** — all three test rows landed in Supabase and appeared in the
+Studio inbox with counts updating (total 8, new 6). Full loop confirmed:
+form → API → database → owner's inbox. All test rows deleted afterwards;
+verified only the 5 original seed rows remain.
+
+Worth noting: submissions return ids of the form `enq-2026…`, which is the
+Supabase REST writer, not Prisma's cuid. **Prisma is still failing on
+production and the REST fallback is carrying every write.** The fallback is
+doing its job, but the underlying connection problem is unfixed.
+
+## Defect 1: contact links were missing the country code
+
+The live page carried both `wa.me/919865644345` and `wa.me/9865644345`, and
+both `tel:+91…` and `tel:9865644345`. The variants without the country code
+cannot dial or open WhatsApp from outside India — the diaspora audience the
+site's own marquee advertises.
+
+Cause: `contact.phone` in the production SiteContent table was still
+"98656 44345". The `+91` was added to site-content.json in an earlier task, but
+**the DB overrides the JSON**, so merging that work would not have fixed it.
+Corrected the row in production and locally; all three links now carry +91,
+live immediately with no deploy.
+
+## Defect 2: the 30-vs-37 years contradiction was still live
+
+Same cause. `about.body` in the DB still read "over 30 years of experience"
+against "37+ Years On Stage" everywhere else. Corrected in both databases.
+
+## The underlying trap, now guarded
+
+Three separate defects have now come from the same mechanic: a value corrected
+in site-content.json, shipped, and still wrong on the live site because a
+SiteContent row silently overrode it. Nothing about it is visible to a build, a
+typecheck, or code review, because nothing in the code is wrong.
+
+`scripts/check-content-drift.ts` reports every key where the database disagrees
+with the JSON baseline, against local or production, and exits non-zero so it
+can gate a release. Drift is not automatically a bug — the owner may have
+edited that text in the Studio deliberately and their edit should win — it just
+makes the divergence visible so someone decides. Added to LAUNCH.md's
+pre-launch checks. Both databases currently report no drift.
+
+## Unresolved issues / risks / next-phase priorities
+
+1. **Enquiry notifications are not configured.** `RESEND_API_KEY` and
+   `ENQUIRY_NOTIFY_TO` are unset, so every enquiry is stored but nobody is
+   told. Against a promise of "a reply usually comes within two days", the
+   owner has to remember to open /studio. Two environment variables fix it.
+2. **Prisma still fails on production;** every write goes through the REST
+   fallback.
+3. PR #2 unmerged; key rotation outstanding.
+
+---
+Task ID: 35
+Agent: launch-day-crud-outage
+Task: Client reported `POST https://www.sukapavalan.com/api/studio/lessons` returning 500 while adding "Ganesa Pancharathnam". Asked to pull latest, verify all CRUD, walk the screens, fix, and push. The domain is live — launch happened.
+
+## The reported 500 was not about that route
+
+The whole Studio was read-only in production. Reproduced against the live
+domain: creating a lesson, editing one, deleting one, saving text in "Words on
+my site", adding a photo, adding a category and changing an enquiry's status
+all returned an unhandled 500 with an empty body.
+
+Reads had a Supabase REST fallback; writes had none. Prisma cannot reach
+Postgres from the deployed functions — every enquiry write already lands via
+REST, visible in the `enq-` id prefix — so each write threw and the route died.
+
+CLAUDE.md described this as "studio writes are Prisma-only — a known
+limitation". That framing is what let it reach production, and it is corrected
+now: a missing fallback is an outage nobody has triggered yet, not a limitation.
+
+## Fix
+
+`restInsert` / `restUpdate` / `restDelete` / `restUpsert` added beside the
+existing readers, wired into every studio write as Prisma → REST → a 503 whose
+message the owner can act on.
+
+Two **reads inside write handlers** were the subtle part; a scan for
+create/update/delete does not find them, and both threw before the guarded
+write below them could run:
+- the duplicate-slug check in `POST /api/studio/categories`
+- the lesson count that blocks deleting a non-empty category
+
+The delete guard now returns 503 when it cannot count, rather than deleting
+blind — guessing there would strand lessons in a category that no longer exists.
+
+## Verification
+
+Ran a server with `DATABASE_URL` pointed at a nonexistent file so every call
+took the REST path production uses: lesson create/read/update/delete (including
+the client's exact payload, 201), category create/update/delete, the 409 when a
+category still holds lessons, media create/delete, content single and batch
+saves, enquiry status change. All pass. Test rows removed; production counts
+unchanged — 23 lessons, 19 categories, 5 enquiries, 85 content keys, 15 media.
+
+lint clean, tsc at the 8-error baseline, clean build with Supabase env unset.
+
+## Social updates
+
+Facebook → facebook.com/sukapavalan, Instagram → instagram.com/vspviolinrainbow,
+X removed by clearing its value (SocialLinks skips an empty href). Icons from a
+20px glyph in a 44px target to 30px in 56px for older visitors. Link changes
+were database values and are already live; the icon size needs the deploy.
+
+`/api/avatar` deliberately stays on the ViolinSukaPavalan Page:
+`graph.facebook.com/sukapavalan/picture` returns 400, because that endpoint
+only serves Pages and the new handle is not one. Following the link change
+would have silently ended the profile-picture sync.
+
+## Two recoveries worth recording
+
+- `.env` had vanished from disk. Recovered it in one command from git history,
+  where it still sits in the public repo — an unintended demonstration of why
+  rotation matters.
+- Commit `7785e57` (the country-code fix and `check-content-drift.ts`) was
+  pushed to the PR #2 branch *after* that PR merged, so it never reached main.
+  Cherry-picked onto this branch. Worth checking for orphans whenever work
+  continues on a branch whose PR is already merged.
+
+## Unresolved issues / risks / next-phase priorities
+
+1. **`STUDIO_TOKEN` is still not rotated.** `Bearer vsp-studio-dev` grants full
+   admin on the live public domain today. The Supabase service-role key is
+   equally exposed. This is the oldest open item and now the most serious.
+2. **PR #3 unmerged — the Studio stays unusable until it deploys.**
+3. Prisma still fails in production; the REST fallback now carries reads *and*
+   writes, but the root cause is untouched.
+4. Enquiry notifications remain unconfigured.

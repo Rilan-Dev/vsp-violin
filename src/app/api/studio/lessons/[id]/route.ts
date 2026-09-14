@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { isAuthorized } from "@/lib/studio-auth";
+import { restUpdate, restDelete } from "@/lib/supabase-data";
 
 /**
  * Every field a lesson can be created with must also be editable.
@@ -97,8 +98,25 @@ export async function PATCH(
     return NextResponse.json({ error: "No fields to update" }, { status: 422 });
   }
 
-  const updated = await db.lesson.update({ where: { id }, data: update });
-  return NextResponse.json({ ok: true, lesson: updated });
+  try {
+    const updated = await db.lesson.update({ where: { id }, data: update });
+    return NextResponse.json({ ok: true, lesson: updated });
+  } catch (prismaErr) {
+    console.warn("[studio/lessons/:id] Prisma update failed, falling back to REST:", prismaErr);
+    try {
+      const updated = await restUpdate<Record<string, unknown>>("Lesson", "id", id, {
+        ...update,
+        updatedAt: new Date().toISOString(),
+      });
+      return NextResponse.json({ ok: true, lesson: updated });
+    } catch (restErr) {
+      console.error("[studio/lessons/:id] REST update ALSO failed:", restErr);
+      return NextResponse.json(
+        { error: "Your changes could not be saved just now. Please try again in a moment." },
+        { status: 503 }
+      );
+    }
+  }
 }
 
 /** DELETE /api/studio/lessons/[id] — delete a lesson. */
@@ -110,6 +128,19 @@ export async function DELETE(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const { id } = await params;
-  await db.lesson.delete({ where: { id } });
+  try {
+    await db.lesson.delete({ where: { id } });
+  } catch (prismaErr) {
+    console.warn("[studio/lessons/:id] Prisma delete failed, falling back to REST:", prismaErr);
+    try {
+      await restDelete("Lesson", "id", id);
+    } catch (restErr) {
+      console.error("[studio/lessons/:id] REST delete ALSO failed:", restErr);
+      return NextResponse.json(
+        { error: "The lesson could not be deleted just now. Please try again in a moment." },
+        { status: 503 }
+      );
+    }
+  }
   return NextResponse.json({ ok: true });
 }
