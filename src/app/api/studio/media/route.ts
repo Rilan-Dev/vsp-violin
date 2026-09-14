@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { restGetMedia } from "@/lib/supabase-data";
+import { restGetMedia, restInsert } from "@/lib/supabase-data";
 import { isAuthorized } from "@/lib/studio-auth";
 
 /**
@@ -43,7 +43,25 @@ export async function POST(req: NextRequest) {
   try { body = await req.json(); } catch { return NextResponse.json({ error: "Invalid JSON" }, { status: 400 }); }
   const parsed = CreateSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Invalid", issues: parsed.error.flatten() }, { status: 422 });
-  const media = await db.media.create({ data: parsed.data });
+  let media;
+  try {
+    media = await db.media.create({ data: parsed.data });
+  } catch (prismaErr) {
+    console.warn("[studio/media] Prisma create failed, falling back to REST:", prismaErr);
+    try {
+      media = await restInsert<Record<string, unknown>>("Media", {
+        id: `med-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
+        ...parsed.data,
+        createdAt: new Date().toISOString(),
+      });
+    } catch (restErr) {
+      console.error("[studio/media] REST create ALSO failed:", restErr);
+      return NextResponse.json(
+        { error: "The photo could not be saved just now. Please try again in a moment." },
+        { status: 503 }
+      );
+    }
+  }
   return NextResponse.json({ ok: true, media }, { status: 201 });
 }
 

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { isAuthorized } from "@/lib/studio-auth";
+import { restUpdate, restDelete } from "@/lib/supabase-data";
 
 const UpdateSchema = z.object({
   status: z.enum(["new", "replied", "archived"]),
@@ -32,10 +33,24 @@ export async function PATCH(
     );
   }
 
-  const updated = await db.enquiry.update({
-    where: { id },
-    data: { status: parsed.data.status },
-  });
+  let updated;
+  try {
+    updated = await db.enquiry.update({ where: { id }, data: { status: parsed.data.status } });
+  } catch (prismaErr) {
+    console.warn("[studio/enquiries/:id] Prisma update failed, falling back to REST:", prismaErr);
+    try {
+      updated = await restUpdate<Record<string, unknown>>("Enquiry", "id", id, {
+        status: parsed.data.status,
+        updatedAt: new Date().toISOString(),
+      });
+    } catch (restErr) {
+      console.error("[studio/enquiries/:id] REST update ALSO failed:", restErr);
+      return NextResponse.json(
+        { error: "That could not be saved just now. Please try again in a moment." },
+        { status: 503 }
+      );
+    }
+  }
   return NextResponse.json({ ok: true, enquiry: updated });
 }
 
@@ -48,6 +63,19 @@ export async function DELETE(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const { id } = await params;
-  await db.enquiry.delete({ where: { id } });
+  try {
+    await db.enquiry.delete({ where: { id } });
+  } catch (prismaErr) {
+    console.warn("[studio/enquiries/:id] Prisma delete failed, falling back to REST:", prismaErr);
+    try {
+      await restDelete("Enquiry", "id", id);
+    } catch (restErr) {
+      console.error("[studio/enquiries/:id] REST delete ALSO failed:", restErr);
+      return NextResponse.json(
+        { error: "The enquiry could not be deleted just now. Please try again in a moment." },
+        { status: 503 }
+      );
+    }
+  }
   return NextResponse.json({ ok: true });
 }

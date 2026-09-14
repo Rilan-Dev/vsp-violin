@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { restGetAllLessonsForStudio } from "@/lib/supabase-data";
+import { restGetAllLessonsForStudio, restInsert } from "@/lib/supabase-data";
 import { isAuthorized } from "@/lib/studio-auth";
 
 /**
@@ -80,26 +80,47 @@ export async function POST(req: NextRequest) {
     .slice(0, 60);
   const id = `${slugBase}-${Date.now().toString(36)}`;
 
-  const lesson = await db.lesson.create({
-    data: {
-      id,
-      title: d.title,
-      titleTamil: d.titleTamil || null,
-      category: d.category,
-      level: d.level ?? null,
-      raga: d.raga || null,
-      thala: d.thala || null,
-      composer: d.composer || null,
-      date: d.date ?? new Date().toISOString().split("T")[0],
-      notationTamil: d.notationTamil || null,
-      notationEnglish: d.notationEnglish || null,
-      violinVideo: d.violinVideo || null,
-      vocalVideo: d.vocalVideo || null,
-      titleCard: d.titleCard || null,
-      sourceUrl: d.sourceUrl || null,
-      status: d.status,
-    },
-  });
+  const row = {
+    id,
+    title: d.title,
+    titleTamil: d.titleTamil || null,
+    category: d.category,
+    level: d.level ?? null,
+    raga: d.raga || null,
+    thala: d.thala || null,
+    composer: d.composer || null,
+    date: d.date ?? new Date().toISOString().split("T")[0],
+    notationTamil: d.notationTamil || null,
+    notationEnglish: d.notationEnglish || null,
+    violinVideo: d.violinVideo || null,
+    vocalVideo: d.vocalVideo || null,
+    titleCard: d.titleCard || null,
+    sourceUrl: d.sourceUrl || null,
+    status: d.status,
+  };
 
-  return NextResponse.json({ ok: true, lesson }, { status: 201 });
+  // Prisma first, then the same REST transport the reads fall back to.
+  // Without this the route threw an unhandled 500 on production, where Prisma
+  // cannot reach Postgres — creating a lesson was simply impossible.
+  try {
+    const lesson = await db.lesson.create({ data: row });
+    return NextResponse.json({ ok: true, lesson }, { status: 201 });
+  } catch (prismaErr) {
+    console.warn("[studio/lessons] Prisma create failed, falling back to REST:", prismaErr);
+    try {
+      const now = new Date().toISOString();
+      const lesson = await restInsert<Record<string, unknown>>("Lesson", {
+        ...row,
+        createdAt: now,
+        updatedAt: now,
+      });
+      return NextResponse.json({ ok: true, lesson }, { status: 201 });
+    } catch (restErr) {
+      console.error("[studio/lessons] REST create ALSO failed:", restErr);
+      return NextResponse.json(
+        { error: "The lesson could not be saved just now. Please try again in a moment." },
+        { status: 503 }
+      );
+    }
+  }
 }

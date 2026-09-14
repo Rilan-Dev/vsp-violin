@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { restGetCategories, restGetLessons } from "@/lib/supabase-data";
+import { restGetCategories, restGetLessons, restInsert } from "@/lib/supabase-data";
 import { isAuthorized } from "@/lib/studio-auth";
 
 /**
@@ -75,11 +75,38 @@ export async function POST(req: NextRequest) {
       { status: 422 }
     );
   }
-  // Check for existing slug
-  const existing = await db.category.findUnique({ where: { slug: parsed.data.slug } });
-  if (existing) {
-    return NextResponse.json({ error: "Slug already exists" }, { status: 409 });
+  // Reject a duplicate slug. This read sits inside a write handler, so it
+  // needs the same fallback as the write — otherwise it throws first and the
+  // route 500s before the guarded create is ever reached.
+  try {
+    const existing = await db.category.findUnique({ where: { slug: parsed.data.slug } });
+    if (existing) return NextResponse.json({ error: "Slug already exists" }, { status: 409 });
+  } catch {
+    try {
+      const rows = await restGetCategories();
+      if (rows.some((c) => c.slug === parsed.data.slug)) {
+        return NextResponse.json({ error: "Slug already exists" }, { status: 409 });
+      }
+    } catch (restErr) {
+      // Cannot confirm either way; let the insert decide and surface a real
+      // conflict from the database rather than inventing one.
+      console.warn("[studio/categories] duplicate check unavailable:", restErr);
+    }
   }
-  const category = await db.category.create({ data: parsed.data });
+  let category;
+  try {
+    category = await db.category.create({ data: parsed.data });
+  } catch (prismaErr) {
+    console.warn("[studio/categories] Prisma create failed, falling back to REST:", prismaErr);
+    try {
+      category = await restInsert<Record<string, unknown>>("Category", parsed.data);
+    } catch (restErr) {
+      console.error("[studio/categories] REST create ALSO failed:", restErr);
+      return NextResponse.json(
+        { error: "The category could not be saved just now. Please try again in a moment." },
+        { status: 503 }
+      );
+    }
+  }
   return NextResponse.json({ ok: true, category }, { status: 201 });
 }

@@ -298,3 +298,79 @@ export async function restCreateEnquiry(
     updatedAt: now,
   });
 }
+
+/* ------------------- Generic write fallbacks ------------------- *
+ * Studio reads all had a REST fallback; the writes did not. On production
+ * Prisma cannot reach Supabase Postgres, so every studio write threw and the
+ * route returned an unhandled 500 — creating a lesson was impossible on the
+ * live site, which is how this was found on launch day.
+ *
+ * These mirror the read fallbacks: same transport, same service-role key,
+ * same capitalised table names.
+ * --------------------------------------------------------------- */
+
+/** Insert one row and return it. */
+export async function restInsert<T>(table: string, row: Record<string, unknown>): Promise<T> {
+  const res = await fetch(restUrl(table), {
+    method: "POST",
+    headers: { ...restHeaders(), Prefer: "return=representation" },
+    body: JSON.stringify(row),
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    throw new Error(`Supabase REST insert ${table} ${res.status}: ${await res.text().catch(() => "")}`);
+  }
+  return (await res.json())[0] as T;
+}
+
+/** Update rows matching `column=eq.value`, returning the first updated row. */
+export async function restUpdate<T>(
+  table: string,
+  column: string,
+  value: string,
+  patch: Record<string, unknown>
+): Promise<T> {
+  const res = await fetch(
+    `${restUrl(table)}?${column}=eq.${encodeURIComponent(value)}`,
+    {
+      method: "PATCH",
+      headers: { ...restHeaders(), Prefer: "return=representation" },
+      body: JSON.stringify(patch),
+      cache: "no-store",
+    }
+  );
+  if (!res.ok) {
+    throw new Error(`Supabase REST update ${table} ${res.status}: ${await res.text().catch(() => "")}`);
+  }
+  const rows = (await res.json()) as T[];
+  if (rows.length === 0) throw new Error(`Supabase REST update ${table}: no row matched ${column}=${value}`);
+  return rows[0];
+}
+
+/** Delete rows matching `column=eq.value`. */
+export async function restDelete(table: string, column: string, value: string): Promise<void> {
+  const res = await fetch(
+    `${restUrl(table)}?${column}=eq.${encodeURIComponent(value)}`,
+    { method: "DELETE", headers: restHeaders(), cache: "no-store" }
+  );
+  if (!res.ok) {
+    throw new Error(`Supabase REST delete ${table} ${res.status}: ${await res.text().catch(() => "")}`);
+  }
+}
+
+/** Insert or update by primary key. */
+export async function restUpsert<T>(table: string, row: Record<string, unknown>): Promise<T> {
+  const res = await fetch(restUrl(table), {
+    method: "POST",
+    headers: {
+      ...restHeaders(),
+      Prefer: "return=representation,resolution=merge-duplicates",
+    },
+    body: JSON.stringify(row),
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    throw new Error(`Supabase REST upsert ${table} ${res.status}: ${await res.text().catch(() => "")}`);
+  }
+  return (await res.json())[0] as T;
+}
