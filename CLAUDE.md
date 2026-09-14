@@ -38,7 +38,13 @@ Every read path tries **Prisma first, then the Supabase PostgREST REST API**, be
 - `src/lib/supabase-data.ts` — the REST fallbacks. Uses the service-role key (bypasses RLS). **Table names are case-sensitive and capitalized** (`/rest/v1/Lesson`, `/Category`, `/Enquiry`, `/Media`, `/SiteContent`) because the Supabase tables were created with quoted identifiers.
 - `src/lib/dynamic-content.ts` — three-tier: Prisma `SiteContent` → `restGetSiteContent()` → the static `src/lib/site-content.json` baseline. DB values win per dot-path key (`home.heroLines`), which is how Studio edits reach the public site. Values are stored as JSON strings so types round-trip.
 
-**When adding a read endpoint or data function, add the REST fallback too.** `POST /api/enquiries` also has one (`restCreateEnquiry`), because it is the site's only conversion path and a lost write is a lost lead. The remaining studio writes (POST/PATCH/DELETE) are still Prisma-only — a known limitation documented at the end of `worklog.md`.
+**Every endpoint that touches the database needs the REST fallback — reads and writes alike.** Prisma does not work in production. It is not flaky there, it fails: every write on the live site lands via REST, which you can see in the `enq-`/`med-` id prefixes the REST writers generate.
+
+This was once written down as "studio writes are Prisma-only — a known limitation". It was not a limitation. On launch day the entire Studio turned out to be read-only in production: creating a lesson, editing one, deleting one, saving site copy, adding a photo, adding a category and changing an enquiry's status all returned an unhandled 500. Do not describe a missing fallback as acceptable; it is an outage that nobody has triggered yet.
+
+`restInsert` / `restUpdate` / `restDelete` / `restUpsert` in `supabase-data.ts` are the write equivalents of the `restGet*` readers. The shape is always Prisma → REST → a 503 whose message the site's owner can act on, never a bare 500.
+
+**Reads inside a write handler need the same guard**, and a search for `create|update|delete` will not find them. Two shipped unguarded and threw before the fallback they sat above could run: the duplicate-slug check in `POST /api/studio/categories`, and the lesson count that blocks deleting a non-empty category. When such a check cannot run, fail with 503 rather than proceeding blind — deleting a category without knowing whether it still holds lessons strands them.
 
 ## Two Prisma schemas
 
