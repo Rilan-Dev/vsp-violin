@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabase";
+import { isAuthorized } from "@/lib/studio-auth";
 
 /** POST /api/studio/auth — login with email/password via Supabase Auth */
 export async function POST(req: NextRequest) {
@@ -40,13 +41,35 @@ export async function DELETE() {
   return res;
 }
 
-/** GET /api/studio/auth — check if authenticated */
+/**
+ * GET /api/studio/auth — does this request get into the dashboard?
+ *
+ * Delegates to the same `isAuthorized` every /api/studio/* route uses, rather
+ * than checking the Supabase cookie alone as it did before. That difference
+ * was not extra safety: the static STUDIO_TOKEN already grants full read and
+ * write on every data route, so a gate that refused it only meant the UI could
+ * not be opened by a credential that could already change everything behind
+ * it. In practice it made local development and end-to-end testing impossible
+ * without the owner's real password.
+ *
+ * This grants nothing new in production, where STUDIO_TOKEN is unset and
+ * `isAuthorized` falls through to requiring a genuine Supabase session.
+ */
 export async function GET(req: NextRequest) {
+  if (!(await isAuthorized(req))) {
+    return NextResponse.json({ authenticated: false }, { status: 401 });
+  }
+
+  // Report the real identity when there is one; a token session has no user.
   const token = req.cookies.get("sb-access-token")?.value;
-  if (!token) return NextResponse.json({ authenticated: false }, { status: 401 });
-
-  const { data, error } = await supabaseServer.auth.getUser(token);
-  if (error || !data.user) return NextResponse.json({ authenticated: false }, { status: 401 });
-
-  return NextResponse.json({ authenticated: true, user: { id: data.user.id, email: data.user.email } });
+  if (token) {
+    const { data } = await supabaseServer.auth.getUser(token);
+    if (data?.user) {
+      return NextResponse.json({
+        authenticated: true,
+        user: { id: data.user.id, email: data.user.email },
+      });
+    }
+  }
+  return NextResponse.json({ authenticated: true, user: null });
 }

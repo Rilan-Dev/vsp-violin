@@ -1,0 +1,27 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "fix-studio-crud-and-socials",
+    "fix-studio-delete-state",
+    "launch-prep-editing-and-branding",
+    "main",
+    "origin",
+    "studio-ux-and-security-hardening"
+  ],
+  "parent": {
+    "fix-studio-crud-and-socials": "main",
+    "fix-studio-delete-state": "main",
+    "launch-prep-editing-and-branding": "main",
+    "main": null,
+    "origin": "main",
+    "studio-ux-and-security-hardening": "main"
+  },
+  "order": [
+    "main",
+    "fix-studio-crud-and-socials",
+    "fix-studio-delete-state",
+    "launch-prep-editing-and-branding",
+    "origin",
+    "studio-ux-and-security-hardening"
+  ]
+}
