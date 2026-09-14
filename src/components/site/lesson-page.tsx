@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, Download, Play, FileText, ChevronRight, Printer 
 import type { LessonDetail } from "@/lib/site-content-only";
 import { YouTubeFacade } from "@/components/site/youtube-facade";
 import { ShareButton } from "@/components/site/share-button";
+import { resolveImageUrl } from "@/lib/image-url";
 
 type Sibling = { id: string; title: string; titleTamil: string | null; category: string; level: number | null };
 
@@ -23,8 +24,8 @@ type Props = {
 
 
 export function LessonPage({ lesson, categoryName, prev, next, siblings, currentIndex, related = [] }: Props) {
-  const [notationLang, setNotationLang] = useState<"en" | "ta">("en");
   const [voice, setVoice] = useState<"violin" | "vocal">("violin");
+  const hasNotation = Boolean(lesson.notationEnglish || lesson.notationTamil);
 
   // Build a flat video list depending on what the lesson has.
   const videoList = useMemo(() => {
@@ -255,41 +256,58 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
       {/* Notation panel + what you get */}
       <section className="mx-auto px-5 sm:px-8" style={{ maxWidth: "1280px", paddingBottom: "64px" }}>
         <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr]" style={{ gap: "24px" }}>
-          {/* Notation panel */}
+          {/* Notation panel.
+              The swara "preview" that used to sit here was not a preview of
+              anything: the same hardcoded Sa Ri Ga Ma Pa Dha Ni Sa rendered on
+              all 23 lessons, under a heading naming that lesson's actual raga.
+              For Mohanam (no Ma, no Ni) and Hamsadwani (no Ma, no Dha) it
+              displayed notes the raga does not contain — wrong music under a
+              correct label, in front of the audience most able to spot it.
+              There is no per-lesson swara data to drive a real one: the Lesson
+              model stores notationTamil/notationEnglish as PDF URLs, nothing
+              else. The English/Tamil toggle went with it, since it only ever
+              switched that preview's script and controlled nothing real.
+              The genuine notation is the download above. */}
           <article className="vsp-card-neutral" style={{ padding: "28px" }}>
-            <div className="flex items-center justify-between flex-wrap gap-3" style={{ marginBottom: "20px", paddingBottom: "16px", borderBottom: "1px solid rgba(243,237,223,0.16)" }}>
-              <div className="flex items-center gap-3">
-                <FileText size={18} aria-hidden style={{ color: "#E0BC6A" }} />
-                <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "22px", margin: 0, color: "#F3EDDF" }}>
-                  Notation
-                </h2>
-              </div>
-              <div role="group" aria-label="Notation language" className="flex">
-                {( [["en", "English"], ["ta", "தமிழ்"]] as const ).map(([code, label]) => (
-                  <button
-                    key={code}
-                    type="button"
-                    onClick={() => setNotationLang(code)}
-                    aria-pressed={notationLang === code}
-                    className="transition-colors"
-                    style={{
-                      padding: "7px 14px",
-                      border: `1px solid ${notationLang === code ? "#E0BC6A" : "rgba(243,237,223,0.2)"}`,
-                      background: notationLang === code ? "#E0BC6A" : "transparent",
-                      color: notationLang === code ? "#1B1233" : "rgba(243,237,223,0.82)",
-                      fontFamily: "var(--font-geist-mono), monospace",
-                      fontSize: "11px",
-                      letterSpacing: "0.14em",
-                      textTransform: "uppercase",
-                      cursor: "pointer",
-                    }}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
+            <div className="flex items-center gap-3" style={{ marginBottom: "20px", paddingBottom: "16px", borderBottom: "1px solid rgba(243,237,223,0.16)" }}>
+              <FileText size={18} aria-hidden style={{ color: "#E0BC6A" }} />
+              <h2 style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "22px", margin: 0, color: "#F3EDDF" }}>
+                Notation
+              </h2>
             </div>
-            <NotationPreview lang={notationLang} lesson={lesson} />
+            <p style={{ fontSize: "14.5px", lineHeight: 1.7, color: "rgba(243,237,223,0.8)", margin: "0 0 18px" }}>
+              {hasNotation
+                ? "The full notation for this lesson is free to download, in Tamil and in English. Print it, keep it, and follow the video lessons below at your own pace."
+                : "This lesson does not have a notation sheet yet. The video lessons below take you through it step by step."}
+            </p>
+            {hasNotation && (
+              <div className="flex items-center gap-3 flex-wrap">
+                {lesson.notationEnglish && (
+                  <a
+                    href={lesson.notationEnglish}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-[10px] transition-all duration-200 hover:-translate-y-px"
+                    style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "15px", padding: "13px 22px", minHeight: 44, background: "#E0BC6A", color: "#1B1233", borderRadius: 0 }}
+                  >
+                    <Download size={15} aria-hidden />
+                    English notation
+                  </a>
+                )}
+                {lesson.notationTamil && (
+                  <a
+                    href={lesson.notationTamil}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-[10px] transition-all duration-200 hover:-translate-y-px"
+                    style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "15px", padding: "13px 22px", minHeight: 44, background: "transparent", color: "#F3EDDF", border: "1px solid rgba(243,237,223,0.46)", borderRadius: 0 }}
+                  >
+                    <Download size={15} aria-hidden />
+                    தமிழ் notation
+                  </a>
+                )}
+              </div>
+            )}
           </article>
 
           {/* Practice-track audio player — hidden for this release.
@@ -507,7 +525,7 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
                 <article className="vsp-card-neutral" style={{ overflow: "hidden", height: "100%", display: "flex", flexDirection: "column" }}>
                   <div style={{ position: "relative", aspectRatio: "16 / 9", background: "#251A42", overflow: "hidden" }}>
                     {r.titleCard ? (
-                      <img src={r.titleCard} alt="" loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+                      <img src={resolveImageUrl(r.titleCard, 600) ?? undefined} alt="" loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : (
                       <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(155deg, rgba(107,75,168,0.2), rgba(36,26,66,0.6))" }}>
                         <span style={{ fontFamily: "var(--font-marcellus), serif", fontSize: "28px", color: "rgba(224,188,106,0.3)" }}>♪</span>
@@ -586,50 +604,4 @@ export function LessonPage({ lesson, categoryName, prev, next, siblings, current
  * The actual notation PDFs are linked above; this is a visual preview
  * using the lesson's raga/thala to generate a plausible sarali-style line.
  */
-function NotationPreview({ lang, lesson }: { lang: "en" | "ta"; lesson: LessonDetail }) {
-  // Generate a preview swara line based on the lesson.
-  const swarasEn = ["Sa", "Ri", "Ga", "Ma", "Pa", "Dha", "Ni", "Sa"];
-  const swarasTa = ["ஸ", "ரி", "க", "ம", "ப", "த", "நி", "ஸ"];
-  const swaras = lang === "en" ? swarasEn : swarasTa;
-
-  // Build 3 ascending + 3 descending lines as a visual.
-  const lines = [
-    swaras.slice(0, 8).join("  "),
-    [...swaras.slice(1, 8), ...swaras.slice(0, 1)].join("  "),
-    swaras.slice().reverse().join("  "),
-    swaras.slice(0, 4).map((s) => `${s} ${s}`).join("  "),
-    swaras.slice(4, 8).map((s) => `${s} ${s}`).join("  "),
-  ];
-
-  return (
-    <div>
-      <p style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: "10.5px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(243,237,223,0.5)", marginBottom: "16px" }}>
-        Preview · {lesson.raga ?? "Mayamalavagowlai"} raga · {lesson.thala ?? "Aadhi"} thala
-      </p>
-      <div style={{ background: "rgba(22,16,42,0.6)", border: "1px solid rgba(243,237,223,0.1)", padding: "20px" }}>
-        {lines.map((line, i) => (
-          <p
-            key={i}
-            className="swara-line"
-            lang={lang === "ta" ? "ta" : undefined}
-            style={{
-              margin: 0,
-              padding: "4px 0",
-              borderBottom: i < lines.length - 1 ? "1px dashed rgba(243,237,223,0.1)" : "none",
-            }}
-          >
-            <span style={{ color: "rgba(243,237,223,0.4)", marginRight: "18px", fontFamily: "var(--font-geist-mono), monospace", fontSize: "11px" }}>
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            {line}
-          </p>
-        ))}
-      </div>
-      <p style={{ fontSize: "12px", lineHeight: 1.5, color: "rgba(243,237,223,0.5)", marginTop: "14px", fontStyle: "italic" }}>
-        This is a rendered preview of the swara pattern. The full notation — exercises 1 through 14 — is in the PDF above.
-      </p>
-    </div>
-  );
-}
-
 export default LessonPage;

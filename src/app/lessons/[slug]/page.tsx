@@ -6,6 +6,7 @@ import { LessonPage } from "@/components/site/lesson-page";
 import { Nav } from "@/components/site/nav";
 import { Footer } from "@/components/site/footer";
 import { SITE_URL } from "@/lib/seo";
+import { resolveImageUrl } from "@/lib/image-url";
 
 export const dynamic = "force-dynamic";
 
@@ -30,13 +31,13 @@ export async function generateMetadata({
       title,
       description,
       type: "article",
-      ...(lesson.titleCard ? { images: [{ url: lesson.titleCard, width: 1200, height: 630, alt: lesson.title }] } : {}),
+      ...(resolveImageUrl(lesson.titleCard, 1200) ? { images: [{ url: resolveImageUrl(lesson.titleCard, 1200)!, width: 1200, height: 630, alt: lesson.title }] } : {}),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      ...(lesson.titleCard ? { images: [lesson.titleCard] } : {}),
+      ...(resolveImageUrl(lesson.titleCard, 1200) ? { images: [resolveImageUrl(lesson.titleCard, 1200)!] } : {}),
     },
   };
 }
@@ -88,7 +89,7 @@ export default async function LessonRoute({
     ...(lesson.raga ? { about: { "@type": "Thing", name: `Raga ${lesson.raga}` } } : {}),
     ...(lesson.thala ? { tempo: lesson.thala } : {}),
     ...(lesson.composer ? { composer: { "@type": "Person", name: lesson.composer } } : {}),
-    ...(lesson.titleCard ? { thumbnailUrl: lesson.titleCard } : {}),
+    ...(resolveImageUrl(lesson.titleCard, 1200) ? { thumbnailUrl: resolveImageUrl(lesson.titleCard, 1200)! } : {}),
     url: `${SITE_URL}/lessons/${lesson.id}`,
     isAccessibleForFree: true,
     publisher: {

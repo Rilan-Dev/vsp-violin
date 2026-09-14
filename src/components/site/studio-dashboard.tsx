@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import {
   Mail,
@@ -29,6 +29,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import type { LessonSummary } from "@/lib/site-content-only";
+import { resolveImageUrl } from "@/lib/image-url";
 
 type Enquiry = {
   id: string;
@@ -47,11 +48,17 @@ type Enquiry = {
 
 type LessonRow = LessonSummary & { hasNotation: boolean; hasVideo: boolean };
 
+/**
+ * `lessonsByCategory` used to live here too, recomputed by hand at every
+ * mutation site. Creating a lesson updated it; deleting one and changing a
+ * lesson's category did not — so after a delete the category chips and the
+ * "Categories" stat card still showed the old counts. It is now derived with
+ * useMemo from `lessons`, which makes that class of staleness impossible.
+ */
 type StudioData = {
   enquiries: Enquiry[];
   counts: { total: number; new: number; replied: number; archived: number };
   lessons: LessonRow[];
-  lessonsByCategory: { category: string; count: number }[];
   sourceBreakdown: { fromLessonPage: number; fromOther: number };
 };
 
@@ -110,10 +117,22 @@ export function StudioDashboard({
   const [websitePanel, setWebsitePanel] = useState<"content" | "media">("content");
   const [enquiriesPanel, setEnquiriesPanel] = useState<"list" | "insights">("list");
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
+  // Surfaced for enquiry actions that failed server-side, so a rejected change
+  // is visible rather than silently reverting.
+  const [actionError, setActionError] = useState<string | null>(null);
   const [filter, setFilter] = useState<"all" | "new" | "replied" | "archived">("all");
   const [lessonCategoryFilter, setLessonCategoryFilter] = useState<string>("all");
   const [lessonSearch, setLessonSearch] = useState<string>("");
   const router = useRouter();
+
+  // Derived from `lessons`, never stored — see the note on StudioData.
+  const lessonsByCategory = useMemo(() => {
+    const counts = (data?.lessons ?? []).reduce<Record<string, number>>((acc, l) => {
+      acc[l.category] = (acc[l.category] ?? 0) + 1;
+      return acc;
+    }, {});
+    return Object.entries(counts).map(([category, count]) => ({ category, count }));
+  }, [data?.lessons]);
 
   const fetchData = useCallback(async () => {
     try {
@@ -157,18 +176,10 @@ export function StudioDashboard({
         hasNotation: Boolean(l.raga || l.titleTamil),
         hasVideo: true,
       }));
-      const lessonsByCategory = Object.entries(
-        lessonRows.reduce<Record<string, number>>((acc, l) => {
-          acc[l.category] = (acc[l.category] ?? 0) + 1;
-          return acc;
-        }, {})
-      ).map(([category, count]) => ({ category, count }));
-
       setData({
         enquiries,
         counts,
         lessons: lessonRows,
-        lessonsByCategory,
         sourceBreakdown: {
           fromLessonPage: enquiries.filter((e: Enquiry) =>
             e.message.toLowerCase().includes("lesson") || e.intent === "lesson"
@@ -190,7 +201,12 @@ export function StudioDashboard({
   }, [fetchData]);
 
   const updateStatus = async (id: string, status: "new" | "replied" | "archived") => {
-    // Optimistic update
+    // Optimistic: a status toggle should feel instant. Remember the previous
+    // value so it can be put back if the server rejects the change — without
+    // that, a failed PATCH left the screen showing a status the database
+    // never accepted, until someone happened to reload.
+    const previous = data?.enquiries.find((e) => e.id === id)?.status;
+
     setData((prev) => {
       if (!prev) return prev;
       const enquiries = prev.enquiries.map((e) =>
@@ -206,27 +222,78 @@ export function StudioDashboard({
     });
     setSelectedEnquiry((prev) => (prev?.id === id ? { ...prev, status } : prev));
 
-    await fetch(`/api/studio/enquiries/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status }),
-    });
+    const revert = () => {
+      if (!previous) return;
+      setData((prev) => {
+        if (!prev) return prev;
+        const enquiries = prev.enquiries.map((e) => (e.id === id ? { ...e, status: previous } : e));
+        return {
+          ...prev,
+          enquiries,
+          counts: {
+            total: enquiries.length,
+            new: enquiries.filter((e) => e.status === "new").length,
+            replied: enquiries.filter((e) => e.status === "replied").length,
+            archived: enquiries.filter((e) => e.status === "archived").length,
+          },
+        };
+      });
+      setSelectedEnquiry((prev) => (prev?.id === id ? { ...prev, status: previous } : prev));
+    };
+
+    try {
+      const res = await fetch(`/api/studio/enquiries/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        revert();
+        setActionError(body?.error ?? "That change could not be saved. Please try again.");
+        setTimeout(() => setActionError(null), 6000);
+      }
+    } catch {
+      revert();
+      setActionError("Could not reach the server. Check your connection and try again.");
+      setTimeout(() => setActionError(null), 6000);
+    }
   };
 
   const deleteEnquiry = async (id: string) => {
+    // This removed the enquiry from the screen before the request was even
+    // sent, and ignored the result. A failed delete meant a lead the owner
+    // believed was handled quietly returning on the next reload.
+    let ok = false;
+    try {
+      const res = await fetch(`/api/studio/enquiries/${id}`, { method: "DELETE" });
+      ok = res.ok;
+      if (!ok) {
+        const body = await res.json().catch(() => null);
+        setActionError(body?.error ?? "That enquiry could not be deleted. Please try again.");
+      }
+    } catch {
+      setActionError("Could not reach the server. Check your connection and try again.");
+    }
+    if (!ok) {
+      setTimeout(() => setActionError(null), 6000);
+      return;
+    }
     setData((prev) => {
       if (!prev) return prev;
       const enquiries = prev.enquiries.filter((e) => e.id !== id);
-      const counts = {
-        total: enquiries.length,
-        new: enquiries.filter((e) => e.status === "new").length,
-        replied: enquiries.filter((e) => e.status === "replied").length,
-        archived: enquiries.filter((e) => e.status === "archived").length,
+      return {
+        ...prev,
+        enquiries,
+        counts: {
+          total: enquiries.length,
+          new: enquiries.filter((e) => e.status === "new").length,
+          replied: enquiries.filter((e) => e.status === "replied").length,
+          archived: enquiries.filter((e) => e.status === "archived").length,
+        },
       };
-      return { ...prev, enquiries, counts };
     });
     setSelectedEnquiry(null);
-    await fetch(`/api/studio/enquiries/${id}`, { method: "DELETE" });
   };
 
   const logout = async () => {
@@ -282,6 +349,22 @@ export function StudioDashboard({
           </div>
         </header>
         <div style={{ maxWidth: "1440px", margin: "0 auto" }} className="px-5 py-6 md:px-8 md:py-8">
+        {actionError && (
+          <p
+            role="alert"
+            style={{
+              margin: "0 0 18px",
+              padding: "12px 15px",
+              border: "1px solid rgba(224,140,80,0.5)",
+              background: "rgba(224,140,80,0.08)",
+              color: "#F2C5A5",
+              fontSize: "13.5px",
+              lineHeight: 1.6,
+            }}
+          >
+            {actionError}
+          </p>
+        )}
           <div className="flex items-center gap-3 mb-8">
             <div
               style={{
@@ -795,7 +878,7 @@ export function StudioDashboard({
           <>
             <div className="grid gap-4 mb-8 grid-cols-2 md:grid-cols-4">
               <StatCard icon={<BookOpen size={18} />} label="Total lessons" value={data.lessons.length} color="#E0BC6A" />
-              <StatCard icon={<BookOpen size={18} />} label="Categories" value={data.lessonsByCategory.length} color="#C9AEF5" />
+              <StatCard icon={<BookOpen size={18} />} label="Categories" value={lessonsByCategory.length} color="#C9AEF5" />
               <StatCard icon={<BookOpen size={18} />} label="With notation" value={data.lessons.filter((l) => l.hasNotation).length} color="#78DCAA" />
               <StatCard icon={<BookOpen size={18} />} label="Drafts" value={data.lessons.filter((l) => (l.status ?? "published") === "draft").length} color="#E08C50" />
             </div>
@@ -808,17 +891,11 @@ export function StudioDashboard({
                   Click any field to edit · changes save instantly
                 </span>
               </div>
-              <NewLessonButton categories={data.lessonsByCategory.map((c) => ({ slug: c.category, name: c.category.replace(/-/g, " ") }))} onCreated={(lesson) => {
+              <NewLessonButton categories={lessonsByCategory.map((c) => ({ slug: c.category, name: c.category.replace(/-/g, " ") }))} onCreated={(lesson) => {
                 setData((prev) => {
                   if (!prev) return prev;
                   const lessons = [...prev.lessons, { ...lesson, hasNotation: Boolean(lesson.raga || lesson.titleTamil), hasVideo: true }];
-                  const lessonsByCategory = Object.entries(
-                    lessons.reduce<Record<string, number>>((acc, l) => {
-                      acc[l.category] = (acc[l.category] ?? 0) + 1;
-                      return acc;
-                    }, {})
-                  ).map(([category, count]) => ({ category, count }));
-                  return { ...prev, lessons, lessonsByCategory };
+                  return { ...prev, lessons };
                 });
               }} />
             </div>
@@ -858,7 +935,7 @@ export function StudioDashboard({
                 >
                   All ({data.lessons.length})
                 </button>
-                {data.lessonsByCategory
+                {lessonsByCategory
                   .slice()
                   .sort((a, b) => b.count - a.count)
                   .map((c) => {
@@ -971,7 +1048,7 @@ export function StudioDashboard({
                       </tr>
                     ) : (
                       filteredLessons.map((l) => (
-                        <EditableLessonRow key={l.id} lesson={l} categories={data.lessonsByCategory.map((c) => ({ slug: c.category, name: c.category.replace(/-/g, " ") }))} onUpdate={(updated) => {
+                        <EditableLessonRow key={l.id} lesson={l} categories={lessonsByCategory.map((c) => ({ slug: c.category, name: c.category.replace(/-/g, " ") }))} onUpdate={(updated) => {
                           setData((prev) => {
                             if (!prev) return prev;
                             const lessons = prev.lessons.map((row) => row.id === l.id ? { ...row, ...updated } : row);
@@ -1527,6 +1604,8 @@ function EditableLessonRow({
   const [draft, setDraft] = useState<string>("");
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const startEdit = (field: string, currentValue: string) => {
     setEditingField(field);
@@ -1595,8 +1674,26 @@ function EditableLessonRow({
       setTimeout(() => setConfirmDelete(false), 3000);
       return;
     }
-    await fetch(`/api/studio/lessons/${lesson.id}`, { method: "DELETE" });
-    onDelete();
+    // Only drop the row once the server confirms. Previously the response was
+    // ignored, so a failed delete still removed it from the screen and the
+    // lesson reappeared on the next reload — the owner believing it was gone.
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/studio/lessons/${lesson.id}`, { method: "DELETE" });
+      if (res.ok) {
+        onDelete();
+        return;
+      }
+      const body = await res.json().catch(() => null);
+      setDeleteError(body?.error ?? "That could not be deleted. Please try again.");
+      setTimeout(() => setDeleteError(null), 6000);
+    } catch {
+      setDeleteError("Could not reach the server. Check your connection and try again.");
+      setTimeout(() => setDeleteError(null), 6000);
+    } finally {
+      setDeleting(false);
+      setConfirmDelete(false);
+    }
   };
 
   const tdStyle: React.CSSProperties = {
@@ -1753,8 +1850,17 @@ function EditableLessonRow({
           >
             <ExternalLink size={13} />
           </a>
+          {deleteError && (
+            <span
+              role="alert"
+              style={{ fontSize: "11.5px", lineHeight: 1.4, color: "#F2C5A5", maxWidth: 180 }}
+            >
+              {deleteError}
+            </span>
+          )}
           <button
             onClick={handleDelete}
+            disabled={deleting}
             aria-label={confirmDelete ? "Confirm delete" : "Delete lesson"}
             style={{
               background: "transparent",
@@ -2883,8 +2989,9 @@ function MediaTab() {
    * browser resolves them against /studio, so they 404 from the admin even
    * where the file exists. Absolute URLs pass through untouched.
    */
-  const resolveUrl = (url: string) =>
-    /^(https?:)?\/\//.test(url) || url.startsWith("/") ? url : `/${url}`;
+  // Shared with the public site so a Drive share link and a bare relative
+  // path behave the same everywhere.
+  const resolveUrl = (url: string) => resolveImageUrl(url, 600) ?? url;
 
   const upload = async () => {
     setUploadError(null);
@@ -2914,8 +3021,18 @@ function MediaTab() {
   };
 
   const deleteMedia = async (id: string) => {
-    await fetch(`/api/studio/media/${id}`, { method: "DELETE" });
-    setMedia(media.filter(m => m.id !== id));
+    // Confirm with the server before removing it from the grid.
+    try {
+      const res = await fetch(`/api/studio/media/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        setMedia((prev) => prev.filter((m) => m.id !== id));
+        return;
+      }
+      const body = await res.json().catch(() => null);
+      setUploadError(body?.error ?? "That photo could not be removed. Please try again.");
+    } catch {
+      setUploadError("Could not reach the server. Check your connection and try again.");
+    }
   };
 
   if (loading) return <p style={{ color: "rgba(243,237,223,0.5)", fontFamily: "var(--font-geist-mono), monospace", fontSize: "12px" }}>Loading your photos…</p>;

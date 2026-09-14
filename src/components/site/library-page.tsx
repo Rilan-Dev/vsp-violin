@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Search, X } from "lucide-react";
 import { useReveal } from "@/components/site/use-reveal";
 import type { CategoryWithCount } from "@/lib/site-content-only";
+import { resolveImageUrl } from "@/lib/image-url";
 
 type LibraryLesson = {
   id: string;
@@ -361,7 +362,7 @@ function LibraryCard({ lesson, gold }: { lesson: LibraryLesson; gold?: boolean }
         <div style={{ position: "relative", aspectRatio: "16 / 9", background: "#251A42", overflow: "hidden" }}>
           {lesson.titleCard ? (
             <img
-              src={lesson.titleCard}
+              src={resolveImageUrl(lesson.titleCard, 600) ?? undefined}
               alt=""
               loading="lazy"
               decoding="async"
