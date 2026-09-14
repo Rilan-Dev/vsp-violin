@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useReveal } from "@/components/site/use-reveal";
+import { resolveImageUrl } from "@/lib/image-url";
 
 /* ------------------------------------------------------------------ *
  * Library Preview
@@ -525,7 +526,7 @@ function LessonCard({
       >
         {lesson.titleCard ? (
           <img
-            src={lesson.titleCard}
+            src={resolveImageUrl(lesson.titleCard, 600) ?? undefined}
             alt=""
             loading="lazy"
             decoding="async"

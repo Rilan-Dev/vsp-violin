@@ -73,11 +73,22 @@ export async function POST(req: NextRequest) {
 
   const d = parsed.data;
   // Generate a slug from the title
-  const slugBase = d.title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 60);
+  // Strip accents before slugifying. Without the NFD normalise, every
+  // non-ASCII letter was simply deleted, so "Śrī Mahā Gaṇeśa Pañca Ratnam"
+  // became "r-mah-ga-e-a-pa-ca-ratnam" — an unreadable URL that also has to
+  // live in Google's index forever. Now it becomes
+  // "sri-maha-ganesa-panca-ratnam".
+  //
+  // A title with no Latin characters at all (pure Tamil, say) still reduces to
+  // nothing, so fall back to the category rather than emit a bare timestamp.
+  const slugBase =
+    d.title
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 60) || d.category.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   const id = `${slugBase}-${Date.now().toString(36)}`;
 
   const row = {
