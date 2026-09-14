@@ -391,13 +391,6 @@
 }
 
 /* Notation swara line styling */
-.swara-line {
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 17px;
-  letter-spacing: 0.14em;
-  line-height: 2;
-  color: rgba(243, 237, 223, 0.9);
-}
 
 /* ===== Library preview =====
    Hover behaviours for lesson cards + category chips.
@@ -464,10 +457,6 @@
   }
 
   /* Lesson page: show title, notation, details table, guidance */
-  .swara-line {
-    color: #000000 !important;
-    font-size: 14pt !important;
-  }
 
   /* Cards: remove backgrounds, use black borders */
   .vsp-card-neutral,
@@ -534,7 +523,7 @@
   h3 { font-size: 17px !important; line-height: 1.25 !important; }
 
   /* Content body paragraphs only (not nav/button/form text) */
-  .vsp-card-neutral p, .vsp-card-gold p, .vsp-card-neutral .swara-line, .vsp-card-gold .swara-line {
+  .vsp-card-neutral p, .vsp-card-gold p {
     font-size: 13px !important; line-height: 1.55 !important;
   }
 

@@ -29,6 +29,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import type { LessonSummary } from "@/lib/site-content-only";
+import { resolveImageUrl } from "@/lib/image-url";
 
 type Enquiry = {
   id: string;
@@ -2988,8 +2989,9 @@ function MediaTab() {
    * browser resolves them against /studio, so they 404 from the admin even
    * where the file exists. Absolute URLs pass through untouched.
    */
-  const resolveUrl = (url: string) =>
-    /^(https?:)?\/\//.test(url) || url.startsWith("/") ? url : `/${url}`;
+  // Shared with the public site so a Drive share link and a bare relative
+  // path behave the same everywhere.
+  const resolveUrl = (url: string) => resolveImageUrl(url, 600) ?? url;
 
   const upload = async () => {
     setUploadError(null);
